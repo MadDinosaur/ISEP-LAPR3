@@ -1,0 +1,191 @@
+package lapr.project.model;
+
+import lapr.project.exception.IllegalPositioningDataException;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class PositioningData implements Comparable<PositioningData>{
+
+    /**
+     * The data's time of creation
+     */
+    private Date bdt;
+
+    /**
+     * The ship's coordinates when the data was sent
+     */
+    private Coordinate coordinate;
+
+    /**
+     * The ship's speed over ground when the data was sent
+     */
+    private long sog;
+
+    /**
+     * The ship's course over ground when the data was sent
+     */
+    private long cog;
+
+    /**
+     * The ship's heading when the data was sent
+     */
+    private long heading;
+
+    /**
+     * The ship's ship code in tow when the data was sent
+     */
+    private String position;
+
+    /**
+     * The ship's transceiver class used to send the data
+     */
+    private String transceiverClass;
+
+    /**
+     * creator class
+     * @param bdt The data's time of creation
+     * @param coordinate The ship's coordinates when the data was sent
+     * @param sog The ship's speed over ground when the data was sent
+     * @param cog The ship's course over ground when the data was sent
+     * @param heading The ship's heading when the data was sent
+     * @param position The ship's ship code in tow when the data was sent
+     * @param transceiverClass The ship's transceiver class used to send the data
+     */
+    public PositioningData(String bdt, Coordinate coordinate, long sog, long cog, long heading, String position, String transceiverClass ){
+        setBdt(bdt);
+        setCoordinate(coordinate);
+        setSog(sog);
+        setCog(Math.abs(cog));
+        setHeading(heading);
+        setPosition(position);
+        setTransceiverClass(transceiverClass);
+    }
+
+    /**
+     * sets the base date time
+     * @param bdt The data's time of creation
+     */
+    public void setBdt(String bdt) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            this.bdt = formatter.parse(bdt);
+        } catch (ParseException e){
+            throw new IllegalPositioningDataException("Base Date time value \"" + bdt + "\"  is not accepted");
+        }
+    }
+
+    /**
+     * Sets the coordinates of the ship
+     * @param coordinate The ship's coordinates when the data was sent
+     */
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    /**
+     * Sets the ship's course over ground
+     * @param cog The ship's course over ground when the data was sent
+     */
+    public void setCog(long cog) {
+        if (checkCogRules(cog))
+            this.cog = cog;
+    }
+
+    /**
+     * checks if the course over ground value is allowed
+     * @param cog The ship's course over ground when the data was sent
+     * @return true if the value is within expected boundaries
+     */
+    private boolean checkCogRules(long cog) {
+        if (cog >= 0 && cog <= 359)
+            return true;
+        else
+            throw new IllegalPositioningDataException("COG value\"" + cog + "\"  is not withing boundaries");
+    }
+
+    /**
+     * Sets the ship's speed over ground
+     * @param sog The ship's speed over ground when the data was sent
+     */
+    public void setSog(long sog) {
+        if (checkSogRules(sog))
+            this.sog = sog;
+    }
+
+    /**
+     * checks if the speed over ground value is allowed
+     * @param sog The ship's speed over ground when the data was sent
+     * @return true if the value is within expected boundaries
+     */
+    private boolean checkSogRules(long sog) {
+        if (sog >= 0)
+            return true;
+        else
+            throw new IllegalPositioningDataException("SOG value\"" + sog + "\"  is not withing boundaries");
+    }
+
+    /**
+     * Sets the ship's heading
+     * @param heading The ship's heading when the data was sent
+     */
+    public void setHeading(long heading) {
+        if (checkHeadingRules(heading))
+            this.heading = heading;
+    }
+
+    /**
+     * checks if the heading value is allowed
+     * @param heading The ship's heading when the data was sent
+     * @return true if the value is within expected boundaries
+     */
+    private boolean checkHeadingRules(long heading) {
+        if (heading >= 0 && heading <= 359 || heading == 511)
+            return true;
+        else
+            throw new IllegalPositioningDataException("Heading value\"" + heading + "\"  is not withing boundaries");
+    }
+
+    /**
+     * sets the ship's ship int tow code
+     * @param position The ship's ship code in tow when the data was sent
+     */
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    /**
+     * Sets the ship's transceiver class
+     * @param transceiverClass The ship's transceiver class used to send the data
+     */
+    public void setTransceiverClass(String transceiverClass) {
+        if (checkTransceiversRules(transceiverClass))
+            this.transceiverClass = transceiverClass;
+    }
+
+    /**
+     * checks if the transceiver value is allowed
+     * @param transceiverClass The ship's transceiver class used to send the data
+     * @return true if the value is within expected boundaries
+     */
+    public boolean checkTransceiversRules(String transceiverClass){
+        if (transceiverClass != null)
+            return true;
+        else
+            throw new IllegalPositioningDataException("Transceiver class must not be null");
+    }
+
+    /**
+     * returns the date values
+     * @return returns the date values
+     */
+    public Date getBdt() {
+        return bdt;
+    }
+
+    @Override
+    public int compareTo(PositioningData otherData) {
+        return this.bdt.compareTo(otherData.bdt);
+    }
+}
