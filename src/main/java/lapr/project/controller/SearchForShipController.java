@@ -30,7 +30,7 @@ public class SearchForShipController {
     }
 
     public ShipDTO getShipByMMSI(String mmsi){
-        Ship ship = shipStore.getShipByMMMSI(mmsi);
+        Ship ship = shipStore.getShipByMMSI(mmsi);
         if (ship != null)
             return ShipMapper.toDTO(ship);
         else

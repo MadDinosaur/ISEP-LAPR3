@@ -60,7 +60,12 @@ public class ShipStore {
         return ship != null;
     }
 
-    public Ship getShipByMMMSI(String code){
+    /**
+     * searches for ship by it's mmsi code
+     * @param code a mmsi code
+     * @return a ship with the given mmsi code or null
+     */
+    public Ship getShipByMMSI(String code){
         for (Ship otherShip : shipTree.inOrder()){
             if (otherShip.getMmsi().equals(code)){
                 return otherShip;
@@ -69,6 +74,11 @@ public class ShipStore {
         return null;
     }
 
+    /**
+     * searches for ship by it's imo code
+     * @param code a imo code
+     * @return a ship with the given imo code or null
+     */
     public Ship getShipByIMO(String code){
         int codeImo;
         try{
@@ -84,6 +94,11 @@ public class ShipStore {
         return null;
     }
 
+    /**
+     * searches for ship by it's Call sign code
+     * @param code a Call sign code
+     * @return a ship with the given Call sign code or null
+     */
     public Ship getShipByCallSign(String code){
         for (Ship otherShip : shipTree.inOrder()){
             if (otherShip.getCallSign().equals(code)){

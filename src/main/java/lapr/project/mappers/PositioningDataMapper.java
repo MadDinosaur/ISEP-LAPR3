@@ -17,9 +17,8 @@ public class PositioningDataMapper {
      */
     public static PositioningData toModel(PositioningDataDTO dto){
         try {
-            return new PositioningData(dto.getBdt(), new Coordinate(Double.valueOf(dto.getLongitude()).longValue(), Double.valueOf(dto.getLatitude()).longValue()),
-                    Double.valueOf(dto.getSog()).longValue(), Double.valueOf(dto.getCog()).longValue(), Double.valueOf(dto.getHeading()).longValue(),
-                    dto.getPosition(), dto.getTransceiverClass());
+            return new PositioningData(dto.getBdt(), new Coordinate(Float.parseFloat(dto.getLongitude()), Float.parseFloat(dto.getLatitude())), Float.parseFloat(dto.getSog()),
+                    Float.parseFloat(dto.getCog()), Float.parseFloat(dto.getHeading()), dto.getPosition(), dto.getTransceiverClass());
         } catch (IllegalArgumentException e){
             e.printStackTrace();
             return null;

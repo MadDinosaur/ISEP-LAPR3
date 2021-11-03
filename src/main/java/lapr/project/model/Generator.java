@@ -13,14 +13,14 @@ public class Generator {
     /**
      * The output of the generators
      */
-    private long generatorOutput;
+    private float generatorOutput;
 
     /**
      * creates a generator class
      * @param numberOfGenerators The Number of generators
      * @param generatorOutput The output of the generators
      */
-    public Generator(int numberOfGenerators, long generatorOutput){
+    public Generator(int numberOfGenerators, float generatorOutput){
         setNumberOfGenerators(numberOfGenerators);
         setGeneratorOutput(generatorOutput);
     }
@@ -29,7 +29,7 @@ public class Generator {
      * set's the generator's output
      * @param generatorOutput The output of the generators
      */
-    public void setGeneratorOutput(long generatorOutput) {
+    public void setGeneratorOutput(float generatorOutput) {
         if (checkGeneratorOutputRules(generatorOutput))
             this.generatorOutput = generatorOutput;
     }
@@ -39,7 +39,7 @@ public class Generator {
      * @param generatorOutput The output of the generators
      * @return true if the output is within boundaries
      */
-    private boolean checkGeneratorOutputRules(long generatorOutput) {
+    private boolean checkGeneratorOutputRules(float generatorOutput) {
         if (generatorOutput >= 0)
             return true;
         else

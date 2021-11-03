@@ -12,7 +12,7 @@ public class ShipMapper {
 
     public static ShipDTO toDTO(Ship ship){
         return new ShipDTO(ship.getMmsi(), ship.getShipName(),Integer.toString(ship.getImo()) , ship.getCallSign(),Integer.toString(ship.getVesselType()),
-                Long.toString(ship.getLength()), Long.toString(ship.getWidth()), Long.toString(ship.getDraft()) );
+                Float.toString(ship.getLength()), Float.toString(ship.getWidth()), Float.toString(ship.getDraft()) );
     }
 
     /**
@@ -23,7 +23,7 @@ public class ShipMapper {
     public static Ship toModel(ShipDTO dto){
         try{
             return new Ship(dto.getMmsi(), dto.getShipName(), Integer.parseInt(dto.getImo()), dto.getCallSign(), Integer.parseInt(dto.getVesselType()),
-                    Double.valueOf(dto.getLength()).longValue(), Double.valueOf(dto.getWidth()).longValue(), Double.valueOf(dto.getDraft()).longValue());
+                    Float.parseFloat(dto.getLength()), Float.parseFloat(dto.getWidth()), Float.parseFloat(dto.getDraft()));
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             return null;

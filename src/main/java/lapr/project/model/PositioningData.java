@@ -21,17 +21,17 @@ public class PositioningData implements Comparable<PositioningData>{
     /**
      * The ship's speed over ground when the data was sent
      */
-    private long sog;
+    private float sog;
 
     /**
      * The ship's course over ground when the data was sent
      */
-    private long cog;
+    private float cog;
 
     /**
      * The ship's heading when the data was sent
      */
-    private long heading;
+    private float heading;
 
     /**
      * The ship's ship code in tow when the data was sent
@@ -53,7 +53,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param position The ship's ship code in tow when the data was sent
      * @param transceiverClass The ship's transceiver class used to send the data
      */
-    public PositioningData(String bdt, Coordinate coordinate, long sog, long cog, long heading, String position, String transceiverClass ){
+    public PositioningData(String bdt, Coordinate coordinate, float sog, float cog, float heading, String position, String transceiverClass ){
         setBdt(bdt);
         setCoordinate(coordinate);
         setSog(sog);
@@ -88,7 +88,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * Sets the ship's course over ground
      * @param cog The ship's course over ground when the data was sent
      */
-    public void setCog(long cog) {
+    public void setCog(float cog) {
         if (checkCogRules(cog))
             this.cog = cog;
     }
@@ -98,7 +98,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param cog The ship's course over ground when the data was sent
      * @return true if the value is within expected boundaries
      */
-    private boolean checkCogRules(long cog) {
+    private boolean checkCogRules(float cog) {
         if (cog >= 0 && cog <= 359)
             return true;
         else
@@ -109,7 +109,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * Sets the ship's speed over ground
      * @param sog The ship's speed over ground when the data was sent
      */
-    public void setSog(long sog) {
+    public void setSog(float sog) {
         if (checkSogRules(sog))
             this.sog = sog;
     }
@@ -119,7 +119,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param sog The ship's speed over ground when the data was sent
      * @return true if the value is within expected boundaries
      */
-    private boolean checkSogRules(long sog) {
+    private boolean checkSogRules(float sog) {
         if (sog >= 0)
             return true;
         else
@@ -130,7 +130,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * Sets the ship's heading
      * @param heading The ship's heading when the data was sent
      */
-    public void setHeading(long heading) {
+    public void setHeading(float heading) {
         if (checkHeadingRules(heading))
             this.heading = heading;
     }
@@ -140,7 +140,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param heading The ship's heading when the data was sent
      * @return true if the value is within expected boundaries
      */
-    private boolean checkHeadingRules(long heading) {
+    private boolean checkHeadingRules(float heading) {
         if (heading >= 0 && heading <= 359 || heading == 511)
             return true;
         else

@@ -42,23 +42,23 @@ public class Ship implements Comparable<Ship> {
     /**
      * The ship's length
      */
-    private long length;
+    private float length;
 
     /**
      * The ship's width
      */
-    private long width;
+    private float width;
 
     /**
      * The ship's capacity
      * placeHolder as it won't be used this sprint
      */
-    private long capacity;
+    private float capacity;
 
     /**
      * The ship's draft
      */
-    private long draft;
+    private float draft;
 
     /**
      * The ship's positioning data
@@ -76,7 +76,7 @@ public class Ship implements Comparable<Ship> {
      * @param width The ship's length
      * @param draft The ship's draft
      */
-    public Ship(String mmsi, String shipName, int imo, String callSign, int vesselType, long length, long width, long draft){
+    public Ship(String mmsi, String shipName, int imo, String callSign, int vesselType, float length, float width, float draft){
         setMmsi(mmsi);
         setShipName(shipName);
         setImo(imo);
@@ -143,7 +143,7 @@ public class Ship implements Comparable<Ship> {
      * Set's the ships Draft
      * @param draft The ships Draft
      */
-    public void setDraft(long draft) {
+    public void setDraft(float draft) {
         if (checkDraftRules(draft))
             this.draft = draft;
     }
@@ -153,7 +153,7 @@ public class Ship implements Comparable<Ship> {
      * @param draft The ships Draft
      * @return true if the value is within allowed boundaries
      */
-    private boolean checkDraftRules(long draft) {
+    private boolean checkDraftRules(float draft) {
         if (draft >= 0)
             return true;
         else
@@ -185,7 +185,7 @@ public class Ship implements Comparable<Ship> {
      * Set's the ships length value
      * @param length The ship's length value
      */
-    public void setLength(long length) {
+    public void setLength(float length) {
         if (checkLengthRules(length))
             this.length = length;
     }
@@ -195,7 +195,7 @@ public class Ship implements Comparable<Ship> {
      * @param length The ship's length value
      * @return true if the value is within allowed boundaries
      */
-    private boolean checkLengthRules(long length) {
+    private boolean checkLengthRules(float length) {
         if (length >= 0)
             return true;
         else
@@ -227,7 +227,7 @@ public class Ship implements Comparable<Ship> {
      * Set's the ship's width
      * @param width The ship's width
      */
-    public void setWidth(long width) {
+    public void setWidth(float width) {
         if (checkWidthRules(width))
             this.width = width;
     }
@@ -237,7 +237,7 @@ public class Ship implements Comparable<Ship> {
      * @param width The ship's width
      * @return true if the value is within allowed boundaries
      */
-    private boolean checkWidthRules(long width) {
+    private boolean checkWidthRules(float width) {
         if (width >= 0)
             return true;
         else
@@ -288,7 +288,7 @@ public class Ship implements Comparable<Ship> {
      * returns the ship's draft
      * @return returns the ship's draft
      */
-    public long getDraft() {
+    public float getDraft() {
         return draft;
     }
 
@@ -296,7 +296,7 @@ public class Ship implements Comparable<Ship> {
      * returns the ship's length
      * @return returns the ship's length
      */
-    public long getLength() {
+    public float getLength() {
         return length;
     }
 
@@ -304,7 +304,7 @@ public class Ship implements Comparable<Ship> {
      * returns the ship's width
      * @return returns the ship's width
      */
-    public long getWidth() {
+    public float getWidth() {
         return width;
     }
 
@@ -314,6 +314,20 @@ public class Ship implements Comparable<Ship> {
      */
     public PositioningDataList getPositioningDataList() {
         return positioningDataList;
+    }
+
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "mmsi='" + mmsi + '\'' +
+                ", shipName='" + shipName + '\'' +
+                ", imo=" + imo +
+                ", callSign='" + callSign + '\'' +
+                ", vesselType=" + vesselType +
+                ", length=" + length +
+                ", width=" + width +
+                ", draft=" + draft +
+                '}';
     }
 
     @Override
