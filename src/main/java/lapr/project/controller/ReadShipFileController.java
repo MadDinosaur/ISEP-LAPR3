@@ -19,7 +19,7 @@ public class ReadShipFileController {
     private final ShipStore shipStore;
 
     /**
-     * Calls the creator with a the current company instance
+     * Calls the creator with a the current storage instance
      */
     public ReadShipFileController() {
         this(Storage.getInstance());

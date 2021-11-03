@@ -23,6 +23,13 @@ public class Ship implements Comparable<Ship> {
     private int imo;
 
     /**
+     * The ships generator information
+     * placeHolder as it won't be used this sprint
+     */
+    private Generator generator;
+
+
+    /**
      * The Ships call sign
      */
     private String callSign;
@@ -41,6 +48,12 @@ public class Ship implements Comparable<Ship> {
      * The ship's width
      */
     private long width;
+
+    /**
+     * The ship's capacity
+     * placeHolder as it won't be used this sprint
+     */
+    private long capacity;
 
     /**
      * The ship's draft
