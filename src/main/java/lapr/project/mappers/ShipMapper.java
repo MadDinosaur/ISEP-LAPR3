@@ -10,6 +10,11 @@ import java.util.Map;
 
 public class ShipMapper {
 
+    public static ShipDTO toDTO(Ship ship){
+        return new ShipDTO(ship.getMmsi(), ship.getShipName(),Integer.toString(ship.getImo()) , ship.getCallSign(),Integer.toString(ship.getVesselType()),
+                Long.toString(ship.getLength()), Long.toString(ship.getWidth()), Long.toString(ship.getDraft()) );
+    }
+
     /**
      * transforms a dto int an Ship object
      * @param dto a package with all the Ship data
