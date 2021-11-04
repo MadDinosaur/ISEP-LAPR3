@@ -317,20 +317,6 @@ public class Ship implements Comparable<Ship> {
     }
 
     @Override
-    public String toString() {
-        return "Ship{" +
-                "mmsi='" + mmsi + '\'' +
-                ", shipName='" + shipName + '\'' +
-                ", imo=" + imo +
-                ", callSign='" + callSign + '\'' +
-                ", vesselType=" + vesselType +
-                ", length=" + length +
-                ", width=" + width +
-                ", draft=" + draft +
-                '}';
-    }
-
-    @Override
     public int compareTo(Ship o) {
         return mmsi.compareTo(o.getMmsi());
     }
