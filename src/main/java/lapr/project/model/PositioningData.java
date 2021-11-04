@@ -184,6 +184,30 @@ public class PositioningData implements Comparable<PositioningData>{
         return bdt;
     }
 
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public float getSog() {
+        return sog;
+    }
+
+    public float getCog() {
+        return cog;
+    }
+
+    public float getHeading() {
+        return heading;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public String getTransceiverClass() {
+        return transceiverClass;
+    }
+
     @Override
     public int compareTo(PositioningData otherData) {
         return this.bdt.compareTo(otherData.bdt);

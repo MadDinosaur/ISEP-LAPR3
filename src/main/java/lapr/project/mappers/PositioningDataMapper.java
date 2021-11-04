@@ -5,7 +5,10 @@ import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.store.list.PositioningDataList;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PositioningDataMapper {
@@ -41,5 +44,24 @@ public class PositioningDataMapper {
         PositioningDataList positioningDataList1 = new PositioningDataList();
         positioningDataList1.addPositioningDataList(positioningDataList);
         return positioningDataList1;
+    }
+
+    public static PositioningDataDTO toDTO(PositioningData positionData){
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        Date bdt = positionData.getBdt();
+        String bdtString = df.format(bdt);
+        return new PositioningDataDTO(bdtString,Float.toString(positionData.getCoordinate().getLatitude()), Float.toString(positionData.getCoordinate().getLongitude()),
+                Float.toString(positionData.getSog()), Float.toString(positionData.getCog()), Float.toString(positionData.getHeading()), positionData.getPosition(), positionData.getTransceiverClass());
+    }
+
+    public static List<PositioningDataDTO> toDTO(List<PositioningData> positioningDataList){
+
+        List<PositioningDataDTO> tListDTO = new ArrayList<>();
+
+        for (PositioningData positioningData : positioningDataList) {
+            tListDTO.add(toDTO(positioningData));
+        }
+
+        return tListDTO;
     }
 }

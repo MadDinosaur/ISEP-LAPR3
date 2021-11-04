@@ -65,4 +65,12 @@ public class Coordinate {
         else
             throw new IllegalCoordinateException("The longitude value \"" + longitude  + "\" is not within the expected boundaries");
     }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
 }
