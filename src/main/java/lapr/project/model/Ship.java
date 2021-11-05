@@ -2,6 +2,7 @@ package lapr.project.model;
 
 import lapr.project.exception.IllegalShipException;
 import lapr.project.store.list.PositioningDataList;
+import sun.jvm.hotspot.runtime.ppc64.PPC64CurrentFrameGuess;
 
 import java.util.Comparator;
 
@@ -316,6 +317,12 @@ public class Ship implements Comparable<Ship> {
         return positioningDataList;
     }
 
+
+    /**
+     * default comparable to the ship class
+     * @param o the other ship to compare to
+     * @return returns 1 if the other ship is smaller, -1 if it is bigger and 0 if it is equal
+     */
     @Override
     public int compareTo(Ship o) {
         return mmsi.compareTo(o.getMmsi());

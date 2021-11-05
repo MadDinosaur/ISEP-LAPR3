@@ -1,5 +1,6 @@
 package lapr.project.store.list;
 
+import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.model.PositioningData;
 
 import java.util.ArrayList;
@@ -128,5 +129,21 @@ public class PositioningDataList {
 
     private float toRadious(float deg) {
         return (float) (deg * Math.PI / 180.0);
+    }
+
+    /**
+     * returns a list of all position data that takes place in the specified time slot
+     * @param date1 the initial date
+     * @param date2 the final date
+     * @return returns a list of all position data that takes place in the specified time slot
+     */
+    public List<PositioningData> getPositionsByDate(Date date1, Date date2) {
+        List<PositioningData> datePositionList = new ArrayList<>();
+        for (PositioningData positioningData : this.positioningDataList){
+            if (positioningData.getBdt().compareTo(date1) > 0 && positioningData.getBdt().compareTo(date2) < 0){
+                datePositionList.add(positioningData);
+            }
+        }
+        return datePositionList;
     }
 }

@@ -1,7 +1,15 @@
 package lapr.project.model;
 
+import lapr.project.controller.GetPositionByDateController;
 import lapr.project.controller.ReadShipFileController;
+import lapr.project.controller.SearchForShipController;
+import lapr.project.mappers.dto.PositioningDataDTO;
+import lapr.project.mappers.dto.ShipDTO;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ForkJoinPool;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,11 +31,4 @@ public class CalculatorExampleTest {
         int result = calculator.sum(firstOperand, secondOperand);
         assertEquals(expected, result);
     }
-
-    @Test
-    public void test(){
-        ReadShipFileController a = new ReadShipFileController();
-        a.readFileAndSaveData("bships.csv");
-    }
-
 }
