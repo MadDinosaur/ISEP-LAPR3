@@ -2,7 +2,6 @@ package lapr.project.model;
 
 import lapr.project.exception.IllegalShipException;
 import lapr.project.store.list.PositioningDataList;
-import sun.jvm.hotspot.runtime.ppc64.PPC64CurrentFrameGuess;
 
 import java.util.Comparator;
 
