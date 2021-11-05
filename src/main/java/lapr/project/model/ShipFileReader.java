@@ -64,6 +64,14 @@ public class ShipFileReader {
      * @return true if the ship was already registered
      */
     private static boolean checkIfAlreadyRegistered(Map<ShipDTO, List<PositioningDataDTO>> shipDTOListMap, String[] line){
+        try{
+            float temp = Float.parseFloat(line[13]);
+            if (temp < 0){
+                return true;
+            }
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
         for (ShipDTO dto : shipDTOListMap.keySet()){
             if (dto.getMmsi().equals(line[0]) && dto.getCallSign().equals(line[9]) && dto.getImo().equals(line[8].substring(3))) {
                 shipDTOListMap.get(dto).add(new PositioningDataDTO(line[1],line[2],line[3],line[4],line[5],line[6],line[14],line[15]));

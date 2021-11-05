@@ -57,7 +57,7 @@ public class PositioningData implements Comparable<PositioningData>{
         setBdt(bdt);
         setCoordinate(coordinate);
         setSog(sog);
-        setCog(Math.abs(cog));
+        setCog(cog);
         setHeading(heading);
         setPosition(position);
         setTransceiverClass(transceiverClass);
@@ -90,7 +90,10 @@ public class PositioningData implements Comparable<PositioningData>{
      */
     public void setCog(float cog) {
         if (checkCogRules(cog))
-            this.cog = cog;
+            if (cog < 0)
+                this.cog = 359 + cog;
+            else
+                this.cog = cog;
     }
 
     /**
@@ -99,7 +102,7 @@ public class PositioningData implements Comparable<PositioningData>{
      * @return true if the value is within expected boundaries
      */
     private boolean checkCogRules(float cog) {
-        if (cog >= 0 && cog <= 359)
+        if (cog >= -359 && cog <= 359)
             return true;
         else
             throw new IllegalPositioningDataException("COG value\"" + cog + "\"  is not withing boundaries");
@@ -110,20 +113,8 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param sog The ship's speed over ground when the data was sent
      */
     public void setSog(float sog) {
-        if (checkSogRules(sog))
-            this.sog = sog;
-    }
-
-    /**
-     * checks if the speed over ground value is allowed
-     * @param sog The ship's speed over ground when the data was sent
-     * @return true if the value is within expected boundaries
-     */
-    private boolean checkSogRules(float sog) {
         if (sog >= 0)
-            return true;
-        else
-            throw new IllegalPositioningDataException("SOG value\"" + sog + "\"  is not withing boundaries");
+            this.sog = sog;
     }
 
     /**
