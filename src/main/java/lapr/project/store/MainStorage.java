@@ -1,6 +1,6 @@
 package lapr.project.store;
 
-public class Storage {
+public class MainStorage {
 
     /**
      * The apps Ship information store
@@ -10,7 +10,7 @@ public class Storage {
     /**
      * initiates the Storage
      */
-    private Storage(){
+    private MainStorage(){
         shipStore = new ShipStore();
     }
 
@@ -25,14 +25,14 @@ public class Storage {
     /**
      * singleton used to maintain the same information trough all the app
      */
-    private static Storage singleton = null;
-    public static Storage getInstance()
+    private static MainStorage singleton = null;
+    public static MainStorage getInstance()
     {
         if(singleton == null)
         {
-            synchronized(Storage.class)
+            synchronized(MainStorage.class)
             {
-                singleton = new Storage();
+                singleton = new MainStorage();
             }
         }
         return singleton;

@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import lapr.project.controller.ReadShipFileController;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +22,12 @@ public class CalculatorExampleTest {
         CalculatorExample calculator = new CalculatorExample();
         int result = calculator.sum(firstOperand, secondOperand);
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void test(){
+        ReadShipFileController a = new ReadShipFileController();
+        a.readFileAndSaveData("bships.csv");
     }
 
 }

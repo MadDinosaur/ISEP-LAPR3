@@ -4,7 +4,7 @@ import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
-import lapr.project.store.Storage;
+import lapr.project.store.MainStorage;
 
 public class SearchForShipController {
 
@@ -17,16 +17,16 @@ public class SearchForShipController {
      * Calls the creator with a the current storage instance
      */
     public SearchForShipController() {
-        this(Storage.getInstance());
+        this(MainStorage.getInstance());
     }
 
     /**
      * Creates a instance of the controller with the current storage instance
      *
-     * @param storage the storage instance used to store all information
+     * @param mainStorage the storage instance used to store all information
      */
-    public SearchForShipController(Storage storage) {
-        this.shipStore = storage.getShipStore();
+    public SearchForShipController(MainStorage mainStorage) {
+        this.shipStore = mainStorage.getShipStore();
     }
 
     public ShipDTO getShipByMMSI(String mmsi){

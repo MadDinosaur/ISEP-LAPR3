@@ -5,9 +5,8 @@ import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
 import lapr.project.model.ShipFileReader;
 import lapr.project.store.ShipStore;
-import lapr.project.store.Storage;
+import lapr.project.store.MainStorage;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +21,16 @@ public class ReadShipFileController {
      * Calls the creator with a the current storage instance
      */
     public ReadShipFileController() {
-        this(Storage.getInstance());
+        this(MainStorage.getInstance());
     }
 
     /**
      * Creates a instance of the controller with the current storage instance
      *
-     * @param storage the storage instance used to store all information
+     * @param mainStorage the storage instance used to store all information
      */
-    public ReadShipFileController(Storage storage) {
-        this.shipStore = storage.getShipStore();
+    public ReadShipFileController(MainStorage mainStorage) {
+        this.shipStore = mainStorage.getShipStore();
     }
 
     /**

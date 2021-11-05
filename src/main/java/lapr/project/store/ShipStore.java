@@ -3,7 +3,6 @@ package lapr.project.store;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
-import lapr.project.model.BST;
 import lapr.project.model.Ship;
 
 import java.util.*;
@@ -13,17 +12,17 @@ public class ShipStore {
     /**
      * A tree sorted by the ship's mssi values
      */
-    private Tree_Ship mmsiTree = new Tree_Ship();
+    private ShipTree mmsiTree = new ShipTree();
 
     /**
      * A tree sorted by the ship's imo value
      */
-    private Tree_Ship imoTree = new Tree_Ship();
+    private ShipTree imoTree = new ShipTree();
 
     /**
      * A tree sorted by the ship's Call Sign value
      */
-    private Tree_Ship callSignTree = new Tree_Ship();
+    private ShipTree callSignTree = new ShipTree();
 
     /**
      * transforms a list of dtos into a list of Ships

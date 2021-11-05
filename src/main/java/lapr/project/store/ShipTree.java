@@ -3,7 +3,7 @@ package lapr.project.store;
 import lapr.project.model.BST;
 import lapr.project.model.Ship;
 
-public class Tree_Ship extends BST<Ship> {
+public class ShipTree extends BST<Ship> {
 
     /**
      * Inserts the elements on the binary tree according to their mmsi values
