@@ -21,7 +21,7 @@ public class ShipFileReader {
      * @throws FileNotFoundException return a null map if the file reading goes wrong
      */
     public static Map<ShipDTO, List<PositioningDataDTO>> readShipFile(String path)  {
-        Map<ShipDTO, List<PositioningDataDTO>> shipMap = new HashMap<>();
+        Map<ShipDTO, List<PositioningDataDTO>> shipMap;
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             reader.readLine();
             String line;

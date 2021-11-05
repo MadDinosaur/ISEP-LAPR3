@@ -36,18 +36,14 @@ public class ReadShipFileController {
     /**
      * reads a file and saves the data in that file
      * @param path the path to the file
-     * @return true if the data is saved
      */
-    public boolean readFileAndSaveData(String path){
+    public void readFileAndSaveData(String path){
         Map<ShipDTO, List<PositioningDataDTO>> shipData = ShipFileReader.readShipFile(path);
         if (shipData != null) {
             List<Ship> shipList = shipStore.createShip(shipData);
             for (Ship ship : shipList) {
-                if (!shipStore.addShip(ship))
-                    return false;
+                shipStore.addShip(ship);
             }
-            return true;
         }
-        return false;
     }
 }
