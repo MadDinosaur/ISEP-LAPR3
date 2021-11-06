@@ -89,23 +89,20 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param cog The ship's course over ground when the data was sent
      */
     public void setCog(float cog) {
-        if (checkCogRules(cog))
-            if (cog < 0)
-                this.cog = 359 + cog;
-            else
-                this.cog = cog;
+        checkCogRules(cog);
+        if (cog < 0)
+            this.cog = 359 + cog;
+        else
+            this.cog = cog;
     }
 
     /**
      * checks if the course over ground value is allowed
      * @param cog The ship's course over ground when the data was sent
-     * @return true if the value is within expected boundaries
      */
-    private boolean checkCogRules(float cog) {
-        if (cog >= -359 && cog <= 359)
-            return true;
-        else
-            throw new IllegalPositioningDataException("COG value\"" + cog + "\"  is not withing boundaries");
+    private void checkCogRules(float cog) {
+        if (!(cog >= -359 && cog <= 359))
+            throw new IllegalPositioningDataException("COG value \"" + cog + "\"  is not withing boundaries");
     }
 
     /**
@@ -122,20 +119,17 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param heading The ship's heading when the data was sent
      */
     public void setHeading(float heading) {
-        if (checkHeadingRules(heading))
-            this.heading = heading;
+        checkHeadingRules(heading);
+        this.heading = heading;
     }
 
     /**
      * checks if the heading value is allowed
      * @param heading The ship's heading when the data was sent
-     * @return true if the value is within expected boundaries
      */
-    private boolean checkHeadingRules(float heading) {
-        if (heading >= 0 && heading <= 359 || heading == 511)
-            return true;
-        else
-            throw new IllegalPositioningDataException("Heading value\"" + heading + "\"  is not withing boundaries");
+    private void checkHeadingRules(float heading) {
+        if (!(heading >= 0 && heading <= 359 || heading == 511))
+            throw new IllegalPositioningDataException("Heading value \"" + heading + "\"  is not withing boundaries");
     }
 
     /**
@@ -151,19 +145,16 @@ public class PositioningData implements Comparable<PositioningData>{
      * @param transceiverClass The ship's transceiver class used to send the data
      */
     public void setTransceiverClass(String transceiverClass) {
-        if (checkTransceiversRules(transceiverClass))
-            this.transceiverClass = transceiverClass;
+        checkTransceiversRules(transceiverClass);
+        this.transceiverClass = transceiverClass;
     }
 
     /**
      * checks if the transceiver value is allowed
      * @param transceiverClass The ship's transceiver class used to send the data
-     * @return true if the value is within expected boundaries
      */
-    public boolean checkTransceiversRules(String transceiverClass){
-        if (transceiverClass != null)
-            return true;
-        else
+    public void checkTransceiversRules(String transceiverClass){
+        if (transceiverClass == null)
             throw new IllegalPositioningDataException("Transceiver class must not be null");
     }
 

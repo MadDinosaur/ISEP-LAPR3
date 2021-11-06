@@ -11,9 +11,9 @@ class CoordinateTest {
 
     @Test
     void CreateCoordinatesTest() {
-        Coordinate c1 = new Coordinate(180, 80);
+        Coordinate c1 = new Coordinate(180, 90);
         Coordinate c2 = new Coordinate(-180, 91);
-        Coordinate c3 = new Coordinate(181, -80);
+        Coordinate c3 = new Coordinate(181, -90);
         assertNotNull(c1);
         assertNotNull(c2);
         assertNotNull(c3);
@@ -36,7 +36,6 @@ class CoordinateTest {
         String expectedMessage2 = "The longitude value \"180.1\" is not within the expected boundaries";
         String actualMessage2 = exception2.getMessage();
 
-        System.out.println(actualMessage2);
         assertTrue(actualMessage2.contains(expectedMessage2));
     }
 

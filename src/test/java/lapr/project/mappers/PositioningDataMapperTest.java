@@ -23,6 +23,7 @@ class PositioningDataMapperTest {
 
     @Test
     public void toModelAndToDtoTest(){
+        PositioningDataMapper positioningDataMapper = new PositioningDataMapper();
         PositioningDataDTO dto = new PositioningDataDTO(bdt, latitude, longitude, sog, cog, heading, position, transceiverClass);
         PositioningData positioningData = PositioningDataMapper.toModel(dto);
         assertNotNull(positioningData);

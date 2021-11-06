@@ -23,8 +23,8 @@ class ShipTreeTest {
         List<Ship> shipList = new ArrayList<>();
         Ship ship1 = new Ship("111111111", shipName, 1111120, "CS111", vesselType, length, width, draft);
         ship1.setPositioningDataList(new PositioningDataList());
-        shipList.add(ship1);
         shipList.add(new Ship("111111112", shipName, 1111119, "CS116", vesselType, length, width, draft));
+        shipList.add(ship1);
         shipList.add(new Ship("111111113", shipName, 1111118, "CS119", vesselType, length, width, draft));
         shipList.add(new Ship("111111114", shipName, 1111117, "CS115", vesselType, length, width, draft));
         shipList.add(new Ship("111111115", shipName, 1111116, "CS113", vesselType, length, width, draft));
@@ -53,8 +53,11 @@ class ShipTreeTest {
             assertEquals(callSignList.get(i).getCallSign(), CSOrder[i]);
         }
 
+        assertEquals(mmsiSorted.findMMSI("111111118").getMmsi(), "111111118");
         assertEquals(mmsiSorted.findMMSI("111111111"), ship1);
+        assertEquals(imoSorted.findIMO(1111113).getImo(), 1111113);
         assertEquals(imoSorted.findIMO(1111120), ship1);
         assertEquals(CallSignSorted.findCallSign("CS111"), ship1);
+        assertEquals(CallSignSorted.findCallSign("CS119").getCallSign(), "CS119");
     }
 }

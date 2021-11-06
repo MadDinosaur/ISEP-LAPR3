@@ -25,6 +25,7 @@ class ShipMapperTest {
 
     @Test
     public void toDTOAndToModelTest(){
+        ShipMapper shipMapper = new ShipMapper();
         ShipDTO dto = new ShipDTO(mmsi, shipName, imo, callSign, vesselType, length, width, draft);
         Ship ship = ShipMapper.toModel(dto);
         assertNotNull(ship);
