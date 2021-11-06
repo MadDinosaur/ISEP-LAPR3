@@ -69,7 +69,7 @@ public class PositioningData implements Comparable<PositioningData>{
      */
     public void setBdt(String bdt) {
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             this.bdt = formatter.parse(bdt);
         } catch (ParseException e){
             throw new IllegalPositioningDataException("Base Date time value \"" + bdt + "\"  is not accepted");
