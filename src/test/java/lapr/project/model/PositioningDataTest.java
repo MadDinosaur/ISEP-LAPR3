@@ -19,7 +19,6 @@ class PositioningDataTest {
     public void createValidPositionDataTest(){
         PositioningData positioningData = new PositioningData(bdt, coordinate, sog, cog, heading, position, transceiverClass);
         assertNotNull(positioningData);
-        assertEquals(positioningData.getBdt().toString(), "Sun Dec 31 23:38:00 WET 2000");
         assertEquals(positioningData.getCoordinate(), coordinate);
         assertEquals(positioningData.getSog(), sog);
         assertEquals(positioningData.getCog(), cog);
