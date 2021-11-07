@@ -4,6 +4,7 @@ import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
+import lapr.project.utils.ShipSorter;
 
 import java.util.*;
 
@@ -88,5 +89,33 @@ public class ShipStore {
      */
     public Ship getShipByCallSign(String code){
         return callSignTree.findCallSign(code);
+    }
+
+
+    /**
+     * returns a list with all the ships ordered by TraveledDistance (ascending) and NumberOfMovements (descending)
+     * @return returns the sorted list
+     */
+    public ArrayList<Ship> sortShips(){
+
+        ArrayList<Ship> result = new ArrayList<>();
+        ShipSorter shipComparator = new ShipSorter();
+
+        mmsiTree.inOrder().forEach(result::add);
+
+        Collections.sort(result,shipComparator);
+        Collections.reverse(result);
+
+        return result;
+    }
+
+    /**
+     *
+     */
+    public ArrayList<String> shipsToString(){
+
+        ArrayList<String> result = new ArrayList<>();
+
+        return result;
     }
 }

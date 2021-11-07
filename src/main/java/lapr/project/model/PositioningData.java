@@ -166,26 +166,50 @@ public class PositioningData implements Comparable<PositioningData>{
         return bdt;
     }
 
+    /**
+     * returns the coordinate values
+     * @return returns the coordinate values
+     */
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
+    /**
+     * returns the sog values
+     * @return returns the sog values
+     */
     public float getSog() {
         return sog;
     }
 
+    /**
+     * returns the cog values
+     * @return returns the cog values
+     */
     public float getCog() {
         return cog;
     }
 
+    /**
+     * returns the heading values
+     * @return returns the heading values
+     */
     public float getHeading() {
         return heading;
     }
 
+    /**
+     * returns the position values
+     * @return returns the position values
+     */
     public String getPosition() {
         return position;
     }
 
+    /**
+     * returns the transceiver class values
+     * @return returns the transceiver class values
+     */
     public String getTransceiverClass() {
         return transceiverClass;
     }

@@ -60,10 +60,17 @@ public class Coordinate {
             throw new IllegalCoordinateException("The longitude value \"" + longitude  + "\" is not within the expected boundaries");
     }
 
+    /**
+     * returns the ship's longitude
+     * @return returns the ship's longitude
+     */
     public float getLongitude() {
         return longitude;
     }
-
+    /**
+     * returns the ship's latitude
+     * @return returns the ship's latitude
+     */
     public float getLatitude() {
         return latitude;
     }

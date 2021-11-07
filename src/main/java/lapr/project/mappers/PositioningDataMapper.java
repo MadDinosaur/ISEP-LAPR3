@@ -46,6 +46,11 @@ public class PositioningDataMapper {
         return positioningDataList1;
     }
 
+    /**
+     * transforms a PositioningData object into a DTO
+     * @param positionData object
+     * @return dto a package with all the Ship data
+     */
     public static PositioningDataDTO toDTO(PositioningData positionData){
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date bdt = positionData.getBdt();
@@ -54,6 +59,11 @@ public class PositioningDataMapper {
                 Float.toString(positionData.getSog()), Float.toString(positionData.getCog()), Float.toString(positionData.getHeading()), positionData.getPosition(), positionData.getTransceiverClass());
     }
 
+    /**
+     * tranforms a list of PositioningData DTO's to a list of PositioningData objects
+     * @param positioningDataList a list with all the DTO information
+     * @return list of PositionData objects
+     */
     public static List<PositioningDataDTO> toDTO(List<PositioningData> positioningDataList){
 
         List<PositioningDataDTO> tListDTO = new ArrayList<>();
