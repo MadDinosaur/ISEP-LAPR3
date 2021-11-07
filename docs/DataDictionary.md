@@ -10,7 +10,7 @@
 ### Table and attribute naming
 **Tables** - entity is defined as a **singular** noun *e.g. Ship* <br>
 **Many-to-many relationships** - tables derived from many-to-many relationships are named as **Table1_Table2** e.g. Container_CargoManifest <br>
-**Foreign keys** - foreign keys are named as **table1_attribute1** *e.g. ship_mmsi*
+**Foreign keys** - foreign keys are named as **table1_attribute1** *e.g. ship_mmsi* (a comment/description may be appended at the end of the name, such as *user_id_captain*)
 
 ### Glossary
 **Terms, Expressions and Acronyms (TEA)**
@@ -19,5 +19,6 @@
 |:-----|:------|
 |**FK**| Foreign Key|
 |**PK**| Primary Key|
-|**NN**| Not Null|
+|**N**| Not Null|
+|**U**| Unique|
 
