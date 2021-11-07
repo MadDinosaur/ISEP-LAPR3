@@ -30,19 +30,16 @@ public class Generator {
      * @param generatorOutput The output of the generators
      */
     public void setGeneratorOutput(float generatorOutput) {
-        if (checkGeneratorOutputRules(generatorOutput))
-            this.generatorOutput = generatorOutput;
+        checkGeneratorOutputRules(generatorOutput);
+        this.generatorOutput = generatorOutput;
     }
 
     /**
      * checks if the output values are within boundaries
      * @param generatorOutput The output of the generators
-     * @return true if the output is within boundaries
      */
-    private boolean checkGeneratorOutputRules(float generatorOutput) {
-        if (generatorOutput >= 0)
-            return true;
-        else
+    private void checkGeneratorOutputRules(float generatorOutput) {
+        if (!(generatorOutput > 0))
             throw new IllegalGeneratorException("Generator output cannot be negative");
     }
 
@@ -51,19 +48,16 @@ public class Generator {
      * @param numberOfGenerators The Number of generators
      */
     public void setNumberOfGenerators(int numberOfGenerators) {
-        if (checkNumberOfGeneratorsRules(numberOfGenerators))
-            this.numberOfGenerators = numberOfGenerators;
+        checkNumberOfGeneratorsRules(numberOfGenerators);
+        this.numberOfGenerators = numberOfGenerators;
     }
 
     /**
      * checks if the numbers are within boundaries
      * @param numberOfGenerators The Number of generators
-     * @return true if the Generator number is withing expected boundaries
      */
-    private boolean checkNumberOfGeneratorsRules(int numberOfGenerators) {
-        if (numberOfGenerators > 0)
-            return true;
-        else
+    private void checkNumberOfGeneratorsRules(int numberOfGenerators) {
+        if (!(numberOfGenerators > 0))
             throw new IllegalGeneratorException("Generator Number cannot be lower than 1");
     }
 }

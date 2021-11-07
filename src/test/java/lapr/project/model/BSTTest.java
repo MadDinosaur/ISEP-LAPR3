@@ -29,6 +29,14 @@ class BSTTest {
         for(int i :arr)
             instance.insert(i);
     }
+
+    @Test
+    public void testFind() {
+        System.out.println("find");
+        assertEquals(instance.find(instance.root(), 7).getElement(), 7);
+        assertEquals(instance.find(instance.root(), 50).getElement(), 50);
+    }
+
     /**
      * Test of size method, of class BST.
      */
@@ -70,6 +78,9 @@ class BSTTest {
     @Test
     public void testRemove() {
         System.out.println("remove");
+
+        BST<String> sInstance = new BST();
+        sInstance.remove("1");
 
         int qtd=arr.length;
         instance.remove(999);
@@ -154,6 +165,9 @@ class BSTTest {
      */
     @Test
     public void testInOrder() {
+        BST<String> sInstance = new BST();
+        instance.inOrder();
+
         System.out.println("inOrder");
         List<Integer> lExpected = Arrays.asList(inorderT);
         assertEquals(lExpected, instance.inOrder());
@@ -163,6 +177,9 @@ class BSTTest {
      */
     @Test
     public void testpreOrder() {
+        BST<String> sInstance = new BST();
+        instance.preOrder();
+
         System.out.println("preOrder");
         List<Integer> lExpected = Arrays.asList(preorderT);
         assertEquals(lExpected, instance.preOrder());
@@ -172,8 +189,20 @@ class BSTTest {
      */
     @Test
     public void testposOrder() {
+        BST<String> sInstance = new BST();
+        instance.posOrder();
+
         System.out.println("posOrder");
         List<Integer> lExpected = Arrays.asList(posorderT);
         assertEquals(lExpected, instance.posOrder());
+    }
+
+    @Test
+    public void nullValuesTest(){
+        BST<String> sInstance = new BST();
+        sInstance.nodesByLevel();
+
+        assertEquals(instance.toString(), instance.toString());
+        assertEquals(sInstance.toString(), "");
     }
 }

@@ -3,8 +3,6 @@ package lapr.project.model;
 import lapr.project.exception.IllegalShipException;
 import lapr.project.store.list.PositioningDataList;
 
-import java.util.Comparator;
-
 public class Ship implements Comparable<Ship> {
 
     /**
@@ -92,19 +90,16 @@ public class Ship implements Comparable<Ship> {
      * @param mmsi The ship's MMSI identification code
      */
     public void setMmsi(String mmsi) {
-        if (checkMmsiRules(mmsi))
-            this.mmsi = mmsi;
+        checkMmsiRules(mmsi);
+        this.mmsi = mmsi;
     }
 
     /**
      * Checks the MMSI value to see if it is within the allowed boundaries
      * @param mmsi The ship's MMSI identification code
-     * @return true if the value is within allowed boundaries
      */
-    private boolean checkMmsiRules(String mmsi) {
-        if (mmsi.length() == 9)
-            return true;
-        else
+    private void checkMmsiRules(String mmsi) {
+        if (!(mmsi.length() == 9))
             throw new IllegalShipException("MMSI code \"" + mmsi + "\" is not supported.");
     }
 
@@ -116,7 +111,7 @@ public class Ship implements Comparable<Ship> {
         if (shipName != null)
             this.shipName = shipName;
         else
-            throw new IllegalShipException("Call Name Must not me null.");
+            throw new IllegalShipException("Ship Name Must not me null.");
     }
 
     /**
@@ -144,19 +139,16 @@ public class Ship implements Comparable<Ship> {
      * @param draft The ships Draft
      */
     public void setDraft(float draft) {
-        if (checkDraftRules(draft))
-            this.draft = draft;
+        checkDraftRules(draft);
+        this.draft = draft;
     }
 
     /**
      * Check the ship's draft rules
      * @param draft The ships Draft
-     * @return true if the value is within allowed boundaries
      */
-    private boolean checkDraftRules(float draft) {
-        if (draft >= 0)
-            return true;
-        else
+    private void checkDraftRules(float draft) {
+        if (!(draft >= 0))
             throw new IllegalShipException("Draft  \"" + draft + "\" is not supported.");
     }
 
@@ -165,19 +157,16 @@ public class Ship implements Comparable<Ship> {
      * @param imo The ships IMO code
      */
     public void setImo(int imo) {
-        if (checkIMORules(imo))
-            this.imo = imo;
+        checkIMORules(imo);
+        this.imo = imo;
     }
 
     /**
      * Checks the IMO value to see if it is within the allowed boundaries
      * @param imo The ships IMO code
-     * @return true if the value is within allowed boundaries
      */
-    private boolean checkIMORules(int imo) {
-        if (imo >= 1000000 && imo <= 99999999)
-            return true;
-        else
+    private void checkIMORules(int imo) {
+        if (!(imo >= 1000000 && imo <= 9999999))
             throw new IllegalShipException("IMO code \"" + imo + "\" is not supported.");
     }
 
@@ -186,19 +175,16 @@ public class Ship implements Comparable<Ship> {
      * @param length The ship's length value
      */
     public void setLength(float length) {
-        if (checkLengthRules(length))
-            this.length = length;
+        checkLengthRules(length);
+        this.length = length;
     }
 
     /**
      * Checks the length value to see if it is within the allowed boundaries
      * @param length The ship's length value
-     * @return true if the value is within allowed boundaries
      */
-    private boolean checkLengthRules(float length) {
-        if (length >= 0)
-            return true;
-        else
+    private void checkLengthRules(float length) {
+        if (!(length >= 0))
             throw new IllegalShipException("Length  \"" + length + "\" is not supported.");
     }
 
@@ -207,19 +193,16 @@ public class Ship implements Comparable<Ship> {
      * @param vesselType The ship's vessel type
      */
     public void setVesselType(int vesselType) {
-        if (checkVesselTypeRules(vesselType))
-            this.vesselType = vesselType;
+        checkVesselTypeRules(vesselType);
+        this.vesselType = vesselType;
     }
 
     /**
      * Checks the vessel type value to see if it is within the allowed boundaries
      * @param vesselType The ship's vessel type
-     * @return true if the value is within allowed boundaries
      */
-    private boolean checkVesselTypeRules(int vesselType) {
-        if (vesselType >= 0)
-            return true;
-        else
+    private void checkVesselTypeRules(int vesselType) {
+        if (!(vesselType >= 0))
             throw new IllegalShipException("The vessel type code \"" + vesselType + "\" is not supported.");
     }
 

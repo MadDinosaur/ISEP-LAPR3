@@ -47,7 +47,7 @@ public class PositioningDataMapper {
     }
 
     public static PositioningDataDTO toDTO(PositioningData positionData){
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Date bdt = positionData.getBdt();
         String bdtString = df.format(bdt);
         return new PositioningDataDTO(bdtString,Float.toString(positionData.getCoordinate().getLatitude()), Float.toString(positionData.getCoordinate().getLongitude()),

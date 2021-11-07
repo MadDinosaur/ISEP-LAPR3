@@ -77,14 +77,12 @@ public class BST<E extends Comparable<E>>  {
      * So its access level is protected
      */
     protected Node<E> find(Node<E> node, E element){
-        if (node == null)
-            return null;
-
+        if (node.getElement().compareTo(element) == 0)
+            return node;
         if (node.getElement().compareTo(element) > 0) {
-            node.setLeft(find(node.getLeft(), element ));
+            return find(node.getLeft(), element );
         } else if (node.getElement().compareTo(element) < 0)
-            node.setRight(find(node.getRight(), element ));
-
+            return find(node.getRight(), element );
         return node;
     }
     
