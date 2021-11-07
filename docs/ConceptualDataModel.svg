@@ -1175,9 +1175,8 @@ IqoZhA/gNUjCKeeXtGveX2IwSC26fqoAAJ39TRmoGdqcAAAAAElFTkSuQmCC" height="18" preser
     /></g
     ><g font-size="11px" transform="translate(680,165) rotate(90) translate(-451,-45)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><line y2="53.25" fill="none" x1="446.875" clip-path="url(#clipPath108)" x2="455.125" y1="53.25"
-      /><path fill="none" d="M45 52.1429 L40.875 45 L45 52.1429 L45 45 L45 52.1429 L49.125 45 Z" clip-path="url(#clipPath109)" transform="translate(451,45) rotate(-90) translate(-406,0) rotate(-90) translate(-45,-45)" stroke-linecap="butt" stroke-linejoin="bevel"
-      /><circle transform="translate(451,45) rotate(-90) translate(-406,0) rotate(-90) translate(-45,-45)" clip-path="url(#clipPath109)" fill="white" r="4.125" cx="45" cy="56.2679" stroke="none"
-      /><circle fill="none" r="4.125" clip-path="url(#clipPath109)" cx="45" transform="translate(451,45) rotate(-90) translate(-406,0) rotate(-90) translate(-45,-45)" cy="56.2679"
+      /><line transform="translate(451,45) rotate(-90) translate(-406,0) rotate(-90) translate(-45,-45)" clip-path="url(#clipPath109)" fill="none" x1="40.875" x2="49.125" y1="58.0909" y2="58.0909"
+      /><path fill="none" d="M45 53.7273 L40.875 45 L45 53.7273 L45 45 L45 53.7273 L49.125 45 Z" clip-path="url(#clipPath109)" transform="translate(451,45) rotate(-90) translate(-406,0) rotate(-90) translate(-45,-45)" stroke-linecap="butt" stroke-linejoin="bevel"
     /></g
     ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(682,187)" stroke-miterlimit="0" stroke-opacity="1" fill="black" stroke-dasharray="5,5" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
     ><line y2="289" fill="none" x1="45" clip-path="url(#clipPath111)" x2="45" y1="46"
