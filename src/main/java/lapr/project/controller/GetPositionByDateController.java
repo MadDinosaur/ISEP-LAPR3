@@ -2,7 +2,9 @@ package lapr.project.controller;
 
 import lapr.project.exception.IllegalPositioningDataException;
 import lapr.project.mappers.PositioningDataMapper;
+import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
+import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.MainStorage;
@@ -89,6 +91,16 @@ public class GetPositionByDateController {
             e.printStackTrace();
             return null;
         }
+        return null;
+    }
+
+    /**
+     * returns the information of the ship
+     * @return returns the information of the ship
+     */
+    public ShipDTO getShip() {
+        if (ship != null)
+            return ShipMapper.toDTO(ship);
         return null;
     }
 }
