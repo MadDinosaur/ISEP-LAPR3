@@ -19,6 +19,6 @@
 |:-----|:------|
 |**FK**| Foreign Key|
 |**PK**| Primary Key|
-|**N**| Not Null|
-|**U**| Unique|
+|**NN**| Not Null|
+|**UN**| Unique|
 
