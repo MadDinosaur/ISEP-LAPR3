@@ -153,7 +153,7 @@ public class PositioningDataList {
      * @return returns the total traveled distance value
      */
     public double traveledDistance(){
-        final long radius = 6371000; //radius of earth in m
+        final long radius = 6371; //radius of earth in km
         long totalTraveledDistance = 0;
         for(int i=0; i<positioningDataList.size()-1; i++){
             double latDistance = toRadious(positioningDataList.get(i+1).getCoordinate().getLatitude() - positioningDataList.get(i).getCoordinate().getLatitude());
@@ -169,11 +169,11 @@ public class PositioningDataList {
     }
 
     /**
-     * returns the delta disantce value
+     * returns the delta distance value
      * @return returns the delta distance value
      */
     public double deltaDistance(){
-        final float radius = 6371000;
+        final float radius = 6371;
         float latDistance = toRadious(arrivalLatitude() - departureLatitude());
         float lonDistance = toRadious(arrivalLongitude() - departureLongitude());
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
@@ -183,6 +183,11 @@ public class PositioningDataList {
         return radius * c;
     }
 
+    /**
+     * tranforms degrees into radians
+     * @param deg degrees of an angle
+     * @return value of degrees to radious
+     */
     private float toRadious(float deg) {
         return (float) (deg * Math.PI / 180.0);
     }
