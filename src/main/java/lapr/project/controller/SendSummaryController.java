@@ -41,20 +41,16 @@ public class SendSummaryController {
      * @param code code for the ship
      * @return map with all the selected ship information
      */
-    public Map<ShipDTO, List<PositioningDataDTO>> getShipByCodeType(String code){
+    public Ship getShipByCodeType(String code){
         Ship shipMMSI = shipStore.getShipByMMSI(code);
         Ship shipIMO = shipStore.getShipByIMO(code);
         Ship shipCallSign = shipStore.getShipByCallSign(code);
-        Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
         if(shipMMSI != null ){
-            map.put(ShipMapper.toDTO(shipMMSI), PositioningDataMapper.toDTO(shipMMSI.getPositioningDataList().getPositioningDataList()));
-            return map;
+            return shipMMSI;
         }else if(shipIMO != null){
-            map.put(ShipMapper.toDTO(shipIMO), PositioningDataMapper.toDTO(shipIMO.getPositioningDataList().getPositioningDataList()));
-            return map;
+            return shipIMO;
         }else if(shipCallSign != null){
-            map.put(ShipMapper.toDTO(shipCallSign), PositioningDataMapper.toDTO(shipCallSign.getPositioningDataList().getPositioningDataList()));
-            return map;
+            return shipCallSign;
         }
         return null;
     }
@@ -65,16 +61,16 @@ public class SendSummaryController {
      * @return summary for the selected ship
      */
     public String toSummary(String code){
-        Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
-        map = getShipByCodeType(code);
+        Ship ship = getShipByCodeType(code); // fazer check se null
+        if(ship == null){
+            return null;
+        }
         StringBuilder s = new StringBuilder();
-        List<ShipDTO> ship = new ArrayList<>(map.keySet());
-        List<PositioningDataDTO> dtoList = new ArrayList<>(map.get(0));
-        PositioningDataList positioningData = PositioningDataMapper.toModel(dtoList);
+        PositioningDataList positioningData = ship.getPositioningDataList();
         DateFormat dateFormat = new SimpleDateFormat("MM.dd.yy.HH.mm");
         s.append(String.format("Ship's Summary:%n"));
         s.append(String.format("Chosen Identification: %s%n", code));
-        s.append(String.format("Vessel Name: %s%n", ship.get(0).getShipName()));
+        s.append(String.format("Vessel Name: %s%n", ship.getShipName()));
         s.append(String.format("Start Base Date Time: %s%n", dateFormat.format(positioningData.getFirstDate())));
         s.append(String.format("End Base Date Time: %s%n", dateFormat.format(positioningData.getLastDate())));
         s.append(String.format("Total Movement Time: %f%n", positioningData.totalMovementTime()));

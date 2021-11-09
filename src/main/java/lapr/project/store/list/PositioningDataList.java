@@ -1,6 +1,5 @@
 package lapr.project.store.list;
 
-import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.model.PositioningData;
 
 import java.util.ArrayList;
@@ -156,6 +155,12 @@ public class PositioningDataList {
         final long radius = 6371; //radius of earth in km
         long totalTraveledDistance = 0;
         for(int i=0; i<positioningDataList.size()-1; i++){
+            if(positioningDataList.get(i+1).getCoordinate().getLatitude() > 90 || positioningDataList.get(i).getCoordinate().getLatitude() > 90){
+                continue;
+            }
+            if(positioningDataList.get(i+1).getCoordinate().getLongitude() > 180 || positioningDataList.get(i).getCoordinate().getLongitude() > 90){
+                continue;
+            }
             double latDistance = toRadious(positioningDataList.get(i+1).getCoordinate().getLatitude() - positioningDataList.get(i).getCoordinate().getLatitude());
             double lonDistance = toRadious(positioningDataList.get(i+1).getCoordinate().getLongitude() - positioningDataList.get(i).getCoordinate().getLongitude());
             double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
