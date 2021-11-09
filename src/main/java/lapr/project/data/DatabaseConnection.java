@@ -52,7 +52,6 @@ public class DatabaseConnection {
 
     public SQLException getLastError() {
         SQLException lastError = this.error;
-        //Clear after reading.
         registerError(null);
         return lastError;
     }
