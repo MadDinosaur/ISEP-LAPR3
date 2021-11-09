@@ -110,11 +110,25 @@ public class ShipStore {
     }
 
     /**
-     *
+     * converts a string list with all the ships MMSI, Traveled Distance and Number of Movements
+     * @param list the list to be converted
+     * @return the string list
      */
-    public ArrayList<String> shipsToString(){
+    public ArrayList<String> shipsToString(ArrayList<Ship> list){
 
         ArrayList<String> result = new ArrayList<>();
+        String string;
+
+        for(Ship s : list){
+
+
+            String mmsi = s.getMmsi();
+            double traveledDistance = s.getPositioningDataList().traveledDistance();
+            double numberMovements = s.getPositioningDataList().getPositioningDataList().size();
+
+            string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %d");
+            result.add(string);
+        }
 
         return result;
     }
