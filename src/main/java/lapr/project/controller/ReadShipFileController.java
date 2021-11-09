@@ -5,7 +5,7 @@ import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
 import lapr.project.model.ShipFileReader;
 import lapr.project.store.ShipStore;
-import lapr.project.store.MainStorage;
+import lapr.project.data.MainStorage;
 
 import java.util.List;
 import java.util.Map;

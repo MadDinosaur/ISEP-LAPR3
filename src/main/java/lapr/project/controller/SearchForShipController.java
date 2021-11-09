@@ -6,7 +6,7 @@ import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
-import lapr.project.store.MainStorage;
+import lapr.project.data.MainStorage;
 
 import java.util.HashMap;
 import java.util.List;
