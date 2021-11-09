@@ -60,8 +60,10 @@ class ShipStoreTest {
         pDataList1.add(d1);
         pDataList2.add(d2);
 
-        pList1.addPositioningDataList(pDataList1);
-        pList2.addPositioningDataList(pDataList2);
+        for (PositioningData positioningData : pDataList1)
+            pList1.insert(positioningData);
+        for (PositioningData positioningData : pDataList2)
+            pList2.insert(positioningData);
 
         s1.setPositioningDataList(pList1);
         s2.setPositioningDataList(pList2);
@@ -82,10 +84,10 @@ class ShipStoreTest {
         assertNull(shipStore.getShipByCallSign("a"));
     }
 
-    @Test
-    public void sortShipsTestNotNull(){
-        ShipStore shipStore = new ShipStore();
-        assertNotNull(shipStore.sortShips());
-    }
-  
+//    @Test
+//    public void sortShipsTestNotNull(){
+//        ShipStore shipStore = new ShipStore();
+//        assertNotNull(shipStore.sortShips());
+//    }
+
 }

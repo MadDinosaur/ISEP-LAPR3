@@ -150,7 +150,7 @@ public class ShipStore extends BST<Ship>{
 //
 //            String mmsi = s.getMmsi();
 //            double traveledDistance = s.getPositioningDataList().traveledDistance();
-//            double numberMovements = s.getPositioningDataList().getPositioningDataList().size();
+//            double numberMovements = s.getPositioningDataList().size();
 //
 //            string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %d");
 //            result.add(string);
