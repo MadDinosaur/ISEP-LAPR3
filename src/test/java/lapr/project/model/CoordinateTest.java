@@ -58,4 +58,11 @@ class CoordinateTest {
 
         assertTrue(actualMessage2.contains(expectedMessage2));
     }
+
+    @Test
+    public void distanceTest(){
+        Coordinate coordinate1 = new Coordinate(90, 45 );
+        Coordinate coordinate2 = new Coordinate(89, 44 );
+        System.out.println(coordinate1.getDistanceBetweenCoordinates(coordinate2));
+    }
 }

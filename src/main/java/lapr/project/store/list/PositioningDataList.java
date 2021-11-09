@@ -1,6 +1,10 @@
 package lapr.project.store.list;
 
+import lapr.project.mappers.PositioningDataMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
+import lapr.project.model.AVL;
+import lapr.project.model.BST;
+import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 
 import java.util.ArrayList;
@@ -8,28 +12,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class PositioningDataList {
+public class PositioningDataList extends AVL<PositioningData> {
+
 
     /**
-     * list of a given ships positioning data
+     * populates and the avl tree
+     * @param positioningData a list of positioning data
      */
-    List<PositioningData> positioningDataList = new ArrayList<>();
-
-    /**
-     * populates and rearranges the list
-     * @param positioningDataList a list of positioning data
-     */
-    public void addPositioningDataList(List<PositioningData> positioningDataList) {
-        this.positioningDataList.addAll(positioningDataList);
-        Collections.sort(this.positioningDataList);
-    }
-
-    /**
-     * returns the list of position data
-     * @return returns the list of position data
-     */
-    public List<PositioningData> getPositioningDataList() {
-        return positioningDataList;
+    public void insertPositioningDataList(PositioningData positioningData) {
+        insert(positioningData);
     }
 
     /**
@@ -37,7 +28,7 @@ public class PositioningDataList {
      * @return returns the first date values
      */
     public Date getFirstDate(){
-        return positioningDataList.get(0).getBdt();
+        return smallestElement().getBdt();
     }
 
     /**
@@ -45,7 +36,7 @@ public class PositioningDataList {
      * @return returns the last date values
      */
     public Date getLastDate(){
-        return positioningDataList.get(positioningDataList.size()-1).getBdt();
+        return biggestElement().getBdt();
     }
 
     /**
@@ -57,43 +48,19 @@ public class PositioningDataList {
     }
 
     /**
-     * returns the total movement number values
-     * @return returns the total movement number values
-     */
-    public float totalMovementNumber(){
-        return positioningDataList.size();
-    }
-
-    /**
      * returns the departure latitude value
      * @return returns the departure latitude value
      */
-    public float departureLatitude(){
-        return positioningDataList.get(0).getCoordinate().getLatitude();
+    public Coordinate departureCoordinates(){
+        return smallestElement().getCoordinate();
     }
 
     /**
      * returns the arrival latitude value
      * @return returns the arrival latitude value
      */
-    public float arrivalLatitude(){
-        return positioningDataList.get(positioningDataList.size()-1).getCoordinate().getLatitude();
-    }
-
-    /**
-     * returns the departure longitude value
-     * @return returns the departure longitude value
-     */
-    public float departureLongitude(){
-        return positioningDataList.get(0).getCoordinate().getLongitude();
-    }
-
-    /**
-     * returns the arrival longitude value
-     * @return returns the arrival longitude value
-     */
-    public float arrivalLongitude(){
-        return positioningDataList.get(positioningDataList.size()-1).getCoordinate().getLongitude();
+    public Coordinate arrivalCoordinates(){
+        return biggestElement().getCoordinate();
     }
 
     /**
@@ -101,11 +68,20 @@ public class PositioningDataList {
      * @return returns the max sog value
      */
     public float maxSog(){
-        float max = positioningDataList.get(0).getSog();
-        for (PositioningData positioningData : positioningDataList) {
-            if (max < positioningData.getSog()) {
-                max = positioningData.getSog();
-            }
+        return maxSog(root());
+    }
+
+    private float maxSog(Node<PositioningData> node){
+        float max = node.getElement().getSog();
+        if (node.getRight() != null){
+            float tempMax = maxSog(node.getRight());
+            if (tempMax > max)
+                max = tempMax;
+        }
+        if (node.getLeft() != null){
+            float tempMax = maxSog(node.getLeft());
+            if (tempMax > max)
+                max = tempMax;
         }
         return max;
     }
@@ -115,11 +91,14 @@ public class PositioningDataList {
      * @return returns the mean sog value
      */
     public float meanSog(){
-        float sum = 0;
-        for (PositioningData positioningData : positioningDataList) {
-            sum += positioningData.getSog();
-        }
-        return sum/positioningDataList.size();
+        return meanSog(root) / size();
+    }
+
+    private float meanSog(Node<PositioningData> node) {
+        if (node == null)
+            return 0;
+
+        return meanSog(node.getLeft()) + meanSog(node.getRight()) + node.getElement().getSog();
     }
 
     /**
@@ -127,11 +106,20 @@ public class PositioningDataList {
      * @return returns the max cog value
      */
     public float maxCog(){
-        float max = positioningDataList.get(0).getCog();
-        for (PositioningData positioningData : positioningDataList) {
-            if (max < positioningData.getCog()) {
-                max = positioningData.getCog();
-            }
+        return maxCog(root());
+    }
+
+    private float maxCog(Node<PositioningData> node){
+        float max = node.getElement().getCog();
+        if (node.getRight() != null){
+            float tempMax = maxSog(node.getRight());
+            if (tempMax > max)
+                max = tempMax;
+        }
+        if (node.getLeft() != null){
+            float tempMax = maxSog(node.getLeft());
+            if (tempMax > max)
+                max = tempMax;
         }
         return max;
     }
@@ -141,11 +129,14 @@ public class PositioningDataList {
      * @return returns the mean cog value
      */
     public float meanCog(){
-        float sum = 0;
-        for (PositioningData positioningData : positioningDataList) {
-            sum += positioningData.getCog();
-        }
-        return sum/positioningDataList.size();
+        return meanCog(root) / size();
+    }
+
+    private float meanCog(Node<PositioningData> node) {
+        if (node == null)
+            return 0;
+
+        return meanSog(node.getLeft()) + meanSog(node.getRight()) + node.getElement().getCog();
     }
 
     /**
@@ -153,19 +144,18 @@ public class PositioningDataList {
      * @return returns the total traveled distance value
      */
     public double traveledDistance(){
-        final long radius = 6371; //radius of earth in km
-        long totalTraveledDistance = 0;
-        for(int i=0; i<positioningDataList.size()-1; i++){
-            double latDistance = toRadious(positioningDataList.get(i+1).getCoordinate().getLatitude() - positioningDataList.get(i).getCoordinate().getLatitude());
-            double lonDistance = toRadious(positioningDataList.get(i+1).getCoordinate().getLongitude() - positioningDataList.get(i).getCoordinate().getLongitude());
-            double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                    + Math.cos(toRadious(positioningDataList.get(i).getCoordinate().getLatitude())) * Math.cos(toRadious(positioningDataList.get(i+1).getCoordinate().getLatitude()))
-                    * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            double distance = radius * c;
-            totalTraveledDistance += distance;
+        return traveledDistance(root());
+    }
+
+    private double traveledDistance(Node<PositioningData> node){
+        float traveledDistance = 0;
+        if (node.getLeft() != null){
+            traveledDistance +=  node.getElement().getCoordinate().getDistanceBetweenCoordinates(biggestElement(node.getLeft()).getCoordinate());
         }
-        return totalTraveledDistance;
+        if (node.getRight() != null){
+            traveledDistance +=  node.getElement().getCoordinate().getDistanceBetweenCoordinates(biggestElement(node.getRight()).getCoordinate());
+        }
+        return traveledDistance;
     }
 
     /**
@@ -173,14 +163,7 @@ public class PositioningDataList {
      * @return returns the delta distance value
      */
     public double deltaDistance(){
-        final float radius = 6371;
-        float latDistance = toRadious(arrivalLatitude() - departureLatitude());
-        float lonDistance = toRadious(arrivalLongitude() - departureLongitude());
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(toRadious(departureLatitude())) * Math.cos(toRadious(arrivalLatitude()))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return radius * c;
+        return departureCoordinates().getDistanceBetweenCoordinates(arrivalCoordinates());
     }
 
     /**
@@ -198,13 +181,59 @@ public class PositioningDataList {
      * @param date2 the final date
      * @return returns a list of all position data that takes place in the specified time slot
      */
-    public List<PositioningData> getPositionsByDate(Date date1, Date date2) {
-        List<PositioningData> datePositionList = new ArrayList<>();
-        for (PositioningData positioningData : this.positioningDataList){
-            if (positioningData.getBdt().compareTo(date1) > 0 && positioningData.getBdt().compareTo(date2) < 0){
-                datePositionList.add(positioningData);
-            }
-        }
-        return datePositionList;
+    public PositioningDataList getPositionsByDate(Date date1, Date date2){
+
+        PositioningDataList  tree = new PositioningDataList();
+
+        getPositionsByDate(date1,date2,root,tree);
+
+        return tree ;
     }
+
+
+
+    private void getPositionsByDate(Date date1, Date date2, Node<PositioningData> node, PositioningDataList result){
+
+        if ( node == null)
+            return;
+
+        if(node.getElement().getBdt().compareTo(date1) > 0 && node.getElement().getBdt().compareTo(date2) < 0){
+
+            result.insert(node.getElement());
+            getPositionsByDate(date1,date2,node.getLeft(),result);
+            getPositionsByDate(date1,date2,node.getRight(),result);
+        }
+        else if (node.getElement().getBdt().compareTo(date1) < 0){
+
+            getPositionsByDate(date1,date2,node.getRight(),result);
+        }
+        else
+            getPositionsByDate(date1,date2, node.getLeft(),result);
+
+    }
+
+    private PositioningData biggestElement(){
+        return  biggestElement(root);
+    }
+
+    private PositioningData biggestElement(Node<PositioningData> node){
+        if (node.getRight() == null)
+            return node.getElement();
+        return smallestElement(node.getLeft());
+    }
+
+//    public BST<PositioningDataDTO> treeToDTO (){
+//        BST<PositioningDataDTO> snapshot = new BST<>();
+//        if (root!=null)
+//            treeToDTO(root(), snapshot);   // fill the snapshot recursively
+//        return snapshot;
+//    }
+//
+//    private void treeToDTO(Node<PositioningData> node, BST<PositioningDataDTO> snapshot) {
+//        if (node == null)
+//            return;
+//        treeToDTO(node.getLeft(), snapshot);
+//        snapshot.insert(PositioningDataMapper.toDTO(node.getElement()));
+//        treeToDTO(node.getRight(), snapshot);
+//    }
 }

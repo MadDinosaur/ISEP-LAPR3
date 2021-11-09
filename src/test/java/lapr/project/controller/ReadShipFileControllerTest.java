@@ -1,6 +1,7 @@
 package lapr.project.controller;
 
 import lapr.project.data.MainStorage;
+import lapr.project.model.Ship;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +13,9 @@ class ReadShipFileControllerTest {
         ReadShipFileController readShipFileController = new ReadShipFileController();
         readShipFileController.readFileAndSaveData("sships.csv");
         assertNotNull(MainStorage.getInstance().getShipStore().getShipByMMSI("210950000"));
+        Ship ship = MainStorage.getInstance().getShipStore().getShipByMMSI("210950000");
+        System.out.println(ship.getPositioningDataList().traveledDistance());
+        System.out.println(ship.getPositioningDataList().deltaDistance());
     }
 
     @Test

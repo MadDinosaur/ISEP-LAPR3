@@ -41,22 +41,15 @@ public class SendSummaryController {
      * @param code code for the ship
      * @return map with all the selected ship information
      */
-    public Map<ShipDTO, List<PositioningDataDTO>> getShipByCodeType(String code){
+    public Ship getShipByCodeType(String code){
         Ship shipMMSI = shipStore.getShipByMMSI(code);
+        if (shipMMSI != null )
+            return shipMMSI;
         Ship shipIMO = shipStore.getShipByIMO(code);
+        if (shipIMO != null )
+            return shipIMO;
         Ship shipCallSign = shipStore.getShipByCallSign(code);
-        Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
-        if(shipMMSI != null ){
-            map.put(ShipMapper.toDTO(shipMMSI), PositioningDataMapper.toDTO(shipMMSI.getPositioningDataList().getPositioningDataList()));
-            return map;
-        }else if(shipIMO != null){
-            map.put(ShipMapper.toDTO(shipIMO), PositioningDataMapper.toDTO(shipIMO.getPositioningDataList().getPositioningDataList()));
-            return map;
-        }else if(shipCallSign != null){
-            map.put(ShipMapper.toDTO(shipCallSign), PositioningDataMapper.toDTO(shipCallSign.getPositioningDataList().getPositioningDataList()));
-            return map;
-        }
-        return null;
+        return shipCallSign;
     }
 
     /**
@@ -65,28 +58,25 @@ public class SendSummaryController {
      * @return summary for the selected ship
      */
     public String toSummary(String code){
-        Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
-        map = getShipByCodeType(code);
+        Ship ship = getShipByCodeType(code);
         StringBuilder s = new StringBuilder();
-        List<ShipDTO> ship = new ArrayList<>(map.keySet());
-        List<PositioningDataDTO> dtoList = new ArrayList<>(map.get(0));
-        PositioningDataList positioningData = PositioningDataMapper.toModel(dtoList);
-        DateFormat dateFormat = new SimpleDateFormat("MM.dd.yy.HH.mm");
+        PositioningDataList positioningData = ship.getPositioningDataList();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH/mm");
         s.append(String.format("Ship's Summary:%n"));
         s.append(String.format("Chosen Identification: %s%n", code));
-        s.append(String.format("Vessel Name: %s%n", ship.get(0).getShipName()));
+        s.append(String.format("Vessel Name: %s%n", ship.getShipName()));
         s.append(String.format("Start Base Date Time: %s%n", dateFormat.format(positioningData.getFirstDate())));
         s.append(String.format("End Base Date Time: %s%n", dateFormat.format(positioningData.getLastDate())));
         s.append(String.format("Total Movement Time: %f%n", positioningData.totalMovementTime()));
-        s.append(String.format("Total Movement Number: %f%n", positioningData.totalMovementNumber()));
+        s.append(String.format("Total Movement Number: %d%n", positioningData.size()));
         s.append(String.format("Max SOG: %f%n", positioningData.maxSog()));
         s.append(String.format("Mean SOG: %f%n", positioningData.meanSog()));
         s.append(String.format("Max COG: %f%n", positioningData.maxCog()));
         s.append(String.format("Mean COG: %f%n", positioningData.meanCog()));
-        s.append(String.format("Departure Latitude: %f%n", positioningData.departureLatitude()));
-        s.append(String.format("Departure Longitude: %f%n", positioningData.departureLongitude()));
-        s.append(String.format("Arrival Latitude: %f%n", positioningData.arrivalLatitude()));
-        s.append(String.format("Arrival Longitude: %f%n", positioningData.arrivalLongitude()));
+        s.append(String.format("Departure Latitude: %f%n", positioningData.departureCoordinates().getLongitude()));
+        s.append(String.format("Departure Longitude: %f%n", positioningData.departureCoordinates().getLatitude()));
+        s.append(String.format("Arrival Latitude: %f%n", positioningData.arrivalCoordinates().getLongitude()));
+        s.append(String.format("Arrival Longitude: %f%n", positioningData.arrivalCoordinates().getLatitude()));
         s.append(String.format("Travelled Distance: %f%n", positioningData.traveledDistance()));
         s.append(String.format("Delta Distance: %f%n", positioningData.deltaDistance()));
         return s.toString();

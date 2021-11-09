@@ -1,6 +1,6 @@
 package lapr.project.mappers.dto;
 
-public class PositioningDataDTO {
+public class PositioningDataDTO{
 
     /**
      * The data's time of creation

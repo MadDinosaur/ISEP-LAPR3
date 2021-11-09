@@ -13,8 +13,8 @@ public class ShipSorter implements Comparator<Ship> {
         double o1TraveledDistance = o1.getPositioningDataList().traveledDistance();
         double o2TraveledDistance = o2.getPositioningDataList().traveledDistance();
 
-        double o1NumberMovements = o1.getPositioningDataList().getPositioningDataList().size();
-        double o2NumberMovements = o2.getPositioningDataList().getPositioningDataList().size();
+        double o1NumberMovements = o1.getPositioningDataList().size();
+        double o2NumberMovements = o2.getPositioningDataList().size();
 
 
 

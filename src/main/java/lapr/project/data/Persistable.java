@@ -12,18 +12,16 @@ public interface Persistable {
 
     /**
      * Save an objet to the database.
-     *
-     * @param databaseConnection
-     * @param object
+     * @param databaseConnection the database's conection
+     * @param object the object to be added
      * @return Operation success.
      */
     boolean save(DatabaseConnection databaseConnection, Object object);
 
     /**
      * Delete an object from the database.
-     *
-     * @param databaseConnection
-     * @param object
+     * @param databaseConnection the database's conection
+     * @param object the object to be deleted
      * @return Operation success.
      */
     boolean delete(DatabaseConnection databaseConnection, Object object);

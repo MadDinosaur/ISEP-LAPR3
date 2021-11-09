@@ -34,15 +34,13 @@ public class PositioningDataMapper {
      * @return positioningData List
      */
     public static PositioningDataList toModel(List<PositioningDataDTO> dtoList){
-        List<PositioningData> positioningDataList = new ArrayList<>();
+        PositioningDataList positioningDataList1 = new PositioningDataList();
         for (PositioningDataDTO positioningDataDTO : dtoList) {
             PositioningData positioningData = toModel(positioningDataDTO);
             if (positioningData != null){
-                positioningDataList.add(positioningData);
+                positioningDataList1.insert(positioningData);
             }
         }
-        PositioningDataList positioningDataList1 = new PositioningDataList();
-        positioningDataList1.addPositioningDataList(positioningDataList);
         return positioningDataList1;
     }
 

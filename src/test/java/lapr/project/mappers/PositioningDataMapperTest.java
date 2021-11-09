@@ -53,8 +53,8 @@ class PositioningDataMapperTest {
         dtoList.add(dto);
         dtoList.add(dto2);
         PositioningDataList positioningData = PositioningDataMapper.toModel(dtoList);
-        assertEquals(positioningData.getPositioningDataList().get(0).getTransceiverClass(), transceiverClass);
-        List<PositioningDataDTO> dto1 = PositioningDataMapper.toDTO(positioningData.getPositioningDataList());
+        assertEquals(positioningData.smallestElement().getTransceiverClass(), transceiverClass);
+        List<PositioningDataDTO> dto1 = PositioningDataMapper.toDTO((List<PositioningData>) positioningData.inOrder());
         assertEquals(dto.getBdt(), dto1.get(0).getBdt());
         assertEquals(dto.getLatitude(), dto1.get(0).getLatitude());
         assertEquals(dto.getLongitude(), dto1.get(0).getLongitude());

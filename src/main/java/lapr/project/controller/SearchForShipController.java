@@ -4,6 +4,7 @@ import lapr.project.mappers.PositioningDataMapper;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
+import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
 import lapr.project.data.MainStorage;
@@ -39,7 +40,7 @@ public class SearchForShipController {
         Ship ship = shipStore.getShipByMMSI(mmsi);
         Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
         if (ship != null) {
-            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO(ship.getPositioningDataList().getPositioningDataList()));
+            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
             return map;
         } else
             return null;
@@ -49,7 +50,7 @@ public class SearchForShipController {
         Ship ship = shipStore.getShipByIMO(imo);
         Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
         if (ship != null) {
-            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO(ship.getPositioningDataList().getPositioningDataList()));
+            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
             return map;
         } else
             return null;
@@ -59,7 +60,7 @@ public class SearchForShipController {
         Ship ship = shipStore.getShipByCallSign(callSign);
         Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
         if (ship != null) {
-            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO(ship.getPositioningDataList().getPositioningDataList()));
+            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
             return map;
         } else
             return null;

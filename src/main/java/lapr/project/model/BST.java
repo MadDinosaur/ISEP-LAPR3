@@ -200,7 +200,6 @@ public class BST<E extends Comparable<E>>  {
     protected E smallestElement(Node<E> node){
             if (node.getLeft() == null)
                 return node.getElement();
-
             return smallestElement(node.getLeft());
     } 
     
