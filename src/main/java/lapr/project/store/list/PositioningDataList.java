@@ -41,6 +41,10 @@ public class PositioningDataList extends AVL<PositioningData> {
         return getLastDate().getTime() - getFirstDate().getTime();
     }
 
+    public float totalMovementNumber(){
+        return size();
+    }
+
     /**
      * returns the departure latitude value
      * @return returns the departure latitude value
@@ -106,12 +110,12 @@ public class PositioningDataList extends AVL<PositioningData> {
     private float maxCog(Node<PositioningData> node){
         float max = node.getElement().getCog();
         if (node.getRight() != null){
-            float tempMax = maxSog(node.getRight());
+            float tempMax = maxCog(node.getRight());
             if (tempMax > max)
                 max = tempMax;
         }
         if (node.getLeft() != null){
-            float tempMax = maxSog(node.getLeft());
+            float tempMax = maxCog(node.getLeft());
             if (tempMax > max)
                 max = tempMax;
         }
@@ -130,7 +134,7 @@ public class PositioningDataList extends AVL<PositioningData> {
         if (node == null)
             return 0;
 
-        return meanSog(node.getLeft()) + meanSog(node.getRight()) + node.getElement().getCog();
+        return meanCog(node.getLeft()) + meanCog(node.getRight()) + node.getElement().getCog();
     }
 
     /**
@@ -212,7 +216,7 @@ public class PositioningDataList extends AVL<PositioningData> {
     private PositioningData biggestElement(Node<PositioningData> node){
         if (node.getRight() == null)
             return node.getElement();
-        return smallestElement(node.getLeft());
+        return smallestElement(node.getRight());
     }
 
 //    public BST<PositioningDataDTO> treeToDTO (){
