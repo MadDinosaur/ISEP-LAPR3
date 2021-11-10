@@ -1,16 +1,10 @@
 package lapr.project.store.list;
 
-import lapr.project.mappers.PositioningDataMapper;
-import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.model.AVL;
-import lapr.project.model.BST;
 import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 public class PositioningDataList extends AVL<PositioningData> {
 

@@ -1,11 +1,15 @@
 package lapr.project.data;
 
+import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
+import lapr.project.store.ShipStore;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,10 +30,10 @@ public class ShipSqlStore implements Persistable {
             saveShipToDatabase(databaseConnection, ship);
 
             //Delete addresses.
-            deleteShipAddresses(databaseConnection, ship);
+            deleteShipDynamicData(databaseConnection, ship);
 
             //Post new addresses.
-            addShipAddresses(databaseConnection, ship);
+            addShipDynamicData(databaseConnection, ship);
 
             //Save changes.
             returnValue = true;
@@ -43,10 +47,53 @@ public class ShipSqlStore implements Persistable {
         return returnValue;
     }
 
-    private void deleteShipAddresses(DatabaseConnection databaseConnection, Ship ship) {
+    private void deleteShipDynamicData(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand;
+
+        //Delete addresses.
+        sqlCommand = "select * from dynamicdata where ship_mmsi = ?";
+        try (PreparedStatement getShipAddressesPreparedStatement = connection.prepareStatement(sqlCommand)) {
+            getShipAddressesPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
+            try (ResultSet shipAddressesResultSet = getShipAddressesPreparedStatement.executeQuery()) {
+                while (shipAddressesResultSet.next()) {
+
+                    boolean found = false;
+                    List<PositioningData> positioningDataList = (List<PositioningData>) ship.getPositioningDataList().inOrder();
+                    for (int i = 0; i < positioningDataList.size() && !found; i++) {
+                        PositioningData positioningData = positioningDataList.get(i);
+
+                        Date bdt = shipAddressesResultSet.getDate("base_date_time");
+
+                        if (bdt.equals(positioningData.getBdt())) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+
+                        sqlCommand = "delete from dynamicdata where ship_mmsi = ? and base_date_time = ?";
+
+                        try (PreparedStatement shipDynamicDataDeletePreparedStatement = connection.prepareStatement(sqlCommand)) {
+                            shipDynamicDataDeletePreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
+                            shipDynamicDataDeletePreparedStatement.setDate(2, shipAddressesResultSet.getDate("base_date_time"));
+                            shipDynamicDataDeletePreparedStatement.executeUpdate();
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    private void addShipAddresses(DatabaseConnection databaseConnection, Ship ship) {
+    private void addShipDynamicData(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
+
+        DynamicDataSqlStore dynamicDataSqlStore = new DynamicDataSqlStore();
+
+        for (PositioningData positioningData : ship.getPositioningDataList().inOrder()) {
+            dynamicDataSqlStore.setShip(ship);
+            if (!dynamicDataSqlStore.save(databaseConnection, positioningData)) {
+                throw databaseConnection.getLastError();
+            }
+        }
     }
 
     private void saveShipToDatabase(DatabaseConnection databaseConnection, Ship ship)throws SQLException {
@@ -59,16 +106,34 @@ public class ShipSqlStore implements Persistable {
 
     private void insertShipOnDatabase(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
         Connection connection = databaseConnection.getConnection();
-        String sqlCommand =
-                "insert into ship(name, vatnr, id) values (?, ?, ?)";
 
+        //TODO change sql code
+        String sqlCommand = "insert into ship(mmsi, fleet_id, system_user_id_captain, system_user_id_chief_electrical_engineer" +
+                ", name, imo, num_generator, gen_power, callsign, vesseltype, ship_length, ship_width, capacity, draft) values (?, ?, ?)";
+
+
+        PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand);
+        saveShipPreparedStatement.executeUpdate();
+    }
+
+    private void executeShipStatementOnDatabase(DatabaseConnection databaseConnection, Ship ship, String sqlCommand) throws SQLException {
+        Connection connection = databaseConnection.getConnection();
+
+    }
+
+    private void updateShipOnDatabase(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand = "update client set name = ?, vesselType = ?, ship_length = ?, ship_width = ?, draft = ? where mmsi = ?";
+
+        PreparedStatement updateShipPreparedStatement = connection.prepareStatement(sqlCommand);
+        updateShipPreparedStatement.setString(1, ship.getShipName());
+        updateShipPreparedStatement.setInt(2, ship.getVesselType());
+        updateShipPreparedStatement.setFloat(3, ship.getLength());
+        updateShipPreparedStatement.setFloat(4, ship.getWidth());
+        updateShipPreparedStatement.setFloat(5, ship.getDraft());
+        updateShipPreparedStatement.setInt(6, Integer.parseInt(ship.getMmsi()));
+        updateShipPreparedStatement.executeUpdate();
         executeShipStatementOnDatabase(databaseConnection, ship, sqlCommand);
-    }
-
-    private void executeShipStatementOnDatabase(DatabaseConnection databaseConnection, Ship ship, String sqlCommand) {
-    }
-
-    private void updateShipOnDatabase(DatabaseConnection databaseConnection, Ship ship) {
     }
 
     private boolean isShipOnDatabase(DatabaseConnection databaseConnection, Ship ship)throws SQLException {
@@ -93,6 +158,34 @@ public class ShipSqlStore implements Persistable {
      */
     @Override
     public boolean delete(DatabaseConnection databaseConnection, Object object) {
-        return false;
+        boolean returnValue = false;
+
+        Connection connection = databaseConnection.getConnection();
+
+        Ship ship = (Ship) object;
+
+        try {
+            String sqlCommand;
+
+            sqlCommand = "delete from dynamicdata where ship_mmsi = ?";
+            try (PreparedStatement deleteShipDynamicDataPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                deleteShipDynamicDataPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
+                deleteShipDynamicDataPreparedStatement.executeUpdate();
+            }
+
+            sqlCommand = "delete from ship where mmsi = ?";
+            try (PreparedStatement deleteShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                deleteShipPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
+                deleteShipPreparedStatement.executeUpdate();
+            }
+
+            returnValue = true;
+
+        } catch (SQLException exception) {
+            Logger.getLogger(ShipStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+        }
+
+        return returnValue;
     }
 }
