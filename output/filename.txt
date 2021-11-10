@@ -1,0 +1,54 @@
+Table : STORAGETYPE
+Rows : 0
+
+Table : STORAGE
+Rows : 0
+
+Table : CONTAINER
+Rows : 0
+
+Table : CSCPLATE
+Rows : 0
+
+Table : CERTIFICATE
+Rows : 0
+
+Table : CSCPLATE_CERTIFICATE
+Rows : 0
+
+Table : CONTAINER_CARGOMANIFEST
+Rows : 0
+
+Table : STORAGE_USER_STAFF
+Rows : 0
+
+Table : ROLE
+Rows : 1
+
+Table : SYSTEMUSER
+Rows : 1
+
+Table : SYSTEMUSER_SHIPMENT
+Rows : 0
+
+Table : SHIPMENT
+Rows : 0
+
+Table : SYSTEMUSER_FLEET
+Rows : 0
+
+Table : CARGOMANIFEST
+Rows : 0
+
+Table : TRUCK
+Rows : 0
+
+Table : FLEET
+Rows : 1
+
+Table : SHIP
+Rows : 22
+
+Table : DYNAMICDATA
+Rows : 181
+

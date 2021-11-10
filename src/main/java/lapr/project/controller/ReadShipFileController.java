@@ -49,6 +49,7 @@ public class ReadShipFileController {
 //                ShipSqlStore shipSqlStore = new ShipSqlStore();
 //                shipSqlStore.save(databaseConnection, ship);
             }
+//            databaseConnection.getDatabaseReport();
         }
     }
 }
