@@ -63,7 +63,7 @@ public class ShipSqlStore implements Persistable {
                     for (int i = 0; i < positioningDataList.size() && !found; i++) {
                         PositioningData positioningData = positioningDataList.get(i);
 
-                        Date bdt = shipAddressesResultSet.getDate("base_date_time");
+                        Date bdt = shipAddressesResultSet.getTimestamp("base_date_time");
 
                         if (bdt.equals(positioningData.getBdt())) {
                             found = true;
@@ -75,7 +75,7 @@ public class ShipSqlStore implements Persistable {
 
                         try (PreparedStatement shipDynamicDataDeletePreparedStatement = connection.prepareStatement(sqlCommand)) {
                             shipDynamicDataDeletePreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
-                            shipDynamicDataDeletePreparedStatement.setDate(2, shipAddressesResultSet.getDate("base_date_time"));
+                            shipDynamicDataDeletePreparedStatement.setTimestamp(2, shipAddressesResultSet.getTimestamp("base_date_time"));
                             shipDynamicDataDeletePreparedStatement.executeUpdate();
                         }
                     }
@@ -109,14 +109,14 @@ public class ShipSqlStore implements Persistable {
 
         //TODO change sql code
         String sqlCommand = "insert into ship(mmsi, fleet_id, system_user_id_captain, system_user_id_chief_electrical_engineer" +
-                ", name, imo, num_generator, gen_power, callsign, vesseltype, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ", name, imo, num_generator, gen_power, callsign, vessel_type, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand);
         saveShipPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
-        saveShipPreparedStatement.setInt(2, 0);
-        saveShipPreparedStatement.setInt(3, 0);
-        saveShipPreparedStatement.setInt(4, 0);
+        saveShipPreparedStatement.setInt(2, 1);
+        saveShipPreparedStatement.setInt(3, 1);
+        saveShipPreparedStatement.setInt(4, 1);
         saveShipPreparedStatement.setString(5, ship.getShipName());
         saveShipPreparedStatement.setInt(6, ship.getImo());
         if (ship.getGenerator() != null){
@@ -137,7 +137,7 @@ public class ShipSqlStore implements Persistable {
 
     private void updateShipOnDatabase(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
         Connection connection = databaseConnection.getConnection();
-        String sqlCommand = "update client set name = ?, vesselType = ?, ship_length = ?, ship_width = ?, draft = ? where mmsi = ?";
+        String sqlCommand = "update ship set name = ?, vessel_type = ?, ship_length = ?, ship_width = ?, draft = ? where mmsi = ?";
 
         PreparedStatement updateShipPreparedStatement = connection.prepareStatement(sqlCommand);
         updateShipPreparedStatement.setString(1, ship.getShipName());

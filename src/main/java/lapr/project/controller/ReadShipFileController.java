@@ -1,5 +1,7 @@
 package lapr.project.controller;
 
+import lapr.project.data.DatabaseConnection;
+import lapr.project.data.ShipSqlStore;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
@@ -39,10 +41,13 @@ public class ReadShipFileController {
      */
     public void readFileAndSaveData(String path){
         Map<ShipDTO, List<PositioningDataDTO>> shipData = ShipFileReader.readShipFile(path);
+        DatabaseConnection databaseConnection = MainStorage.getInstance().getDatabaseConnection();
         if (shipData != null) {
             List<Ship> shipList = shipStore.createShip(shipData);
             for (Ship ship : shipList) {
                 shipStore.addShip(ship);
+//                ShipSqlStore shipSqlStore = new ShipSqlStore();
+//                shipSqlStore.save(databaseConnection, ship);
             }
         }
     }

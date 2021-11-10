@@ -13,9 +13,6 @@ class ReadShipFileControllerTest {
         ReadShipFileController readShipFileController = new ReadShipFileController();
         readShipFileController.readFileAndSaveData("sships.csv");
         assertNotNull(MainStorage.getInstance().getShipStore().getShipByMMSI("210950000"));
-        Ship ship = MainStorage.getInstance().getShipStore().getShipByMMSI("210950000");
-        System.out.println(ship.getPositioningDataList().traveledDistance());
-        System.out.println(ship.getPositioningDataList().deltaDistance());
     }
 
     @Test
