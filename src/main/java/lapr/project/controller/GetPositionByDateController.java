@@ -87,13 +87,11 @@ public class GetPositionByDateController {
             Date date1 = formatter.parse(dateInitial);
             Date date2 = formatter.parse(dateFinal);
             List<PositioningData> tempList = (List<PositioningData>) ship.getPositioningDataList().getPositionsByDate(date1, date2).inOrder();
-            if (tempList != null)
-                return PositioningDataMapper.toDTO(tempList);
+            return PositioningDataMapper.toDTO(tempList);
         } catch (ParseException e){
             e.printStackTrace();
             return null;
         }
-        return null;
     }
 
     /**

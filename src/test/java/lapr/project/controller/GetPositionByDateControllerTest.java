@@ -92,13 +92,4 @@ class GetPositionByDateControllerTest {
         assertNull(controller.getPositioningByDate(bdt1, bdt2));
     }
 
-    @Test
-    public void nullStoreTest(){
-        GetPositionByDateController controller = new GetPositionByDateController();
-        controller.setShipByIMO("1000000");
-        String bdt1 = "31/12/2000 23:20";
-        String bdt2 = "31/12/2000 23:50";
-        assertNull(controller.getPositioningByDate(bdt1, bdt2));
-    }
-
 }
