@@ -109,16 +109,30 @@ public class ShipSqlStore implements Persistable {
 
         //TODO change sql code
         String sqlCommand = "insert into ship(mmsi, fleet_id, system_user_id_captain, system_user_id_chief_electrical_engineer" +
-                ", name, imo, num_generator, gen_power, callsign, vesseltype, ship_length, ship_width, capacity, draft) values (?, ?, ?)";
+                ", name, imo, num_generator, gen_power, callsign, vesseltype, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand);
+        saveShipPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
+        saveShipPreparedStatement.setInt(2, 0);
+        saveShipPreparedStatement.setInt(3, 0);
+        saveShipPreparedStatement.setInt(4, 0);
+        saveShipPreparedStatement.setString(5, ship.getShipName());
+        saveShipPreparedStatement.setInt(6, ship.getImo());
+        if (ship.getGenerator() != null){
+            saveShipPreparedStatement.setInt(7, ship.getGenerator().getNumberOfGenerators());
+            saveShipPreparedStatement.setFloat(8, ship.getGenerator().getGeneratorOutput());
+        } else {
+            saveShipPreparedStatement.setInt(7, 0);
+            saveShipPreparedStatement.setFloat(8, 0);
+        }
+        saveShipPreparedStatement.setString(9, ship.getCallSign());
+        saveShipPreparedStatement.setInt(10, ship.getVesselType());
+        saveShipPreparedStatement.setFloat(11, ship.getLength());
+        saveShipPreparedStatement.setFloat(12, ship.getWidth());
+        saveShipPreparedStatement.setFloat(13, ship.getCapacity());
+        saveShipPreparedStatement.setFloat(14, ship.getDraft());
         saveShipPreparedStatement.executeUpdate();
-    }
-
-    private void executeShipStatementOnDatabase(DatabaseConnection databaseConnection, Ship ship, String sqlCommand) throws SQLException {
-        Connection connection = databaseConnection.getConnection();
-
     }
 
     private void updateShipOnDatabase(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
@@ -133,7 +147,6 @@ public class ShipSqlStore implements Persistable {
         updateShipPreparedStatement.setFloat(5, ship.getDraft());
         updateShipPreparedStatement.setInt(6, Integer.parseInt(ship.getMmsi()));
         updateShipPreparedStatement.executeUpdate();
-        executeShipStatementOnDatabase(databaseConnection, ship, sqlCommand);
     }
 
     private boolean isShipOnDatabase(DatabaseConnection databaseConnection, Ship ship)throws SQLException {

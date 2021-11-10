@@ -83,6 +83,7 @@ public class Ship implements Comparable<Ship> {
         setLength(length);
         setWidth(width);
         setDraft(draft);
+        capacity = 0;
     }
 
     /**
@@ -299,6 +300,21 @@ public class Ship implements Comparable<Ship> {
         return positioningDataList;
     }
 
+    /**
+     * returns the ship's generator data
+     * @return returns the ship's generator
+     */
+    public Generator getGenerator() {
+        return generator;
+    }
+
+    /**
+     * returns the ship's capacity
+     * @return returns the ship's capacity
+     */
+    public float getCapacity() {
+        return capacity;
+    }
 
     /**
      * default comparable to the ship class
@@ -309,4 +325,5 @@ public class Ship implements Comparable<Ship> {
     public int compareTo(Ship o) {
         return mmsi.compareTo(o.getMmsi());
     }
+
 }

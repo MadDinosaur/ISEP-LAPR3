@@ -60,4 +60,20 @@ public class Generator {
         if (!(numberOfGenerators > 0))
             throw new IllegalGeneratorException("Generator Number cannot be lower than 1");
     }
+
+    /**
+     * returns the generator's output
+     * @return returns the generator's output
+     */
+    public float getGeneratorOutput() {
+        return generatorOutput;
+    }
+
+    /**
+     * return the number of generators
+     * @return return the number of generators
+     */
+    public int getNumberOfGenerators() {
+        return numberOfGenerators;
+    }
 }
