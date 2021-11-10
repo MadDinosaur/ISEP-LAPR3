@@ -42,10 +42,10 @@ CREATE TABLE Storage
         CONSTRAINT nnContinent NOT NULL,
     country                VARCHAR(20)
         CONSTRAINT nnCountry NOT NULL,
-    latitude               NUMBER(4, 2)
+    latitude               NUMBER(7, 5)
         CONSTRAINT nnStorageLatitude NOT NULL,
     CONSTRAINT ckStorageLatitude CHECK (latitude BETWEEN -90 AND 90 OR latitude = 91),
-    longitude              NUMBER(5, 2)
+    longitude              NUMBER(8, 5)
         CONSTRAINT nnStorageLongitude NOT NULL,
     CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or latitude = 181),
     CONSTRAINT ckStorageLocation UNIQUE (latitude, longitude)
@@ -170,7 +170,8 @@ CREATE TABLE SystemUser
     email   VARCHAR(40)
         CONSTRAINT nnEmail NOT NULL
         CONSTRAINT unEmail UNIQUE
-        CONSTRAINT ckEmail CHECK (email LIKE '%_@__%.__%')
+        CONSTRAINT ckEmail CHECK (email LIKE '%_@__%.__%'),
+    password VARCHAR(40)
 );
 
 CREATE TABLE SystemUser_Shipment
@@ -216,15 +217,12 @@ CREATE TABLE CargoManifest
 
 CREATE TABLE Truck
 (
-    id INTEGER GENERATED ALWAYS AS IDENTITY
-        CONSTRAINT pkTruckId PRIMARY KEY
+    id INTEGER CONSTRAINT pkTruckId PRIMARY KEY
 );
 
 CREATE TABLE Fleet
 (
-    id INTEGER GENERATED ALWAYS AS IDENTITY
-        CONSTRAINT pkFleetId PRIMARY KEY,
-    name VARCHAR(20) CONSTRAINT nnFleetName NOT NULL
+    id INTEGER CONSTRAINT pkFleetId PRIMARY KEY
 );
 
 CREATE TABLE Ship
@@ -277,10 +275,10 @@ CREATE TABLE DynamicData
         CONSTRAINT nnShipMmsi NOT NULL,
     base_date_time    TIMESTAMP
         CONSTRAINT nnBaseDateTime NOT NULL,
-    latitude          NUMBER(4, 2)
+    latitude          NUMBER(7, 5)
         CONSTRAINT nnLatitute NOT NULL
         CONSTRAINT ckLatitude CHECK (latitude BETWEEN -90 AND 91),
-    longitude         NUMBER(5, 2)
+    longitude         NUMBER(8, 5)
         CONSTRAINT nnLongitude NOT NULL
         CONSTRAINT ckLongitude CHECK (longitude BETWEEN -180 AND 181),
     sog               NUMBER(5, 2)
