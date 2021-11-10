@@ -4,7 +4,10 @@ import lapr.project.store.ShipStore;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainStorage {
 
@@ -13,12 +16,19 @@ public class MainStorage {
      */
     private ShipStore shipStore;
 
+    private ConnectionFactory connectionFactory;
+
+    private DatabaseConnection databaseConnection;
+
     /**
      * initiates the Storage
      */
-    private MainStorage(){
+    private MainStorage() {
         loadProperties();
         shipStore = new ShipStore();
+        connectionFactory = new ConnectionFactory();
+        databaseConnection = null;
+        databaseConnection = connectionFactory.getDatabaseConnection();
     }
 
     /**
@@ -49,6 +59,10 @@ public class MainStorage {
      */
     public ShipStore getShipStore() {
         return shipStore;
+    }
+
+    public DatabaseConnection getDatabaseConnection() {
+        return databaseConnection;
     }
 
     /**

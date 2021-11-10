@@ -200,12 +200,11 @@ public class PositioningDataList extends AVL<PositioningData> {
             result.insert(node.getElement());
             getPositionsByDate(date1,date2,node.getLeft(),result);
             getPositionsByDate(date1,date2,node.getRight(),result);
-        }
-        else if (node.getElement().getBdt().compareTo(date1) < 0){
+
+        } else if (node.getElement().getBdt().compareTo(date1) < 0){
 
             getPositionsByDate(date1,date2,node.getRight(),result);
-        }
-        else
+        } else
             getPositionsByDate(date1,date2, node.getLeft(),result);
 
     }

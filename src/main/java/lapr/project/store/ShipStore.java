@@ -3,13 +3,14 @@ package lapr.project.store;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
+import lapr.project.model.AVL;
 import lapr.project.model.BST;
 import lapr.project.model.Ship;
 import lapr.project.utils.ShipSorter;
 
 import java.util.*;
 
-public class ShipStore extends BST<Ship>{
+public class ShipStore extends AVL<Ship>{
 
     /**
      * A Map that links the IMO with the MMSI
@@ -94,7 +95,10 @@ public class ShipStore extends BST<Ship>{
      * @return a ship with the same mmsi or null
      */
     private Ship findMMSI(String mmsi){
-        return findMMSI(mmsi, root());
+        if (mmsi != null)
+            return findMMSI(mmsi, root());
+        else
+            return null;
     }
 
     /**
@@ -103,7 +107,7 @@ public class ShipStore extends BST<Ship>{
      * @param node the current node being compared
      * @return a ship with the same mmsi or null
      */
-    private Ship findMMSI(String mmsi, BST.Node<Ship> node){
+    private Ship findMMSI(String mmsi, AVL.Node<Ship> node){
         if (node == null){
             return null;
         }

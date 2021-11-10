@@ -4,12 +4,10 @@ import lapr.project.mappers.PositioningDataMapper;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
-import lapr.project.model.BST;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.data.MainStorage;
 import lapr.project.store.ShipStore;
-import lapr.project.store.list.PositioningDataList;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -70,7 +68,7 @@ public class GetPositionByDateController {
      * @return true if a ship is found
      */
     public boolean setShipByCallSign(String callSign){
-        this.ship = shipStore.getShipByMMSI(callSign);
+        this.ship = shipStore.getShipByCallSign(callSign);
         return ship!=null;
     }
 
@@ -81,18 +79,19 @@ public class GetPositionByDateController {
      * @return A list of the information of the ships data within a boundary of time
      */
     public List<PositioningDataDTO> getPositioningByDate(String dateInitial, String dateFinal){
+        if (ship == null){
+            return null;
+        }
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             Date date1 = formatter.parse(dateInitial);
             Date date2 = formatter.parse(dateFinal);
             List<PositioningData> tempList = (List<PositioningData>) ship.getPositioningDataList().getPositionsByDate(date1, date2).inOrder();
-            if (tempList != null)
-                return PositioningDataMapper.toDTO(tempList);
+            return PositioningDataMapper.toDTO(tempList);
         } catch (ParseException e){
             e.printStackTrace();
             return null;
         }
-        return null;
     }
 
     /**

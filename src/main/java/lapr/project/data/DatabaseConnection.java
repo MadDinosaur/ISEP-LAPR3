@@ -5,6 +5,7 @@
  */
 package lapr.project.data;
 
+import lapr.project.model.PositioningData;
 import oracle.jdbc.pool.OracleDataSource;
 
 import java.sql.Connection;

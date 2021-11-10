@@ -24,7 +24,7 @@ public class DynamicDataSqlStore implements Persistable{
         boolean returnValue = false;
         try (PreparedStatement saveAddressPreparedStatement = connection.prepareStatement(sqlCommand)) {
             saveAddressPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
-            saveAddressPreparedStatement.setDate(2, (Date) dynamicData.getBdt());
+            saveAddressPreparedStatement.setTimestamp(2, new java.sql.Timestamp(dynamicData.getBdt().getTime()));
             saveAddressPreparedStatement.setFloat(3, dynamicData.getCoordinate().getLatitude());
             saveAddressPreparedStatement.setFloat(4, dynamicData.getCoordinate().getLongitude());
             saveAddressPreparedStatement.setFloat(5, dynamicData.getSog());
@@ -56,7 +56,7 @@ public class DynamicDataSqlStore implements Persistable{
             sqlCommand = "delete from dynamicdata where ship_mmsi = ? and base_date_time = ?";
             try (PreparedStatement shipDynamicDataDeletePreparedStatement = connection.prepareStatement(sqlCommand)) {
                 shipDynamicDataDeletePreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
-                shipDynamicDataDeletePreparedStatement.setDate(2, (Date) dynamicData.getBdt());
+                shipDynamicDataDeletePreparedStatement.setTimestamp(2, new java.sql.Timestamp(dynamicData.getBdt().getTime()));
                 shipDynamicDataDeletePreparedStatement.executeUpdate();
                 returnValue = true;
             }
