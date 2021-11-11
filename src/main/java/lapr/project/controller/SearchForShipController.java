@@ -1,5 +1,6 @@
 package lapr.project.controller;
 
+
 import lapr.project.mappers.PositioningDataMapper;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
@@ -8,6 +9,7 @@ import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
 import lapr.project.data.MainStorage;
+import oracle.ucp.util.Pair;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,12 +43,10 @@ public class SearchForShipController {
      * @param mmsi the mmsi value to search for
      * @return returns all the ship's information and it's dynamic Data
      */
-    public Map<ShipDTO, List<PositioningDataDTO>> getShipByMMSI(String mmsi){
+    public Pair<ShipDTO, List<PositioningDataDTO>> getShipByMMSI(String mmsi){
         Ship ship = shipStore.getShipByMMSI(mmsi);
-        Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
         if (ship != null) {
-            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
-            return map;
+            return new Pair<>(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
         } else
             return null;
     }
@@ -56,12 +56,10 @@ public class SearchForShipController {
      * @param imo the imo value to be searched
      * @return returns all the ship's information
      */
-    public Map<ShipDTO, List<PositioningDataDTO>> getShipByIMO(String imo){
+    public Pair<ShipDTO, List<PositioningDataDTO>> getShipByIMO(String imo){
         Ship ship = shipStore.getShipByIMO(imo);
-        Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
         if (ship != null) {
-            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
-            return map;
+            return new Pair<>(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
         } else
             return null;
     }
@@ -71,12 +69,10 @@ public class SearchForShipController {
      * @param callSign the call sign to be searched
      * @return
      */
-    public Map<ShipDTO, List<PositioningDataDTO>> getShipByCallSign(String callSign){
+    public Pair<ShipDTO, List<PositioningDataDTO>> getShipByCallSign(String callSign){
         Ship ship = shipStore.getShipByCallSign(callSign);
-        Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
         if (ship != null) {
-            map.put(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
-            return map;
+            return new Pair<>(ShipMapper.toDTO(ship), PositioningDataMapper.toDTO((List<PositioningData>) ship.getPositioningDataList().inOrder()));
         } else
             return null;
     }
