@@ -1,13 +1,14 @@
 package lapr.project.utils;
 
 import lapr.project.model.Ship;
+import lapr.project.store.ShipStore;
 
 import java.util.Comparator;
 
 public class ShipSorter implements Comparator<Ship> {
 
     @Override
-    public int compare(Ship o1, Ship o2) {
+    public int compare(Ship o1,Ship o2) {
 
 
         double o1TraveledDistance = o1.getPositioningDataList().traveledDistance();
@@ -19,10 +20,10 @@ public class ShipSorter implements Comparator<Ship> {
 
 
         if (o1TraveledDistance > o2TraveledDistance)
-            return 1;
+            return -1;
 
         else if (o1TraveledDistance < o2TraveledDistance)
-            return -1;
+            return 1;
 
 
         if (o1TraveledDistance == o2TraveledDistance){
@@ -31,9 +32,9 @@ public class ShipSorter implements Comparator<Ship> {
                 return 0;
 
             else if (o1NumberMovements > o2NumberMovements)
-                return -1;
+                return 1;
 
-            else return 1;
+            else return -1;
         }
 
         return 0;

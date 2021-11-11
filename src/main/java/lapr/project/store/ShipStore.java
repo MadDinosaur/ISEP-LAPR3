@@ -3,13 +3,14 @@ package lapr.project.store;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
+import lapr.project.model.AVL;
 import lapr.project.model.BST;
 import lapr.project.model.Ship;
 import lapr.project.utils.ShipSorter;
 
 import java.util.*;
 
-public class ShipStore extends BST<Ship>{
+public class ShipStore extends AVL<Ship>{
 
     /**
      * A Map that links the IMO with the MMSI
@@ -94,7 +95,10 @@ public class ShipStore extends BST<Ship>{
      * @return a ship with the same mmsi or null
      */
     private Ship findMMSI(String mmsi){
-        return findMMSI(mmsi, root());
+        if (mmsi != null)
+            return findMMSI(mmsi, root());
+        else
+            return null;
     }
 
     /**
@@ -103,7 +107,7 @@ public class ShipStore extends BST<Ship>{
      * @param node the current node being compared
      * @return a ship with the same mmsi or null
      */
-    private Ship findMMSI(String mmsi, BST.Node<Ship> node){
+    private Ship findMMSI(String mmsi, AVL.Node<Ship> node){
         if (node == null){
             return null;
         }
@@ -117,45 +121,48 @@ public class ShipStore extends BST<Ship>{
         return null;
     }
 
+    /**
+     * returns a TreeMap with all the ships ordered by Traveled Distance (Descending) and NumberOfMovements (Ascending);
+     *
+     * @return returns the sorted TreeMap
+     */
+    public TreeMap<Ship,Integer> sortShips(){
 
-//    /**
-//     * returns a list with all the ships ordered by TraveledDistance (ascending) and NumberOfMovements (descending)
-//     * @return returns the sorted list
-//     */
-//    public ArrayList<Ship> sortShips(){
-//
-//        ArrayList<Ship> result = new ArrayList<>();
-//        ShipSorter shipComparator = new ShipSorter();
-//
-//        mmsiTree.inOrder().forEach(result::add);
-//
-//        Collections.sort(result,shipComparator);
-//        Collections.reverse(result);
-//
-//        return result;
-//    }
+        ShipSorter sorter = new ShipSorter();
+        int i = 0;
 
-//    /**
-//     * converts a string list with all the ships MMSI, Traveled Distance and Number of Movements
-//     * @param list the list to be converted
-//     * @return the string list
-//     */
-//    public ArrayList<String> shipsToString(ArrayList<Ship> list){
-//
-//        ArrayList<String> result = new ArrayList<>();
-//        String string;
-//
-//        for(Ship s : list){
-//
-//
-//            String mmsi = s.getMmsi();
-//            double traveledDistance = s.getPositioningDataList().traveledDistance();
-//            double numberMovements = s.getPositioningDataList().size();
-//
-//            string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %d");
-//            result.add(string);
-//        }
-//
-//        return result;
-//    }
+        TreeMap<Ship,Integer> result = new TreeMap<>(sorter);
+
+        for (Ship ship : inOrder()){
+            result.put(ship,i);
+            i++;
+        }
+
+        return result;
+    }
+
+    /**
+     * converts a TreeMap to a string Map with all the ships MMSI, Traveled Distance and Number of Movements
+     *
+     * @param map the TreeMap to be converted
+     * @return the string TreeMap
+     */
+    public TreeMap<Integer,String> shipsToString(TreeMap<Ship,Integer> map){
+
+        int i = 0;
+        TreeMap<Integer,String> result = new TreeMap<>();
+
+        for(Ship ship : map.keySet()){
+
+            String mmsi = ship.getMmsi();
+            double traveledDistance = ship.getPositioningDataList().traveledDistance();
+            double numberMovements = ship.getPositioningDataList().size();
+
+            String string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %d");
+            result.put(i,string);
+            i++;
+        }
+
+        return result;
+    }
 }

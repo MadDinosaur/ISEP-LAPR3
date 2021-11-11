@@ -52,7 +52,7 @@ public class ConnectionFactory {
      * @return user property
      */
     private String user() {
-        return System.getProperty("database.user");
+        return System.getProperty("database.username");
     }
 
     /**
