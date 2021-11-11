@@ -20,7 +20,6 @@ public class SortShipsControllerTest {
     PositioningDataList positioningDataList1 = new PositioningDataList();
     PositioningDataList positioningDataList2 = new PositioningDataList();
 
-    ShipStore shipStore = MainStorage.getInstance().getShipStore();
     ShipSorter shipSorter = new ShipSorter();
 
     Coordinate coordinate;
@@ -83,14 +82,17 @@ public class SortShipsControllerTest {
         s1.setPositioningDataList(positioningDataList1);
         s2.setPositioningDataList(positioningDataList2);
 
-        shipStore.addShip(s1);
-        shipStore.addShip(s2);
+
 
 
     }
 
     @Test
     public void testController() {
+
+        ShipStore shipStore = MainStorage.getInstance().getShipStore();
+        shipStore.addShip(s1);
+        shipStore.addShip(s2);
 
         SortShipsController ctrl = new SortShipsController();
 
