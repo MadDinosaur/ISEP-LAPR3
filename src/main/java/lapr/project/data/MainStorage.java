@@ -16,8 +16,9 @@ public class MainStorage {
      */
     private ShipStore shipStore;
 
-    private ConnectionFactory connectionFactory;
-
+    /**
+     * the app's connection to the database
+     */
     private DatabaseConnection databaseConnection;
 
     /**
@@ -26,8 +27,7 @@ public class MainStorage {
     private MainStorage() {
         loadProperties();
         shipStore = new ShipStore();
-        connectionFactory = new ConnectionFactory();
-        databaseConnection = null;
+        ConnectionFactory connectionFactory = new ConnectionFactory();
         databaseConnection = connectionFactory.getDatabaseConnection();
     }
 
@@ -61,6 +61,10 @@ public class MainStorage {
         return shipStore;
     }
 
+    /**
+     * returns the app's database connection
+     * @return returns the app's database connection
+     */
     public DatabaseConnection getDatabaseConnection() {
         return databaseConnection;
     }
@@ -69,6 +73,11 @@ public class MainStorage {
      * singleton used to maintain the same information trough all the app
      */
     private static MainStorage singleton = null;
+
+    /**
+     * returns this object's main instance
+     * @return returns this object's main instance
+     */
     public static MainStorage getInstance()
     {
         if(singleton == null)
