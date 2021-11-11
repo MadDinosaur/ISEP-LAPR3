@@ -55,6 +55,8 @@ class SendSummaryControllerTest {
         for (PositioningData positioningData : pDataList1)
             pList1.insert(positioningData);
 
+        s1.setPositioningDataList(pList1);
+
         shipStore.addShip(s1);
     }
 
@@ -67,6 +69,13 @@ class SendSummaryControllerTest {
         assertNull(controller.getShipByCodeType("1000001"));
         assertNotNull(controller.getShipByCodeType("CS111"));
         assertNull(controller.getShipByCodeType("toNull"));
+        assertNotNull(controller.toSummary("210950000"));
     }
 
+    @Test
+    public void testToSummary(){
+        SendSummaryController controller = new SendSummaryController();
+        Ship s = controller.getShipByCodeType("210950000");
+        assertNotNull(controller.toSummary("210950000"));
+    }
 }
