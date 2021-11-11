@@ -47,7 +47,7 @@ CREATE TABLE Storage
     CONSTRAINT ckStorageLatitude CHECK (latitude BETWEEN -90 AND 90 OR latitude = 91),
     longitude              NUMBER(8, 5)
         CONSTRAINT nnStorageLongitude NOT NULL,
-    CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or latitude = 181),
+    CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181),
     CONSTRAINT ckStorageLocation UNIQUE (latitude, longitude)
 );
 
@@ -102,7 +102,7 @@ CREATE TABLE CscPlate
     acep_number       VARCHAR(20)
         CONSTRAINT nnAcepNumber NOT NULL
         CONSTRAINT unAcepNumber UNIQUE,
-    data_manufactured DATE
+    date_manufactured DATE
         CONSTRAINT nnDateManufactured NOT NULL,
     max_gross_mass    NUMBER(5)
         CONSTRAINT nnMaxGrossMass NOT NULL,
