@@ -71,8 +71,8 @@ public class SendSummaryController {
         s.append(String.format("Departure Longitude: %f%n", positioningData.departureCoordinates().getLatitude()));
         s.append(String.format("Arrival Latitude: %f%n", positioningData.arrivalCoordinates().getLongitude()));
         s.append(String.format("Arrival Longitude: %f%n", positioningData.arrivalCoordinates().getLatitude()));
-        s.append(String.format("Travelled Distance: %f%n", positioningData.traveledDistance()));
-        s.append(String.format("Delta Distance: %f%n", positioningData.deltaDistance()));
+        s.append(String.format("Travelled Distance: %f km %n", positioningData.traveledDistance()));
+        s.append(String.format("Delta Distance: %f km %n", positioningData.deltaDistance()));
         return s.toString();
     }
 }

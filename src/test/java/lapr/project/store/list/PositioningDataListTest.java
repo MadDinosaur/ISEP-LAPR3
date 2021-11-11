@@ -56,4 +56,12 @@ class PositioningDataListTest {
         assertEquals(23.238023488476994, positioningDataList.deltaDistance());
     }
 
+    @Test
+    public void invalidTraveledDistance(){
+        Coordinate c = new Coordinate((float)-66.97001,((float)42.97875));
+        PositioningData p1 = new PositioningData("31/12/2020 17:20", c, (float)12.9, (float)13.1, 355, "Sea", "B");
+        PositioningDataList pl1 = new PositioningDataList();
+        pl1.insertPositioningDataList(p1);
+        assertEquals(0,pl1.traveledDistance());
+    }
 }
