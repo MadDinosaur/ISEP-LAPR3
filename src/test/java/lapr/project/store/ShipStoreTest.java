@@ -1,24 +1,42 @@
 package lapr.project.store;
 
-import lapr.project.model.BST;
-import lapr.project.model.Coordinate;
-import lapr.project.model.PositioningData;
-import lapr.project.model.Ship;
+import lapr.project.model.*;
 import lapr.project.store.list.PositioningDataList;
+import lapr.project.utils.ShipSorter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShipStoreTest {
 
+    PositioningDataList positioningDataList = new PositioningDataList();
+    ShipStore shipStore = new ShipStore();
+    PositioningData positioningData;
+    Coordinate coordinate;
+    PositioningData positioningData2;
+    Coordinate coordinate2;
+    PositioningData positioningData3;
+    Coordinate coordinate3;
+
     @BeforeEach
     public void setUp(){
 
-        ShipStore shipStore = new ShipStore();
+        coordinate = new Coordinate((float)-66.97001,((float)42.97875));
+        positioningData = new PositioningData("31/12/2020 17:20", coordinate, (float)12.9, (float)13.1, 355, "Sea", "B");
+        positioningDataList.insertPositioningDataList(positioningData);
+        coordinate2 = new Coordinate((float)-66.97243, (float)42.92236);
+        positioningData2 = new PositioningData("31/12/2020 17:03", coordinate2, (float)12.5, (float)2.4, 358, "Sea","B");
+        positioningDataList.insertPositioningDataList(positioningData2);
+        coordinate3 = new Coordinate((float) -66.9759, (float)42.7698);
+        positioningData3 = new PositioningData("31/12/2020 16:20", coordinate3, (float)13.3, (float)3.7,356, "Sea","B");
+        positioningDataList.insertPositioningDataList(positioningData3);
+
+
         PositioningDataList pList1 = new PositioningDataList();
         PositioningDataList pList2 = new PositioningDataList();
         ArrayList<PositioningData> pDataList1 = new ArrayList<>();
@@ -27,14 +45,14 @@ class ShipStoreTest {
 
 
         String shipName = "Example";
-        String mmsi1 = "111111111";
-        String mmsi2 = "222222222";
+        String mmsi1 = "210950000";
+        String mmsi2 = "229857000";
 
-        int imo1 = 1000000;
-        int imo2 = 2000000;
+        int imo1 = 9450648;
+        int imo2 = 9395044;
 
-        String callSign1 = "CS111";
-        String callSign2 = "CS222";
+        String callSign1 = "C4SQ2";
+        String callSign2 = "5BBA4";
 
         int vesselType = 0;
         float length = 0;
@@ -65,7 +83,7 @@ class ShipStoreTest {
         for (PositioningData positioningData : pDataList2)
             pList2.insert(positioningData);
 
-        s1.setPositioningDataList(pList1);
+        s1.setPositioningDataList(positioningDataList);
         s2.setPositioningDataList(pList2);
 
 
@@ -84,10 +102,25 @@ class ShipStoreTest {
         assertNull(shipStore.getShipByCallSign("a"));
     }
 
-//    @Test
-//    public void sortShipsTestNotNull(){
-//        ShipStore shipStore = new ShipStore();
-//        assertNotNull(shipStore.sortShips());
-//    }
+    @Test
+    public void sortShipsTraveledDistanceTestNotNull(){
+        ShipSorter shipSorter = new ShipSorter();
+
+        assertNotNull(shipStore.sortShips(shipSorter));
+    }
+
+    @Test
+    public void shipsSortedTraveledDistanceToStringTest() {
+        ShipSorter shipSorter = new ShipSorter();
+
+
+        TreeSet<Ship> treeShips = shipStore.sortShips(shipSorter);
+        TreeSet<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
+        TreeSet<String> expected = new TreeSet<>();
+        expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
+        expected.add("MMSI: 229857000 - Traveled Distance: 0,000000 - Number of Movements: 1");
+
+        assertEquals(expected,result);
+    }
 
 }

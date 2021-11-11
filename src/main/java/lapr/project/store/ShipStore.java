@@ -1,6 +1,6 @@
 package lapr.project.store;
 
-import jdk.internal.net.http.common.Pair;
+import javafx.util.Pair;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;

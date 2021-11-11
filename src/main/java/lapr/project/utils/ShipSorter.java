@@ -29,7 +29,7 @@ public class ShipSorter implements Comparator<Ship> {
         if (o1TraveledDistance == o2TraveledDistance){
 
             if (o1NumberMovements == o2NumberMovements)
-                return 0;
+                return o1.compareTo(o2);
 
             else if (o1NumberMovements > o2NumberMovements)
                 return 1;

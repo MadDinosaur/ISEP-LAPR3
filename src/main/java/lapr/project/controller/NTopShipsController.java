@@ -1,6 +1,6 @@
 package lapr.project.controller;
 
-import jdk.internal.net.http.common.Pair;
+import javafx.util.Pair;
 import lapr.project.data.MainStorage;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
