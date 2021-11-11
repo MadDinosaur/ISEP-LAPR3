@@ -1,11 +1,13 @@
 package lapr.project.store;
 
+import jdk.internal.net.http.common.Pair;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
 import lapr.project.model.Ship;
 import lapr.project.utils.ShipSorter;
+import lapr.project.utils.SorterTraveledDistByDate;
 
 import java.util.*;
 
@@ -125,16 +127,11 @@ public class ShipStore extends AVL<Ship>{
      *
      * @return returns the sorted TreeMap
      */
-    public TreeMap<Ship,Integer> sortShips(){
-
-        ShipSorter sorter = new ShipSorter();
-        int i = 0;
-
-        TreeMap<Ship,Integer> result = new TreeMap<>(sorter);
+    public TreeSet<Ship> sortShips(Comparator<Ship> sorter){
+        TreeSet<Ship> result = new TreeSet<>(sorter);
 
         for (Ship ship : inOrder()){
-            result.put(ship,i);
-            i++;
+            result.add(ship);
         }
 
         return result;
@@ -146,22 +143,44 @@ public class ShipStore extends AVL<Ship>{
      * @param map the TreeMap to be converted
      * @return the string TreeMap
      */
-    public TreeMap<Integer,String> shipsToString(TreeMap<Ship,Integer> map){
+    public TreeSet<String> shipsSortedTraveledDistanceToString(TreeSet<Ship> map){
+        TreeSet<String> result = new TreeSet<>();
 
-        int i = 0;
-        TreeMap<Integer,String> result = new TreeMap<>();
-
-        for(Ship ship : map.keySet()){
+        for(Ship ship : map){
 
             String mmsi = ship.getMmsi();
             double traveledDistance = ship.getPositioningDataList().traveledDistance();
             int numberMovements = ship.getPositioningDataList().size();
 
             String string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %s", mmsi, traveledDistance, numberMovements);
-            result.put(i,string);
-            i++;
+            result.add(string);
         }
 
         return result;
+    }
+
+    public void getTopNShips(int n, Date date1, Date date2, HashMap<Integer, HashMap<Integer, Pair<Ship, Float>>> topNShipsGrouped) {
+        HashMap<Integer, Integer> vesselTypeCount = new HashMap<>();
+        SorterTraveledDistByDate sorter = new SorterTraveledDistByDate(date1, date2);
+        TreeSet<Ship> orderedShipTree = sortShips(sorter);
+        int vesselType;
+
+        for (Ship ship : orderedShipTree) {
+            vesselType = ship.getVesselType();
+
+            if (!topNShipsGrouped.containsKey(vesselType)){
+                HashMap<Integer, Pair<Ship, Float>> topNShips = new HashMap<>();
+
+                vesselTypeCount.put(vesselType, 0);
+                topNShipsGrouped.put(vesselType, topNShips);
+            }
+
+            Pair<Ship, Float> shipInfo = new Pair<>(ship, ship.getPositioningDataList().getPositionsByDate(date1, date2).meanSog());
+
+            topNShipsGrouped.get(vesselType).put(vesselTypeCount.get(vesselType), shipInfo);
+
+            vesselTypeCount.replace(vesselType, vesselTypeCount.get(vesselType) + 1);
+        }
+
     }
 }
