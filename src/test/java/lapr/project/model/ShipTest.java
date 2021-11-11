@@ -29,6 +29,8 @@ class ShipTest {
         assertEquals(ship.getLength(), length);
         assertEquals(ship.getWidth(), width);
         assertEquals(ship.getDraft(), draft);
+        assertEquals(ship.getCapacity(), 0);
+        assertNull(ship.getGenerator());
     }
 
     @Test
@@ -111,8 +113,8 @@ class ShipTest {
         });
 
         String expectedMessage9 = "Draft  \"-1.0\" is not supported.";
-        String actualMessage9 = exception5.getMessage();
+        String actualMessage9 = exception9.getMessage();
 
-        assertTrue(actualMessage5.contains(expectedMessage5));
+        assertTrue(actualMessage9.contains(expectedMessage9));
     }
 }

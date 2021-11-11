@@ -21,9 +21,11 @@ class PositioningDataTest {
         assertNotNull(positioningData);
         assertEquals(positioningData.getCoordinate(), coordinate);
         assertEquals(positioningData.getSog(), sog);
+        positioningData.setSog(-10);
+        assertEquals(positioningData.getSog(), 0);
         assertEquals(positioningData.getCog(), cog);
-        positioningData.setCog(-359);
-        assertEquals(positioningData.getCog(), 0);
+        positioningData.setCog(-358);
+        assertEquals(positioningData.getCog(), 1);
         assertEquals(positioningData.getHeading(), heading);
         positioningData.setHeading(359);
         assertEquals(positioningData.getHeading(), 359);
@@ -52,7 +54,6 @@ class PositioningDataTest {
         String expectedMessage2 = "COG value \"370.0\"  is not withing boundaries";
         String actualMessage2 = exception2.getMessage();
 
-        System.out.println(actualMessage2);
         assertTrue(actualMessage2.contains(expectedMessage2));
 
         Exception exception3 = assertThrows(IllegalArgumentException.class, () -> {
@@ -72,5 +73,25 @@ class PositioningDataTest {
         String actualMessage4 = exception4.getMessage();
 
         assertTrue(actualMessage4.contains(expectedMessage4));
+
+        Exception exception5 = assertThrows(IllegalArgumentException.class, () -> {
+            PositioningData positioningData = new PositioningData(bdt, coordinate, sog, -370, heading, position, transceiverClass);
+        });
+
+
+        String expectedMessage5 = "COG value \"-370.0\"  is not withing boundaries";
+        String actualMessage5 = exception5.getMessage();
+
+        assertTrue(actualMessage5.contains(expectedMessage5));
+
+
+        Exception exception7 = assertThrows(IllegalArgumentException.class, () -> {
+            PositioningData positioningData = new PositioningData(bdt, coordinate, sog, cog, -400, position, transceiverClass);
+        });
+
+        String expectedMessage7  = "Heading value \"-400.0\"  is not withing boundaries";
+        String actualMessage7  = exception7 .getMessage();
+
+        assertTrue(actualMessage7.contains(expectedMessage7));
     }
 }
