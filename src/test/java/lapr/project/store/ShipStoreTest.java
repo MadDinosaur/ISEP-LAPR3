@@ -120,7 +120,7 @@ class ShipStoreTest {
         expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
         expected.add("MMSI: 229857000 - Traveled Distance: 0,000000 - Number of Movements: 1");
 
-        assertEquals(expected,result);
+        assertEquals(expected.toString().replaceAll(",","."),result.toString().replaceAll(",","."));
     }
 
 }
