@@ -1,9 +1,5 @@
 package lapr.project.controller;
 
-import lapr.project.mappers.PositioningDataMapper;
-import lapr.project.mappers.ShipMapper;
-import lapr.project.mappers.dto.PositioningDataDTO;
-import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
 import lapr.project.data.MainStorage;
 import lapr.project.store.ShipStore;
@@ -11,7 +7,6 @@ import lapr.project.store.list.PositioningDataList;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 
 public class SendSummaryController {

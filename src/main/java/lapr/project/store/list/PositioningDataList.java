@@ -165,15 +165,6 @@ public class PositioningDataList extends AVL<PositioningData> {
     }
 
     /**
-     * tranforms degrees into radians
-     * @param deg degrees of an angle
-     * @return value of degrees to radious
-     */
-    private float toRadious(float deg) {
-        return (float) (deg * Math.PI / 180.0);
-    }
-
-    /**
      * returns a list of all position data that takes place in the specified time slot
      * @param date1 the initial date
      * @param date2 the final date
