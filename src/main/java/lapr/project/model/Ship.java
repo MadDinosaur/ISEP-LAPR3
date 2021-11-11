@@ -149,7 +149,7 @@ public class Ship implements Comparable<Ship> {
      * @param draft The ships Draft
      */
     private void checkDraftRules(float draft) {
-        if (!(draft >= 0))
+        if (draft < 0)
             throw new IllegalShipException("Draft  \"" + draft + "\" is not supported.");
     }
 
@@ -185,7 +185,7 @@ public class Ship implements Comparable<Ship> {
      * @param length The ship's length value
      */
     private void checkLengthRules(float length) {
-        if (!(length >= 0))
+        if (length < 0)
             throw new IllegalShipException("Length  \"" + length + "\" is not supported.");
     }
 
@@ -203,7 +203,7 @@ public class Ship implements Comparable<Ship> {
      * @param vesselType The ship's vessel type
      */
     private void checkVesselTypeRules(int vesselType) {
-        if (!(vesselType >= 0))
+        if ((vesselType < 0))
             throw new IllegalShipException("The vessel type code \"" + vesselType + "\" is not supported.");
     }
 
@@ -212,19 +212,16 @@ public class Ship implements Comparable<Ship> {
      * @param width The ship's width
      */
     public void setWidth(float width) {
-        if (checkWidthRules(width))
-            this.width = width;
+        checkWidthRules(width);
+        this.width = width;
     }
 
     /**
      * Checks the width value to see if it is within the allowed boundaries
      * @param width The ship's width
-     * @return true if the value is within allowed boundaries
      */
-    private boolean checkWidthRules(float width) {
-        if (width >= 0)
-            return true;
-        else
+    private void checkWidthRules(float width) {
+        if (width < 0)
             throw new IllegalShipException("Width  \"" + width + "\" is not supported.");
     }
 
