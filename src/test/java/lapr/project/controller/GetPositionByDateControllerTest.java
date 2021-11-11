@@ -67,17 +67,17 @@ class GetPositionByDateControllerTest {
         GetPositionByDateController controller = new GetPositionByDateController();
 
         assertNull(controller.getShip());
-        controller.setShipByIMO("1000000");
+        assertTrue(controller.setShipByIMO("1000000"));
         assertNotNull(controller.getShip());
-        controller.setShipByIMO("1000001");
+        assertFalse(controller.setShipByIMO("1000001"));
         assertNull(controller.getShip());
-        controller.setShipByMMSI("111111111");
+        assertTrue(controller.setShipByMMSI("111111111"));
         assertNotNull(controller.getShip());
-        controller.setShipByMMSI("111111112");
+        assertFalse(controller.setShipByMMSI("111111112"));
         assertNull(controller.getShip());
-        controller.setShipByCallSign("CS111");
+        assertTrue(controller.setShipByCallSign("CS111"));
         assertNotNull(controller.getShip());
-        controller.setShipByCallSign( "CS110");
+        assertFalse(controller.setShipByCallSign( "CS110"));
         assertNull(controller.getShip());
 
         String bdt1 = "31/12/2000 23:20";

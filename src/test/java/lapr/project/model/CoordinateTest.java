@@ -63,6 +63,6 @@ class CoordinateTest {
     public void distanceTest(){
         Coordinate coordinate1 = new Coordinate(90, 45 );
         Coordinate coordinate2 = new Coordinate(89, 44 );
-        System.out.println(coordinate1.getDistanceBetweenCoordinates(coordinate2));
+        assertEquals((int) coordinate1.getDistanceBetweenCoordinates(coordinate2), 136);
     }
 }
