@@ -43,8 +43,7 @@ public class SendSummaryController {
         Ship shipIMO = shipStore.getShipByIMO(code);
         if (shipIMO != null )
             return shipIMO;
-        Ship shipCallSign = shipStore.getShipByCallSign(code);
-        return shipCallSign;
+        return shipStore.getShipByCallSign(code);
     }
 
     /**

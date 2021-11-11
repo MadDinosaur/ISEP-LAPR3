@@ -4,7 +4,6 @@ import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
-import lapr.project.model.BST;
 import lapr.project.model.Ship;
 import lapr.project.utils.ShipSorter;
 
