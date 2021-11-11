@@ -36,6 +36,11 @@ public class SearchForShipController {
         this.shipStore = mainStorage.getShipStore();
     }
 
+    /**
+     * Searches for a ship with this mmsi value
+     * @param mmsi the mmsi value to search for
+     * @return returns all the ship's information and it's dynamic Data
+     */
     public Map<ShipDTO, List<PositioningDataDTO>> getShipByMMSI(String mmsi){
         Ship ship = shipStore.getShipByMMSI(mmsi);
         Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
@@ -46,6 +51,11 @@ public class SearchForShipController {
             return null;
     }
 
+    /**
+     * Searches for a ship with this imo value
+     * @param imo the imo value to be searched
+     * @return returns all the ship's information
+     */
     public Map<ShipDTO, List<PositioningDataDTO>> getShipByIMO(String imo){
         Ship ship = shipStore.getShipByIMO(imo);
         Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();
@@ -56,6 +66,11 @@ public class SearchForShipController {
             return null;
     }
 
+    /**
+     * Searches for a ship with this call sign
+     * @param callSign the call sign to be searched
+     * @return
+     */
     public Map<ShipDTO, List<PositioningDataDTO>> getShipByCallSign(String callSign){
         Ship ship = shipStore.getShipByCallSign(callSign);
         Map<ShipDTO, List<PositioningDataDTO>> map = new HashMap<>();

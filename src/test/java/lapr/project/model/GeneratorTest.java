@@ -9,7 +9,8 @@ class GeneratorTest {
     @Test
     void CreateGeneratorTest() {
         Generator c1 = new Generator(10, 90);
-        assertNotNull(c1);
+        assertEquals(c1.getGeneratorOutput(), 90);
+        assertEquals(c1.getNumberOfGenerators(), 10);
     }
 
     @Test

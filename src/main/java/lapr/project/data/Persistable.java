@@ -12,7 +12,7 @@ public interface Persistable {
 
     /**
      * Save an objet to the database.
-     * @param databaseConnection the database's conection
+     * @param databaseConnection the database's connection
      * @param object the object to be added
      * @return Operation success.
      */
@@ -20,7 +20,7 @@ public interface Persistable {
 
     /**
      * Delete an object from the database.
-     * @param databaseConnection the database's conection
+     * @param databaseConnection the database's connection
      * @param object the object to be deleted
      * @return Operation success.
      */

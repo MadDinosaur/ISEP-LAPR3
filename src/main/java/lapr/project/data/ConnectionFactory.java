@@ -19,10 +19,20 @@ public class ConnectionFactory {
      */
     private final Integer connectionPoolCount = 1;
 
+    /**
+     * this is the size of the requests
+     */
     private Integer connectionPoolRequest = 0;
 
+    /**
+     * The list of connections
+     */
     private final List<DatabaseConnection> databaseConnectionList = new ArrayList<>();
 
+    /**
+     * Returns the database connection
+     * @return returns the dataBase connection
+     */
     public DatabaseConnection getDatabaseConnection() {
         DatabaseConnection databaseConnection;
         if (++connectionPoolRequest > connectionPoolCount) {
