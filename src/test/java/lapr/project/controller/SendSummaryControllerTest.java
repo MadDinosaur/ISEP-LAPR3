@@ -32,7 +32,7 @@ class SendSummaryControllerTest {
         float width = 25;
         float draft = (float) 9.5;
         Coordinate c1 = new Coordinate((float) -66.97001, 42.97875f);
-        Coordinate c2 = new Coordinate((float) -66.96725,43.22513f);
+        Coordinate c2 = new Coordinate((float) -66.97243,42.92236f);
         Coordinate c3 = new Coordinate((float) -66.9759,42.7698f);
         Ship s1 = new Ship(mmsi,shipName,imo,callSign,vesselType,length,width,draft);
         String bdt12 = "31/12/2000 17:20";
@@ -69,7 +69,6 @@ class SendSummaryControllerTest {
         assertNull(controller.getShipByCodeType("1000001"));
         assertNotNull(controller.getShipByCodeType("CS111"));
         assertNull(controller.getShipByCodeType("toNull"));
-        assertNotNull(controller.toSummary("210950000"));
     }
 
     @Test
@@ -77,5 +76,6 @@ class SendSummaryControllerTest {
         SendSummaryController controller = new SendSummaryController();
         Ship s = controller.getShipByCodeType("210950000");
         assertNotNull(controller.toSummary("210950000"));
+        System.out.println(controller.toSummary("210950000"));
     }
 }
