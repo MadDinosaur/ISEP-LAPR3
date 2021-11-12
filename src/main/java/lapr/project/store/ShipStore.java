@@ -1,6 +1,6 @@
 package lapr.project.store;
 
-import javafx.util.Pair;
+
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
@@ -10,6 +10,7 @@ import lapr.project.model.Ship;
 import lapr.project.utils.ShipSorter;
 import lapr.project.utils.SorterTraveledDistByDate;
 import lapr.project.utils.SorterTraveledDistByDiff;
+import oracle.ucp.util.Pair;
 
 import java.util.*;
 
