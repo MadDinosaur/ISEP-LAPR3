@@ -52,6 +52,9 @@ public class SendSummaryController {
      * @return summary for the selected ship
      */
     public String toSummary(String code){
+        if(code==null){
+            return null;
+        }
         Ship ship = getShipByCodeType(code);
         StringBuilder s = new StringBuilder();
         PositioningDataList positioningData = ship.getPositioningDataList();
