@@ -39,7 +39,7 @@ public class Generator {
      * @param generatorOutput The output of the generators
      */
     private void checkGeneratorOutputRules(float generatorOutput) {
-        if (!(generatorOutput > 0))
+        if (generatorOutput <= 0)
             throw new IllegalGeneratorException("Generator output cannot be negative");
     }
 
@@ -57,7 +57,7 @@ public class Generator {
      * @param numberOfGenerators The Number of generators
      */
     private void checkNumberOfGeneratorsRules(int numberOfGenerators) {
-        if (!(numberOfGenerators > 0))
+        if (numberOfGenerators <= 0)
             throw new IllegalGeneratorException("Generator Number cannot be lower than 1");
     }
 
