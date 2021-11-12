@@ -5,7 +5,7 @@ import lapr.project.store.ShipStore;
 
 import java.util.Comparator;
 
-public class ShipSorter implements Comparator<Ship> {
+public class SorterTraveledDistance implements Comparator<Ship> {
 
     @Override
     public int compare(Ship o1,Ship o2) {

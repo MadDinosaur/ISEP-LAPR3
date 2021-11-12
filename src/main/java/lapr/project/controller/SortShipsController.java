@@ -3,9 +3,9 @@ package lapr.project.controller;
 import lapr.project.data.MainStorage;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
-import lapr.project.utils.ShipSorter;
+import lapr.project.utils.SorterTraveledDistance;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class SortShipsController {
@@ -34,15 +34,13 @@ public class SortShipsController {
      * Gets the TreeMap of the ships all ordered by Traveled Distance and Number of Movements
      * @return returns the ships sorted
      */
-    public TreeSet<String> sortShips() {
-        ShipSorter sorter = new ShipSorter();
+    public ArrayList<String> sortShips() {
+
+        SorterTraveledDistance sorter = new SorterTraveledDistance();
 
         TreeSet<Ship> shipsSorted = shipStore.sortShips(sorter);
 
         return shipStore.shipsSortedTraveledDistanceToString(shipsSorted);
     }
-
-
-
 
 }

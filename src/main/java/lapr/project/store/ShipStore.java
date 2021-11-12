@@ -7,7 +7,6 @@ import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Ship;
-import lapr.project.utils.ShipSorter;
 import lapr.project.utils.SorterTraveledDistByDate;
 import lapr.project.utils.SorterTraveledDistByDiff;
 import oracle.ucp.util.Pair;
@@ -141,13 +140,13 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
-     * converts a TreeMap to a string Map with all the ships MMSI, Traveled Distance and Number of Movements
+     * converts a TreeMap to a String List with all the ships MMSI, Traveled Distance and Number of Movements
      *
      * @param map the TreeMap to be converted
      * @return the string TreeMap
      */
-    public TreeSet<String> shipsSortedTraveledDistanceToString(TreeSet<Ship> map){
-        TreeSet<String> result = new TreeSet<>();
+    public ArrayList<String> shipsSortedTraveledDistanceToString(TreeSet<Ship> map){
+        ArrayList<String> result = new ArrayList<>();
 
         for(Ship ship : map){
 

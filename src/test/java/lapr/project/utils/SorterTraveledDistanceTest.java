@@ -1,26 +1,23 @@
-package lapr.project.controller;
+package lapr.project.utils;
 
-import lapr.project.data.MainStorage;
 import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
 import lapr.project.store.list.PositioningDataList;
-import lapr.project.utils.SorterTraveledDistance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.TreeSet;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SortShipsControllerTest {
+public class SorterTraveledDistanceTest {
 
     PositioningDataList positioningDataList1 = new PositioningDataList();
     PositioningDataList positioningDataList2 = new PositioningDataList();
-    
+
+    ShipStore shipStore = new ShipStore();
+    SorterTraveledDistance sorterTraveledDistance = new SorterTraveledDistance();
+
     Coordinate coordinate;
     Coordinate coordinate2;
     Coordinate coordinate3;
@@ -81,24 +78,27 @@ public class SortShipsControllerTest {
         s1.setPositioningDataList(positioningDataList1);
         s2.setPositioningDataList(positioningDataList2);
 
-
-
-
+        shipStore.addShip(s1);
+        shipStore.addShip(s2);
     }
 
     @Test
-    public void testController() {
+    public void testGreaterThan(){
+        s2.setPositioningDataList(positioningDataList1);
 
-        ShipStore shipStore = MainStorage.getInstance().getShipStore();
-        shipStore.addShip(s1);
-        shipStore.addShip(s2);
+        int expected = -1;
+        int result = sorterTraveledDistance.compare(s1,s2);
 
-        SortShipsController ctrl = new SortShipsController();
+        assertEquals(expected,result);
+    }
 
-        ArrayList<String> result = ctrl.sortShips();
+    @Test
+    public void testLessThan(){
 
-        assertNotNull(ctrl.sortShips());
-        assertNotNull(result);
+        int expected = 1;
+        int result = sorterTraveledDistance.compare(s2,s1);
+
+        assertEquals(expected,result);
     }
 
 

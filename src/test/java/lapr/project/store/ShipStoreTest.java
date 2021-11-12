@@ -2,9 +2,8 @@ package lapr.project.store;
 
 import lapr.project.model.*;
 import lapr.project.store.list.PositioningDataList;
-import lapr.project.utils.ShipSorter;
+import lapr.project.utils.SorterTraveledDistance;
 import lapr.project.utils.SorterTraveledDistByDiff;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ class ShipStoreTest {
     PositioningDataList positioningDataList4 = new PositioningDataList();
 
     ShipStore shipStore = new ShipStore();
-    ShipSorter shipSorter = new ShipSorter();
+    SorterTraveledDistance sorterTraveledDistance = new SorterTraveledDistance();
 
     Coordinate coordinate, coordinate2, coordinate3, coordinate4, coordinate5, coordinate6;
 
@@ -110,16 +109,16 @@ class ShipStoreTest {
 
     @Test
     public void sortShipsTraveledDistanceTestNotNull(){
-        ShipSorter shipSorter = new ShipSorter();
+        SorterTraveledDistance sorterTraveledDistance = new SorterTraveledDistance();
 
-        assertNotNull(shipStore.sortShips(shipSorter));
+        assertNotNull(shipStore.sortShips(sorterTraveledDistance));
     }
 
     @Test
     public void shipsSortedTraveledDistanceToStringTest() {
 
-        TreeSet<Ship> treeShips = shipStore.sortShips(shipSorter);
-        TreeSet<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
+        TreeSet<Ship> treeShips = shipStore.sortShips(sorterTraveledDistance);
+        ArrayList<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
         TreeSet<String> expected = new TreeSet<>();
         expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
         expected.add("MMSI: 229857000 - Traveled Distance: 10,722226 - Number of Movements: 2");
@@ -131,8 +130,8 @@ class ShipStoreTest {
     public void shipsSortedTraveledDistanceToStringSameTraveledDistanceTest(){
         s2.setPositioningDataList(positioningDataList1);
 
-        TreeSet<Ship> treeShips = shipStore.sortShips(shipSorter);
-        TreeSet<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
+        TreeSet<Ship> treeShips = shipStore.sortShips(sorterTraveledDistance);
+        ArrayList<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
         TreeSet<String> expected = new TreeSet<>();
         expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
         expected.add("MMSI: 229857000 - Traveled Distance: 23,238516 - Number of Movements: 3");
