@@ -1,23 +1,25 @@
-package lapr.project.store;
+package lapr.project.controller;
 
-import lapr.project.model.*;
+import lapr.project.data.MainStorage;
+import lapr.project.model.Coordinate;
+import lapr.project.model.PositioningData;
+import lapr.project.model.Ship;
+import lapr.project.store.ShipStore;
 import lapr.project.store.list.PositioningDataList;
 import lapr.project.utils.ShipSorter;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class ShipStoreTest {
+public class SortShipsControllerTest {
 
     PositioningDataList positioningDataList1 = new PositioningDataList();
     PositioningDataList positioningDataList2 = new PositioningDataList();
 
-    ShipStore shipStore = new ShipStore();
     ShipSorter shipSorter = new ShipSorter();
 
     Coordinate coordinate;
@@ -80,50 +82,25 @@ class ShipStoreTest {
         s1.setPositioningDataList(positioningDataList1);
         s2.setPositioningDataList(positioningDataList2);
 
+
+
+
+    }
+
+    @Test
+    public void testController() {
+
+        ShipStore shipStore = MainStorage.getInstance().getShipStore();
         shipStore.addShip(s1);
         shipStore.addShip(s2);
+
+        SortShipsController ctrl = new SortShipsController();
+
+        TreeSet<String> result = ctrl.sortShips();
+
+        assertNotNull(ctrl.sortShips());
+        assertNotNull(result);
     }
 
 
-    @Test
-    public void validateTest(){
-        ShipStore shipStore = new ShipStore();
-        assertFalse(shipStore.addShip(null));
-        assertNull(shipStore.getShipByIMO("a"));
-        assertNull(shipStore.getShipByCallSign("a"));
     }
-
-    @Test
-    public void sortShipsTraveledDistanceTestNotNull(){
-        ShipSorter shipSorter = new ShipSorter();
-
-        assertNotNull(shipStore.sortShips(shipSorter));
-    }
-
-    @Test
-    public void shipsSortedTraveledDistanceToStringTest() {
-
-        TreeSet<Ship> treeShips = shipStore.sortShips(shipSorter);
-        TreeSet<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
-        TreeSet<String> expected = new TreeSet<>();
-        expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-        expected.add("MMSI: 229857000 - Traveled Distance: 10,722226 - Number of Movements: 2");
-
-        assertEquals(expected.toString().replaceAll(",","."),result.toString().replaceAll(",","."));
-    }
-
-    @Test
-    public void shipsSortedTraveledDistanceToStringSameTraveledDistanceTest(){
-        s2.setPositioningDataList(positioningDataList1);
-
-        TreeSet<Ship> treeShips = shipStore.sortShips(shipSorter);
-        TreeSet<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
-        TreeSet<String> expected = new TreeSet<>();
-        expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-        expected.add("MMSI: 229857000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-
-        assertEquals(expected.toString().replaceAll(",","."),result.toString().replaceAll(",","."));
-
-    }
-
-}

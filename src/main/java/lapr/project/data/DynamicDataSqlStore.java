@@ -9,12 +9,25 @@ import java.util.logging.Logger;
 
 public class DynamicDataSqlStore implements Persistable{
 
+    /**
+     * the ship who has this dynamic data
+     */
     private Ship ship;
 
+    /**
+     * set's the ship of this data
+     * @param ship the ship who has this dynamic data
+     */
     public void setShip(Ship ship) {
         this.ship = ship;
     }
 
+    /**
+     * saves this dynamic data to the database
+     * @param databaseConnection the database's connection
+     * @param object the object to be added
+     * @return returns true if the data was saved
+     */
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
         Connection connection = databaseConnection.getConnection();
@@ -45,6 +58,12 @@ public class DynamicDataSqlStore implements Persistable{
         return returnValue;
     }
 
+    /**
+     * deletes the desired dynamic data from the database
+     * @param databaseConnection the database's connection
+     * @param object the object to be deleted
+     * @return true if the data was deleted
+     */
     @Override
     public boolean delete(DatabaseConnection databaseConnection, Object object) {
         Connection connection = databaseConnection.getConnection();
