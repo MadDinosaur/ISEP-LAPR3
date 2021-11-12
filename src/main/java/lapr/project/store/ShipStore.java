@@ -163,6 +163,37 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
+     * converts a TreeMap<Ship, TreeSet<Ship>> to a String, where (K,V) are pairs of ships
+     * (K is the first ship, V is a list of ship that pair with it)
+     *
+     * ships are described by:
+     * MMSI
+     * Traveled Distance
+     * Number of Movements
+     * @param map the TreeMap to be converted
+     * @return the equivalent String
+     */
+    public String shipsPairedCloseRoutesToString(HashMap<Ship, TreeSet<Ship>> map) {
+        StringBuilder string = new StringBuilder();
+
+        for (Ship ship : map.keySet()) {
+            if (map.get(ship).isEmpty()) continue;
+
+            String mmsi = ship.getMmsi();
+            double traveledDistance = ship.getPositioningDataList().traveledDistance();
+            int numberMovements = ship.getPositioningDataList().size();
+
+            for (String pairShip : shipsSortedTraveledDistanceToString(map.get(ship))) {
+                string.append(
+                        String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %s\n", mmsi, traveledDistance, numberMovements));
+                string.append(pairShip);
+                string.append("\n\n");
+            }
+        }
+        return string.toString();
+    }
+
+    /**
      * Populates a HashMap that contains a Pair of TreeMaps with grouped ordered lists of ships (with dynamic information that takes part between 2 dates).
      * The Lists are grouped by Vessel Type and the 1st list (TreeMap) is ordered by the ship's Mean SOG and the 2nd list (TreeMap) is ordered by the ship's travelled distance.
      *
@@ -247,7 +278,7 @@ public class ShipStore extends AVL<Ship>{
      *          K - first ship (ordered by MMSI),
      *          V - list of ships to pair with the first one, ordered by traveled distance difference
      */
-    public HashMap<Ship, TreeSet<Ship>> getCloseShipRoutes(int maxTraveledDist, int distance) {
+    public HashMap<Ship, TreeSet<Ship>> getCloseShipRoutes(int maxTraveledDist, int maxNumMovements, int distance) {
         HashMap<Ship, TreeSet<Ship>> closeShipRoutes = new HashMap<>();
 
         Iterator<Ship> i = inOrder().iterator();
@@ -262,7 +293,8 @@ public class ShipStore extends AVL<Ship>{
             while(j.hasNext()) {
                 Ship pairShip = j.next();
                 if (pairShip.equals(ship)) break;
-                if (pairShip.getPositioningDataList().traveledDistance() < maxTraveledDist) continue;
+                if (pairShip.getPositioningDataList().traveledDistance() < maxTraveledDist
+                        && pairShip.getPositioningDataList().totalMovementNumber() < maxNumMovements) continue;
 
                 Coordinate pairDepartureCoord = pairShip.getPositioningDataList().departureCoordinates();
                 Coordinate pairArrivalCoord = pairShip.getPositioningDataList().arrivalCoordinates();

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -127,6 +128,20 @@ class ShipStoreTest {
     }
 
     @Test
+    public void shipsPairedCloseRoutesToStringTest() {
+        //add ships to pair with
+        shipStore.addShip(s3);
+        shipStore.addShip(s4);
+
+        //expected
+        StringBuilder expected = new StringBuilder();
+        expected.append("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
+
+        //result
+        String result = shipStore.shipsPairedCloseRoutesToString(shipStore.getCloseShipRoutes(0,1000,16000));
+    }
+
+    @Test
     public void shipsSortedTraveledDistanceToStringSameTraveledDistanceTest(){
         s2.setPositioningDataList(positioningDataList1);
 
@@ -146,7 +161,7 @@ class ShipStoreTest {
         shipStore.addShip(s3);
         shipStore.addShip(s4);
 
-        HashMap<Ship, TreeSet<Ship>> result = shipStore.getCloseShipRoutes(0,16000);
+        HashMap<Ship, TreeSet<Ship>> result = shipStore.getCloseShipRoutes(0,1000,16000);
 
         TreeSet<Ship> expected1 = new TreeSet<>(new SorterTraveledDistByDiff(s1.getPositioningDataList().traveledDistance()));
         TreeSet<Ship> expected2 = new TreeSet<>(new SorterTraveledDistByDiff(s3.getPositioningDataList().traveledDistance()));

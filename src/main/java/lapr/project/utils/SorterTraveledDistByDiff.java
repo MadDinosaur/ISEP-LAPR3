@@ -10,7 +10,7 @@ import java.util.Comparator;
  */
 public class SorterTraveledDistByDiff implements Comparator<Ship> {
 
-    private double baseTraveledDistance;
+    private final double baseTraveledDistance;
 
     public SorterTraveledDistByDiff(double baseTraveledDistance) {
         this.baseTraveledDistance = baseTraveledDistance;
