@@ -47,8 +47,7 @@ CREATE TABLE Storage
     CONSTRAINT ckStorageLatitude CHECK (latitude BETWEEN -90 AND 90 OR latitude = 91),
     longitude              NUMBER(8, 5)
         CONSTRAINT nnStorageLongitude NOT NULL,
-    CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181),
-    CONSTRAINT ckStorageLocation UNIQUE (latitude, longitude)
+    CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181)
 );
 
 CREATE TABLE Container

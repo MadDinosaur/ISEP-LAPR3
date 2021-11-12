@@ -1,20 +1,19 @@
 -- REFERENTIAL RESTRICTIONS
 -- Tests if the foreign key refers to a primary key value of some table in the database.
 
--- CONSTRAINT fkStorageSystemUserIdManager -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
-INSERT INTO Storage(identification,system_user_id_manager,storage_type_id,name,continent,country,latitude,longitude)
-VALUES (1,1,1,'TestStorage','TestContinent','TestCountry',91.0,181.0);
 -- CONSTRAINT fkStorageTypeId -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
-INSERT INTO Role(name) VALUES ('TestStorageManager');
-INSERT INTO SystemUser(role_id, name, email, password) VALUES (1,'TestStorageUser','teststoragemanager@email.com','pwd');
 INSERT INTO Storage(identification,system_user_id_manager,storage_type_id,name,continent,country,latitude,longitude)
 VALUES (1,1,1,'TestStorage','TestContinent','TestCountry',91.0,181.0);
+-- CONSTRAINT fkStorageSystemUserManagerId -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+INSERT INTO StorageType(name) VALUES ('TestStorageType');
+INSERT INTO Storage(identification,system_user_id_manager,storage_type_id,name,continent,country,latitude,longitude)
+VALUES (1,2,1,'TestStorage','TestContinent','TestCountry',91.0,181.0);
 
 -- CONSTRAINT fkContainerCscPlateSerialNumber -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
 INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
 VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
 -- CONSTRAINT fkContainerStorageIdentification -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (1,'TST1234','TST1234','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1234','TST1234',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
 VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
@@ -30,13 +29,11 @@ INSERT INTO Container_CargoManifest(container_num,cargo_manifest_id,container_po
 INSERT INTO Storage_User_Staff(storage_identification, system_user_id) VALUES (2,2);
 -- CONSTRAINT fkStorageUserStaffStorageIdentification -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
 INSERT INTO Role(name) VALUES ('TestStorageStaff');
-INSERT INTO SystemUser(role_id, name, email, password) VALUES (1,'TestStorageUser','teststoragestaff@email.com','pwd');
 INSERT INTO Storage_User_Staff(storage_identification, system_user_id) VALUES (2,2);
 
 -- CONSTRAINT fkShipmentContainerNum -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
 INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination) VALUES (1,1,2);
 -- CONSTRAINT fkShipmentStorageIdentificationDestination -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
-INSERT INTO StorageType(name) VALUES ('TestStorageType');
 INSERT INTO Storage(identification,system_user_id_manager,storage_type_id,name,continent,country,latitude,longitude)
 VALUES (1,1,1,'TestStorage','TestContinent','TestCountry',91.0,181.0);
 INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
@@ -152,40 +149,40 @@ INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_d
 VALUES (2,1,1,0,'TST1',9999999,9999999,999999,999.9,2);
 
 -- CONSTRAINT nnRules -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,NULL,'TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnModel -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235',NULL,'TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnManufacturerName -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235',NULL,'TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnOwnerName -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer',NULL,'TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnOwnerAddress -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName',NULL,'TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnFurnigation -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress',NULL,'TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnApprovalNumber -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails',NULL,'TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnAcepNumber -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235',NULL,TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 -- CONSTRAINT nnDateManufactured -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',NULL,99999,999999,99999);
 -- CONSTRAINT nnMaxGrossMass -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),NULL,999999,99999);
 -- CONSTRAINT nnStackingWeight -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,NULL,99999);
 -- CONSTRAINT nnRackingTest -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,NULL);
 
 
@@ -201,7 +198,7 @@ INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_d
 VALUES (NULL,1,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
 -- CONSTRAINT pkCscPlateSerialNumber -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (NULL,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 
 
@@ -215,15 +212,15 @@ INSERT INTO Storage(identification,system_user_id_manager,storage_type_id,name,c
 VALUES (5,1,1,'TestStorage','TestContinent','TestCountry',0.0,0.0);
 
 -- CONSTRAINT unApprovalNumber -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (2,'TST1235','TST1235','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1235',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (3,'TST1236','TST1236','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1235','TST1236',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 
 -- CONSTRAINT unAcepNumber -- expected result FAIL
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (3,'TST1236','TST1236','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1236','TST1236',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
-INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
+INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,data_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (4,'TST1237','TST1237','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1237','TST1236',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 
 -- CONSTRAINT unEmail -- expected result FAIL
