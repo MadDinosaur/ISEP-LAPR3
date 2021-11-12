@@ -4,10 +4,7 @@ import lapr.project.store.ShipStore;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MainStorage {
 
