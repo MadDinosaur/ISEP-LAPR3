@@ -76,6 +76,5 @@ class SendSummaryControllerTest {
         SendSummaryController controller = new SendSummaryController();
         Ship s = controller.getShipByCodeType("210950000");
         assertNotNull(controller.toSummary("210950000"));
-        System.out.println(controller.toSummary("210950000"));
     }
 }

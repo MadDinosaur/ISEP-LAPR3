@@ -7,7 +7,6 @@ import lapr.project.utils.SorterTraveledDistByDiff;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
