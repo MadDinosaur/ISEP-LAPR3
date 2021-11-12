@@ -3,8 +3,10 @@ package lapr.project.presentationTests;
 import lapr.project.controller.GetPositionByDateController;
 import lapr.project.controller.ReadShipFileController;
 import lapr.project.controller.SearchForShipController;
+import lapr.project.controller.SendSummaryController;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
+import lapr.project.model.Ship;
 import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -167,8 +169,33 @@ public class presentationTests {
         writeOutput(output.toString(), "US3-InvalidTimeFrame");
     }
 
+    @Test
+    public void UserStory4ValidMMSICode(){
+        SendSummaryController sendSummaryController = new SendSummaryController();
+        writeOutput(sendSummaryController.toSummary("211331640"),"US4-MMSICode");
+    }
+
+    @Test
+    public void UserStory4ValidIMOCode(){
+        SendSummaryController sendSummaryController = new SendSummaryController();
+        writeOutput(sendSummaryController.toSummary("9193305"),"US4-IMOCode");
+    }
+
+    @Test
+    public void UserStory4ValidCallSignCode(){
+        SendSummaryController sendSummaryController = new SendSummaryController();
+        writeOutput(sendSummaryController.toSummary("DHBN"),"US4-CallSignCode");
+    }
+
+    @Test
+    public void UserStory4InvalidCode(){
+        SendSummaryController sendSummaryController = new SendSummaryController();
+        writeOutput(sendSummaryController.toSummary("123"),"US4-InvalidCode");
+    }
+
     private void writeOutput(String output, String filename){
         try (FileWriter myWriter = new FileWriter("output\\" + filename + ".txt")) {
+            if(output!=null)
             myWriter.write(output);
         } catch (IOException e) {
             e.printStackTrace();
