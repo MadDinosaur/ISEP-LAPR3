@@ -246,8 +246,8 @@ public class ShipStore extends AVL<Ship>{
             stringTopTravDist = new StringBuilder();
             count = 0;
 
-            stringTopMeanSog.append("Top ").append(n).append(" Ships by Mean Sog between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
-            stringTopTravDist.append("\n\nTop ").append(n).append(" Ships by Travelled Distance between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
+            stringTopMeanSog.append("\nTop ").append(n).append(" Ships by Mean Sog between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
+            stringTopTravDist.append("\nTop ").append(n).append(" Ships by Travelled Distance between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
 
             Iterator<Ship> iteratorMapMeanSog = treeMapMeanSog.keySet().iterator();
             Iterator<Ship> iteratorMapTravDist = treeMapTravDist.keySet().iterator();
@@ -257,8 +257,8 @@ public class ShipStore extends AVL<Ship>{
                 Ship ship2 = iteratorMapTravDist.next();
 
                 if (count <= n) {
-                    stringTopMeanSog.append("\nShip MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1));
-                    stringTopTravDist.append("\nShip MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2));
+                    stringTopMeanSog.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1));
+                    stringTopTravDist.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2));
                 } else
                     break;
 

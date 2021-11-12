@@ -172,6 +172,10 @@ public class PositioningDataList extends AVL<PositioningData> {
      */
     private double traveledDistance(Node<PositioningData> node){
         float traveledDistance = 0;
+
+        if(node == null)
+            return 0;
+
         if (node.getLeft() != null){
             traveledDistance +=  node.getElement().getCoordinate().getDistanceBetweenCoordinates(biggestElement(node.getLeft()).getCoordinate());
             traveledDistance += traveledDistance(node.getLeft());
@@ -203,7 +207,7 @@ public class PositioningDataList extends AVL<PositioningData> {
 
         getPositionsByDate(date1,date2,root,tree);
 
-        return tree ;
+        return tree;
     }
 
     /**

@@ -27,7 +27,7 @@ public class SorterTraveledDistByDate implements Comparator<Ship> {
             return 1;
 
         if (o1TraveledDistance == o2TraveledDistance){
-            return compare(o1, o2);
+            return o1.compareTo(o2);
         }
 
         return 0;
