@@ -19,11 +19,11 @@ public class NTopShipsController {
         this.shipStore = mainStorage.getShipStore();
     }
 
-    public void getTopNShips(int n, Date date1, Date date2) {
+    public ArrayList<String> getTopNShips(int n, Date date1, Date date2) {
         HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps = new HashMap<>();
 
         shipStore.getOrderedShipsGroupedByVesselType(date1, date2, orderedMaps);
 
-        ArrayList<String> topNShips = shipStore.getTopNShipsToString(n, date1, date2, orderedMaps);
+        return shipStore.getTopNShipsToString(n, date1, date2, orderedMaps);
     }
 }
