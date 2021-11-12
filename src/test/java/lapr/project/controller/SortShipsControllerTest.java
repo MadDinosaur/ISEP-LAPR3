@@ -20,7 +20,7 @@ public class SortShipsControllerTest {
 
     PositioningDataList positioningDataList1 = new PositioningDataList();
     PositioningDataList positioningDataList2 = new PositioningDataList();
-    
+
     Coordinate coordinate;
     Coordinate coordinate2;
     Coordinate coordinate3;

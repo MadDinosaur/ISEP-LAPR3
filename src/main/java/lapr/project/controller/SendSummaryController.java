@@ -52,7 +52,13 @@ public class SendSummaryController {
      * @return summary for the selected ship
      */
     public String toSummary(String code){
+        if(code==null){
+            return null;
+        }
         Ship ship = getShipByCodeType(code);
+        if(ship==null){
+            return null;
+        }
         StringBuilder s = new StringBuilder();
         PositioningDataList positioningData = ship.getPositioningDataList();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH/mm");
