@@ -167,7 +167,7 @@ public class PositioningDataList extends AVL<PositioningData> {
 
     /**
      * Calculates the traveled distance from every point in the
-     * @param node1 the root node
+     * @param node the root node
      * @return the traveled distance
      */
     private double traveledDistance(Node<PositioningData> node){

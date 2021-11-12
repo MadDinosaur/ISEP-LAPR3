@@ -7,6 +7,7 @@ import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Ship;
+import lapr.project.utils.SorterMeanSogByDate;
 import lapr.project.utils.SorterTraveledDistByDate;
 import lapr.project.utils.SorterTraveledDistByDiff;
 import oracle.ucp.util.Pair;
@@ -161,29 +162,82 @@ public class ShipStore extends AVL<Ship>{
         return result;
     }
 
-    public void getTopNShips(int n, Date date1, Date date2, HashMap<Integer, HashMap<Integer, Pair<Ship, Float>>> topNShipsGrouped) {
-        HashMap<Integer, Integer> vesselTypeCount = new HashMap<>();
-        SorterTraveledDistByDate sorter = new SorterTraveledDistByDate(date1, date2);
-        TreeSet<Ship> orderedShipTree = sortShips(sorter);
-        int vesselType;
+    /**
+     * Populates a HashMap that contains a Pair of TreeMaps with grouped ordered lists of ships (with dynamic information that takes part between 2 dates).
+     * The Lists are grouped by Vessel Type and the 1st list (TreeMap) is ordered by the ship's Mean SOG and the 2nd list (TreeMap) is ordered by the ship's travelled distance.
+     *
+     * @param date1 beginning date
+     * @param date2 end date
+     * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (TreeMaps).
+     */
+    public void getOrderedShipsGroupedByVesselType(Date date1, Date date2, HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps) {
+        for (Ship ship : inOrder()) {
+            int vesselType = ship.getVesselType();
 
-        for (Ship ship : orderedShipTree) {
-            vesselType = ship.getVesselType();
+            if (!orderedMaps.containsKey(vesselType)) {
+                SorterTraveledDistByDate sorterDist = new SorterTraveledDistByDate(date1, date2);
+                SorterMeanSogByDate sorterMeanSog = new SorterMeanSogByDate(date1, date2);
 
-            if (!topNShipsGrouped.containsKey(vesselType)){
-                HashMap<Integer, Pair<Ship, Float>> topNShips = new HashMap<>();
+                TreeMap<Ship, Float> meanSogMap = new TreeMap<>(sorterMeanSog);
+                TreeMap<Ship, Double> travDistMap = new TreeMap<>(sorterDist);
 
-                vesselTypeCount.put(vesselType, 0);
-                topNShipsGrouped.put(vesselType, topNShips);
+                Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>> treeMapPair = new Pair<>(meanSogMap, travDistMap);
+                orderedMaps.put(vesselType, treeMapPair);
             }
 
-            Pair<Ship, Float> shipInfo = new Pair<>(ship, ship.getPositioningDataList().getPositionsByDate(date1, date2).meanSog());
+            orderedMaps.get(vesselType).get1st().put(ship, ship.getPositioningDataList().getPositionsByDate(date1, date2).meanSog());
+            orderedMaps.get(vesselType).get2nd().put(ship, ship.getPositioningDataList().getPositionsByDate(date1, date2).traveledDistance());
+        }
+    }
 
-            topNShipsGrouped.get(vesselType).put(vesselTypeCount.get(vesselType), shipInfo);
+    /**
+     * Given the Top's size, the 2 dates where the data is collected from and the Hashmap that contains the data, will return an ArrayList of Strings
+     * with all the information of the Hashmap ready to be printed.
+     *
+     * @param n size of the Top
+     * @param date1 beginning date
+     * @param date2 end date
+     * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (TreeMaps).
+     * @return ArrayList where each String contains the information of 2 Tops (Grouped by Vessel Type).
+     */
+    public ArrayList<String> getTopNShipsToString(int n, Date date1, Date date2, HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps) {
+        TreeMap <Ship, Float> treeMapMeanSog;
+        TreeMap <Ship, Double> treeMapTravDist;
+        ArrayList<String> topNShips = new ArrayList<>();
+        StringBuilder stringTopMeanSog;
+        StringBuilder stringTopTravDist;
+        int count;
 
-            vesselTypeCount.replace(vesselType, vesselTypeCount.get(vesselType) + 1);
+        for (int vesselType : orderedMaps.keySet()) {
+            treeMapMeanSog = orderedMaps.get(vesselType).get1st();
+            treeMapTravDist = orderedMaps.get(vesselType).get2nd();
+            stringTopMeanSog = new StringBuilder();
+            stringTopTravDist = new StringBuilder();
+            count = 0;
+
+            stringTopMeanSog.append("Top ").append(n).append(" Ships by Mean Sog between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
+            stringTopTravDist.append("\n\nTop ").append(n).append(" Ships by Travelled Distance between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
+
+            Iterator<Ship> iteratorMapMeanSog = treeMapMeanSog.keySet().iterator();
+            Iterator<Ship> iteratorMapTravDist = treeMapTravDist.keySet().iterator();
+
+            while (iteratorMapMeanSog.hasNext()) {
+                Ship ship1 = iteratorMapMeanSog.next();
+                Ship ship2 = iteratorMapTravDist.next();
+
+                if (count <= n) {
+                    stringTopMeanSog.append("\nShip MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1));
+                    stringTopTravDist.append("\nShip MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2));
+                } else
+                    break;
+
+                count++;
+            }
+
+            topNShips.add(stringTopMeanSog.append(stringTopTravDist).toString());
         }
 
+        return topNShips;
     }
 
     /**
