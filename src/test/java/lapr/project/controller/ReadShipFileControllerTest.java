@@ -11,7 +11,7 @@ class ReadShipFileControllerTest {
     @Test
     public void controllerTest(){
         ReadShipFileController readShipFileController = new ReadShipFileController();
-        readShipFileController.readFileAndSaveData("bships.csv");
+        readShipFileController.readFileAndSaveData("sships.csv");
         assertNotNull(MainStorage.getInstance().getShipStore().getShipByMMSI("210950000"));
     }
 
