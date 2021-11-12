@@ -25,17 +25,13 @@ public class SorterTraveledDistance implements Comparator<Ship> {
             return 1;
 
 
-        if (o1TraveledDistance == o2TraveledDistance){
+        if (o1NumberMovements == o2NumberMovements)
+            return o1.compareTo(o2);
 
-            if (o1NumberMovements == o2NumberMovements)
-                return o1.compareTo(o2);
-
-            else if (o1NumberMovements > o2NumberMovements)
-                return 1;
+        else if (o1NumberMovements > o2NumberMovements)
+            return 1;
 
             else return -1;
         }
-
-        return 0;
     }
-}
+
