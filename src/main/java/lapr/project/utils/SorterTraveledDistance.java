@@ -6,6 +6,13 @@ import java.util.Comparator;
 
 public class SorterTraveledDistance implements Comparator<Ship> {
 
+    /**
+     * Compares both ships based on the Traveled Distance and if they have the same value, it checks the Number Of Movements
+     *
+     * @param o1 the first ship
+     * @param o2 the second ship
+     * @return a value < -1, 0, 1 >
+     */
     @Override
     public int compare(Ship o1,Ship o2) {
 
