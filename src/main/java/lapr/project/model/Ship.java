@@ -100,7 +100,7 @@ public class Ship implements Comparable<Ship> {
      * @param mmsi The ship's MMSI identification code
      */
     private void checkMmsiRules(String mmsi) {
-        if (!(mmsi.length() == 9))
+        if (mmsi.length() != 9)
             throw new IllegalShipException("MMSI code \"" + mmsi + "\" is not supported.");
     }
 
