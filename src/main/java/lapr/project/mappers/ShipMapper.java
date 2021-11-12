@@ -10,6 +10,11 @@ import java.util.Map;
 
 public class ShipMapper {
 
+    /**
+     * transforms a ship object into a shipDTO object
+     * @param ship the ship to be transformed into a dto
+     * @return A class with all the ship's data
+     */
     public static ShipDTO toDTO(Ship ship){
         return new ShipDTO(ship.getMmsi(), ship.getShipName(),Integer.toString(ship.getImo()) , ship.getCallSign(),Integer.toString(ship.getVesselType()),
                 Float.toString(ship.getLength()), Float.toString(ship.getWidth()), Float.toString(ship.getDraft()) );
@@ -31,7 +36,7 @@ public class ShipMapper {
     }
 
     /**
-     * transforms a list of dtos into a list of Ships
+     * transforms a list of DTOs into a list of Ships
      * @param shipData a mapper with all the ship information and their positioning data
      * @return a ship list
      */

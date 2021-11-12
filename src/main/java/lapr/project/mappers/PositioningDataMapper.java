@@ -29,7 +29,7 @@ public class PositioningDataMapper {
     }
 
     /**
-     * transforms a list of dtos into a list of positioningData
+     * transforms a list of DTOs into a list of positioningData
      * @param dtoList a package with all the positioning data
      * @return positioningData List
      */
@@ -58,7 +58,7 @@ public class PositioningDataMapper {
     }
 
     /**
-     * tranforms a list of PositioningData DTO's to a list of PositioningData objects
+     * transforms a list of PositioningData DTOs to a list of PositioningData objects
      * @param positioningDataList a list with all the DTO information
      * @return list of PositionData objects
      */
