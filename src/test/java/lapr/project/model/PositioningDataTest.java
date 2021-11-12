@@ -14,6 +14,8 @@ class PositioningDataTest {
     private float heading = 0;
     private String position = "95";
     private String transceiverClass = "A";
+    private float invalidCog = -1;
+    private float invalidSog = -1;
 
     @Test
     public void createValidPositionDataTest(){
@@ -33,6 +35,15 @@ class PositioningDataTest {
         assertEquals(positioningData.getHeading(), 511);
         assertEquals(positioningData.getPosition(), position);
         assertEquals(positioningData.getTransceiverClass(), transceiverClass);
+    }
+
+    @Test
+    public void createInvalidDataTest(){
+        PositioningData positioningData = new PositioningData(bdt, coordinate, invalidSog, invalidCog, heading, position, transceiverClass);
+        positioningData.setCog(invalidCog);
+        assertEquals(358,positioningData.getCog());
+        positioningData.setSog(invalidSog);
+        assertEquals(0,positioningData.getSog());
     }
 
     @Test
