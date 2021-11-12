@@ -1,14 +1,15 @@
 package lapr.project.store;
 
-
+import javafx.util.Pair;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
+import lapr.project.model.Coordinate;
 import lapr.project.model.Ship;
 import lapr.project.utils.ShipSorter;
 import lapr.project.utils.SorterTraveledDistByDate;
-import oracle.ucp.util.Pair;
+import lapr.project.utils.SorterTraveledDistByDiff;
 
 import java.util.*;
 
@@ -183,5 +184,41 @@ public class ShipStore extends AVL<Ship>{
             vesselTypeCount.replace(vesselType, vesselTypeCount.get(vesselType) + 1);
         }
 
+    }
+
+    /**
+     * Returns pairs of ships with close departure/arrival coordinates (both no more than 5km apart).
+     * Sorted by MMSI of the first ship and decreasing order of the traveled distance difference between the two.
+     * @return map</K,V> where
+     *          K - first ship (ordered by MMSI),
+     *          V - list of ships to pair with the first one, ordered by traveled distance difference
+     */
+    public HashMap<Ship, TreeSet<Ship>> getCloseShipRoutes(int maxTraveledDist, int distance) {
+        HashMap<Ship, TreeSet<Ship>> closeShipRoutes = new HashMap<>();
+
+        Iterator<Ship> i = inOrder().iterator();
+        while(i.hasNext()) {
+            Ship ship = i.next();
+            Coordinate shipDepartureCoord = ship.getPositioningDataList().departureCoordinates();
+            Coordinate shipArrivalCoord = ship.getPositioningDataList().arrivalCoordinates();
+
+            TreeSet<Ship> pairShips = new TreeSet<>(new SorterTraveledDistByDiff(ship.getPositioningDataList().traveledDistance()));
+
+            Iterator<Ship> j = inOrder().iterator();
+            while(j.hasNext()) {
+                Ship pairShip = j.next();
+                if (pairShip.equals(ship)) break;
+                if (pairShip.getPositioningDataList().traveledDistance() < maxTraveledDist) continue;
+
+                Coordinate pairDepartureCoord = pairShip.getPositioningDataList().departureCoordinates();
+                Coordinate pairArrivalCoord = pairShip.getPositioningDataList().arrivalCoordinates();
+
+                if (pairDepartureCoord.getDistanceBetweenCoordinates(shipDepartureCoord) <= distance &&
+                pairArrivalCoord.getDistanceBetweenCoordinates(shipArrivalCoord) <= distance)
+                    pairShips.add(pairShip);
+            }
+            closeShipRoutes.put(ship,pairShips);
+        }
+        return closeShipRoutes;
     }
 }
