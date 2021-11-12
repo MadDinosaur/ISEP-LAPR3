@@ -18,12 +18,12 @@ public class presentationTests {
     @BeforeEach
     private void setUp(){
 
+        ReadShipFileController readShipFileController = new ReadShipFileController();
+        readShipFileController.readFileAndSaveData("bships.csv");
     }
 
     @Test
     public void UserStory2IMO(){
-        ReadShipFileController readShipFileController = new ReadShipFileController();
-        readShipFileController.readFileAndSaveData("bships.csv");
 
         StringBuilder output = new StringBuilder();
 
@@ -48,9 +48,6 @@ public class presentationTests {
 
     @Test
     public void UserStory2CallSign(){
-        ReadShipFileController readShipFileController = new ReadShipFileController();
-        readShipFileController.readFileAndSaveData("bships.csv");
-
         StringBuilder output = new StringBuilder();
 
         SearchForShipController searchForShipController = new SearchForShipController();
@@ -74,9 +71,6 @@ public class presentationTests {
 
     @Test
     public void UserStory2MMSI(){
-        ReadShipFileController readShipFileController = new ReadShipFileController();
-        readShipFileController.readFileAndSaveData("bships.csv");
-
         StringBuilder output = new StringBuilder();
 
         SearchForShipController searchForShipController = new SearchForShipController();
@@ -100,9 +94,6 @@ public class presentationTests {
 
     @Test
     public void UserStory2InvalidShip(){
-        ReadShipFileController readShipFileController = new ReadShipFileController();
-        readShipFileController.readFileAndSaveData("bships.csv");
-
         StringBuilder output = new StringBuilder();
 
         SearchForShipController searchForShipController = new SearchForShipController();
@@ -126,10 +117,7 @@ public class presentationTests {
 
     @Test
     public void UserStory3ValidTimeFrame(){
-        ReadShipFileController readShipFileController = new ReadShipFileController();
-        readShipFileController.readFileAndSaveData("bships.csv");
-
-        StringBuilder output = new StringBuilder();
+       StringBuilder output = new StringBuilder();
 
         GetPositionByDateController getPositionByDateController = new GetPositionByDateController();
 
@@ -155,9 +143,6 @@ public class presentationTests {
 
     @Test
     public void UserStory3InvalidTimeFrame(){
-        ReadShipFileController readShipFileController = new ReadShipFileController();
-        readShipFileController.readFileAndSaveData("bships.csv");
-
         StringBuilder output = new StringBuilder();
 
         GetPositionByDateController getPositionByDateController = new GetPositionByDateController();
