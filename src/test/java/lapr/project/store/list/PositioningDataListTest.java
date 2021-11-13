@@ -46,7 +46,7 @@ class PositioningDataListTest {
         assertEquals((float)-66.9759, positioningDataList.departureCoordinates().getLongitude());
         assertEquals((float)42.97875, positioningDataList.arrivalCoordinates().getLatitude());
         assertEquals((float)-66.97001,positioningDataList.arrivalCoordinates().getLongitude());
-        assertEquals((float) 3600000.0, positioningDataList.totalMovementTime());
+        assertEquals((float) 60.0, positioningDataList.totalMovementTime());
         assertEquals((float) 3, positioningDataList.totalMovementNumber());
         assertEquals((float) 13.3, positioningDataList.maxSog());
         assertEquals((float) 12.900001, positioningDataList.meanSog());

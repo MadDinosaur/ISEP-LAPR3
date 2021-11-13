@@ -67,18 +67,18 @@ public class SendSummaryController {
         s.append(String.format("Vessel Name: %s%n", ship.getShipName()));
         s.append(String.format("Start Base Date Time: %s%n", dateFormat.format(positioningData.getFirstDate())));
         s.append(String.format("End Base Date Time: %s%n", dateFormat.format(positioningData.getLastDate())));
-        s.append(String.format("Total Movement Time: %f%n", positioningData.totalMovementTime()));
+        s.append(String.format("Total Movement Time: %f min %n", positioningData.totalMovementTime()));
         s.append(String.format("Total Movement Number: %d%n", positioningData.size()));
-        s.append(String.format("Max SOG: %f%n", positioningData.maxSog()));
-        s.append(String.format("Mean SOG: %f%n", positioningData.meanSog()));
-        s.append(String.format("Max COG: %f%n", positioningData.maxCog()));
-        s.append(String.format("Mean COG: %f%n", positioningData.meanCog()));
+        s.append(String.format("Max SOG: %f KM/H %n", positioningData.maxSog()));
+        s.append(String.format("Mean SOG: %f KM/H %n", positioningData.meanSog()));
+        s.append(String.format("Max COG: %fº %n", positioningData.maxCog()));
+        s.append(String.format("Mean COG: %fº %n", positioningData.meanCog()));
         s.append(String.format("Departure Latitude: %f%n", positioningData.departureCoordinates().getLongitude()));
         s.append(String.format("Departure Longitude: %f%n", positioningData.departureCoordinates().getLatitude()));
         s.append(String.format("Arrival Latitude: %f%n", positioningData.arrivalCoordinates().getLongitude()));
         s.append(String.format("Arrival Longitude: %f%n", positioningData.arrivalCoordinates().getLatitude()));
-        s.append(String.format("Travelled Distance: %f km %n", positioningData.traveledDistance()));
-        s.append(String.format("Delta Distance: %f km %n", positioningData.deltaDistance()));
+        s.append(String.format("Travelled Distance: %f KM %n", positioningData.traveledDistance()));
+        s.append(String.format("Delta Distance: %f KM %n", positioningData.deltaDistance()));
         return s.toString();
     }
 }
