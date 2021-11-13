@@ -67,7 +67,7 @@ public class SearchForShipController {
     /**
      * Searches for a ship with this call sign
      * @param callSign the call sign to be searched
-     * @return
+     * @return  returns all the ship's information
      */
     public Pair<ShipDTO, List<PositioningDataDTO>> getShipByCallSign(String callSign){
         Ship ship = shipStore.getShipByCallSign(callSign);

@@ -127,9 +127,12 @@ class AVLTest {
         for (int j : arr2) {
             instance2.insert(j);
         }
+        assertNotEquals(instance, 3);
+        assertEquals(instance, instance);
         assertEquals(instance2, instance);
         instance2.remove(8);
         System.out.println(instance2);
         assertNotEquals(instance2, instance);
+        AVL<Integer> avl = new AVL<>();
     }
 }
