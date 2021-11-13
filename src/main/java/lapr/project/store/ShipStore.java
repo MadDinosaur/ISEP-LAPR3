@@ -6,7 +6,9 @@ import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
 import lapr.project.model.Coordinate;
+import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
+import lapr.project.store.list.PositioningDataList;
 import lapr.project.utils.SorterMeanSogByDate;
 import lapr.project.utils.SorterTraveledDistByDate;
 import lapr.project.utils.SorterTraveledDistByDiff;
@@ -154,8 +156,9 @@ public class ShipStore extends AVL<Ship>{
             String mmsi = ship.getMmsi();
             double traveledDistance = ship.getPositioningDataList().traveledDistance();
             int numberMovements = ship.getPositioningDataList().size();
+            double deltaDistance = ship.getPositioningDataList().deltaDistance();
 
-            String string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %s", mmsi, traveledDistance, numberMovements);
+            String string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %s - Delta Distance %f", mmsi, traveledDistance, numberMovements,deltaDistance);
             result.add(string);
         }
 
@@ -216,8 +219,12 @@ public class ShipStore extends AVL<Ship>{
                 orderedMaps.put(vesselType, treeMapPair);
             }
 
-            orderedMaps.get(vesselType).get1st().put(ship, ship.getPositioningDataList().getPositionsByDate(date1, date2).meanSog());
-            orderedMaps.get(vesselType).get2nd().put(ship, ship.getPositioningDataList().getPositionsByDate(date1, date2).traveledDistance());
+            PositioningDataList dataTree = ship.getPositioningDataList().getPositionsByDate(date1, date2);
+
+            if(!dataTree.isEmpty()) {
+                orderedMaps.get(vesselType).get1st().put(ship, dataTree.meanSog());
+                orderedMaps.get(vesselType).get2nd().put(ship, dataTree.traveledDistance());
+            }
         }
     }
 
@@ -246,23 +253,27 @@ public class ShipStore extends AVL<Ship>{
             stringTopTravDist = new StringBuilder();
             count = 0;
 
-            stringTopMeanSog.append("Top ").append(n).append(" Ships by Mean Sog between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
-            stringTopTravDist.append("\n\nTop ").append(n).append(" Ships by Travelled Distance between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
-
             Iterator<Ship> iteratorMapMeanSog = treeMapMeanSog.keySet().iterator();
             Iterator<Ship> iteratorMapTravDist = treeMapTravDist.keySet().iterator();
 
-            while (iteratorMapMeanSog.hasNext()) {
-                Ship ship1 = iteratorMapMeanSog.next();
-                Ship ship2 = iteratorMapTravDist.next();
+            if (!iteratorMapMeanSog.hasNext())
+                stringTopMeanSog.append("\nNo Ships with data recorded between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append("!");
+            else {
+                stringTopMeanSog.append("\nTop ").append(n).append(" Ships by Mean Sog between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
+                stringTopTravDist.append("\nTop ").append(n).append(" Ships by Travelled Distance between the Dates ").append(date1).append(" and ").append(date2).append(" from the Vessel Type ").append(vesselType).append(":");
 
-                if (count <= n) {
-                    stringTopMeanSog.append("\nShip MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1));
-                    stringTopTravDist.append("\nShip MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2));
-                } else
-                    break;
+                while (iteratorMapMeanSog.hasNext()) {
+                    Ship ship1 = iteratorMapMeanSog.next();
+                    Ship ship2 = iteratorMapTravDist.next();
 
-                count++;
+                    if (count <= n) {
+                        stringTopMeanSog.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1));
+                        stringTopTravDist.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2));
+                    } else
+                        break;
+
+                    count++;
+                }
             }
 
             topNShips.add(stringTopMeanSog.append(stringTopTravDist).toString());
