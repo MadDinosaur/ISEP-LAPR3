@@ -208,7 +208,7 @@ class ShipStoreTest {
     }
 
     @Test
-    public void getTopNShipsToStringTest() {
+    public void getTopNShipsTestSuccess() {
         shipStore.addShip(s3);
         shipStore.addShip(s4);
         shipStore.addShip(s5);
@@ -236,10 +236,38 @@ class ShipStoreTest {
 
         expectedList.add("\nTop 2 Ships by Mean Sog between the Dates Wed Dec 30 10:00:00 GMT 2020 and Thu Dec 31 20:00:00 GMT 2020 from the Vessel Type 1:\n" +
                 "\t1. Ship MMSI: 229857005 - Mean Sog: 13.6\n" +
-                "\t2. Ship MMSI: 229857001 - Mean Sog: NaN\n" +
+                "\t2. Ship MMSI: 229857001 - Mean Sog: 13.4\n" +
                 "Top 2 Ships by Travelled Distance between the Dates Wed Dec 30 10:00:00 GMT 2020 and Thu Dec 31 20:00:00 GMT 2020 from the Vessel Type 1:\n" +
                 "\t1. Ship MMSI: 229857005 - Traveled Distance: 15185.0068359375\n" +
                 "\t2. Ship MMSI: 229857001 - Traveled Distance: 6.529848098754883");
+
+        assertEquals(expectedList.size(), topList.size());
+
+        for (int i = 0; i < topList.size(); i++) {
+            assertEquals(expectedList.get(i).replaceAll(",", "."), topList.get(i).replaceAll(",", "."));
+        }
+    }
+
+    @Test
+    public void getTopNShipsTestEmptyTop() {
+        shipStore.addShip(s3);
+        shipStore.addShip(s4);
+        shipStore.addShip(s5);
+        shipStore.addShip(s6);
+
+        Date date1 = new Date("10/30/2020 10:00");
+        Date date2 = new Date("10/31/2020 20:00");
+
+        HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps = new HashMap<>();
+
+        shipStore.getOrderedShipsGroupedByVesselType(date1, date2, orderedMaps);
+
+        ArrayList<String> topList = shipStore.getTopNShipsToString(2, date1, date2, orderedMaps);
+
+        ArrayList<String> expectedList = new ArrayList<>();
+
+        expectedList.add("\nNo Ships with data recorded between the Dates Fri Oct 30 10:00:00 GMT 2020 and Sat Oct 31 20:00:00 GMT 2020 from the Vessel Type 0!");
+        expectedList.add("\nNo Ships with data recorded between the Dates Fri Oct 30 10:00:00 GMT 2020 and Sat Oct 31 20:00:00 GMT 2020 from the Vessel Type 1!");
 
         for (int i = 0; i < topList.size(); i++) {
             assertEquals(expectedList.get(i), topList.get(i));
