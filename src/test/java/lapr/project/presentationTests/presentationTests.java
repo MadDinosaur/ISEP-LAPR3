@@ -204,6 +204,13 @@ public class presentationTests {
 
     }
 
+    @Test
+    public void UserStory7() {
+        CloseShipRoutesController closeShipRoutesController = new CloseShipRoutesController();
+
+        writeOutput(closeShipRoutesController.getCloseShipRoutes(), "US7");
+    }
+
     private void writeOutput(String output, String filename){
         try (FileWriter myWriter = new FileWriter("output\\" + filename + ".txt")) {
             if(output!=null)
