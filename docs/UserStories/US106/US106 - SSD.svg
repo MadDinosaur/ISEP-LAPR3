@@ -33,13 +33,13 @@
       ><path d="M357 29 L357 44 L163 44 L163 29 ZM0 0 L0 104 L166 104 L166 102 L353 102 L353 104 L525 104 L525 0 L335 0 L335 7 L185 7 L185 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
-      ><path d="M353 30 L353 45 L166 45 L166 30 ZM356 60 L356 75 L163 75 L163 60 ZM0 0 L0 104 L525 104 L525 0 Z"
+      ><path d="M353 30 L353 45 L166 45 L166 30 ZM416 60 L416 75 L101 75 L101 60 ZM0 0 L0 104 L525 104 L525 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
-      ><path d="M356 30 L356 45 L163 45 L163 30 ZM0 0 L0 104 L525 104 L525 0 L353 0 L353 15 L166 15 L166 0 Z"
+      ><path d="M416 30 L416 45 L101 45 L101 30 ZM0 0 L0 104 L525 104 L525 0 L353 0 L353 15 L166 15 L166 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
-      ><path d="M-193 -15 L386 -15 L386 30 L-193 30 L-193 -15 Z"
+      ><path d="M-315 -15 L630 -15 L630 30 L-315 30 L-315 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
       ><path d="M-187 -15 L374 -15 L374 30 L-187 30 L-187 -15 Z"
@@ -113,10 +113,10 @@
       /><line clip-path="url(#clipPath11)" fill="none" x1="50" x2="62" y1="50" y2="56" stroke-dasharray="none" stroke-miterlimit="10"
       /><line clip-path="url(#clipPath11)" fill="none" x1="50" x2="62" y1="50" y2="44" stroke-dasharray="none" stroke-miterlimit="10"
     /></g
-    ><g font-size="11px" transform="translate(168,201)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="193" height="15" y="0" clip-path="url(#clipPath12)" stroke="none"
+    ><g font-size="11px" transform="translate(106,201)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
+    ><rect x="0" width="315" height="15" y="0" clip-path="url(#clipPath12)" stroke="none"
       /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath12)" stroke="none"
-      >2.1: returns a list of the top N-Ships</text
+      >2.1: returns a list of the top N-Ships grouped by Vessel Type</text
     ></g
     ><g font-size="11px" transform="translate(171,171)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
     ><rect x="0" width="187" height="15" y="0" clip-path="url(#clipPath13)" stroke="none"

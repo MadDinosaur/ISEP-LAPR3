@@ -234,20 +234,24 @@ public class ShipStore extends AVL<Ship>{
             }
         }
 
+        orderTops(orderedMaps);
+    }
+
+    private void orderTops(HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> maps) {
         Map<Ship, Float> tmpMap1;
         Map<Ship, Double> tmpMap2;
 
-        for (int vessel : orderedMaps.keySet()) {
+        for (int vessel : maps.keySet()) {
 
-            tmpMap1 = (sortByValueDesc(orderedMaps.get(vessel).get1st()));
+            tmpMap1 = (sortByValueDesc(maps.get(vessel).get1st()));
 
-            orderedMaps.get(vessel).get1st().clear();
-            orderedMaps.get(vessel).get1st().putAll(tmpMap1);
+            maps.get(vessel).get1st().clear();
+            maps.get(vessel).get1st().putAll(tmpMap1);
 
-            tmpMap2 = (sortByValueDesc(orderedMaps.get(vessel).get2nd()));
+            tmpMap2 = (sortByValueDesc(maps.get(vessel).get2nd()));
 
-            orderedMaps.get(vessel).get2nd().clear();
-            orderedMaps.get(vessel).get2nd().putAll(tmpMap2);
+            maps.get(vessel).get2nd().clear();
+            maps.get(vessel).get2nd().putAll(tmpMap2);
         }
     }
 
