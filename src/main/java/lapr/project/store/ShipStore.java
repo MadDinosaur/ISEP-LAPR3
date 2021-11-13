@@ -156,8 +156,9 @@ public class ShipStore extends AVL<Ship>{
             String mmsi = ship.getMmsi();
             double traveledDistance = ship.getPositioningDataList().traveledDistance();
             int numberMovements = ship.getPositioningDataList().size();
+            double deltaDistance = ship.getPositioningDataList().deltaDistance();
 
-            String string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %s", mmsi, traveledDistance, numberMovements);
+            String string = String.format("MMSI: %s - Traveled Distance: %f - Number of Movements: %s - Delta Distance %f", mmsi, traveledDistance, numberMovements,deltaDistance);
             result.add(string);
         }
 
