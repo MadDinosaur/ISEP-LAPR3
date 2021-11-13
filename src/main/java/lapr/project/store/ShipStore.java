@@ -267,8 +267,8 @@ public class ShipStore extends AVL<Ship>{
                     Ship ship2 = iteratorMapTravDist.next();
 
                     if (count <= n) {
-                        stringTopMeanSog.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1));
-                        stringTopTravDist.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2));
+                        stringTopMeanSog.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1)).append(" KM/H");
+                        stringTopTravDist.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2)).append(" KM");
                     } else
                         break;
 
