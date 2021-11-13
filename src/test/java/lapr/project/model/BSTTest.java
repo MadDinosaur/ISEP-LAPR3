@@ -37,6 +37,16 @@ class BSTTest {
         assertEquals(instance.find(instance.root(), 50).getElement(), 50);
     }
 
+    @Test
+    public void testFind2(){
+        assertEquals(instance.find(instance.root(), 30).getElement(), 30);
+        assertEquals(instance.find(instance.root(), 40).getElement(), 40);
+        assertEquals(instance.find(instance.root(), 10).getElement(), 10);
+        assertEquals(instance.find(instance.root(), 8).getElement(), 8);
+        assertEquals(instance.find(instance.root(), 20).getElement(), 20);
+        assertNotEquals(instance.find(instance.root(), 15).getElement(), 40);
+    }
+
     /**
      * Test of size method, of class BST.
      */
