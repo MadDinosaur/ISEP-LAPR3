@@ -1,9 +1,13 @@
-package lapr.project.store;
+package lapr.project.controller;
 
-import lapr.project.model.*;
+import lapr.project.data.MainStorage;
+import lapr.project.model.Coordinate;
+import lapr.project.model.PositioningData;
+import lapr.project.model.Ship;
+import lapr.project.store.ShipStore;
 import lapr.project.store.list.PositioningDataList;
-import lapr.project.utils.SorterTraveledDistance;
 import lapr.project.utils.SorterTraveledDistByDiff;
+import lapr.project.utils.SorterTraveledDistance;
 import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,17 +17,13 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShipStoreTest {
-
+class NTopShipsControllerTest {
     PositioningDataList positioningDataList1 = new PositioningDataList();
     PositioningDataList positioningDataList2 = new PositioningDataList();
     PositioningDataList positioningDataList3 = new PositioningDataList();
     PositioningDataList positioningDataList4 = new PositioningDataList();
     PositioningDataList positioningDataList5 = new PositioningDataList();
     PositioningDataList positioningDataList6 = new PositioningDataList();
-
-    ShipStore shipStore = new ShipStore();
-    SorterTraveledDistance sorterTraveledDistance = new SorterTraveledDistance();
 
     Coordinate coordinate, coordinate2, coordinate3, coordinate4, coordinate5, coordinate6, coordinate7, coordinate8, coordinate9;
 
@@ -33,7 +33,6 @@ class ShipStoreTest {
 
     @BeforeEach
     public void setUp(){
-
         coordinate = new Coordinate(-66.97001f, 42.97875f);
         coordinate2 = new Coordinate(-66.97243f, 42.92236f);
         coordinate3 = new Coordinate(-66.9759f, 42.7698f);
@@ -109,119 +108,25 @@ class ShipStoreTest {
         s5.setPositioningDataList(positioningDataList5);
         s6.setPositioningDataList(positioningDataList6);
 
-        shipStore.addShip(s1);
-        shipStore.addShip(s2);
-    }
 
-
-    @Test
-    public void validateTest(){
-        ShipStore shipStore = new ShipStore();
-        assertFalse(shipStore.addShip(null));
-        assertNull(shipStore.getShipByIMO("a"));
-        assertNull(shipStore.getShipByCallSign("a"));
-    }
-
-    @Test
-    public void sortShipsTraveledDistanceTestNotNull(){
-        SorterTraveledDistance sorterTraveledDistance = new SorterTraveledDistance();
-
-        assertNotNull(shipStore.sortShips(sorterTraveledDistance));
-    }
-
-    @Test
-    public void shipsSortedTraveledDistanceToStringTest() {
-
-        TreeSet<Ship> treeShips = shipStore.sortShips(sorterTraveledDistance);
-        ArrayList<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
-        TreeSet<String> expected = new TreeSet<>();
-        expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-        expected.add("MMSI: 229857000 - Traveled Distance: 10,722226 - Number of Movements: 2");
-
-        assertEquals(expected.toString().replaceAll(",","."),result.toString().replaceAll(",","."));
-    }
-
-    @Test
-    public void shipsPairedCloseRoutesToStringTest() {
-        //add ships to pair with
-        shipStore.addShip(s3);
-        shipStore.addShip(s4);
-
-        //expected
-        StringBuilder expected = new StringBuilder();
-        expected.append("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-
-        //result
-        String result = shipStore.shipsPairedCloseRoutesToString(shipStore.getCloseShipRoutes(0,1000,16000));
-    }
-
-    @Test
-    public void shipsSortedTraveledDistanceToStringSameTraveledDistanceTest(){
-        s2.setPositioningDataList(positioningDataList1);
-
-        TreeSet<Ship> treeShips = shipStore.sortShips(sorterTraveledDistance);
-        ArrayList<String> result = shipStore.shipsSortedTraveledDistanceToString(treeShips);
-        TreeSet<String> expected = new TreeSet<>();
-        expected.add("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-        expected.add("MMSI: 229857000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-
-        assertEquals(expected.toString().replaceAll(",","."),result.toString().replaceAll(",","."));
-
-    }
-
-    @Test
-    public void getCloseShipRoutes() {
-        //add ships to pair with
-        shipStore.addShip(s3);
-        shipStore.addShip(s4);
-
-        HashMap<Ship, TreeSet<Ship>> result = shipStore.getCloseShipRoutes(0,1000,16000);
-
-        TreeSet<Ship> expected1 = new TreeSet<>(new SorterTraveledDistByDiff(s1.getPositioningDataList().traveledDistance()));
-        TreeSet<Ship> expected2 = new TreeSet<>(new SorterTraveledDistByDiff(s3.getPositioningDataList().traveledDistance()));
-        TreeSet<Ship> expected3 = new TreeSet<>(new SorterTraveledDistByDiff(s2.getPositioningDataList().traveledDistance()));
-        TreeSet<Ship> expected4 = new TreeSet<>(new SorterTraveledDistByDiff(s4.getPositioningDataList().traveledDistance()));
-
-        expected2.add(s1);
-        expected3.add(s1);
-        expected3.add(s3);
-        expected4.add(s1);
-        expected4.add(s2);
-        expected4.add(s3);
-
-        HashMap<Ship, TreeSet<Ship>> expected = new HashMap<>();
-        expected.put(s1, expected1);
-        expected.put(s3, expected2);
-        expected.put(s2, expected3);
-        expected.put(s4, expected4);
-
-        assertEquals(expected.size(), result.size());
-
-        String expectedAsString = expected.keySet().stream()
-                .map(key -> key + "=" + shipStore.shipsSortedTraveledDistanceToString(expected.get(key)))
-                .collect(Collectors.joining(", ", "{", "}"));
-        String resultAsString = result.keySet().stream()
-                .map(key -> key.toString() + "=" + shipStore.shipsSortedTraveledDistanceToString(result.get(key)))
-                .collect(Collectors.joining(", ", "{", "}"));
-
-        assertEquals(expectedAsString, resultAsString);
     }
 
     @Test
     public void getTopNShipsTestSuccess() {
+        ShipStore shipStore = MainStorage.getInstance().getShipStore();
+        shipStore.addShip(s1);
+        shipStore.addShip(s2);
         shipStore.addShip(s3);
         shipStore.addShip(s4);
         shipStore.addShip(s5);
         shipStore.addShip(s6);
 
+        NTopShipsController controller = new NTopShipsController();
+
         Date date1 = new Date("12/30/2020 10:00");
         Date date2 = new Date("12/31/2020 20:00");
 
-        HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps = new HashMap<>();
-
-        shipStore.getOrderedShipsGroupedByVesselType(date1, date2, orderedMaps);
-
-        ArrayList<String> topList = shipStore.getTopNShipsToString(2, date1, date2, orderedMaps);
+        ArrayList<String> topList = controller.getTopNShips(2, date1, date2);
 
         ArrayList<String> expectedList = new ArrayList<>();
 
@@ -250,19 +155,20 @@ class ShipStoreTest {
 
     @Test
     public void getTopNShipsTestEmptyTop() {
+        ShipStore shipStore = MainStorage.getInstance().getShipStore();
+        shipStore.addShip(s1);
+        shipStore.addShip(s2);
         shipStore.addShip(s3);
         shipStore.addShip(s4);
         shipStore.addShip(s5);
         shipStore.addShip(s6);
 
+        NTopShipsController controller = new NTopShipsController();
+
         Date date1 = new Date("10/30/2020 10:00");
         Date date2 = new Date("10/31/2020 20:00");
 
-        HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps = new HashMap<>();
-
-        shipStore.getOrderedShipsGroupedByVesselType(date1, date2, orderedMaps);
-
-        ArrayList<String> topList = shipStore.getTopNShipsToString(2, date1, date2, orderedMaps);
+        ArrayList<String> topList = controller.getTopNShips(2, date1, date2);
 
         ArrayList<String> expectedList = new ArrayList<>();
 

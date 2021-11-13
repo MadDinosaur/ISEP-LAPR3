@@ -26,10 +26,6 @@ public class SorterMeanSogByDate implements Comparator<Ship> {
         else if (o1MeanSog < o2MeanSog)
             return 1;
 
-        if (o1MeanSog == o2MeanSog){
-            return o1.compareTo(o2);
-        }
-
-        return 0;
+        return o1.compareTo(o2);
     }
 }
