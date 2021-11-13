@@ -5,6 +5,7 @@ import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 
 import java.util.Date;
+import java.util.List;
 
 public class PositioningDataTree extends AVL<PositioningData> {
 
@@ -173,17 +174,12 @@ public class PositioningDataTree extends AVL<PositioningData> {
     private double traveledDistance(Node<PositioningData> node){
         float traveledDistance = 0;
 
-        if(node == null)
-            return 0;
+        List<PositioningData> positioningDataList = (List<PositioningData>) this.inOrder();
 
-        if (node.getLeft() != null){
-            traveledDistance +=  node.getElement().getCoordinate().getDistanceBetweenCoordinates(biggestElement(node.getLeft()).getCoordinate());
-            traveledDistance += traveledDistance(node.getLeft());
+        for (int i = 0; i < size() - 1; i++){
+            traveledDistance += positioningDataList.get(i).getCoordinate().getDistanceBetweenCoordinates(positioningDataList.get(i + 1).getCoordinate());
         }
-        if (node.getRight() != null){
-            traveledDistance +=  node.getElement().getCoordinate().getDistanceBetweenCoordinates(smallestElement(node.getRight()).getCoordinate());
-            traveledDistance += traveledDistance(node.getRight());
-        }
+
         return traveledDistance;
     }
 
