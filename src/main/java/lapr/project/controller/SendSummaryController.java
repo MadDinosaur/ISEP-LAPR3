@@ -3,7 +3,7 @@ package lapr.project.controller;
 import lapr.project.model.Ship;
 import lapr.project.data.MainStorage;
 import lapr.project.store.ShipStore;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,7 +60,7 @@ public class SendSummaryController {
             return null;
         }
         StringBuilder s = new StringBuilder();
-        PositioningDataList positioningData = ship.getPositioningDataList();
+        PositioningDataTree positioningData = ship.getPositioningDataList();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH/mm");
         s.append(String.format("Ship's Summary:%n"));
         s.append(String.format("Chosen Identification: %s%n", code));

@@ -3,7 +3,7 @@ package lapr.project.utils;
 import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,17 +50,17 @@ class SorterTraveledDistByDiffTest {
         //Distance Ship1 = 1111km - 1000km = 111km
         PositioningData s1p1 = new PositioningData("01/01/2021 00:00", new Coordinate(0,0),0f,0f,0f,"TestPos","A");
         PositioningData s1p2 = new PositioningData("01/12/2021 00:00", new Coordinate(0,10),0f,0f,0f,"TestPos","A");
-        PositioningDataList s1Pos = new PositioningDataList();
-        s1Pos.insertPositioningDataList(s1p1);
-        s1Pos.insertPositioningDataList(s1p2);
+        PositioningDataTree s1Pos = new PositioningDataTree();
+        s1Pos.insertPositioningDataTree(s1p1);
+        s1Pos.insertPositioningDataTree(s1p2);
         s1.setPositioningDataList(s1Pos);
 
         //Distance Ship2 = 556km - 1000km = 444km
         PositioningData s2p1 = new PositioningData("01/01/2021 00:00", new Coordinate(0,0),0f,0f,0f,"TestPos","A");
         PositioningData s2p2 = new PositioningData("01/12/2021 00:00", new Coordinate(0,5),0f,0f,0f,"TestPos","A");
-        PositioningDataList s2Pos = new PositioningDataList();
-        s2Pos.insertPositioningDataList(s2p1);
-        s2Pos.insertPositioningDataList(s2p2);
+        PositioningDataTree s2Pos = new PositioningDataTree();
+        s2Pos.insertPositioningDataTree(s2p1);
+        s2Pos.insertPositioningDataTree(s2p2);
         s2.setPositioningDataList(s2Pos);
 
         //DistanceShip3 = 1111km - 1000km = 111km

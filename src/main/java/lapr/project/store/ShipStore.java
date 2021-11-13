@@ -7,7 +7,7 @@ import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Ship;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 import lapr.project.utils.SorterTraveledDistByDiff;
 import oracle.ucp.util.Pair;
 
@@ -199,18 +199,18 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
-     * Populates a HashMap that contains a Pair of TreeMaps with grouped ordered lists of ships (with dynamic information that takes part between 2 dates).
-     * The Lists are grouped by Vessel Type and the 1st list (TreeMap) is ordered by the ship's Mean SOG and the 2nd list (TreeMap) is ordered by the ship's travelled distance.
+     * Populates a HashMap that contains a Pair of LinkedHashMaps with grouped ordered lists of ships (with dynamic information that takes part between 2 dates).
+     * The Lists are grouped by Vessel Type and the 1st list (LinkedHashMap) is ordered by the ship's Mean SOG and the 2nd list (LinkedHashMap) is ordered by the ship's travelled distance.
      *
      * @param date1 beginning date
      * @param date2 end date
-     * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (TreeMaps).
+     * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (LinkedHashMaps).
      */
     public void getOrderedShipsGroupedByVesselType(Date date1, Date date2, HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps) {
         LinkedHashMap<Ship, Float> meanSogMap;
         LinkedHashMap<Ship, Double> travDistMap;
 
-        Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>> treeMapPair;
+        Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>> linkedMapPair;
 
         int vesselType;
 
@@ -221,12 +221,12 @@ public class ShipStore extends AVL<Ship>{
                 meanSogMap = new LinkedHashMap<>();
                 travDistMap = new LinkedHashMap<>();
 
-                treeMapPair = new Pair<>(meanSogMap, travDistMap);
+                linkedMapPair = new Pair<>(meanSogMap, travDistMap);
 
-                orderedMaps.put(vesselType, treeMapPair);
+                orderedMaps.put(vesselType, linkedMapPair);
             }
 
-            PositioningDataList dataTree = ship.getPositioningDataList().getPositionsByDate(date1, date2);
+            PositioningDataTree dataTree = ship.getPositioningDataList().getPositionsByDate(date1, date2);
 
             if(!dataTree.isEmpty()) {
                 orderedMaps.get(vesselType).get1st().put(ship, dataTree.meanSog());
@@ -237,6 +237,11 @@ public class ShipStore extends AVL<Ship>{
         orderTops(orderedMaps);
     }
 
+    /**
+     * Will order the LinkedHashMaps that contain the tops of ships
+     *
+     * @param maps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (LinkedHashMaps).
+     */
     private void orderTops(HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> maps) {
         Map<Ship, Float> tmpMap1;
         Map<Ship, Double> tmpMap2;

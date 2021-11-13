@@ -6,14 +6,14 @@ import lapr.project.model.PositioningData;
 
 import java.util.Date;
 
-public class PositioningDataList extends AVL<PositioningData> {
+public class PositioningDataTree extends AVL<PositioningData> {
 
 
     /**
      * populates and the avl tree
      * @param positioningData a list of positioning data
      */
-    public void insertPositioningDataList(PositioningData positioningData) {
+    public void insertPositioningDataTree(PositioningData positioningData) {
         insert(positioningData);
     }
 
@@ -201,9 +201,9 @@ public class PositioningDataList extends AVL<PositioningData> {
      * @param date2 the final date
      * @return returns a list of all position data that takes place in the specified time slot
      */
-    public PositioningDataList getPositionsByDate(Date date1, Date date2){
+    public PositioningDataTree getPositionsByDate(Date date1, Date date2){
 
-        PositioningDataList  tree = new PositioningDataList();
+        PositioningDataTree tree = new PositioningDataTree();
 
         getPositionsByDate(date1,date2,root,tree);
 
@@ -217,7 +217,7 @@ public class PositioningDataList extends AVL<PositioningData> {
      * @param node the current node being searched
      * @param result the tree being modified
      */
-    private void getPositionsByDate(Date date1, Date date2, Node<PositioningData> node, PositioningDataList result){
+    private void getPositionsByDate(Date date1, Date date2, Node<PositioningData> node, PositioningDataTree result){
 
         if ( node == null)
             return;

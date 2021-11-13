@@ -1,7 +1,7 @@
 package lapr.project.model;
 
 import lapr.project.exception.IllegalShipException;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 
 public class Ship implements Comparable<Ship> {
 
@@ -61,7 +61,7 @@ public class Ship implements Comparable<Ship> {
     /**
      * The ship's positioning data
      */
-    private PositioningDataList positioningDataList;
+    private PositioningDataTree positioningDataTree;
 
     /**
      * Creates the object Ship
@@ -117,10 +117,10 @@ public class Ship implements Comparable<Ship> {
 
     /**
      * Set's the ship's positions positioning data
-     * @param positioningDataList The ship's positions positioning data
+     * @param positioningDataTree The ship's positions positioning data
      */
-    public void setPositioningDataList(PositioningDataList positioningDataList) {
-        this.positioningDataList = positioningDataList;
+    public void setPositioningDataList(PositioningDataTree positioningDataTree) {
+        this.positioningDataTree = positioningDataTree;
     }
 
     /**
@@ -293,8 +293,8 @@ public class Ship implements Comparable<Ship> {
      * returns the ship's positioning data
      * @return returns the ship's positioning data
      */
-    public PositioningDataList getPositioningDataList() {
-        return positioningDataList;
+    public PositioningDataTree getPositioningDataList() {
+        return positioningDataTree;
     }
 
     /**

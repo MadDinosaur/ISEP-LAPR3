@@ -5,25 +5,21 @@ import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
-import lapr.project.store.list.PositioningDataList;
-import lapr.project.utils.SorterTraveledDistByDiff;
-import lapr.project.utils.SorterTraveledDistance;
-import oracle.ucp.util.Pair;
+import lapr.project.store.list.PositioningDataTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class NTopShipsControllerTest {
-    PositioningDataList positioningDataList1 = new PositioningDataList();
-    PositioningDataList positioningDataList2 = new PositioningDataList();
-    PositioningDataList positioningDataList3 = new PositioningDataList();
-    PositioningDataList positioningDataList4 = new PositioningDataList();
-    PositioningDataList positioningDataList5 = new PositioningDataList();
-    PositioningDataList positioningDataList6 = new PositioningDataList();
+    PositioningDataTree positioningDataTree1 = new PositioningDataTree();
+    PositioningDataTree positioningDataTree2 = new PositioningDataTree();
+    PositioningDataTree positioningDataTree3 = new PositioningDataTree();
+    PositioningDataTree positioningDataTree4 = new PositioningDataTree();
+    PositioningDataTree positioningDataTree5 = new PositioningDataTree();
+    PositioningDataTree positioningDataTree6 = new PositioningDataTree();
 
     Coordinate coordinate, coordinate2, coordinate3, coordinate4, coordinate5, coordinate6, coordinate7, coordinate8, coordinate9;
 
@@ -55,25 +51,25 @@ class NTopShipsControllerTest {
         positioningData8 = new PositioningData("1/01/2021 17:47", coordinate8, 14.4f, 2.7f,356, "Sea","B");
         positioningData9 = new PositioningData("1/01/2021 17:52", coordinate9, 17.5f, 2.7f,356, "Sea","B");
 
-        positioningDataList1.insertPositioningDataList(positioningData);
-        positioningDataList1.insertPositioningDataList(positioningData2);
-        positioningDataList1.insertPositioningDataList(positioningData3);
+        positioningDataTree1.insertPositioningDataTree(positioningData);
+        positioningDataTree1.insertPositioningDataTree(positioningData2);
+        positioningDataTree1.insertPositioningDataTree(positioningData3);
 
-        positioningDataList2.insertPositioningDataList(positioningData4);
-        positioningDataList2.insertPositioningDataList(positioningData5);
+        positioningDataTree2.insertPositioningDataTree(positioningData4);
+        positioningDataTree2.insertPositioningDataTree(positioningData5);
 
-        positioningDataList3.insertPositioningDataList(positioningData2);
-        positioningDataList3.insertPositioningDataList(positioningData5);
+        positioningDataTree3.insertPositioningDataTree(positioningData2);
+        positioningDataTree3.insertPositioningDataTree(positioningData5);
 
-        positioningDataList4.insertPositioningDataList(positioningData2);
-        positioningDataList4.insertPositioningDataList(positioningData6);
+        positioningDataTree4.insertPositioningDataTree(positioningData2);
+        positioningDataTree4.insertPositioningDataTree(positioningData6);
 
-        positioningDataList5.insertPositioningDataList(positioningData);
-        positioningDataList5.insertPositioningDataList(positioningData5);
+        positioningDataTree5.insertPositioningDataTree(positioningData);
+        positioningDataTree5.insertPositioningDataTree(positioningData5);
 
-        positioningDataList6.insertPositioningDataList(positioningData7);
-        positioningDataList6.insertPositioningDataList(positioningData8);
-        positioningDataList6.insertPositioningDataList(positioningData9);
+        positioningDataTree6.insertPositioningDataTree(positioningData7);
+        positioningDataTree6.insertPositioningDataTree(positioningData8);
+        positioningDataTree6.insertPositioningDataTree(positioningData9);
 
 
         String shipName = "Example";
@@ -103,12 +99,12 @@ class NTopShipsControllerTest {
         s5 = new Ship(mmsi5,shipName,imo2,callSign2,vesselType2,length,width,draft);
         s6 = new Ship(mmsi6,shipName,imo2,callSign2,vesselType2,length,width,draft);
 
-        s1.setPositioningDataList(positioningDataList1);
-        s2.setPositioningDataList(positioningDataList2);
-        s3.setPositioningDataList(positioningDataList3);
-        s4.setPositioningDataList(positioningDataList4);
-        s5.setPositioningDataList(positioningDataList5);
-        s6.setPositioningDataList(positioningDataList6);
+        s1.setPositioningDataList(positioningDataTree1);
+        s2.setPositioningDataList(positioningDataTree2);
+        s3.setPositioningDataList(positioningDataTree3);
+        s4.setPositioningDataList(positioningDataTree4);
+        s5.setPositioningDataList(positioningDataTree5);
+        s6.setPositioningDataList(positioningDataTree6);
 
         shipStore = MainStorage.getInstance().getShipStore();
     }
