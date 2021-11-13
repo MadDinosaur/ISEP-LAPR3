@@ -266,8 +266,8 @@ class ShipStoreTest {
 
         ArrayList<String> expectedList = new ArrayList<>();
 
-        expectedList.add("\nNo Ships with data recorded between the Dates Fri Oct 30 10:00:00 GMT 2020 and Sat Oct 31 20:00:00 GMT 2020 from the Vessel Type 0!");
-        expectedList.add("\nNo Ships with data recorded between the Dates Fri Oct 30 10:00:00 GMT 2020 and Sat Oct 31 20:00:00 GMT 2020 from the Vessel Type 1!");
+        expectedList.add("\nNo Ships with data recorded between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0!");
+        expectedList.add("\nNo Ships with data recorded between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1!");
 
         for (int i = 0; i < topList.size(); i++) {
             assertEquals(expectedList.get(i), topList.get(i));
