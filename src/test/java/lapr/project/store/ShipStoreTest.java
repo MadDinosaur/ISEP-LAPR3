@@ -217,7 +217,7 @@ class ShipStoreTest {
         Date date1 = new Date("12/30/2020 10:00");
         Date date2 = new Date("12/31/2020 20:00");
 
-        HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps = new HashMap<>();
+        HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps = new HashMap<>();
 
         shipStore.getOrderedShipsGroupedByVesselType(date1, date2, orderedMaps);
 
@@ -228,11 +228,9 @@ class ShipStoreTest {
         expectedList.add("\nTop 2 Ships by Mean Sog between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0:\n" +
                 "\t1. Ship MMSI: 229857000 - Mean Sog: 14.8 KM/H\n" +
                 "\t2. Ship MMSI: 229850001 - Mean Sog: 13.4 KM/H\n" +
-                "\t3. Ship MMSI: 210950000 - Mean Sog: 12.900001 KM/H\n" +
                 "Top 2 Ships by Travelled Distance between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0:\n" +
                 "\t1. Ship MMSI: 229850001 - Traveled Distance: 15179.810546875 KM\n" +
-                "\t2. Ship MMSI: 210950000 - Traveled Distance: 23.238515853881836 KM\n" +
-                "\t3. Ship MMSI: 229857000 - Traveled Distance: 10.7222261428833 KM");
+                "\t2. Ship MMSI: 210950000 - Traveled Distance: 23.238515853881836 KM");
 
         expectedList.add("\nTop 2 Ships by Mean Sog between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1:\n" +
                 "\t1. Ship MMSI: 229857005 - Mean Sog: 13.6 KM/H\n" +
@@ -258,7 +256,7 @@ class ShipStoreTest {
         Date date1 = new Date("10/30/2020 10:00");
         Date date2 = new Date("10/31/2020 20:00");
 
-        HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps = new HashMap<>();
+        HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps = new HashMap<>();
 
         shipStore.getOrderedShipsGroupedByVesselType(date1, date2, orderedMaps);
 

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 public class presentationTests {
 
@@ -209,6 +209,38 @@ public class presentationTests {
         CloseShipRoutesController closeShipRoutesController = new CloseShipRoutesController();
 
         writeOutput(closeShipRoutesController.getCloseShipRoutes(), "US7");
+    }
+
+    @Test
+    public void UserStory6ValidDates() {
+        NTopShipsController controller = new NTopShipsController();
+        StringBuilder result = new StringBuilder();
+
+        Date date1 = new Date("12/31/2020 10:00");
+        Date date2 = new Date("12/31/2020 16:00");
+
+        ArrayList<String> topList = controller.getTopNShips(5, date1, date2);
+
+        for (String str : topList)
+            result.append(str).append("\n").append("\n============================================================================================================\n");
+
+        writeOutput(result.toString(),"US6-WithData");
+    }
+
+    @Test
+    public void UserStory6DatesWithNoValidData() {
+        NTopShipsController controller = new NTopShipsController();
+        StringBuilder result = new StringBuilder();
+
+        Date date1 = new Date("12/02/2020 10:00");
+        Date date2 = new Date("12/10/2020 16:00");
+
+        ArrayList<String> topList = controller.getTopNShips(5, date1, date2);
+
+        for (String str : topList)
+            result.append(str).append("\n").append("\n============================================================================================================\n");
+
+        writeOutput(result.toString(),"US6-NoData");
     }
 
     private void writeOutput(String output, String filename){

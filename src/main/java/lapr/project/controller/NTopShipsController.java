@@ -20,7 +20,7 @@ public class NTopShipsController {
     }
 
     public ArrayList<String> getTopNShips(int n, Date date1, Date date2) {
-        HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps = new HashMap<>();
+        HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps = new HashMap<>();
 
         shipStore.getOrderedShipsGroupedByVesselType(date1, date2, orderedMaps);
 

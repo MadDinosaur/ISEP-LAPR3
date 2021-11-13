@@ -6,15 +6,15 @@ import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
 import lapr.project.model.Coordinate;
-import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.list.PositioningDataList;
-import lapr.project.utils.SorterMeanSogByDate;
-import lapr.project.utils.SorterTraveledDistByDate;
 import lapr.project.utils.SorterTraveledDistByDiff;
 import oracle.ucp.util.Pair;
 
 import java.util.*;
+
+import static lapr.project.utils.SorterMapByValue.sortByValueDesc;
+
 
 public class ShipStore extends AVL<Ship>{
 
@@ -206,18 +206,23 @@ public class ShipStore extends AVL<Ship>{
      * @param date2 end date
      * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (TreeMaps).
      */
-    public void getOrderedShipsGroupedByVesselType(Date date1, Date date2, HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps) {
+    public void getOrderedShipsGroupedByVesselType(Date date1, Date date2, HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps) {
+        LinkedHashMap<Ship, Float> meanSogMap;
+        LinkedHashMap<Ship, Double> travDistMap;
+
+        Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>> treeMapPair;
+
+        int vesselType;
+
         for (Ship ship : inOrder()) {
-            int vesselType = ship.getVesselType();
+            vesselType = ship.getVesselType();
 
             if (!orderedMaps.containsKey(vesselType)) {
-                SorterTraveledDistByDate sorterDist = new SorterTraveledDistByDate(date1, date2);
-                SorterMeanSogByDate sorterMeanSog = new SorterMeanSogByDate(date1, date2);
+                meanSogMap = new LinkedHashMap<>();
+                travDistMap = new LinkedHashMap<>();
 
-                TreeMap<Ship, Float> meanSogMap = new TreeMap<>(sorterMeanSog);
-                TreeMap<Ship, Double> travDistMap = new TreeMap<>(sorterDist);
+                treeMapPair = new Pair<>(meanSogMap, travDistMap);
 
-                Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>> treeMapPair = new Pair<>(meanSogMap, travDistMap);
                 orderedMaps.put(vesselType, treeMapPair);
             }
 
@@ -227,6 +232,22 @@ public class ShipStore extends AVL<Ship>{
                 orderedMaps.get(vesselType).get1st().put(ship, dataTree.meanSog());
                 orderedMaps.get(vesselType).get2nd().put(ship, dataTree.traveledDistance());
             }
+        }
+
+        Map<Ship, Float> tmpMap1;
+        Map<Ship, Double> tmpMap2;
+
+        for (int vessel : orderedMaps.keySet()) {
+
+            tmpMap1 = (sortByValueDesc(orderedMaps.get(vessel).get1st()));
+
+            orderedMaps.get(vessel).get1st().clear();
+            orderedMaps.get(vessel).get1st().putAll(tmpMap1);
+
+            tmpMap2 = (sortByValueDesc(orderedMaps.get(vessel).get2nd()));
+
+            orderedMaps.get(vessel).get2nd().clear();
+            orderedMaps.get(vessel).get2nd().putAll(tmpMap2);
         }
     }
 
@@ -240,9 +261,9 @@ public class ShipStore extends AVL<Ship>{
      * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (TreeMaps).
      * @return ArrayList where each String contains the information of 2 Tops (Grouped by Vessel Type).
      */
-    public ArrayList<String> getTopNShipsToString(int n, Date date1, Date date2, HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps) {
-        TreeMap <Ship, Float> treeMapMeanSog;
-        TreeMap <Ship, Double> treeMapTravDist;
+    public ArrayList<String> getTopNShipsToString(int n, Date date1, Date date2, HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps) {
+        LinkedHashMap <Ship, Float> treeMapMeanSog;
+        LinkedHashMap <Ship, Double> treeMapTravDist;
         ArrayList<String> topNShips = new ArrayList<>();
         StringBuilder stringTopMeanSog;
         StringBuilder stringTopTravDist;
@@ -268,13 +289,18 @@ public class ShipStore extends AVL<Ship>{
                     Ship ship1 = iteratorMapMeanSog.next();
                     Ship ship2 = iteratorMapTravDist.next();
 
-                    if (count <= n) {
+                    if (count < n) {
                         stringTopMeanSog.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1)).append(" KM/H");
                         stringTopTravDist.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2)).append(" KM");
                     } else
                         break;
 
                     count++;
+                }
+
+                if (count != n) {
+                    stringTopMeanSog.append("\n\t<<No more ships with data between the selected Dates>>");
+                    stringTopTravDist.append("\n\t<<No more ships with data between the selected Dates>>");
                 }
             }
 
