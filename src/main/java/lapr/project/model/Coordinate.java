@@ -68,7 +68,10 @@ public class Coordinate {
     public double getDistanceBetweenCoordinates(Coordinate coordinate){
         double theta = this.longitude - coordinate.getLongitude();
         double dist = Math.sin(deg2rad(this.latitude)) * Math.sin(deg2rad(coordinate.getLatitude())) + Math.cos(deg2rad(this.latitude)) * Math.cos(deg2rad(coordinate.getLatitude())) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
+        if (dist > 1)
+            dist = 0;
+        else
+            dist = Math.acos(dist);
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
         return dist * 1.609344;
