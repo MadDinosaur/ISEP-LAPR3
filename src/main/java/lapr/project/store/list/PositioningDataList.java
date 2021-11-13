@@ -38,7 +38,7 @@ public class PositioningDataList extends AVL<PositioningData> {
      * @return returns the total movement time values
      */
     public float totalMovementTime(){
-        return getLastDate().getTime() - getFirstDate().getTime();
+        return (getLastDate().getTime() - getFirstDate().getTime())/60000;
     }
 
     public float totalMovementNumber(){
