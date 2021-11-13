@@ -1,9 +1,6 @@
 package lapr.project.presentationTests;
 
-import lapr.project.controller.GetPositionByDateController;
-import lapr.project.controller.ReadShipFileController;
-import lapr.project.controller.SearchForShipController;
-import lapr.project.controller.SendSummaryController;
+import lapr.project.controller.*;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
@@ -172,7 +169,7 @@ public class presentationTests {
     @Test
     public void UserStory4ValidMMSICode(){
         SendSummaryController sendSummaryController = new SendSummaryController();
-        writeOutput(sendSummaryController.toSummary("211331640"),"US4-MMSICode");
+        writeOutput(sendSummaryController.toSummary("563076200"),"US4-MMSICode");
     }
 
     @Test
@@ -191,6 +188,20 @@ public class presentationTests {
     public void UserStory4InvalidCode(){
         SendSummaryController sendSummaryController = new SendSummaryController();
         writeOutput(sendSummaryController.toSummary("123"),"US4-InvalidCode");
+    }
+
+    @Test
+    public void UserStory5(){
+        SortShipsController sortShipsController = new SortShipsController();
+        StringBuilder result = new StringBuilder();
+
+        for(String s : sortShipsController.sortShips()){
+
+            result.append(s);
+            result.append("\n");
+        }
+        writeOutput(result.toString(),"US5");
+
     }
 
     private void writeOutput(String output, String filename){
