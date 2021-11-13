@@ -137,15 +137,15 @@ class NTopShipsControllerTest {
                 "\t1. Ship MMSI: 229857000 - Mean Sog: 14.8 KM/H\n" +
                 "\t2. Ship MMSI: 229850001 - Mean Sog: 13.4 KM/H\n" +
                 "Top 2 Ships by Travelled Distance between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0:\n" +
-                "\t1. Ship MMSI: 229850001 - Traveled Distance: 15179.810546875 KM\n" +
-                "\t2. Ship MMSI: 210950000 - Traveled Distance: 23.238515853881836 KM");
+                "\t1. Ship MMSI: 229850001 - Traveled Distance: 15180.5400390625 KM\n" +
+                "\t2. Ship MMSI: 210950000 - Traveled Distance: 23.239633560180664 KM");
 
         expectedList.add("\nTop 2 Ships by Mean Sog between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1:\n" +
                 "\t1. Ship MMSI: 229857005 - Mean Sog: 13.6 KM/H\n" +
                 "\t2. Ship MMSI: 229857001 - Mean Sog: 13.4 KM/H\n" +
                 "Top 2 Ships by Travelled Distance between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1:\n" +
-                "\t1. Ship MMSI: 229857005 - Traveled Distance: 15185.0068359375 KM\n" +
-                "\t2. Ship MMSI: 229857001 - Traveled Distance: 6.529848098754883 KM");
+                "\t1. Ship MMSI: 229857005 - Traveled Distance: 15185.73828125 KM\n" +
+                "\t2. Ship MMSI: 229857001 - Traveled Distance: 6.530162334442139 KM");
 
         assertEquals(expectedList.size(), topList.size());
 

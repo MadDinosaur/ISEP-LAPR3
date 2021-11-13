@@ -66,33 +66,17 @@ public class Coordinate {
      * @return the distance between these 2 coordinates
      */
     public double getDistanceBetweenCoordinates(Coordinate coordinate){
-        double theta = this.longitude - coordinate.getLongitude();
-        double dist = Math.sin(deg2rad(this.latitude)) * Math.sin(deg2rad(coordinate.getLatitude())) + Math.cos(deg2rad(this.latitude)) * Math.cos(deg2rad(coordinate.getLatitude())) * Math.cos(deg2rad(theta));
-        if (dist > 1)
-            dist = 0;
-        else
-            dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        return dist * 1.609344;
-    }
+        final int R = 6371; // Radius of the earth
 
-    /**
-     * Turns degrees into radians
-     * @param deg the degrees
-     * @return the equivalent of the degrees into radians
-     */
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
+        double latDistance = Math.toRadians(coordinate.getLatitude() - latitude);
+        double lonDistance = Math.toRadians(coordinate.getLongitude() - longitude);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(latitude)) * Math.cos(Math.toRadians(coordinate.getLatitude()))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    /**
-     * turns radians to degrees
-     * @param rad the radians
-     * @return the equivalent of the radians into degrees
-     */
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
+
+        return R * c ;
     }
 
     /**

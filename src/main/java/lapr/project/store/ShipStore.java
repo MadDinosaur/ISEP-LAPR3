@@ -182,16 +182,14 @@ public class ShipStore extends AVL<Ship>{
         for (Ship ship : map.keySet()) {
             if (map.get(ship).isEmpty()) continue;
 
-            String mmsi = ship.getMmsi();
-            double traveledDistance = ship.getPositioningDataList().traveledDistance();
-            int numberMovements = ship.getPositioningDataList().size();
-            double deltaDistance = ship.getPositioningDataList().deltaDistance();
+            for (Ship pairShip : map.get(ship)) {
 
+                float originDist = (float) ship.getPositioningDataList().departureCoordinates().getDistanceBetweenCoordinates(pairShip.getPositioningDataList().departureCoordinates());
+                float destDist = (float) ship.getPositioningDataList().arrivalCoordinates().getDistanceBetweenCoordinates(pairShip.getPositioningDataList().arrivalCoordinates());
 
-            for (String pairShip : shipsSortedTraveledDistanceToString(map.get(ship))) {
                 string.append(
-                        String.format("MMSI: %s - Traveled Distance: %f KM - Number of Movements: %s - Delta Distance %f KM\n", mmsi, traveledDistance, numberMovements,deltaDistance));
-                string.append(pairShip);
+                        String.format("Ship 1 MMSI : %s - Ship 2 MMSI : %s - OriginDist : %f - DestDist : %f - Traveled Distance1: %f KM - Number of Movements1: %d - Traveled Distance2: %f KM - Number of Movements2: %d\n",
+                                ship.getMmsi(), pairShip.getMmsi(), originDist, destDist, ship.getPositioningDataList().traveledDistance(), pairShip.getPositioningDataList().size(), ship.getPositioningDataList().traveledDistance(), pairShip.getPositioningDataList().size()));
                 string.append("\n\n");
             }
         }
@@ -326,32 +324,29 @@ public class ShipStore extends AVL<Ship>{
      *          K - first ship (ordered by MMSI),
      *          V - list of ships to pair with the first one, ordered by traveled distance difference
      */
-    public HashMap<Ship, TreeSet<Ship>> getCloseShipRoutes(int maxTraveledDist, int maxNumMovements, int distance) {
+    public HashMap<Ship, TreeSet<Ship>> getCloseShipRoutes(int minTraveledDist, int distance) {
         HashMap<Ship, TreeSet<Ship>> closeShipRoutes = new HashMap<>();
 
-        Iterator<Ship> i = inOrder().iterator();
-        while(i.hasNext()) {
-            Ship ship = i.next();
-            Coordinate shipDepartureCoord = ship.getPositioningDataList().departureCoordinates();
-            Coordinate shipArrivalCoord = ship.getPositioningDataList().arrivalCoordinates();
+        for (Ship ship : inOrder()) {
+            if (ship.getPositioningDataList().traveledDistance() > minTraveledDist) {
+                Coordinate shipDepartureCoord = ship.getPositioningDataList().departureCoordinates();
+                Coordinate shipArrivalCoord = ship.getPositioningDataList().arrivalCoordinates();
 
-            TreeSet<Ship> pairShips = new TreeSet<>(new SorterTraveledDistByDiff(ship.getPositioningDataList().traveledDistance()));
+                TreeSet<Ship> pairShips = new TreeSet<>(new SorterTraveledDistByDiff(ship.getPositioningDataList().traveledDistance()));
 
-            Iterator<Ship> j = inOrder().iterator();
-            while(j.hasNext()) {
-                Ship pairShip = j.next();
-                if (pairShip.equals(ship)) break;
-                if (pairShip.getPositioningDataList().traveledDistance() < maxTraveledDist
-                        && pairShip.getPositioningDataList().totalMovementNumber() < maxNumMovements) continue;
+                for (Ship pairShip : inOrder()) {
+                    if (pairShip.equals(ship)) break;
+                    if (pairShip.getPositioningDataList().traveledDistance() > minTraveledDist) {
 
-                Coordinate pairDepartureCoord = pairShip.getPositioningDataList().departureCoordinates();
-                Coordinate pairArrivalCoord = pairShip.getPositioningDataList().arrivalCoordinates();
+                        Coordinate pairDepartureCoord = pairShip.getPositioningDataList().departureCoordinates();
+                        Coordinate pairArrivalCoord = pairShip.getPositioningDataList().arrivalCoordinates();
 
-                if (pairDepartureCoord.getDistanceBetweenCoordinates(shipDepartureCoord) <= distance &&
-                pairArrivalCoord.getDistanceBetweenCoordinates(shipArrivalCoord) <= distance)
-                    pairShips.add(pairShip);
+                        if (pairDepartureCoord.getDistanceBetweenCoordinates(shipDepartureCoord) <= distance && pairArrivalCoord.getDistanceBetweenCoordinates(shipArrivalCoord) <= distance)
+                            pairShips.add(pairShip);
+                    }
+                }
+                closeShipRoutes.put(ship, pairShips);
             }
-            closeShipRoutes.put(ship,pairShips);
         }
         return closeShipRoutes;
     }

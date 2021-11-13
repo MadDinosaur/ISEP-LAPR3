@@ -50,8 +50,8 @@ class PositioningDataTreeTest {
         assertEquals((float) 12.900001, positioningDataTree.meanSog());
         assertEquals((float) 13.1, positioningDataTree.maxCog());
         assertEquals((float) 6.4, positioningDataTree.meanCog());
-        assertEquals(23.238515853881836, positioningDataTree.traveledDistance());
-        assertEquals(23.238023488476994, positioningDataTree.deltaDistance());
+        assertEquals(23.239633560180664, positioningDataTree.traveledDistance());
+        assertEquals(23.239141543857833, positioningDataTree.deltaDistance());
     }
 
     @Test

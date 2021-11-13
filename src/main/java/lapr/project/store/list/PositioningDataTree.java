@@ -174,12 +174,17 @@ public class PositioningDataTree extends AVL<PositioningData> {
     private double traveledDistance(Node<PositioningData> node){
         float traveledDistance = 0;
 
-        List<PositioningData> positioningDataList = (List<PositioningData>) this.inOrder();
+        if(node == null)
+            return 0;
 
-        for (int i = 0; i < size() - 1; i++){
-            traveledDistance += positioningDataList.get(i).getCoordinate().getDistanceBetweenCoordinates(positioningDataList.get(i + 1).getCoordinate());
+        if (node.getLeft() != null){
+            traveledDistance +=  node.getElement().getCoordinate().getDistanceBetweenCoordinates(biggestElement(node.getLeft()).getCoordinate());
+            traveledDistance += traveledDistance(node.getLeft());
         }
-
+        if (node.getRight() != null){
+            traveledDistance +=  node.getElement().getCoordinate().getDistanceBetweenCoordinates(smallestElement(node.getRight()).getCoordinate());
+            traveledDistance += traveledDistance(node.getRight());
+        }
         return traveledDistance;
     }
 
@@ -248,6 +253,6 @@ public class PositioningDataTree extends AVL<PositioningData> {
     private PositioningData biggestElement(Node<PositioningData> node){
         if (node.getRight() == null)
             return node.getElement();
-        return smallestElement(node.getRight());
+        return biggestElement(node.getRight());
     }
 }
