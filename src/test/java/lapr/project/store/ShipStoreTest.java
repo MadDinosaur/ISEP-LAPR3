@@ -225,19 +225,19 @@ class ShipStoreTest {
 
         ArrayList<String> expectedList = new ArrayList<>();
 
-        expectedList.add("\nTop 2 Ships by Mean Sog between the Dates Wed Dec 30 10:00:00 GMT 2020 and Thu Dec 31 20:00:00 GMT 2020 from the Vessel Type 0:\n" +
+        expectedList.add("\nTop 2 Ships by Mean Sog between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0:\n" +
                 "\t1. Ship MMSI: 229857000 - Mean Sog: 14.8\n" +
                 "\t2. Ship MMSI: 229850001 - Mean Sog: 13.4\n" +
                 "\t3. Ship MMSI: 210950000 - Mean Sog: 12.900001\n" +
-                "Top 2 Ships by Travelled Distance between the Dates Wed Dec 30 10:00:00 GMT 2020 and Thu Dec 31 20:00:00 GMT 2020 from the Vessel Type 0:\n" +
+                "Top 2 Ships by Travelled Distance between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0:\n" +
                 "\t1. Ship MMSI: 229850001 - Traveled Distance: 15179.810546875\n" +
                 "\t2. Ship MMSI: 210950000 - Traveled Distance: 23.238515853881836\n" +
                 "\t3. Ship MMSI: 229857000 - Traveled Distance: 10.7222261428833");
 
-        expectedList.add("\nTop 2 Ships by Mean Sog between the Dates Wed Dec 30 10:00:00 GMT 2020 and Thu Dec 31 20:00:00 GMT 2020 from the Vessel Type 1:\n" +
+        expectedList.add("\nTop 2 Ships by Mean Sog between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1:\n" +
                 "\t1. Ship MMSI: 229857005 - Mean Sog: 13.6\n" +
                 "\t2. Ship MMSI: 229857001 - Mean Sog: 13.4\n" +
-                "Top 2 Ships by Travelled Distance between the Dates Wed Dec 30 10:00:00 GMT 2020 and Thu Dec 31 20:00:00 GMT 2020 from the Vessel Type 1:\n" +
+                "Top 2 Ships by Travelled Distance between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1:\n" +
                 "\t1. Ship MMSI: 229857005 - Traveled Distance: 15185.0068359375\n" +
                 "\t2. Ship MMSI: 229857001 - Traveled Distance: 6.529848098754883");
 
