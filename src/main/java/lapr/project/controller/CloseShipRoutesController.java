@@ -37,11 +37,10 @@ public class CloseShipRoutesController {
      */
     public String getCloseShipRoutes() {
 
-        int maxMovements = 1000;
-        int maxTraveledDistance = 10;
+        int minTraveledDistance = 10;
         int distance = 5;
 
-        HashMap<Ship, TreeSet<Ship>> routes = shipStore.getCloseShipRoutes(maxTraveledDistance,maxMovements, distance);
+        HashMap<Ship, TreeSet<Ship>> routes = shipStore.getCloseShipRoutes(minTraveledDistance, distance);
 
         return shipStore.shipsPairedCloseRoutesToString(routes);
     }

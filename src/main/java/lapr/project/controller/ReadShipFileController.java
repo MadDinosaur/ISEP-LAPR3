@@ -1,11 +1,10 @@
 package lapr.project.controller;
 
 import lapr.project.data.DatabaseConnection;
-import lapr.project.data.ShipSqlStore;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
-import lapr.project.model.ShipFileReader;
+import lapr.project.store.ShipFileReader;
 import lapr.project.store.ShipStore;
 import lapr.project.data.MainStorage;
 

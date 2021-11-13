@@ -5,7 +5,7 @@ import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class SendSummaryControllerTest {
     @BeforeEach
     public void setUp(){
         ShipStore shipStore = MainStorage.getInstance().getShipStore();
-        PositioningDataList pList1 = new PositioningDataList();
+        PositioningDataTree pList1 = new PositioningDataTree();
         ArrayList<PositioningData> pDataList1 = new ArrayList<>();
 
 

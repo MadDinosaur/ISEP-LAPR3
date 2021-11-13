@@ -4,7 +4,7 @@ import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SorterTraveledDistanceTest {
 
-    PositioningDataList positioningDataList1 = new PositioningDataList();
-    PositioningDataList positioningDataList2 = new PositioningDataList();
+    PositioningDataTree positioningDataTree1 = new PositioningDataTree();
+    PositioningDataTree positioningDataTree2 = new PositioningDataTree();
 
     ShipStore shipStore = new ShipStore();
     SorterTraveledDistance sorterTraveledDistance = new SorterTraveledDistance();
@@ -50,12 +50,12 @@ public class SorterTraveledDistanceTest {
         positioningData4 = new PositioningData("31/12/2020 16:30", coordinate4, (float)15.3, (float)2.8,356, "Sea","B");
         positioningData5 = new PositioningData("31/12/2020 16:32", coordinate5, (float)14.3, (float)2.7,356, "Sea","B");
 
-        positioningDataList1.insertPositioningDataList(positioningData);
-        positioningDataList1.insertPositioningDataList(positioningData2);
-        positioningDataList1.insertPositioningDataList(positioningData3);
+        positioningDataTree1.insertPositioningDataTree(positioningData);
+        positioningDataTree1.insertPositioningDataTree(positioningData2);
+        positioningDataTree1.insertPositioningDataTree(positioningData3);
 
-        positioningDataList2.insertPositioningDataList(positioningData4);
-        positioningDataList2.insertPositioningDataList(positioningData5);
+        positioningDataTree2.insertPositioningDataTree(positioningData4);
+        positioningDataTree2.insertPositioningDataTree(positioningData5);
 
         String shipName = "Example";
         String mmsi1 = "210950000";
@@ -75,8 +75,8 @@ public class SorterTraveledDistanceTest {
         s1 = new Ship(mmsi1,shipName,imo1,callSign1,vesselType,length,width,draft);
         s2 = new Ship(mmsi2,shipName,imo2,callSign2,vesselType,length,width,draft);
 
-        s1.setPositioningDataList(positioningDataList1);
-        s2.setPositioningDataList(positioningDataList2);
+        s1.setPositioningDataList(positioningDataTree1);
+        s2.setPositioningDataList(positioningDataTree2);
 
         shipStore.addShip(s1);
         shipStore.addShip(s2);
@@ -84,7 +84,7 @@ public class SorterTraveledDistanceTest {
 
     @Test
     public void testGreaterThan(){
-        s2.setPositioningDataList(positioningDataList1);
+        s2.setPositioningDataList(positioningDataTree1);
 
         int expected = -1;
         int result = sorterTraveledDistance.compare(s1,s2);

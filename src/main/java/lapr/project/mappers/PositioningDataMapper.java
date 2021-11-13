@@ -3,7 +3,7 @@ package lapr.project.mappers;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,15 +33,15 @@ public class PositioningDataMapper {
      * @param dtoList a package with all the positioning data
      * @return positioningData List
      */
-    public static PositioningDataList toModel(List<PositioningDataDTO> dtoList){
-        PositioningDataList positioningDataList1 = new PositioningDataList();
+    public static PositioningDataTree toModel(List<PositioningDataDTO> dtoList){
+        PositioningDataTree positioningDataTree1 = new PositioningDataTree();
         for (PositioningDataDTO positioningDataDTO : dtoList) {
             PositioningData positioningData = toModel(positioningDataDTO);
             if (positioningData != null){
-                positioningDataList1.insert(positioningData);
+                positioningDataTree1.insert(positioningData);
             }
         }
-        return positioningDataList1;
+        return positioningDataTree1;
     }
 
     /**

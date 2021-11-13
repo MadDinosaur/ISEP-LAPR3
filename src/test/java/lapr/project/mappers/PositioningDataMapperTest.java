@@ -2,7 +2,7 @@ package lapr.project.mappers;
 
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.model.PositioningData;
-import lapr.project.store.list.PositioningDataList;
+import lapr.project.store.list.PositioningDataTree;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ class PositioningDataMapperTest {
         List<PositioningDataDTO> dtoList = new ArrayList<>();
         dtoList.add(dto);
         dtoList.add(dto2);
-        PositioningDataList positioningData = PositioningDataMapper.toModel(dtoList);
+        PositioningDataTree positioningData = PositioningDataMapper.toModel(dtoList);
         assertEquals(positioningData.smallestElement().getTransceiverClass(), transceiverClass);
         List<PositioningDataDTO> dto1 = PositioningDataMapper.toDTO((List<PositioningData>) positioningData.inOrder());
         assertEquals(dto.getBdt(), dto1.get(0).getBdt());

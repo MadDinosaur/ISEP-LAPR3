@@ -6,15 +6,15 @@ import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.AVL;
 import lapr.project.model.Coordinate;
-import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
-import lapr.project.store.list.PositioningDataList;
-import lapr.project.utils.SorterMeanSogByDate;
-import lapr.project.utils.SorterTraveledDistByDate;
+import lapr.project.store.list.PositioningDataTree;
 import lapr.project.utils.SorterTraveledDistByDiff;
 import oracle.ucp.util.Pair;
 
 import java.util.*;
+
+import static lapr.project.utils.SorterMapByValue.sortByValueDesc;
+
 
 public class ShipStore extends AVL<Ship>{
 
@@ -182,16 +182,14 @@ public class ShipStore extends AVL<Ship>{
         for (Ship ship : map.keySet()) {
             if (map.get(ship).isEmpty()) continue;
 
-            String mmsi = ship.getMmsi();
-            double traveledDistance = ship.getPositioningDataList().traveledDistance();
-            int numberMovements = ship.getPositioningDataList().size();
-            double deltaDistance = ship.getPositioningDataList().deltaDistance();
+            for (Ship pairShip : map.get(ship)) {
 
+                float originDist = (float) ship.getPositioningDataList().departureCoordinates().getDistanceBetweenCoordinates(pairShip.getPositioningDataList().departureCoordinates());
+                float destDist = (float) ship.getPositioningDataList().arrivalCoordinates().getDistanceBetweenCoordinates(pairShip.getPositioningDataList().arrivalCoordinates());
 
-            for (String pairShip : shipsSortedTraveledDistanceToString(map.get(ship))) {
                 string.append(
-                        String.format("MMSI: %s - Traveled Distance: %f KM - Number of Movements: %s - Delta Distance %f KM\n", mmsi, traveledDistance, numberMovements,deltaDistance));
-                string.append(pairShip);
+                        String.format("Ship 1 MMSI : %s - Ship 2 MMSI : %s - OriginDist : %f - DestDist : %f - Traveled Distance1: %f KM - Number of Movements1: %d - Traveled Distance2: %f KM - Number of Movements2: %d\n",
+                                ship.getMmsi(), pairShip.getMmsi(), originDist, destDist, ship.getPositioningDataList().traveledDistance(), pairShip.getPositioningDataList().size(), ship.getPositioningDataList().traveledDistance(), pairShip.getPositioningDataList().size()));
                 string.append("\n\n");
             }
         }
@@ -199,34 +197,64 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
-     * Populates a HashMap that contains a Pair of TreeMaps with grouped ordered lists of ships (with dynamic information that takes part between 2 dates).
-     * The Lists are grouped by Vessel Type and the 1st list (TreeMap) is ordered by the ship's Mean SOG and the 2nd list (TreeMap) is ordered by the ship's travelled distance.
+     * Populates a HashMap that contains a Pair of LinkedHashMaps with grouped ordered lists of ships (with dynamic information that takes part between 2 dates).
+     * The Lists are grouped by Vessel Type and the 1st list (LinkedHashMap) is ordered by the ship's Mean SOG and the 2nd list (LinkedHashMap) is ordered by the ship's travelled distance.
      *
      * @param date1 beginning date
      * @param date2 end date
-     * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (TreeMaps).
+     * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (LinkedHashMaps).
      */
-    public void getOrderedShipsGroupedByVesselType(Date date1, Date date2, HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps) {
+    public void getOrderedShipsGroupedByVesselType(Date date1, Date date2, HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps) {
+        LinkedHashMap<Ship, Float> meanSogMap;
+        LinkedHashMap<Ship, Double> travDistMap;
+
+        Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>> linkedMapPair;
+
+        int vesselType;
+
         for (Ship ship : inOrder()) {
-            int vesselType = ship.getVesselType();
+            vesselType = ship.getVesselType();
 
             if (!orderedMaps.containsKey(vesselType)) {
-                SorterTraveledDistByDate sorterDist = new SorterTraveledDistByDate(date1, date2);
-                SorterMeanSogByDate sorterMeanSog = new SorterMeanSogByDate(date1, date2);
+                meanSogMap = new LinkedHashMap<>();
+                travDistMap = new LinkedHashMap<>();
 
-                TreeMap<Ship, Float> meanSogMap = new TreeMap<>(sorterMeanSog);
-                TreeMap<Ship, Double> travDistMap = new TreeMap<>(sorterDist);
+                linkedMapPair = new Pair<>(meanSogMap, travDistMap);
 
-                Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>> treeMapPair = new Pair<>(meanSogMap, travDistMap);
-                orderedMaps.put(vesselType, treeMapPair);
+                orderedMaps.put(vesselType, linkedMapPair);
             }
 
-            PositioningDataList dataTree = ship.getPositioningDataList().getPositionsByDate(date1, date2);
+            PositioningDataTree dataTree = ship.getPositioningDataList().getPositionsByDate(date1, date2);
 
             if(!dataTree.isEmpty()) {
                 orderedMaps.get(vesselType).get1st().put(ship, dataTree.meanSog());
                 orderedMaps.get(vesselType).get2nd().put(ship, dataTree.traveledDistance());
             }
+        }
+
+        orderTops(orderedMaps);
+    }
+
+    /**
+     * Will order the LinkedHashMaps that contain the tops of ships
+     *
+     * @param maps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (LinkedHashMaps).
+     */
+    private void orderTops(HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> maps) {
+        Map<Ship, Float> tmpMap1;
+        Map<Ship, Double> tmpMap2;
+
+        for (int vessel : maps.keySet()) {
+
+            tmpMap1 = (sortByValueDesc(maps.get(vessel).get1st()));
+
+            maps.get(vessel).get1st().clear();
+            maps.get(vessel).get1st().putAll(tmpMap1);
+
+            tmpMap2 = (sortByValueDesc(maps.get(vessel).get2nd()));
+
+            maps.get(vessel).get2nd().clear();
+            maps.get(vessel).get2nd().putAll(tmpMap2);
         }
     }
 
@@ -240,9 +268,9 @@ public class ShipStore extends AVL<Ship>{
      * @param orderedMaps a Hashmap where the key is the VesselType, and the Value is a pair that will contain the 2 ordered lists (TreeMaps).
      * @return ArrayList where each String contains the information of 2 Tops (Grouped by Vessel Type).
      */
-    public ArrayList<String> getTopNShipsToString(int n, Date date1, Date date2, HashMap<Integer, Pair<TreeMap<Ship, Float>, TreeMap<Ship, Double>>> orderedMaps) {
-        TreeMap <Ship, Float> treeMapMeanSog;
-        TreeMap <Ship, Double> treeMapTravDist;
+    public ArrayList<String> getTopNShipsToString(int n, Date date1, Date date2, HashMap<Integer, Pair<LinkedHashMap<Ship, Float>, LinkedHashMap<Ship, Double>>> orderedMaps) {
+        LinkedHashMap <Ship, Float> treeMapMeanSog;
+        LinkedHashMap <Ship, Double> treeMapTravDist;
         ArrayList<String> topNShips = new ArrayList<>();
         StringBuilder stringTopMeanSog;
         StringBuilder stringTopTravDist;
@@ -268,13 +296,18 @@ public class ShipStore extends AVL<Ship>{
                     Ship ship1 = iteratorMapMeanSog.next();
                     Ship ship2 = iteratorMapTravDist.next();
 
-                    if (count <= n) {
+                    if (count < n) {
                         stringTopMeanSog.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship1.getMmsi()).append(" - Mean Sog: ").append(treeMapMeanSog.get(ship1)).append(" KM/H");
                         stringTopTravDist.append("\n\t").append(count + 1).append(". Ship MMSI: ").append(ship2.getMmsi()).append(" - Traveled Distance: ").append(treeMapTravDist.get(ship2)).append(" KM");
                     } else
                         break;
 
                     count++;
+                }
+
+                if (count != n) {
+                    stringTopMeanSog.append("\n\t<<No more ships with data between the selected Dates>>");
+                    stringTopTravDist.append("\n\t<<No more ships with data between the selected Dates>>");
                 }
             }
 
@@ -291,32 +324,29 @@ public class ShipStore extends AVL<Ship>{
      *          K - first ship (ordered by MMSI),
      *          V - list of ships to pair with the first one, ordered by traveled distance difference
      */
-    public HashMap<Ship, TreeSet<Ship>> getCloseShipRoutes(int maxTraveledDist, int maxNumMovements, int distance) {
+    public HashMap<Ship, TreeSet<Ship>> getCloseShipRoutes(int minTraveledDist, int distance) {
         HashMap<Ship, TreeSet<Ship>> closeShipRoutes = new HashMap<>();
 
-        Iterator<Ship> i = inOrder().iterator();
-        while(i.hasNext()) {
-            Ship ship = i.next();
-            Coordinate shipDepartureCoord = ship.getPositioningDataList().departureCoordinates();
-            Coordinate shipArrivalCoord = ship.getPositioningDataList().arrivalCoordinates();
+        for (Ship ship : inOrder()) {
+            if (ship.getPositioningDataList().traveledDistance() > minTraveledDist) {
+                Coordinate shipDepartureCoord = ship.getPositioningDataList().departureCoordinates();
+                Coordinate shipArrivalCoord = ship.getPositioningDataList().arrivalCoordinates();
 
-            TreeSet<Ship> pairShips = new TreeSet<>(new SorterTraveledDistByDiff(ship.getPositioningDataList().traveledDistance()));
+                TreeSet<Ship> pairShips = new TreeSet<>(new SorterTraveledDistByDiff(ship.getPositioningDataList().traveledDistance()));
 
-            Iterator<Ship> j = inOrder().iterator();
-            while(j.hasNext()) {
-                Ship pairShip = j.next();
-                if (pairShip.equals(ship)) break;
-                if (pairShip.getPositioningDataList().traveledDistance() < maxTraveledDist
-                        && pairShip.getPositioningDataList().totalMovementNumber() < maxNumMovements) continue;
+                for (Ship pairShip : inOrder()) {
+                    if (pairShip.equals(ship)) break;
+                    if (pairShip.getPositioningDataList().traveledDistance() > minTraveledDist) {
 
-                Coordinate pairDepartureCoord = pairShip.getPositioningDataList().departureCoordinates();
-                Coordinate pairArrivalCoord = pairShip.getPositioningDataList().arrivalCoordinates();
+                        Coordinate pairDepartureCoord = pairShip.getPositioningDataList().departureCoordinates();
+                        Coordinate pairArrivalCoord = pairShip.getPositioningDataList().arrivalCoordinates();
 
-                if (pairDepartureCoord.getDistanceBetweenCoordinates(shipDepartureCoord) <= distance &&
-                pairArrivalCoord.getDistanceBetweenCoordinates(shipArrivalCoord) <= distance)
-                    pairShips.add(pairShip);
+                        if (pairDepartureCoord.getDistanceBetweenCoordinates(shipDepartureCoord) <= distance && pairArrivalCoord.getDistanceBetweenCoordinates(shipArrivalCoord) <= distance)
+                            pairShips.add(pairShip);
+                    }
+                }
+                closeShipRoutes.put(ship, pairShips);
             }
-            closeShipRoutes.put(ship,pairShips);
         }
         return closeShipRoutes;
     }
