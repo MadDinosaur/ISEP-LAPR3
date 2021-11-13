@@ -1,118 +1,46 @@
-# README
+# Integrative Project - LEI - 2021/2022 - 1st Semester, 2nd Year
 
-This is the repository template used for student repositories in LAPR Projets.
+### Abstract
+A cargo shipping company requires a software system to handle their logistics. This company
+operates through land and sea, across different continents and has several warehouses spread along the
+world.
 
-## Java source files
+## Project Software Structure
 
-Java source and test files are located in folder src.
+### Domain Model
+![DM](docs/DM.svg)
 
-## Maven file
+### Class Diagram
+![CD](docs/CD.svg)
 
-Pom.xml file controls the project build.
+### Database Model
+![LogicalDataModel](docs/LogicalDataModel.svg)
 
-### Notes
-In this file, DO NOT EDIT the following elements:
+## Project Scrum Management
 
-* groupID
-* artifactID
-* version
-* properties
+- [Bitbucket](https://bitbucket.org/lei-isep/lapr3-2021-g021/src/master/)
+- [Jira](https://jira.dei.isep.ipp.pt/secure/RapidBoard.jspa?rapidView=146&projectKey=LAP22G21&view=planning.nodetail&selectedIssue=LAP22G21-44&issueLimit=100)
+- [Jenkins](https://jenkins.dei.isep.ipp.pt/job/lapr3-2021-g021/)
+- [SonarQube](https://sonarqube.dei.isep.ipp.pt/dashboard?id=lapr3%3Acargo%3Alapr3-2021-g021)
 
-Beside, students can only add dependencies to the specified section of this file.
+### User Stories
 
-## Eclipse files
+Below are user story descriptions and links for analysis and design (DM, CD, SD, SSD) diagrams for each one.
 
-The following files are solely used by Eclipse IDE:
+|US|Description| |
+|:--|:--------|:------|
+[US101](docs/UserStories/US101)|As a traffic manager, I wish to import ships from a text file into a BST.|
+[US102](docs/UserStories/US102)|As a traffic manager I which to search the details of a ship using any of its codes: MMSI, IMO or Call Sign.|
+[US103](docs/UserStories/US103)|As a traffic manager I which to have the positional messages temporally organized and associated with each of the ships.|
+[US104](docs/UserStories/US104)|As a traffic manager I which to make a Summary of a ship's movements.
+[US105](docs/UserStories/US105)|As a traffic manager I which to list for all ships the MMSI, the total number of movements, Travelled Distance and Delta Distance.
+[US106](docs/UserStories/US106)|Get the top-N ships with the most kilometres travelled and their average speed (MeanSOG).|
+[US107](docs/UserStories/US107)|Return pairs of ships with routes with close departure/arrival coordinates (no more than 5 Kms away) and with different Travelled Distance.
+[US108](docs)|As Project Manager, I want the team to develop the data model required to support all the functionality and to fulfill the purpose of the system to develop.
+[US109](DataIntegrityRestrictionsTest.sql)|As Project Manager, I want the team to draft an SQL script to test  whether the database verifies all the data integrity restrictions that are required to fulfil the purpose of the system and the business constraints of the UoD.
+[US110](DataDictionary.md)|As Project Manager, I want the team to define the naming conventions to apply when defining identifiers or writing SQL or PL/SQL code.
+US111|As Project Manager, I want the team to create a SQL script to load the database with a minimum set of data sufficient to carry out data integrity verification and functional testing
 
-* .classpath
-* .project
+### Tests
 
-## IntelliJ Idea IDE files
-
-The following folder is solely used by Intellij Idea IDE :
-
-* .idea
-
-# How was the .gitignore file generated?
-.gitignore file was generated based on https://www.gitignore.io/ with the following keywords:
-
-  - Java
-  - Maven
-  - Eclipse
-  - NetBeans
-  - Intellij
-
-# Who do I talk to?
-In case you have any problem, please email Nuno Bettencourt (nmb@isep.ipp.pt).
-
-# How do I use Maven?
-
-## How to run unit tests?
-
-Execute the "test" goals.
-
-```shell
-$ mvn test
-```
-## How to generate the javadoc for source code?
-
-Execute the "javadoc:javadoc" goal.
-
-```shell
-$ mvn javadoc:javadoc
-```
-This generates the source code javadoc in folder "target/site/apidocs/index.html".
-
-## How to generate the javadoc for test cases code?
-
-Execute the "javadoc:test-javadoc" goal.
-
-```shell
-$ mvn javadoc:test-javadoc
-```
-This generates the test cases javadoc in folder "target/site/testapidocs/index.html".
-
-## How to generate Jacoco's Code Coverage Report?
-
-Execute the "jacoco:report" goal.
-
-```shell
-$ mvn test jacoco:report
-```
-
-This generates a jacoco code coverage report in folder "target/site/jacoco/index.html".
-
-## How to generate PIT Mutation Code Coverage?
-
-Execute the "org.pitest:pitest-maven:mutationCoverage" goal.
-
-```shell
-$ mvn test org.pitest:pitest-maven:mutationCoverage
-```
-This generates a PIT Mutation coverage report in folder "target/pit-reports/YYYYMMDDHHMI".
-
-## How to combine different maven goals in one step?
-
-You can combine different maven goals in the same command. For example, to locally run your project just like on jenkins, use:
-
-```shell
-$ mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage
-```
-## How to perform a faster pit mutation analysis?
-
-Do not clean build => remove "clean"
-
-Reuse the previous report => add "-Dsonar.pitest.mode=reuseReport"
-
-Use more threads to perform the analysis. The number is dependent on each computer CPU => add "-Dthreads=4"
-
-Temporarily remove timestamps from reports.
-
-Example:
-```shell
-$ mvn test jacoco:report org.pitest:pitest-maven:mutationCoverage -DhistoryInputFile=target/fasterPitMutationTesting-history.txt -DhistoryOutputFile=target/fasterPitMutationTesting-history.txt -Dsonar.pitest.mode=reuseReport -Dthreads=4 -DtimestampedReports=false
-```
-## Where do I configure my database connection?
-
-Each group should configure their database connection on the file:
-* src/main/resources/application.properties
+Demo tests can be found on *src\test\java\lapr\project\presentationTests*, which output a file with the results of each user story.
