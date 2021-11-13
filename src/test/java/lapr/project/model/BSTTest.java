@@ -189,6 +189,7 @@ class BSTTest {
     @Test
     public void testpreOrder() {
         BST<String> sInstance = new BST();
+        assertEquals(sInstance.preOrder().spliterator().estimateSize(), 0);
         instance.preOrder();
 
         System.out.println("preOrder");
@@ -201,7 +202,9 @@ class BSTTest {
     @Test
     public void testposOrder() {
         BST<String> sInstance = new BST();
+        assertEquals(sInstance.posOrder().spliterator().estimateSize(), 0);
         instance.posOrder();
+
 
         System.out.println("posOrder");
         List<Integer> lExpected = Arrays.asList(posorderT);
