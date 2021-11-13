@@ -1,4 +1,4 @@
-package lapr.project.model;
+package lapr.project.store;
 
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
