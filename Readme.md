@@ -23,6 +23,10 @@ world.
 - [Jenkins](https://jenkins.dei.isep.ipp.pt/job/lapr3-2021-g021/)
 - [SonarQube](https://sonarqube.dei.isep.ipp.pt/dashboard?id=lapr3%3Acargo%3Alapr3-2021-g021)
 
+### Burndown Chart - Sprint 1
+
+![BurndownChart](docs/BurndownChart.png)
+
 ### User Stories
 
 Below are user story descriptions and links for analysis and design (DM, CD, SD, SSD) diagrams for each one.
