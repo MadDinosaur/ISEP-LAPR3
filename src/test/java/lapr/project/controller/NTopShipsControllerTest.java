@@ -31,6 +31,8 @@ class NTopShipsControllerTest {
 
     Ship s1, s2, s3, s4, s5, s6;
 
+    ShipStore shipStore;
+
     @BeforeEach
     public void setUp(){
         coordinate = new Coordinate(-66.97001f, 42.97875f);
@@ -108,12 +110,17 @@ class NTopShipsControllerTest {
         s5.setPositioningDataList(positioningDataList5);
         s6.setPositioningDataList(positioningDataList6);
 
-
+        shipStore = MainStorage.getInstance().getShipStore();
     }
 
     @Test
     public void getTopNShipsTestSuccess() {
-        ShipStore shipStore = MainStorage.getInstance().getShipStore();
+        if (!shipStore.isEmpty()) {
+            for (Ship ship : shipStore.inOrder()) {
+                shipStore.remove(ship);
+            }
+        }
+
         shipStore.addShip(s1);
         shipStore.addShip(s2);
         shipStore.addShip(s3);
@@ -131,20 +138,20 @@ class NTopShipsControllerTest {
         ArrayList<String> expectedList = new ArrayList<>();
 
         expectedList.add("\nTop 2 Ships by Mean Sog between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0:\n" +
-                "\t1. Ship MMSI: 229857000 - Mean Sog: 14.8\n" +
-                "\t2. Ship MMSI: 229850001 - Mean Sog: 13.4\n" +
-                "\t3. Ship MMSI: 210950000 - Mean Sog: 12.900001\n" +
+                "\t1. Ship MMSI: 229857000 - Mean Sog: 14.8 KM/H\n" +
+                "\t2. Ship MMSI: 229850001 - Mean Sog: 13.4 KM/H\n" +
+                "\t3. Ship MMSI: 210950000 - Mean Sog: 12.900001 KM/H\n" +
                 "Top 2 Ships by Travelled Distance between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0:\n" +
-                "\t1. Ship MMSI: 229850001 - Traveled Distance: 15179.810546875\n" +
-                "\t2. Ship MMSI: 210950000 - Traveled Distance: 23.238515853881836\n" +
-                "\t3. Ship MMSI: 229857000 - Traveled Distance: 10.7222261428833");
+                "\t1. Ship MMSI: 229850001 - Traveled Distance: 15179.810546875 KM\n" +
+                "\t2. Ship MMSI: 210950000 - Traveled Distance: 23.238515853881836 KM\n" +
+                "\t3. Ship MMSI: 229857000 - Traveled Distance: 10.7222261428833 KM");
 
         expectedList.add("\nTop 2 Ships by Mean Sog between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1:\n" +
-                "\t1. Ship MMSI: 229857005 - Mean Sog: 13.6\n" +
-                "\t2. Ship MMSI: 229857001 - Mean Sog: 13.4\n" +
+                "\t1. Ship MMSI: 229857005 - Mean Sog: 13.6 KM/H\n" +
+                "\t2. Ship MMSI: 229857001 - Mean Sog: 13.4 KM/H\n" +
                 "Top 2 Ships by Travelled Distance between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1:\n" +
-                "\t1. Ship MMSI: 229857005 - Traveled Distance: 15185.0068359375\n" +
-                "\t2. Ship MMSI: 229857001 - Traveled Distance: 6.529848098754883");
+                "\t1. Ship MMSI: 229857005 - Traveled Distance: 15185.0068359375 KM\n" +
+                "\t2. Ship MMSI: 229857001 - Traveled Distance: 6.529848098754883 KM");
 
         assertEquals(expectedList.size(), topList.size());
 
@@ -153,30 +160,4 @@ class NTopShipsControllerTest {
         }
     }
 
-    @Test
-    public void getTopNShipsTestEmptyTop() {
-        ShipStore shipStore = MainStorage.getInstance().getShipStore();
-        shipStore.addShip(s1);
-        shipStore.addShip(s2);
-        shipStore.addShip(s3);
-        shipStore.addShip(s4);
-        shipStore.addShip(s5);
-        shipStore.addShip(s6);
-
-        NTopShipsController controller = new NTopShipsController();
-
-        Date date1 = new Date("10/30/2020 10:00");
-        Date date2 = new Date("10/31/2020 20:00");
-
-        ArrayList<String> topList = controller.getTopNShips(2, date1, date2);
-
-        ArrayList<String> expectedList = new ArrayList<>();
-
-        expectedList.add("\nNo Ships with data recorded between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 0!");
-        expectedList.add("\nNo Ships with data recorded between the Dates "+ date1 +" and " + date2 +" from the Vessel Type 1!");
-
-        for (int i = 0; i < topList.size(); i++) {
-            assertEquals(expectedList.get(i), topList.get(i));
-        }
-    }
 }
