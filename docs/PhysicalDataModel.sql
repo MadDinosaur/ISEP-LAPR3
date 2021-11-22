@@ -2,21 +2,17 @@
 DROP TABLE StorageType CASCADE CONSTRAINTS PURGE;
 DROP TABLE Storage CASCADE CONSTRAINTS PURGE;
 DROP TABLE Container CASCADE CONSTRAINTS PURGE;
-DROP TABLE Container_CargoManifest CASCADE CONSTRAINTS PURGE;
-DROP TABLE Storage_User_Staff CASCADE CONSTRAINTS PURGE;
-DROP TABLE Role CASCADE CONSTRAINTS PURGE;
-DROP TABLE SystemUser CASCADE CONSTRAINTS PURGE;
-DROP TABLE SystemUser_Fleet CASCADE CONSTRAINTS PURGE;
-DROP TABLE SystemUser_Shipment CASCADE CONSTRAINTS PURGE;
-DROP TABLE Shipment CASCADE CONSTRAINTS PURGE;
 DROP TABLE CscPlate CASCADE CONSTRAINTS PURGE;
 DROP TABLE Certificate CASCADE CONSTRAINTS PURGE;
 DROP TABLE CscPlate_Certificate CASCADE CONSTRAINTS PURGE;
+DROP TABLE Container_CargoManifest CASCADE CONSTRAINTS PURGE;
+DROP TABLE Shipment CASCADE CONSTRAINTS PURGE;
 DROP TABLE CargoManifest CASCADE CONSTRAINTS PURGE;
-DROP TABLE Truck CASCADE CONSTRAINTS PURGE;
 DROP TABLE Fleet CASCADE CONSTRAINTS PURGE;
+DROP TABLE VesselType CASCADE CONSTRAINTS PURGE;
 DROP TABLE Ship CASCADE CONSTRAINTS PURGE;
 DROP TABLE DynamicData CASCADE CONSTRAINTS PURGE;
+DROP TABLE ShipTrip CASCADE CONSTRAINTS PURGE;
 
 -- create tables
 CREATE TABLE StorageType
@@ -32,8 +28,6 @@ CREATE TABLE Storage
 (
     identification         INTEGER
         CONSTRAINT pkStorageIdentification PRIMARY KEY,
-    system_user_id_manager INTEGER
-        CONSTRAINT nnSystemUserIdManager NOT NULL,
     storage_type_id        INTEGER
         CONSTRAINT nnStorageTypeId NOT NULL,
     name                   VARCHAR(20)
@@ -54,8 +48,8 @@ CREATE TABLE Container
 (
     num                     INTEGER
         CONSTRAINT pkContainerNum PRIMARY KEY,
-    storage_identification  INTEGER
-        CONSTRAINT nnContainerStorageIdentification NOT NULL,
+    storage_identification  INTEGER NULL,
+        FOREIGN KEY (storage_identification) REFERENCES Storage (identification),
     csc_plate_serial_number INTEGER
         CONSTRAINT nnContainerCscPlateSerialNumber NOT NULL,
     check_digit             NUMBER(1)
@@ -141,46 +135,6 @@ CREATE TABLE Container_CargoManifest
         CONSTRAINT nnContainerPositionZ NOT NULL
 );
 
-CREATE TABLE Storage_User_Staff
-(
-    storage_identification INTEGER
-        CONSTRAINT nnStorageUserStaffStorageIdentification NOT NULL,
-    system_user_id         INTEGER
-        CONSTRAINT nnStorageUserStaffSystemUserId NOT NULL
-);
-
-CREATE TABLE Role
-(
-    id   INTEGER GENERATED ALWAYS AS IDENTITY
-        CONSTRAINT pkRoleId PRIMARY KEY,
-    name VARCHAR(20)
-        CONSTRAINT nnRoleName NOT NULL
-        CONSTRAINT unRoleName UNIQUE
-);
-
-CREATE TABLE SystemUser
-(
-    id      INTEGER GENERATED ALWAYS AS IDENTITY
-        CONSTRAINT pkSystemUserId PRIMARY KEY,
-    role_id INTEGER
-        CONSTRAINT nnSystemUserRoleId NOT NULL,
-    name    VARCHAR(20)
-        CONSTRAINT nnSystemUserName NOT NULL,
-    email   VARCHAR(40)
-        CONSTRAINT nnEmail NOT NULL
-        CONSTRAINT unEmail UNIQUE
-        CONSTRAINT ckEmail CHECK (email LIKE '%_@__%.__%'),
-    password VARCHAR(40)
-);
-
-CREATE TABLE SystemUser_Shipment
-(
-    system_user_id INTEGER
-        CONSTRAINT nnSystemUserShipmentSystemUserId NOT NULL,
-    shipment_id    INTEGER
-        CONSTRAINT nnSystemUserShipmentShipmentId NOT NULL
-);
-
 CREATE TABLE Shipment
 (
     id                                 INTEGER GENERATED ALWAYS AS IDENTITY
@@ -194,34 +148,28 @@ CREATE TABLE Shipment
     CONSTRAINT ckStorageOriginDestination CHECK (storage_identification_origin != storage_identification_destination)
 );
 
-CREATE TABLE SystemUser_Fleet
-(
-    system_user_id INTEGER
-        CONSTRAINT nnSystemUserFleetSystemUserId NOT NULL,
-    fleet_id       INTEGER
-        CONSTRAINT nnSystemUserFleetFleetId NOT NULL
-);
-
 CREATE TABLE CargoManifest
 (
     id           INTEGER GENERATED ALWAYS AS IDENTITY
         CONSTRAINT pkCargoManifestId PRIMARY KEY,
-    truck_id     INTEGER,
-    ship_mmsi    NUMBER(9),
-    CONSTRAINT ckTransportation CHECK (truck_id IS NULL OR ship_mmsi IS NULL),
+    ship_mmsi    NUMBER(9)
+        CONSTRAINT nnCargoShipMMSI NOT NULL,
     loading_flag NUMBER(1)
-        CONSTRAINT nnLoadingFlag NOT NULL
-        CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1)
-);
-
-CREATE TABLE Truck
-(
-    id INTEGER CONSTRAINT pkTruckId PRIMARY KEY
+        CONSTRAINT nnLoadingFlag NOT NULL,
+        CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
+    date_time    TIMESTAMP
+        CONSTRAINT nnDateTime NOT NULL
 );
 
 CREATE TABLE Fleet
 (
     id INTEGER CONSTRAINT pkFleetId PRIMARY KEY
+);
+
+CREATE TABLE VesselType
+(
+    id INTEGER
+    CONSTRAINT pkVesselType PRIMARY KEY
 );
 
 CREATE TABLE Ship
@@ -231,10 +179,6 @@ CREATE TABLE Ship
         CONSTRAINT ckMMSI CHECK (mmsi BETWEEN 100000000 AND 999999999),
     fleet_id                                 INTEGER
         CONSTRAINT nnShipFleetId NOT NULL,
-    system_user_id_captain                   INTEGER
-        CONSTRAINT nnSystemUserIdCaptain NOT NULL,
-    system_user_id_chief_electrical_engineer INTEGER
-        CONSTRAINT nnSystemUserIdChiefElectricalEngineer NOT NULL,
     name                                     VARCHAR(20)
         CONSTRAINT nnShipName NOT NULL,
     imo                                      NUMBER(7)
@@ -250,7 +194,7 @@ CREATE TABLE Ship
     callsign                                 VARCHAR(8)
         CONSTRAINT nnCallsign NOT NULL
         CONSTRAINT unCallsign UNIQUE,
-    vessel_type                              NUMBER(2)
+    vessel_type_id                           NUMBER(2)
         CONSTRAINT nnVesselType NOT NULL,
     ship_length                              NUMBER(5, 2)
         CONSTRAINT nnShipLength NOT NULL
@@ -268,10 +212,8 @@ CREATE TABLE Ship
 
 CREATE TABLE DynamicData
 (
-    id                INTEGER GENERATED ALWAYS AS IDENTITY
-        CONSTRAINT pkDynamicDataId PRIMARY KEY,
     ship_mmsi         NUMBER(9)
-        CONSTRAINT nnShipMmsi NOT NULL,
+        CONSTRAINT nnDataShipMmsi NOT NULL,
     base_date_time    TIMESTAMP
         CONSTRAINT nnBaseDateTime NOT NULL,
     latitude          NUMBER(7, 5)
@@ -294,13 +236,29 @@ CREATE TABLE DynamicData
         CONSTRAINT nnTransceiverClass NOT NULL
 );
 
+CREATE TABLE ShipTrip
+(
+    ship_mmsi         NUMBER(9)
+        CONSTRAINT nnShipMmsi NOT NULL,
+    storage_identification_origin      INTEGER
+        CONSTRAINT nnTripIdentificationOrigin NOT NULL,
+    storage_identification_destination INTEGER
+        CONSTRAINT nnTripIdentificationDestination NOT NULL,
+    parting_date                       TIMESTAMP
+        CONSTRAINT nnPartingDate NOT NULL,
+    arrival_date                       TIMESTAMP
+        CONSTRAINT nnArrivalDate NOT NULL,
+    status VARCHAR(20)
+        CONSTRAINT nnStatus NOT NULL
+        CONSTRAINT setStatus CHECK (status IN ('in progress', 'not started', 'finished')),
+    CONSTRAINT ckTripDestination CHECK (parting_date != arrival_date)
+);
+
 -- define foreign keys and combined primary keys
 ALTER TABLE Storage
-    ADD CONSTRAINT fkStorageSystemUserIdManager FOREIGN KEY (system_user_id_manager) REFERENCES SystemUser (id)
     ADD CONSTRAINT fkStorageTypeId FOREIGN KEY (storage_type_id) REFERENCES StorageType (id);
 
 ALTER TABLE Container
-    ADD CONSTRAINT fkContainerStorageIdentification FOREIGN KEY (storage_identification) REFERENCES Storage (identification)
     ADD CONSTRAINT fkContainerCscPlateSerialNumber FOREIGN KEY (csc_plate_serial_number) REFERENCES CscPlate (serial_number);
 
 ALTER TABLE Container_CargoManifest
@@ -308,37 +266,29 @@ ALTER TABLE Container_CargoManifest
     ADD CONSTRAINT fkContainerCargoManifestCargoManifestId FOREIGN KEY (cargo_manifest_id) REFERENCES CargoManifest (id)
     ADD CONSTRAINT pkContainerCargoManifest PRIMARY KEY (container_num, cargo_manifest_id);
 
-ALTER TABLE Storage_User_Staff
-    ADD CONSTRAINT fkStorageUserStaffStorageIdentification FOREIGN KEY (storage_identification) REFERENCES Storage (identification)
-    ADD CONSTRAINT fkStorageUserStaffSystemUserId FOREIGN KEY (system_user_id) REFERENCES SystemUser (id)
-    ADD CONSTRAINT pkStorageUserStaff PRIMARY KEY (storage_identification, system_user_id);
-
 ALTER TABLE Shipment
     ADD CONSTRAINT fkShipmentStorageIdentificationOrigin FOREIGN KEY (storage_identification_origin) REFERENCES Storage (identification)
     ADD CONSTRAINT fkShipmentStorageIdentificationDestination FOREIGN KEY (storage_identification_destination) REFERENCES Storage (identification)
     ADD CONSTRAINT fkShipmentContainerNum FOREIGN KEY (container_num) REFERENCES Container (num);
 
 ALTER TABLE CargoManifest
-    ADD CONSTRAINT fkCargoManifestTruckId FOREIGN KEY (truck_id) REFERENCES Truck (id)
     ADD CONSTRAINT fkCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi);
 
-ALTER TABLE SystemUser
-    ADD CONSTRAINT fkSystemUserRoleId FOREIGN KEY (role_id) REFERENCES Role (id);
-
-ALTER TABLE SystemUser_Shipment
-    ADD CONSTRAINT fkSystemUserShipmentSystemUserId FOREIGN KEY (system_user_id) REFERENCES SystemUser (id)
-    ADD CONSTRAINT fkSystemUserShipmentShipmentId FOREIGN KEY (shipment_id) REFERENCES Shipment (id)
-    ADD CONSTRAINT pkUserShipment PRIMARY KEY (system_user_id, shipment_id);
-
-ALTER TABLE SystemUser_Fleet
-    ADD CONSTRAINT fkSystemUserFleetSystemUserId FOREIGN KEY (system_user_id) REFERENCES SystemUser (id)
-    ADD CONSTRAINT fkSystemUserFleetFleetId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)
-    ADD CONSTRAINT pkUserFleet PRIMARY KEY (system_user_id, fleet_id);
-
 ALTER TABLE Ship
-    ADD CONSTRAINT fkShipFleedId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)
-    ADD CONSTRAINT fkShipSystemUserIdCaptain FOREIGN KEY (system_user_id_captain) REFERENCES SystemUser (id)
-    ADD CONSTRAINT fkShipSystemUserIdChiefElectricalEngineer FOREIGN KEY (system_user_id_chief_electrical_engineer) REFERENCES SystemUser (id);
+    ADD CONSTRAINT fkShipFleetId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)
+    ADD CONSTRAINT fkShipVesselTypeId FOREIGN KEY (vessel_type_id) REFERENCES VesselType (id);
 
 ALTER TABLE DynamicData
-    ADD CONSTRAINT fkDynamicDataShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi);
+    ADD CONSTRAINT fkDynamicDataShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi)
+    ADD CONSTRAINT pkDynamicData PRIMARY KEY (ship_mmsi, base_date_time);
+
+ALTER TABLE CscPlate_Certificate
+    ADD CONSTRAINT fkCscPlateSerialNumber FOREIGN KEY (csc_plate_serial_number) REFERENCES CscPlate (serial_number)
+    ADD CONSTRAINT fkCertificateID FOREIGN KEY (certificate_id) REFERENCES Certificate (id)
+    ADD CONSTRAINT pkCscPlateCertificate PRIMARY KEY (csc_plate_serial_number, certificate_id);
+
+ALTER TABLE ShipTrip
+    ADD CONSTRAINT fkShipMMSI FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi)
+    ADD CONSTRAINT fkStorageOrigin FOREIGN KEY (storage_identification_origin) REFERENCES Storage (identification)
+    ADD CONSTRAINT fkStorageDestination FOREIGN KEY (storage_identification_destination) REFERENCES Storage (identification)
+    ADD CONSTRAINT pkShipTrip PRIMARY KEY (ship_mmsi, storage_identification_origin, storage_identification_destination);
