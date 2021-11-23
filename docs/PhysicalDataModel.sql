@@ -244,14 +244,12 @@ CREATE TABLE ShipTrip
         CONSTRAINT nnTripIdentificationOrigin NOT NULL,
     storage_identification_destination INTEGER
         CONSTRAINT nnTripIdentificationDestination NOT NULL,
-    parting_date                       TIMESTAMP
-        CONSTRAINT nnPartingDate NOT NULL,
-    arrival_date                       TIMESTAMP
-        CONSTRAINT nnArrivalDate NOT NULL,
+    parting_date                       TIMESTAMP,
+    arrival_date                       TIMESTAMP,
     status VARCHAR(20)
         CONSTRAINT nnStatus NOT NULL
         CONSTRAINT setStatus CHECK (status IN ('in progress', 'not started', 'finished')),
-    CONSTRAINT ckTripDestination CHECK (parting_date != arrival_date)
+    CONSTRAINT ckTripDestination CHECK ((parting_date != arrival_date) OR (parting_date NULL AND parting_date NULL))
 );
 
 -- define foreign keys and combined primary keys
