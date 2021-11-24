@@ -2,11 +2,11 @@
 -- Tests if the foreign key refers to a primary key value of some table in the database.
 
 
--- CONSTRAINT fkStorageTypeId -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkStorageTypeId -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Storage(identification,storage_type_id,name,continent,country,latitude,longitude)
 VALUES (1,1,'TestStorage','TestContinent','TestCountry',91.0,181.0);
 
--- CONSTRAINT fkContainerStorageIdentification -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkContainerStorageIdentification -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
 VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
@@ -16,72 +16,79 @@ VALUES ('Port');
 INSERT INTO Storage(identification,storage_type_id,name,continent,country,latitude,longitude)
 VALUES (2,1,'TestStorage2','TestContinent','TestCountry',90.0,180.0);
 
--- CONSTRAINT fkContainerCscPlateSerialNumber -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkContainerCscPlateSerialNumber -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
 VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
--- CONSTRAINT fkCscPlateSerialNumber -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkCscPlateSerialNumber -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO CscPlate_certificate(csc_plate_serial_number, certificate_id)
 VALUES(1,1);
 
 INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
 VALUES (1,'TST1234','TST1234','TestManufacturer','TestOwnerName','TestAddress','TestFurnigationDetails','TST1234','TST1234',TO_DATE('01/01/2000','DD/MM/YYYY'),99999,999999,99999);
 
--- CONSTRAINT fkCertificateID -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkCertificateID -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO CscPlate_certificate(csc_plate_serial_number, certificate_id)
 VALUES(1,1);
 
--- CONSTRAINT fkContainerCargoManifestContainerNum -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkContainerCargoManifestContainerNum -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Container_CargoManifest(container_num,cargo_manifest_id,container_position_x,container_position_y,container_position_z) VALUES(2,1,0,0,0);
 
--- CONSTRAINT fkShipFleetId -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft)
-VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99);
+-- CONSTRAINT fkShipFleetId -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft, captain_id)
+VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99, 1);
 
 INSERT INTO FLEET(id)
 VALUES (2);
 
--- CONSTRAINT fkShipVesselTypeID -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft)
-VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99);
+-- CONSTRAINT fkShipVesselTypeID -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft, captain_id)
+VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99, 1);
 
--- CONSTRAINT fkDynamicDataShipMmsi -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkDynamicDataShipMmsi -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO DynamicData(ship_mmsi,base_date_time,latitude,longitude,sog,cog,heading,position,transceiver_class)
 VALUES (999999999,CURRENT_TIMESTAMP,91,181,0.0,359.0,511.0,NULL,'A');
 
 INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
 VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
--- CONSTRAINT fkCargoManifestShipMmsi -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkCargoManifestShipMmsi -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO CargoManifest(ship_mmsi,loading_flag, date_time) VALUES (1,1,TO_DATE('01/01/2000','DD/MM/YYYY'));
 
--- CONSTRAINT fkContainerCargoManifestCargoManifestId -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkContainerCargoManifestCargoManifestId -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Container_CargoManifest(container_num,cargo_manifest_id,container_position_x,container_position_y,container_position_z) VALUES(1,1,0,0,0);
 
--- CONSTRAINT fkShipmentContainerNum -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkShipmentContainerNum -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination) VALUES (2,1,2);
 
--- CONSTRAINT fkShipmentStorageIdentificationDestination -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkShipmentStorageIdentificationDestination -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination) VALUES (1,2,1);
 
--- CONSTRAINT fkShipmentStorageIdentificationOrigin -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkShipmentStorageIdentificationOrigin -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination) VALUES (1,1,2);
 
--- CONSTRAINT fkShipMMSI -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkShipMMSI -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
 VALUES(123456789, 1, 1, NULL, NULL, 'finished');
 
 INSERT INTO vesselType(id)
 VALUES (1);
 
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft)
-VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99);
+-- CONSTRAINT fkShipCaptainId -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft, captain_id)
+VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99,1);
 
--- CONSTRAINT fkStorageOrigin -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+INSERT INTO captain(id)
+VALUES (1);
+
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft, captain_id)
+VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99,1);
+
+-- CONSTRAINT fkStorageOrigin -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
 VALUES(123456789, 1, 2, NULL, NULL, 'finished');
 
--- CONSTRAINT fkStorageOrigin -- expected result FAIL (restrição de integridade violada - chave pai não encontrada)
+-- CONSTRAINT fkStorageOrigin -- expected result FAIL (restriï¿½ï¿½o de integridade violada - chave pai nï¿½o encontrada)
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
 VALUES(123456789, 2, 1, NULL, NULL, 'finished');
 
