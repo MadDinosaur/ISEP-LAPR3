@@ -249,7 +249,7 @@ CREATE TABLE ShipTrip
     status VARCHAR(20)
         CONSTRAINT nnStatus NOT NULL
         CONSTRAINT setStatus CHECK (status IN ('in progress', 'not started', 'finished')),
-    CONSTRAINT ckTripDestination CHECK ((parting_date != arrival_date) OR (parting_date NULL AND parting_date NULL))
+    CONSTRAINT ckTripDestination CHECK ((parting_date IS NULL) OR (parting_date IS NULL) OR (parting_date != arrival_date) )
 );
 
 -- define foreign keys and combined primary keys
