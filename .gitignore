@@ -216,3 +216,17 @@ nbdist/
 .nb-gradle/
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,maven,java,intellij+all,netbeans
+output/US2-CallSign.txt
+output/US2-Failed.txt
+output/US2-IMO.txt
+output/US2-MMSI.txt
+output/US3-ExistingTimeFrame.txt
+output/US3-InvalidTimeFrame.txt
+output/US4-CallSignCode.txt
+output/US4-IMOCode.txt
+output/US4-InvalidCode.txt
+output/US4-MMSICode.txt
+output/US5.txt
+output/US6-NoData.txt
+output/US6-WithData.txt
+output/US7.txt

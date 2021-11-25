@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 public class PositioningDataTree extends AVL<PositioningData> {
-
-
     /**
      * populates and the avl tree
      * @param positioningData a list of positioning data
@@ -254,5 +252,38 @@ public class PositioningDataTree extends AVL<PositioningData> {
         if (node.getRight() == null)
             return node.getElement();
         return biggestElement(node.getRight());
+    }
+
+
+    /**
+     * returns the position with the nearest date
+     * @param date the desired date
+     * @return returns the position with the nearest date
+     */
+    public PositioningData getNearestTime(Date date){
+        if (root == null)
+            return null;
+        return getNearestTime(root, date);
+    }
+
+    /**
+     * recursive method that returns the positioning date with the nearest date
+     * @param node the current node being analysed
+     * @param date the desired date
+     * @return returns the nearest positioning data
+     */
+    private PositioningData getNearestTime(Node<PositioningData> node, Date date){
+        if (node.getElement().getBdt().compareTo(date) == 0){
+            return node.getElement();
+        }
+        Node<PositioningData> rightChild = node.getRight();
+        Node<PositioningData> leftChild = node.getLeft();
+        if (rightChild != null && rightChild.getElement().getBdt().compareTo(date) < 0){
+            return getNearestTime(rightChild, date);
+        } else if (leftChild != null){
+            return getNearestTime(leftChild, date);
+        } else {
+            return node.getElement();
+        }
     }
 }

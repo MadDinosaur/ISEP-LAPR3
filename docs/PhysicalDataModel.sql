@@ -13,6 +13,7 @@ DROP TABLE VesselType CASCADE CONSTRAINTS PURGE;
 DROP TABLE Ship CASCADE CONSTRAINTS PURGE;
 DROP TABLE DynamicData CASCADE CONSTRAINTS PURGE;
 DROP TABLE ShipTrip CASCADE CONSTRAINTS PURGE;
+DROP TABLE Captain CASCADE CONSTRAINTS PURGE;
 
 -- create tables
 CREATE TABLE StorageType
@@ -157,8 +158,7 @@ CREATE TABLE CargoManifest
     loading_flag NUMBER(1)
         CONSTRAINT nnLoadingFlag NOT NULL,
         CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
-    date_time    TIMESTAMP
-        CONSTRAINT nnDateTime NOT NULL
+    finishing_date_time    TIMESTAMP
 );
 
 CREATE TABLE Fleet
@@ -207,7 +207,10 @@ CREATE TABLE Ship
         CONSTRAINT ckCapacity CHECK (capacity >= 0),
     draft                                    NUMBER(5, 2)
         CONSTRAINT nnDraft NOT NULL
-        CONSTRAINT ckDraft CHECK (draft >= 0)
+        CONSTRAINT ckDraft CHECK (draft >= 0),
+    captain_id                              VARCHAR(10)
+        CONSTRAINT nnCaptainID NOT NULL
+        CONSTRAINT unCaptainID UNIQUE
 );
 
 CREATE TABLE DynamicData
@@ -244,14 +247,18 @@ CREATE TABLE ShipTrip
         CONSTRAINT nnTripIdentificationOrigin NOT NULL,
     storage_identification_destination INTEGER
         CONSTRAINT nnTripIdentificationDestination NOT NULL,
-    parting_date                       TIMESTAMP
-        CONSTRAINT nnPartingDate NOT NULL,
-    arrival_date                       TIMESTAMP
-        CONSTRAINT nnArrivalDate NOT NULL,
+    parting_date                       TIMESTAMP,
+    arrival_date                       TIMESTAMP,
     status VARCHAR(20)
         CONSTRAINT nnStatus NOT NULL
         CONSTRAINT setStatus CHECK (status IN ('in progress', 'not started', 'finished')),
-    CONSTRAINT ckTripDestination CHECK (parting_date != arrival_date)
+    CONSTRAINT ckTripDestination CHECK ((parting_date IS NULL) OR (parting_date IS NULL) OR (parting_date != arrival_date) )
+);
+
+CREATE TABLE Captain
+(
+    id                                  VARCHAR(10)
+        CONSTRAINT pkCaptainID PRIMARY KEY
 );
 
 -- define foreign keys and combined primary keys
@@ -276,6 +283,7 @@ ALTER TABLE CargoManifest
 
 ALTER TABLE Ship
     ADD CONSTRAINT fkShipFleetId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)
+    ADD CONSTRAINT fkShipCaptainId FOREIGN Key (captain_id) REFERENCES Captain(id)
     ADD CONSTRAINT fkShipVesselTypeId FOREIGN KEY (vessel_type_id) REFERENCES VesselType (id);
 
 ALTER TABLE DynamicData
