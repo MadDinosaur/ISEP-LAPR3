@@ -1,5 +1,7 @@
 package lapr.project.data;
 
+import lapr.project.utils.ResultSetSize;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +17,13 @@ public class CargoManifestSqlStore {
      * @return a result set with all of the captains carried cargo manifest in a given year
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static ResultSet getCargosManifestInYear(DatabaseConnection databaseConnection, String captainId, int year) throws SQLException {
+    public static ResultSet getCargosManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
         sqlCommand = "select * from ship where captain_id = ?";
         try (PreparedStatement getShipByCaptain = connection.prepareStatement(sqlCommand)) {
-            getShipByCaptain.setString(1, captainId);
+            getShipByCaptain.setInt(1, captainId);
             try(ResultSet shipAddressesResultSet = getShipByCaptain.executeQuery()) {
                 if (shipAddressesResultSet.next()) {
                     sqlCommand = "select * from CargoManifest where ship_mmsi = ? and Year(finishing_date_time) = ?";
@@ -39,16 +41,16 @@ public class CargoManifestSqlStore {
     }
 
     /**
-     * The method returns the average amount of containers a set of cargo manifests has
+     * The method returns the amount of containers a set of cargo manifests has
      * @param databaseConnection the current database connection
      * @param cargoManifests a list of all cargo manifests
      * @return returns a number
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static double averageContainer(DatabaseConnection databaseConnection, ResultSet cargoManifests) throws SQLException {
+    public static int numberOfContainer(DatabaseConnection databaseConnection, ResultSet cargoManifests) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand = "select count(*) from Container_CargoManifest where cargo_manifest_id = ?";
-        double total = 0;
+        int total = 0;
 
         while(cargoManifests.next()){
             try(PreparedStatement getContainerCargoManifest = connection.prepareStatement(sqlCommand)){
@@ -58,7 +60,11 @@ public class CargoManifestSqlStore {
                 }
             }
         }
+        return total;
+    }
 
-        return total / cargoManifests.getFetchSize();
+    public static double averageContainer(DatabaseConnection databaseConnection, ResultSet cargoManifests) throws SQLException {
+        double total = numberOfContainer(databaseConnection, cargoManifests);
+        return total / ResultSetSize.size(cargoManifests);
     }
 }
