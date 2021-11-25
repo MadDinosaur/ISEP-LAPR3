@@ -43,6 +43,16 @@ public class ShipDTO {
     private String draft;
 
     /**
+     * The ship's travelled distance
+     */
+    private String traveledDistance = "N/A";
+
+    /**
+     * The ship's number of movements
+     */
+    private String numberOfMovements = "N/A";
+
+    /**
      * creates a package object of a Ship object
      * @param mmsi The ship's mmsi identification code
      * @param shipName The ship's name
@@ -126,5 +136,37 @@ public class ShipDTO {
      */
     public String getWidth() {
         return width;
+    }
+
+    /**
+     * returns the traveled distance
+     * @return the traveled distance
+     */
+    public String getTraveledDistance() {
+        return traveledDistance;
+    }
+
+    /**
+     * sets the traveled distance
+     * @param traveledDistance
+     */
+    public void setTraveledDistance(double traveledDistance) {
+        this.traveledDistance = Double.toString(traveledDistance);
+    }
+
+    /**
+     * returns the number of movements
+     * @return the number of movements
+     */
+    public String getNumberOfMovements() {
+        return numberOfMovements;
+    }
+
+    /**
+     * sets the number of movements
+     * @param numberOfMovements
+     */
+    public void setNumberOfMovements(double numberOfMovements) {
+        this.numberOfMovements = Double.toString(numberOfMovements);
     }
 }

@@ -8,6 +8,7 @@ import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -142,20 +143,6 @@ class ShipStoreTest {
     }
 
     @Test
-    public void shipsPairedCloseRoutesToStringTest() {
-        //add ships to pair with
-        shipStore.addShip(s3);
-        shipStore.addShip(s4);
-
-        //expected
-        StringBuilder expected = new StringBuilder();
-        expected.append("MMSI: 210950000 - Traveled Distance: 23,238516 - Number of Movements: 3");
-
-        //result
-        String result = shipStore.shipsPairedCloseRoutesToString(shipStore.getCloseShipRoutes(0,16000));
-    }
-
-    @Test
     public void shipsSortedTraveledDistanceToStringSameTraveledDistanceTest(){
         s2.setPositioningDataList(positioningDataTree1);
 
@@ -175,21 +162,21 @@ class ShipStoreTest {
         shipStore.addShip(s3);
         shipStore.addShip(s4);
 
-        HashMap<Ship, TreeSet<Ship>> result = shipStore.getCloseShipRoutes(0,16000);
+        HashMap<Ship, TreeMap<Ship, Pair<Double, Double>>> result = shipStore.getCloseShipRoutes(0,16000);
 
-        TreeSet<Ship> expected1 = new TreeSet<>(new SorterTraveledDistByDiff(s1.getPositioningDataList().traveledDistance()));
-        TreeSet<Ship> expected2 = new TreeSet<>(new SorterTraveledDistByDiff(s3.getPositioningDataList().traveledDistance()));
-        TreeSet<Ship> expected3 = new TreeSet<>(new SorterTraveledDistByDiff(s2.getPositioningDataList().traveledDistance()));
-        TreeSet<Ship> expected4 = new TreeSet<>(new SorterTraveledDistByDiff(s4.getPositioningDataList().traveledDistance()));
+        TreeMap<Ship, Pair<Double, Double>> expected1 = new TreeMap<>(new SorterTraveledDistByDiff(s1.getPositioningDataList().traveledDistance()));
+        TreeMap<Ship, Pair<Double, Double>> expected2 = new TreeMap<>(new SorterTraveledDistByDiff(s3.getPositioningDataList().traveledDistance()));
+        TreeMap<Ship, Pair<Double, Double>> expected3 = new TreeMap<>(new SorterTraveledDistByDiff(s2.getPositioningDataList().traveledDistance()));
+        TreeMap<Ship, Pair<Double, Double>> expected4 = new TreeMap<>(new SorterTraveledDistByDiff(s4.getPositioningDataList().traveledDistance()));
 
-        expected2.add(s1);
-        expected3.add(s1);
-        expected3.add(s3);
-        expected4.add(s1);
-        expected4.add(s2);
-        expected4.add(s3);
+        expected2.put(s1, new Pair<>(15166.34,6.27));
+        expected3.put(s3, new Pair<>(10.72,15180.54));
+        expected3.put(s1, new Pair<>(15155.65,15185.74));
+        expected4.put(s3, new Pair<>(15180.54,6.53));
+        expected4.put(s1, new Pair<>(16.97,1.63));
+        expected4.put(s2, new Pair<>(15169.85,15184.87));
 
-        HashMap<Ship, TreeSet<Ship>> expected = new HashMap<>();
+        HashMap<Ship, TreeMap<Ship, Pair<Double, Double>>> expected = new HashMap<>();
         expected.put(s1, expected1);
         expected.put(s3, expected2);
         expected.put(s2, expected3);
@@ -197,11 +184,24 @@ class ShipStoreTest {
 
         assertEquals(expected.size(), result.size());
 
-        String resultAsString = result.keySet().stream()
-                .map(key -> key.toString() + "=" + shipStore.shipsSortedTraveledDistanceToString(result.get(key)))
-                .collect(Collectors.joining(", ", "{", "}"));
+        ArrayList<String> resultStr = new ArrayList<>();
+        ArrayList<String> expectedStr = new ArrayList<>();
 
-        assertNotNull(resultAsString);
+        for (Ship ship: result.keySet())
+            for (Ship pairShip: result.get(ship).keySet()) {
+                resultStr.add(String.format("Ship 1 MMSI: %s Ship 2 MMSI: %s Origin distance: %.2f Destination distance: %.2f",
+                        ship.getMmsi(), pairShip.getMmsi(), result.get(ship).get(pairShip).get1st(), result.get(ship).get(pairShip).get2nd()));
+            }
+
+        for (Ship ship: expected.keySet())
+            for (Ship pairShip: expected.get(ship).keySet()) {
+                expectedStr.add("Ship 1 MMSI: " + ship.getMmsi() + " Ship 2 MMSI: " + pairShip.getMmsi() +
+                        " Origin distance: " + expected.get(ship).get(pairShip).get1st() +
+                        " Destination distance: " + expected.get(ship).get(pairShip).get2nd());
+            }
+
+        for (int i = 0; i < resultStr.size(); i++)
+            assertEquals(resultStr.get(i).replaceAll(",", "."), expectedStr.get(i).replaceAll(",", "."));
     }
 
     @Test
