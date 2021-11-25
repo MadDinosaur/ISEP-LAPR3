@@ -1,6 +1,7 @@
 package lapr.project.data;
 
 import lapr.project.store.ShipStore;
+import lapr.project.store.StorageStore;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +15,11 @@ public class MainStorage {
     private ShipStore shipStore;
 
     /**
+     * The apps Storage information store
+     */
+    private StorageStore storageStore;
+
+    /**
      * the app's connection to the database
      */
     private DatabaseConnection databaseConnection;
@@ -24,6 +30,7 @@ public class MainStorage {
     private MainStorage() {
         loadProperties();
         shipStore = new ShipStore();
+        storageStore = new StorageStore();
         ConnectionFactory connectionFactory = new ConnectionFactory();
         databaseConnection = connectionFactory.getDatabaseConnection();
     }
@@ -56,6 +63,14 @@ public class MainStorage {
      */
     public ShipStore getShipStore() {
         return shipStore;
+    }
+
+    /**
+     * returns the app's Storage information store
+     * @return returns the app's Storage information store
+     */
+    public StorageStore getStorageStore() {
+        return storageStore;
     }
 
     /**

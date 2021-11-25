@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 public class PositioningDataTree extends AVL<PositioningData> {
-
-
     /**
      * populates and the avl tree
      * @param positioningData a list of positioning data
