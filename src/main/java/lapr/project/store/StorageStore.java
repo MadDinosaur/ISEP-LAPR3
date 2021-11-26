@@ -2,7 +2,7 @@ package lapr.project.store;
 
 import lapr.project.mappers.StorageMapper;
 import lapr.project.mappers.dto.StorageDTO;
-import lapr.project.model.BST2DTree;
+import lapr.project.model.Tree2D;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Storage;
 
