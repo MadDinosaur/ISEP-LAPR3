@@ -90,10 +90,10 @@ CREATE TABLE CscPlate
         CONSTRAINT nnOwnerAddress NOT NULL,
     furnigation       VARCHAR(50)
         CONSTRAINT nnFurnigation NOT NULL,
-    approval_number   VARCHAR(20)
+    approval_number   INTEGER
         CONSTRAINT nnApprovalNumber NOT NULL
         CONSTRAINT unApprovalNumber UNIQUE,
-    acep_number       VARCHAR(20)
+    acep_number       INTEGER
         CONSTRAINT nnAcepNumber NOT NULL
         CONSTRAINT unAcepNumber UNIQUE,
     date_manufactured DATE
