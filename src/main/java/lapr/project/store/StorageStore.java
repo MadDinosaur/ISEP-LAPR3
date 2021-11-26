@@ -1,6 +1,6 @@
 package lapr.project.store;
 
-import lapr.project.model.BST2DTree;
+import lapr.project.model.Tree2D;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Storage;
 
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * A class that will serve as the Storage Store
  */
-public class StorageStore extends BST2DTree<Storage> {
+public class StorageStore extends Tree2D<Storage> {
 
     /**
      * Adds a list of storage to the store
