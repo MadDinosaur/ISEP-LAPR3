@@ -51,7 +51,7 @@ public class presentationTests {
 
         SearchForShipController searchForShipController = new SearchForShipController();
 
-        Pair<ShipDTO, List<PositioningDataDTO>> ship =  searchForShipController.getShipByCallSign("9037769");
+        Pair<ShipDTO, List<PositioningDataDTO>> ship =  searchForShipController.getShipByCallSign("DHBN");
 
         ShipDTO shipDTO = ship.get1st();
         output.append("Ship Found By Call Sign:\n\n\n\n\n\n\n");

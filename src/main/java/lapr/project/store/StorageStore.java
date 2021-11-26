@@ -4,23 +4,36 @@ import lapr.project.model.BST2DTree;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Storage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A class that will serve as the Storage Store
  */
 public class StorageStore extends BST2DTree<Storage> {
 
     /**
-     * Adds a valid Storage to the Store
-     * @param storage the storage that will be added
+     * Adds a list of storage to the store
+     * @param toAddList the storage list that will be added
      * @return True if added with success, False if there was a problem adding the storage
      */
-    public boolean addStorage(Storage storage) {
-        if (!validateStorage(storage))
-            return false;
+    public boolean addStorage(List<Storage> toAddList) {
 
-        Coordinate coordinate = storage.getCoordinate();
+        List<Storage> newFullList = inOrder();
+        List<Node<Storage>> nodeList = new ArrayList<>();
 
-        insert(storage, coordinate.getLongitude(), coordinate.getLatitude());
+        for(Storage storage : toAddList){
+            if(validateStorage(storage))
+                newFullList.add(storage);
+        }
+
+        for(Storage storage : newFullList){
+            Coordinate coordinate = storage.getCoordinate();
+            nodeList.add(new Node<Storage>(storage,coordinate.getLongitude(),coordinate.getLatitude()));
+        }
+
+        insert(nodeList);
+
         return true;
     }
 

@@ -1,10 +1,11 @@
 package lapr.project.model;
 
-import java.util.*;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class BST2DTree<T> {
-
     public class Node<T> {
         protected Point2D.Double coords;
         protected T element;
@@ -47,27 +48,22 @@ public class BST2DTree<T> {
     };
     private Node<T> root;
 
-    public void insert(T info, double x, double y) {
-        if (root == null) {
-            root = new Node<>(info, x, y);
+    public void insert(List<Node<T>> values) {
+        if (values == null) {
             return;
         }
-        insert(root, new Node<>(info, x, y), true);
+        root = insert(values, true);
     }
 
-    private void insert(Node<T> currentNode, Node<T> node, boolean divX) {
-        if (node.coords.equals(currentNode.coords))
-            return;
-        int cmpResult = (divX ? cmpX : cmpY).compare(node, currentNode);
-        if (cmpResult < 0)
-            if (currentNode.left == null)
-                currentNode.left = node;
-            else
-                insert(currentNode.left, node, !divX);
-        else if (currentNode.right == null)
-            currentNode.right = node;
-        else
-            insert(currentNode.right, node, !divX);
+    private Node<T> insert(List<Node<T>> values, boolean divX) {
+        if (values.size() == 0)
+            return null;
+        values.sort(divX ? cmpX : cmpY);
+        int middlePoint = values.size() /2 + 1;
+        Node<T> node = values.get(middlePoint - 1);
+        node.right = insert(values.subList(middlePoint, values.size()), !divX);
+        node.left = insert(values.subList(0, middlePoint - 1), !divX);
+        return node;
     }
 
     public T findNearestNeighbour(double x, double y) {
@@ -114,5 +110,20 @@ public class BST2DTree<T> {
         else
             sb.append(root.element +"\n");
         toStringRec(root.left, level+1, sb);
+    }
+
+    public List<T> inOrder(){
+        List<T> snapshot = new ArrayList<>();
+        if (root!=null)
+            inOrderSubtree(root, snapshot);   // fill the snapshot recursively
+        return snapshot;
+    }
+
+    private void inOrderSubtree(Node<T> node, List<T> snapshot) {
+        if (node == null)
+            return;
+        inOrderSubtree(node.left, snapshot);
+        snapshot.add(node.element);
+        inOrderSubtree(node.right, snapshot);
     }
 }
