@@ -43,7 +43,7 @@ public class getCargoManifestInformationController {
      * @throws SQLException throws this exception if some of the values are nt within expected values
      */
     public boolean findCargoManifests(int captain_id, int year) throws SQLException {
-        cargoManifests = CargoManifestSqlStore.getCargosManifestInYear(databaseConnection, captain_id, year);
+        cargoManifests = CargoManifestSqlStore.getCargoManifestInYear(databaseConnection, captain_id, year);
         return cargoManifests != null;
     }
 

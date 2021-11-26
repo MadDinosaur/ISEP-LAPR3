@@ -17,7 +17,7 @@ public class CargoManifestSqlStore {
      * @return a result set with all of the captains carried cargo manifest in a given year
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static ResultSet getCargosManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
+    public static ResultSet getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
@@ -44,7 +44,7 @@ public class CargoManifestSqlStore {
      * The method returns the amount of containers a set of cargo manifests has
      * @param databaseConnection the current database connection
      * @param cargoManifests a list of all cargo manifests
-     * @return returns a number
+     * @return returns the number of cargo manifestos carried in a given yeat
      * @throws SQLException throws an exception if any of the commands is invalid
      */
     public static int numberOfContainer(DatabaseConnection databaseConnection, ResultSet cargoManifests) throws SQLException {
@@ -63,6 +63,13 @@ public class CargoManifestSqlStore {
         return total;
     }
 
+    /**
+     * returns the average amount of containers on
+     * @param databaseConnection the current database connection
+     * @param cargoManifests a list of all cargo manifests
+     * @return returns the average amount of containers in a cargoManifest
+     * @throws SQLException throws an exception if any of the commands is invalid
+     */
     public static double averageContainer(DatabaseConnection databaseConnection, ResultSet cargoManifests) throws SQLException {
         double total = numberOfContainer(databaseConnection, cargoManifests);
         return total / ResultSetSize.size(cargoManifests);
