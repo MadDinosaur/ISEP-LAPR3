@@ -59,34 +59,6 @@ public class DatabaseConnection {
     }
 
     /**
-     * Writes a detailed report about the table filled in the database
-     */
-    public void getDatabaseReport(){
-        try {
-            String sqlCommand = "SELECT table_name FROM user_tables";
-            try(PreparedStatement getTableNamesStatement = connection.prepareStatement(sqlCommand)) {
-                try (FileWriter myWriter = new FileWriter("output\\filename.txt")) {
-                    try (ResultSet tableNames = getTableNamesStatement.executeQuery()) {
-                        while (tableNames.next()) {
-                            myWriter.write("Table : " + tableNames.getString("table_name") + "\n");
-                            sqlCommand = "SELECT count(*) FROM " + tableNames.getString("table_name");
-                            try (PreparedStatement getTableStatement = connection.prepareStatement(sqlCommand)) {
-                                try (ResultSet rowCount = getTableStatement.executeQuery()) {
-                                    rowCount.next();
-                                    myWriter.write("Rows : " + rowCount.getInt(1) + "\n\n");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * returns the connection to the server
      * @return returns the connection to the server
      */
