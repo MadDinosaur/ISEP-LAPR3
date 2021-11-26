@@ -51,10 +51,10 @@ public class presentationTests {
 
         SearchForShipController searchForShipController = new SearchForShipController();
 
-        Pair<ShipDTO, List<PositioningDataDTO>> ship =  searchForShipController.getShipByIMO("9037769");
+        Pair<ShipDTO, List<PositioningDataDTO>> ship =  searchForShipController.getShipByCallSign("DHBN");
 
         ShipDTO shipDTO = ship.get1st();
-        output.append("Ship Found By IMO:\n\n\n\n\n\n\n");
+        output.append("Ship Found By Call Sign:\n\n\n\n\n\n\n");
 
         output.append("MMSI:").append(shipDTO.getMmsi()).append(" Vessel Name:").append(shipDTO.getVesselType()).append(" IMO:")
                 .append(shipDTO.getImo()).append(" Call Sign:").append(shipDTO.getCallSign()).append(" Vessel Type:").append(shipDTO.getVesselType())
