@@ -8,6 +8,7 @@ import lapr.project.store.StorageStore;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ReadStorageFileControllerTest {
 
@@ -22,7 +23,7 @@ public class ReadStorageFileControllerTest {
     public void controllerNoFileTest(){
         ReadStorageFileController readStorageController = new ReadStorageFileController();
         readStorageController.readFileAndSaveData("");
-        assertNotNull(MainStorage.getInstance().getStorageStore().findNearestNeighbour(-3,53));
+        assertNull(MainStorage.getInstance().getStorageStore().findNearestNeighbour(-3,53));
     }
 
 }
