@@ -53,6 +53,11 @@ public class StorageStore extends Tree2D<Storage> {
         return true;
     }
 
+    /**
+     * Transforms a list of Storage DTOs into a list of Storage
+     * @param storageData a mapper with all the storage information
+     * @return
+     */
     public List<Storage> createStorage(List<StorageDTO> storageData){
         return  StorageMapper.toModel(storageData);
     }

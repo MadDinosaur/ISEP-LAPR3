@@ -33,6 +33,7 @@ public class Storage  {
     public Storage(int identification,String name, String continent, String country,Coordinate coordinate){
         setIdentification(identification);
         setName(name);
+        setCountry(country);
         setContinent(continent);
         setCoordinate(coordinate);
     }
