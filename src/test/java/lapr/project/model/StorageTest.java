@@ -29,13 +29,33 @@ public class StorageTest {
     @Test
     public void createIllegalDataTest(){
         Exception exception1 = assertThrows(IllegalArgumentException.class, () ->{
-            Storage storage = new Storage(identification,name,continent,"ThisCountryHasExactly33Characters",coordinate);
+            Storage storage = new Storage(identification,name,continent,"ThisNameHasExactly30Characters",coordinate);
         });
 
-        String expectedMessage1 = "Country \"ThisCountryHasExactly33Characters\" is not supported.";
+        String expectedMessage1 = "Country \"ThisNameHasExactly30Characters\" is not supported.";
         String actualMessage1 = exception1.getMessage();
 
         assertTrue(actualMessage1.contains(expectedMessage1));
+
+        Exception exception2 = assertThrows(IllegalArgumentException.class, () ->{
+            Storage storage = new Storage(identification,name,"ThisNameHasExactly30Characters",country,coordinate);
+        });
+
+        String expectedMessage2 = "Continent \"ThisNameHasExactly30Characters\" is not supported.";
+        String actualMessage2 = exception2.getMessage();
+
+        assertTrue(actualMessage2.contains(expectedMessage2));
+
+        Exception exception3 = assertThrows(IllegalArgumentException.class, () ->{
+            Storage storage = new Storage(identification,"ThisNameHasExactly30Characters",continent,country,coordinate);
+        });
+
+        String expectedMessage3 = "Name \"ThisNameHasExactly30Characters\" is not supported.";
+        String actualMessage3 = exception3.getMessage();
+
+        assertTrue(actualMessage3.contains(expectedMessage3));
+        
+
     }
 
 

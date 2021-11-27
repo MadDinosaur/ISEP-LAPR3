@@ -62,7 +62,7 @@ public class Storage  {
      */
     private void checkNameRules(String name){
         if (name.length() > 21)
-            throw new IllegalStorageException("Name  \"" + name + "\" is not supported.");
+            throw new IllegalStorageException("Name \"" + name + "\" is not supported.");
     }
 
     /**
@@ -79,7 +79,7 @@ public class Storage  {
      * @param continent The storage's continent
      */
     private void checkContinentRules(String continent){
-        if (name.length() > 21)
+        if (continent.length() > 21)
             throw  new IllegalStorageException("Continent \"" + continent + "\" is not supported.");
     }
 
