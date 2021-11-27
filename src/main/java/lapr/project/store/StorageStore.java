@@ -53,6 +53,10 @@ public class StorageStore extends Tree2D<Storage> {
         return true;
     }
 
+    public List<Storage> createStorage(List<StorageDTO> storageData){
+        return  StorageMapper.toModel(storageData);
+    }
+
     /**
      * Validates the given storage
      * @param storage a storage

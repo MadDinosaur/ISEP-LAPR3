@@ -40,7 +40,7 @@ public class ReadShipFileController {
      */
     public void readFileAndSaveData(String path){
         Map<ShipDTO, List<PositioningDataDTO>> shipData = ShipFileReader.readShipFile(path);
-        DatabaseConnection databaseConnection = MainStorage.getInstance().getDatabaseConnection();
+
         if (shipData != null) {
             List<Ship> shipList = shipStore.createShip(shipData);
             for (Ship ship : shipList) {
