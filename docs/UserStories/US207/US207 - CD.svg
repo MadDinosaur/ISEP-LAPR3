@@ -15,13 +15,13 @@
       ><path d="M0 0 L0 15 L177 15 L177 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
-      ><path d="M-7 -7 L240 -7 L240 79 L-7 79 L-7 -7 Z"
+      ><path d="M-7 -7 L283 -7 L283 51 L-7 51 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
-      ><path d="M0 0 L0 53 L229 53 L229 0 Z"
+      ><path d="M0 0 L0 25 L272 25 L272 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
-      ><path d="M0 0 L0 15 L229 15 L229 0 Z"
+      ><path d="M0 0 L0 15 L272 15 L272 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
       ><path d="M-7 -7 L150 -7 L150 65 L-7 65 L-7 -7 Z"
@@ -42,10 +42,10 @@
       ><path d="M0 0 L0 15 L125 15 L125 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
-      ><path d="M-7 -7 L341 -7 L341 79 L-7 79 L-7 -7 Z"
+      ><path d="M-7 -7 L341 -7 L341 51 L-7 51 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
-      ><path d="M0 0 L0 53 L330 53 L330 0 Z"
+      ><path d="M0 0 L0 25 L330 25 L330 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath15"
       ><path d="M0 0 L0 15 L330 15 L330 0 Z"
@@ -69,10 +69,10 @@
       ><path d="M0 0 L0 173 L189 173 L189 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath22"
-      ><path d="M0 0 L193 0 L193 173 L0 173 L0 0 Z"
+      ><path d="M0 0 L150 0 L150 173 L0 173 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath23"
-      ><path d="M0 0 L0 173 L193 173 L193 0 Z"
+      ><path d="M0 0 L0 173 L150 173 L150 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath24"
       ><path d="M0 0 L273 0 L273 179 L0 179 L0 0 Z"
@@ -96,26 +96,18 @@
       >GetCargoManifestInformationUI</text
     ></g
     ><g font-size="11px" transform="translate(128,132)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="229" height="68" y="0" clip-path="url(#clipPath4)" stroke="none"
+    ><rect x="0" width="272" height="40" y="0" clip-path="url(#clipPath4)" stroke="none"
     /></g
     ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(128,132)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="229" height="68" y="0" clip-path="url(#clipPath4)"
-      /><line y2="15" fill="none" x1="0" clip-path="url(#clipPath4)" x2="229" y1="15"
+    ><rect fill="none" x="0" width="272" height="40" y="0" clip-path="url(#clipPath4)"
+      /><line y2="15" fill="none" x1="0" clip-path="url(#clipPath4)" x2="272" y1="15"
     /></g
     ><g font-size="11px" transform="matrix(1,0,0,1,128,147)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath5)" stroke="none"
-      >+findCargoManifestInYear(captain_Id, year)</text
-    ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,128,147)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath5)" stroke="none"
-      >+getAverageNumberOfContainers()</text
-    ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,128,147)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath5)" stroke="none"
-      >+getNumberOfCargoManifests()</text
+      >+findCargoManifestInYear(database, captain_Id, year)</text
     ></g
     ><g font-size="11px" transform="translate(128,132)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
-    ><text x="10" xml:space="preserve" y="12" clip-path="url(#clipPath6)" stroke="none"
+    ><text x="32" xml:space="preserve" y="12" clip-path="url(#clipPath6)" stroke="none"
       >GetCargoManifestInformationController</text
     ></g
     ><g font-size="11px" transform="translate(2,236)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
@@ -163,23 +155,15 @@
       >DatabaseConnection</text
     ></g
     ><g font-size="11px" transform="translate(367,236)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="330" height="68" y="0" clip-path="url(#clipPath13)" stroke="none"
+    ><rect x="0" width="330" height="40" y="0" clip-path="url(#clipPath13)" stroke="none"
     /></g
     ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(367,236)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="330" height="68" y="0" clip-path="url(#clipPath13)"
+    ><rect fill="none" x="0" width="330" height="40" y="0" clip-path="url(#clipPath13)"
       /><line y2="15" fill="none" x1="0" clip-path="url(#clipPath13)" x2="330" y1="15"
     /></g
     ><g font-size="11px" transform="matrix(1,0,0,1,367,251)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath14)" stroke="none"
       >+getCargoManifestsInYear(databaseConnection, captain_id, year)</text
-    ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,367,251)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath14)" stroke="none"
-      >+numberOfContainers(databaseConnection, cargoManifests)</text
-    ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,367,251)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath14)" stroke="none"
-      >+averageContainner(databaseConnection, cargoManifests)</text
     ></g
     ><g font-size="11px" transform="translate(367,236)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
     ><text x="104" xml:space="preserve" y="12" clip-path="url(#clipPath15)" stroke="none"
@@ -202,11 +186,11 @@
       /><line clip-path="url(#clipPath21)" stroke-dashoffset="0" fill="none" x1="50" x2="44" y1="50" y2="62" stroke-dasharray="none"
       /><line clip-path="url(#clipPath21)" stroke-dashoffset="0" fill="none" x1="50" x2="56" y1="50" y2="62" stroke-dasharray="none"
     /></g
-    ><g stroke-linecap="butt" font-size="11px" transform="translate(308,116)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
-    ><line y2="50" fill="none" x1="139" clip-path="url(#clipPath23)" x2="139" y1="119"
-      /><line y2="50" fill="none" x1="139" clip-path="url(#clipPath23)" x2="50" y1="50"
-      /><polygon fill="white" clip-path="url(#clipPath23)" points=" 139 119 145 107 133 107" stroke="none"
-      /><polygon fill="none" points=" 139 119 145 107 133 107" clip-path="url(#clipPath23)"
+    ><g stroke-linecap="butt" font-size="11px" transform="translate(351,116)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
+    ><line y2="50" fill="none" x1="96" clip-path="url(#clipPath23)" x2="96" y1="119"
+      /><line y2="50" fill="none" x1="96" clip-path="url(#clipPath23)" x2="50" y1="50"
+      /><polygon fill="white" clip-path="url(#clipPath23)" points=" 96 119 102 107 90 107" stroke="none"
+      /><polygon fill="none" points=" 96 119 102 107 90 107" clip-path="url(#clipPath23)"
     /></g
     ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(147,212)" stroke-opacity="1" fill="black" stroke-dasharray="5" font-family="sans-serif" stroke-linejoin="round" font-size="11px" stroke-dashoffset="1" image-rendering="optimizeQuality"
     ><line y2="50" fill="none" x1="219" clip-path="url(#clipPath25)" x2="50" y1="50"
@@ -216,7 +200,7 @@
     /></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"
     ><text x="0" xml:space="preserve" y="10" stroke="none"
-      >Visual Paradigm Standard(Carlos Eduardo(Instituto Superior de Engenharia do Porto))</text
+      >Visual Paradigm Standard(Carlos Dias(Instituto Superior de Engenharia do Porto))</text
     ></g
   ></g
 ></svg
