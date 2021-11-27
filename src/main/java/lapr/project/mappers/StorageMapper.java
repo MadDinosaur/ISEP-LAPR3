@@ -4,10 +4,14 @@ import lapr.project.mappers.dto.StorageDTO;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Storage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StorageMapper {
+    /**
+     * Private constructor because the mapper is an Utility class
+     */
+    private StorageMapper(){
+        throw new IllegalStateException("Utility class");
+    }
+
     /**
      * Converts a Storage object into a Storage DTO
      * @param storage The Storage object that will be Converted
@@ -23,12 +27,12 @@ public class StorageMapper {
      * @return The Storage created from the Storage DTO
      */
     public static Storage toModel(StorageDTO dto) {
-        try{
+        try {
             Coordinate coord = new Coordinate(Float.parseFloat(dto.getLongitude()), Float.parseFloat(dto.getLatitude()));
 
             return new Storage(Integer.parseInt(dto.getIdentification()), dto.getName(), dto.getContinent(), dto.getCountry(), coord);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null;
         }
     }

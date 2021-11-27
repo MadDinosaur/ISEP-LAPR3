@@ -50,7 +50,7 @@ public class Storage  {
 
     private void checkIdentificationRules(int id) {
         if (id == 0)
-            throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be empty))");
+            throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be empty or 0))");
 
         String identification = Integer.toString(id);
         if (identification.length() > 10)

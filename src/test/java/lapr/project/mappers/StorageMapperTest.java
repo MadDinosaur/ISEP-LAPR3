@@ -11,15 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class StorageMapperTest {
     private static Storage  storage;
     private static StorageDTO storageDTO;
+    private final static int identification = 10000;
+    private final static String name = "Larnaca";
+    private final static String continent = "Europe";
+    private final static String country = "Cyprus";
+    private final static Coordinate coordinate = new Coordinate(33.65f, 34.91f);
 
     @BeforeAll
     static void setUp() {
-        int identification = 10000;
-        String name = "Larnaca";
-        String continent = "Europe";
-        String country = "Cyprus";
-        Coordinate coordinate = new Coordinate(33.65f, 34.91f);
-
         storage = new Storage(identification, name, continent, country, coordinate);
         storageDTO = new StorageDTO(Integer.toString(identification), name, continent, country, Float.toString(coordinate.getLongitude()), Float.toString(coordinate.getLatitude()));
     }
@@ -50,5 +49,11 @@ class StorageMapperTest {
         assertEquals(storageResult.getCountry(), storage.getCountry());
         assertEquals(storageResult.getCoordinate().getLongitude(), storage.getCoordinate().getLongitude());
         assertEquals(storageResult.getCoordinate().getLatitude(), storage.getCoordinate().getLatitude());
+    }
+
+    @Test
+    void toModelTestInvalidData() {
+        StorageDTO invalidStorageDTO = new StorageDTO(Integer.toString(0), name, continent, country, Float.toString(coordinate.getLongitude()), Float.toString(coordinate.getLatitude()));
+        assertNull(StorageMapper.toModel(invalidStorageDTO));
     }
 }
