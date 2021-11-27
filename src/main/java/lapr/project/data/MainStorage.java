@@ -31,8 +31,8 @@ public class MainStorage {
         loadProperties();
         shipStore = new ShipStore();
         storageStore = new StorageStore();
-//        ConnectionFactory connectionFactory = new ConnectionFactory();
-//        databaseConnection = connectionFactory.getDatabaseConnection();
+        ConnectionFactory connectionFactory = new ConnectionFactory();
+        databaseConnection = connectionFactory.getDatabaseConnection();
     }
 
     /**
