@@ -54,7 +54,6 @@ public class StorageTest {
         String actualMessage3 = exception3.getMessage();
 
         assertTrue(actualMessage3.contains(expectedMessage3));
-        
 
     }
 
