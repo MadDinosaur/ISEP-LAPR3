@@ -33,8 +33,7 @@ public class StorageStore extends Tree2D<Storage> {
      * @param toAddList the storage list that will be added
      * @return True if added with success, False if there was a problem adding the storage
      */
-    public boolean addStorage(List<Storage> toAddList) {
-
+    public boolean addStorageList(List<Storage> toAddList) {
         List<Storage> newFullList = inOrder();
         List<Node<Storage>> nodeList = new ArrayList<>();
 
@@ -51,15 +50,6 @@ public class StorageStore extends Tree2D<Storage> {
         insert(nodeList);
 
         return true;
-    }
-
-    /**
-     * Transforms a list of Storage DTOs into a list of Storage
-     * @param storageData a mapper with all the storage information
-     * @return
-     */
-    public List<Storage> createStorage(List<StorageDTO> storageData){
-        return  StorageMapper.toModel(storageData);
     }
 
     /**

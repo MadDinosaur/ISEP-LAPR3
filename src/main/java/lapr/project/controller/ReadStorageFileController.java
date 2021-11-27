@@ -41,8 +41,8 @@ public class ReadStorageFileController {
         List<StorageDTO> storageData = StorageFileReader.readStorageFile(path);
 
         if (storageData != null){
-            List<Storage> storageList = storageStore.createStorage(storageData);
-            storageStore.addStorage(storageList);
+            List<Storage> storageList = storageStore.createStorageList(storageData);
+            storageStore.addStorageList(storageList);
         }
     }
 

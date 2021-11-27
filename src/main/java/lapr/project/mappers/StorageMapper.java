@@ -32,21 +32,4 @@ public class StorageMapper {
             return null;
         }
     }
-
-    /**
-     * Transforms a list of Storage DTOs into a list of Storage
-     * @param storageData a mapper with all the storage information
-     * @return a storage list
-     */
-    public static List<Storage> toModel(List<StorageDTO> storageData){
-        List<Storage> storageList = new ArrayList<>();
-        for(StorageDTO dto : storageData){
-            Storage storage = toModel(dto);
-            if (storage != null){
-                storageList.add(storage);
-            }
-
-        }
-        return storageList;
-    }
 }

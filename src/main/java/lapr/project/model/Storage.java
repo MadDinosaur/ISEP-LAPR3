@@ -44,7 +44,17 @@ public class Storage  {
      * @param identification The storage's identification
      */
     public void setIdentification(int identification){
+        checkIdentificationRules(identification);
         this.identification = identification;
+    }
+
+    private void checkIdentificationRules(int id) {
+        if (id == 0)
+            throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be empty))");
+
+        String identification = Integer.toString(id);
+        if (identification.length() > 10)
+            throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be bigger than 10 characters)");
     }
 
     /**
