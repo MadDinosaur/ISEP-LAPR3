@@ -40,4 +40,8 @@ public class CargoManifestSqlStore {
             }
         }
     }
+
+    public static int getOccupancyRate(DatabaseConnection databaseConnection, int captain_id, int manifest_id) throws SQLException{
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
