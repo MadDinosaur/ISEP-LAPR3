@@ -42,13 +42,14 @@ public class ReadShipFileController {
     public void readFileAndSaveData(String path){
         Map<ShipDTO, List<PositioningDataDTO>> shipData = ShipFileReader.readShipFile(path);
         DatabaseConnection databaseConnection = MainStorage.getInstance().getDatabaseConnection();
+        boolean insert = Boolean.parseBoolean(System.getProperty("database.insert"));
         if (shipData != null) {
             ShipSqlStore shipSqlStore = new ShipSqlStore();
             List<Ship> shipList = shipStore.createShip(shipData);
             for (Ship ship : shipList) {
-                System.out.println("a");
-                shipSqlStore.save(databaseConnection, ship);
                 shipStore.addShip(ship);
+                if (insert)
+                    shipSqlStore.save(databaseConnection, ship);
             }
         }
     }
