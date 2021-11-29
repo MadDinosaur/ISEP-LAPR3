@@ -155,6 +155,8 @@ INSERT INTO CargoManifest(ship_mmsi, storage_identification, loading_flag, finis
 VALUES(100000001,1, 1, Null);
 INSERT INTO CargoManifest(ship_mmsi, storage_identification, loading_flag, finishing_date_time)
 VALUES(100000001,0, 1, Null);
+INSERT INTO CargoManifest(ship_mmsi, storage_identification, loading_flag, finishing_date_time)
+VALUES(100000001,1, 0, TO_TIMESTAMP('2021-10-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'));
 
 -- Container_CargoManifest --
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
@@ -163,6 +165,10 @@ INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_
 VALUES(3, 1, 1,2,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(1, 1, 2,1,1);
+INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+VALUES(1, 2, 2,1,1);
+INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+VALUES(1, 10, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(9, 1, 1,1,2);
 
