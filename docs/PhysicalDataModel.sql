@@ -155,10 +155,15 @@ CREATE TABLE CargoManifest
         CONSTRAINT pkCargoManifestId PRIMARY KEY,
     ship_mmsi    NUMBER(9)
         CONSTRAINT nnCargoShipMMSI NOT NULL,
+    storage_identification INTEGER,
     loading_flag NUMBER(1)
-        CONSTRAINT nnLoadingFlag NOT NULL,
         CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
     finishing_date_time    TIMESTAMP
+    CONSTRAINT ckPartialManifest CHECK (
+        -- Partial port cargo manifest
+        (storage_identification IS NOT NULL AND loading_flag IS NOT NULL)
+        -- Full ship cargo manifest
+        OR (storage_identification IS NULL AND loading_flag IS NULL))
 );
 
 CREATE TABLE Fleet
@@ -266,7 +271,9 @@ ALTER TABLE Storage
     ADD CONSTRAINT fkStorageTypeId FOREIGN KEY (storage_type_id) REFERENCES StorageType (id);
 
 ALTER TABLE Container
+    ADD CONSTRAINT fkContainerStorageIdentification FOREIGN KEY (storage_identification) REFERENCES Storage(identification)
     ADD CONSTRAINT fkContainerCscPlateSerialNumber FOREIGN KEY (csc_plate_serial_number) REFERENCES CscPlate (serial_number);
+
 
 ALTER TABLE Container_CargoManifest
     ADD CONSTRAINT fkContainerCargoManifestContainerNum FOREIGN KEY (container_num) REFERENCES Container (num)
