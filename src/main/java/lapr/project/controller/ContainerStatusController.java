@@ -3,7 +3,11 @@ package lapr.project.controller;
 import lapr.project.data.ContainerSqlStore;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.data.MainStorage;
+import lapr.project.exception.UnauthorizedOperationException;
 import lapr.project.store.ShipStore;
+import oracle.ucp.util.Pair;
+
+import java.util.List;
 
 public class ContainerStatusController {
     /**
@@ -24,14 +28,45 @@ public class ContainerStatusController {
      */
     public ContainerStatusController(MainStorage storage) {this.mainStorage = storage;}
 
-    public String getContainerStatus(String clientId, int containerNum) {
+    /**
+     * Creates a table with a the status of a given container:
+     * Container Identifier
+     * Type of Location
+     * Name of Location
+     * @param clientId the requesting client id
+     * @param containerNum the container identification
+     * @return a list of Pair<String, String>, where column headers are paired with their respective value
+     */
+    private List<Pair<String, String>> getContainerStatus(String clientId, int containerNum) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
         ContainerSqlStore containerStore = new ContainerSqlStore();
-        if (containerStore.checkContainerInShipment(dbconnection, clientId, containerNum))
+        if (containerStore.checkContainerInShipment(dbconnection, clientId, containerNum)) {
             return containerStore.getContainerStatus(dbconnection, containerNum);
+        }
 
-        return "Unauthorized access. Container is not part of client's shipment.";
+        throw new UnauthorizedOperationException("Unauthorized access. Container is not part of client's shipment.");
     }
 
+    /**
+     * Generates a text view of the status of a given container:
+     * Container Identifier
+     * Type of Location
+     * Name of Location
+     * @param clientId the requesting client id
+     * @param containerNum the container identification
+     * @return the status of the container
+     */
+    public String getContainerStatusToString(String clientId, int containerNum) {
+        try {
+            List<Pair<String, String>> list = getContainerStatus(clientId, containerNum);
+
+            StringBuilder string = new StringBuilder();
+            for (Pair<String, String> value: list)
+                string.append(String.format("%s: %s ", value.get1st(), value.get2nd()));
+            return string.toString();
+        } catch (UnauthorizedOperationException e) {
+            return e.getMessage();
+        }
+    }
 }
