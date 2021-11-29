@@ -158,7 +158,7 @@ CREATE TABLE CargoManifest
     storage_identification INTEGER,
     loading_flag NUMBER(1)
         CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
-    finishing_date_time    TIMESTAMP
+    finishing_date_time    TIMESTAMP,
     CONSTRAINT ckPartialManifest CHECK (
         -- Partial port cargo manifest
         (storage_identification IS NOT NULL AND loading_flag IS NOT NULL)
