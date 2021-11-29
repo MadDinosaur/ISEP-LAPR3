@@ -15,6 +15,11 @@ import java.util.Map;
 public class ShipFileReader {
 
     /**
+     * Hides the implicit public controller
+     */
+    private ShipFileReader(){}
+
+    /**
      * returns a map with the ship information and it's positioning data
      * @param path the path to the cvs file
      * @return returns a map with the ship information and it's positioning data

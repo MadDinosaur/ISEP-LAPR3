@@ -45,10 +45,10 @@ public class Tree2D<T> {
          * @param node The node to be copied
          */
         public void setObject(Node<T> node) {
-            element = node.element;
-            coords = node.coords;
-            left = node.left;
-            right = node.right;
+            this.element = node.element;
+            this.coords = node.coords;
+            this.left = node.left;
+            this.right = node.right;
         }
         
     }
@@ -56,22 +56,12 @@ public class Tree2D<T> {
     /**
      * The comparator for the element's x coordinate
      */
-    private final Comparator<Node<T>> cmpX = new Comparator<Node<T>>() {
-        @Override
-        public int compare(Node<T> p1, Node<T> p2) {
-            return Double.compare(p1.getX(), p2.getX());
-        }
-    };
+    private final Comparator<Node<T>> cmpX = Comparator.comparingDouble(Node::getX);
 
     /**
      * The comparator for the element's y coordinate
      */
-    private final Comparator<Node<T>> cmpY = new Comparator<Node<T>>() {
-        @Override
-        public int compare(Node<T> p1, Node<T> p2) {
-            return Double.compare(p1.getY(), p2.getY());
-        }
-    };
+    private final Comparator<Node<T>> cmpY = Comparator.comparingDouble(Node::getY);
     private Node<T> root;
 
     /**
@@ -117,7 +107,7 @@ public class Tree2D<T> {
         if (root == null)
             return null;
 
-        return findNearestNeighbour(root, x, y, root, true);
+        return findNearestNeighbour(root, x, y, new Node<T>(null, 0, 0), true);
     }
 
     /**

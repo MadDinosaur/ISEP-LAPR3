@@ -278,12 +278,12 @@ public class PositioningDataTree extends AVL<PositioningData> {
         }
         Node<PositioningData> rightChild = node.getRight();
         Node<PositioningData> leftChild = node.getLeft();
-        if (rightChild != null && rightChild.getElement().getBdt().compareTo(date) < 0){
+        if (rightChild != null && rightChild.getElement().getBdt().compareTo(date) < 0)
             return getNearestTime(rightChild, date);
-        } else if (leftChild != null){
-            return getNearestTime(leftChild, date);
-        } else {
+        else if(node.getElement().getBdt().compareTo(date) < 0)
             return node.getElement();
-        }
+        else if (leftChild != null)
+            return getNearestTime(leftChild, date);
+        else return smallestElement(node);
     }
 }

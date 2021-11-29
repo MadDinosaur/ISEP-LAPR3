@@ -7,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,5 +63,20 @@ class PositioningDataTreeTest {
         PositioningDataTree pl1 = new PositioningDataTree();
         pl1.insertPositioningDataTree(p1);
         assertEquals(0,pl1.traveledDistance());
+    }
+
+    @Test
+    public void nearestTimeTest() throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = formatter.parse("31/12/2020 17:21");
+        assertEquals(positioningData, positioningDataTree.getNearestTime(date));
+        date = formatter.parse("31/12/2020 17:04");
+        assertEquals(positioningData2, positioningDataTree.getNearestTime(date));
+        date = formatter.parse("31/12/2020 17:2");
+        assertEquals(positioningData3, positioningDataTree.getNearestTime(date));
+        date = formatter.parse("31/12/2020 15:02");
+        assertEquals(positioningData3, positioningDataTree.getNearestTime(date));
+        PositioningDataTree positioningDataTree = new PositioningDataTree();
+        assertNull(positioningDataTree.getNearestTime(date));
     }
 }

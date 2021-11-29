@@ -1,5 +1,6 @@
 package lapr.project.utils;
 
+import lapr.project.data.DatabaseConnection;
 import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
