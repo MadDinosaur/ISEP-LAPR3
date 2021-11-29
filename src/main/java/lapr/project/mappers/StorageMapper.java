@@ -1,8 +1,11 @@
 package lapr.project.mappers;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lapr.project.mappers.dto.StorageDTO;
 import lapr.project.model.Coordinate;
 import lapr.project.model.Storage;
+
 
 public class StorageMapper {
     /**
@@ -32,7 +35,7 @@ public class StorageMapper {
 
             return new Storage(Integer.parseInt(dto.getIdentification()), dto.getName(), dto.getContinent(), dto.getCountry(), coord);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(StorageMapper.class.getName()).log(Level.WARNING, e.getMessage());
             return null;
         }
     }

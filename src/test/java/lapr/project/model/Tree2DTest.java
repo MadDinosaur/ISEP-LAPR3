@@ -45,6 +45,9 @@ class Tree2DTest {
     @Test
     void findNearestNeighbour() {
         assertEquals(20, instance.findNearestNeighbour(9, 34));
+        assertEquals(20, instance.findNearestNeighbour(11, 36));
+        assertEquals(20, instance.findNearestNeighbour(9, 36));
+        assertEquals(20, instance.findNearestNeighbour(10, 35));
         instance = new Tree2D<>();
         assertNull(instance.findNearestNeighbour(9, 34));
     }
