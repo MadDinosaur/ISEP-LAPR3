@@ -10,6 +10,10 @@ import java.util.List;
 
 public class StorageFileReader {
 
+    /**
+     * Hides the implicit public controller
+     */
+    private StorageFileReader(){}
 
     /**
      * Returns a list with the storage information

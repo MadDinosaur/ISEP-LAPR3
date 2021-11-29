@@ -29,6 +29,7 @@ class Tree2DTest {
 
     @Test
     void insert() {
+        instance.insert(null);
         int[] arr = {20,15,10,13,8,17,40,50,30,7};
         int[] arrX = {10,30,10,40,60,17,35,70,25,7};
         int[] arrY = {35,15,40,50,43,10,70,25,10,15};
@@ -48,6 +49,8 @@ class Tree2DTest {
         assertEquals(20, instance.findNearestNeighbour(11, 36));
         assertEquals(20, instance.findNearestNeighbour(9, 36));
         assertEquals(20, instance.findNearestNeighbour(10, 35));
+        assertEquals(20, instance.findNearestNeighbour(10, 35));
+        assertEquals(50, instance.findNearestNeighbour(71, 25));
         instance = new Tree2D<>();
         assertNull(instance.findNearestNeighbour(9, 34));
     }

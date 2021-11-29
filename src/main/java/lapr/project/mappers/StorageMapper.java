@@ -11,9 +11,7 @@ public class StorageMapper {
     /**
      * Private constructor because the mapper is an Utility class
      */
-    private StorageMapper(){
-        throw new IllegalStateException("Utility class");
-    }
+    private StorageMapper(){ }
 
     /**
      * Converts a Storage object into a Storage DTO
