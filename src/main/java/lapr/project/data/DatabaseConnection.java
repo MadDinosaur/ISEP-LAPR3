@@ -49,7 +49,6 @@ public class DatabaseConnection {
             oracleDataSource.setURL(url);
 
             connection = oracleDataSource.getConnection(username, password);
-
         } catch (SQLException e) {
             Logger.getLogger(DatabaseConnection.class.getName())
                     .log(Level.SEVERE, null, e);

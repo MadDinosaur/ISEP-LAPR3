@@ -2,7 +2,9 @@ package lapr.project.controller;
 
 import lapr.project.data.MainStorage;
 import lapr.project.mappers.PositioningDataMapper;
+import lapr.project.mappers.StorageMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
+import lapr.project.mappers.dto.StorageDTO;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.model.Storage;
@@ -65,7 +67,7 @@ public class NearestPortController {
      * @param y the y axis value
      * @return returns the nearest storage from the given point
      */
-    public Storage getNearestStorage(double x, double y){
-        return storageStore.findNearestNeighbour(x, y);
+    public StorageDTO getNearestStorage(double x, double y){
+        return StorageMapper.toDTO(storageStore.findNearestNeighbour(x, y));
     }
 }
