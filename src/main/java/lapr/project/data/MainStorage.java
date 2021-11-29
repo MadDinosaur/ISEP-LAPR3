@@ -33,6 +33,14 @@ public class MainStorage {
         storageStore = new StorageStore();
         ConnectionFactory connectionFactory = new ConnectionFactory();
         databaseConnection = connectionFactory.getDatabaseConnection();
+        loadFromDatabase(Boolean.parseBoolean(System.getProperty("database.load")));
+    }
+
+    private void loadFromDatabase(boolean load) {
+        if (load) {
+            ShipSqlStore shipSqlStore = new ShipSqlStore();
+            shipSqlStore.loadShips(databaseConnection, shipStore);
+        }
     }
 
     /**
