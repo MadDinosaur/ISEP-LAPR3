@@ -44,7 +44,7 @@ public class StorageStore extends Tree2D<Storage> {
 
         for(Storage storage : newFullList){
             Coordinate coordinate = storage.getCoordinate();
-            nodeList.add(new Node<Storage>(storage,coordinate.getLongitude(),coordinate.getLatitude()));
+            nodeList.add(new Node<>(storage, coordinate.getLongitude(), coordinate.getLatitude()));
         }
 
         insert(nodeList);

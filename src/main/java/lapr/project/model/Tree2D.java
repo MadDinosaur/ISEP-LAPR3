@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Tree2D<T> {
-    public class Node<T> {
+    public static class Node<T> {
         protected Point2D.Double coords;
         protected T element;
         protected Node<T> left;
@@ -79,9 +79,9 @@ public class Tree2D<T> {
      * @param values the list that will be added
      */
     public void insert(List<Node<T>> values) {
-        if (values == null) {
+        if (values == null)
             return;
-        }
+
         root = insert(values, true);
     }
 
@@ -94,11 +94,16 @@ public class Tree2D<T> {
     private Node<T> insert(List<Node<T>> values, boolean divX) {
         if (values.size() == 0)
             return null;
+
         values.sort(divX ? cmpX : cmpY);
+
         int middlePoint = values.size() /2 + 1;
+
         Node<T> node = values.get(middlePoint - 1);
+
         node.right = insert(values.subList(middlePoint, values.size()), !divX);
         node.left = insert(values.subList(0, middlePoint - 1), !divX);
+
         return node;
     }
 
@@ -111,6 +116,7 @@ public class Tree2D<T> {
     public T findNearestNeighbour(double x, double y) {
         if (root == null)
             return null;
+
         return findNearestNeighbour(root, x, y, root, true);
     }
 
@@ -126,20 +132,24 @@ public class Tree2D<T> {
     private T findNearestNeighbour(Node<T> node, double x, double y, Node<T> closestNode, boolean divX) {
         if (node == null)
             return null;
+
         double d = Point2D.distanceSq(node.coords.x, node.coords.y, x, y);
-        double closestDist = Point2D.distanceSq(closestNode.coords.x,
-                closestNode.coords.y, x, y);
-        if (closestDist > d) {
+        double closestDist = Point2D.distanceSq(closestNode.coords.x, closestNode.coords.y, x, y);
+
+        if (closestDist > d)
             closestNode.setObject(node);
-        }
+
         double delta = divX ? x - node.coords.x : y - node.coords.y;
         double delta2 = delta * delta;
+
         Node<T> node1 = delta < 0 ? node.left : node.right;
         Node<T> node2 = delta < 0 ? node.right : node.left;
+
         findNearestNeighbour(node1, x, y, closestNode, !divX);
-        if (delta2 < closestDist){
+
+        if (delta2 < closestDist)
             findNearestNeighbour(node2, x, y, closestNode,!divX);
-        }
+
         return closestNode.element;
     }
 
@@ -150,6 +160,7 @@ public class Tree2D<T> {
     public String toString(){
         StringBuilder sb = new StringBuilder();
         toStringRec(root, 0, sb);
+
         return sb.toString();
     }
 
@@ -162,15 +173,34 @@ public class Tree2D<T> {
     private void toStringRec(Node<T> root, int level, StringBuilder sb){
         if(root==null)
             return;
+
         toStringRec(root.right, level+1, sb);
+
         if (level!=0){
             for(int i=0;i<level-1;i++)
                 sb.append("|\t");
+
             sb.append("|-------"+root.element +"\n");
         }
         else
             sb.append(root.element +"\n");
+
         toStringRec(root.left, level+1, sb);
+    }
+
+    /**
+     * Returns the size of the tree
+     * @return size of the tree
+     */
+    public int size(){
+        return size(root);
+    }
+
+    private int size(Node<T> node){
+        if (node == null)
+            return 0;
+
+        return size(node.left) + size(node.right) + 1;
     }
 
     /**
@@ -179,8 +209,10 @@ public class Tree2D<T> {
      */
     public List<T> inOrder(){
         List<T> snapshot = new ArrayList<>();
+
         if (root!=null)
             inOrderSubtree(root, snapshot);   // fill the snapshot recursively
+
         return snapshot;
     }
 
@@ -192,6 +224,7 @@ public class Tree2D<T> {
     private void inOrderSubtree(Node<T> node, List<T> snapshot) {
         if (node == null)
             return;
+
         inOrderSubtree(node.left, snapshot);
         snapshot.add(node.element);
         inOrderSubtree(node.right, snapshot);
