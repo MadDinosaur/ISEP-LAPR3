@@ -170,8 +170,6 @@ INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_
 VALUES(1, 2, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(3, 2, 1,2,1);
-INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 2, 2,1,1);
 
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(4, 3, 1,1,1);
