@@ -11,8 +11,8 @@ BEGIN
     WHERE s.mmsi = id_ship
     AND c.id = manifest_id
     AND c.ship_mmsi = s.mmsi
-    AND cc.cargo_manifest_id = manifest_id
+    AND cc.cargo_manifest_id = c.id
     AND cc.container_num = con.num
-    GROUP BY s.capacity, con.max_volume;
+    GROUP BY s.capacity;
     RETURN Container_Volume/Ship_Capacity;
 END;

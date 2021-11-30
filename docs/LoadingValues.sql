@@ -109,26 +109,26 @@ INSERT INTO Storage(identification, storage_type_id, name, continent, country, l
 VALUES(4, 1, 'Storage4', 'Oceania', 'Australia', 25, 133);
 
 -- Container --
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(1, null, 1, 4, 'COD1', 200, 4000, 500, 1, 1);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(2, null, 2, 4, 'COD2', 200, 4000, 500, 1, 1);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(3, 4, 3, 4, 'COD3', 200, 4000, 500, 1, 1);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(4, 3, 4, 4, 'COD4', 200, 4000, 500, 1, 1);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(5, 1, 5, 4, 'COD5', 200, 4000, 500, 1, 1);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(6, 2, 6, 4, 'COD6', 200, 4000, 500, 1, 0);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(7, 3, 7, 4, 'COD7', 200, 4000, 500, 1, 0);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(8, 4, 8, 4, 'COD8', 200, 4000, 500, 1, 0);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(9, 1, 9, 4, 'COD9', 200, 4000, 500, 1, 0);
-INSERT INTO Container(num, storage_identification, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(10, 2, 10, 4, 'COD0', 200, 4000, 500, 1, 0);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(1, 1, 4, 'COD1', 200, 4000, 500, 5, 1);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(2, 2, 4, 'COD2', 200, 4000, 500, 1, 1);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(3, 3, 4, 'COD3', 200, 4000, 500, 32, 1);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(4, 4, 4, 'COD4', 200, 4000, 500, 23, 1);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(5, 5, 4, 'COD5', 200, 4000, 500, 6, 1);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(6, 6, 4, 'COD6', 200, 4000, 500, 3, 0);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(7, 7, 4, 'COD7', 200, 4000, 500, 4, 0);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(8, 8, 4, 'COD8', 200, 4000, 500, 6, 0);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(9, 9, 4, 'COD9', 200, 4000, 500, 13, 0);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(10, 10, 4, 'COD0', 200, 4000, 500, 6, 0);
 
 -- Shipment --
 INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination)
@@ -138,46 +138,52 @@ VALUES(2,1,2);
 
 -- CargoManifest --
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 1, TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'));
+VALUES(100000001,1, 2, TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,0, 1, TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'));
+VALUES(100000001,0, 4, TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 1, TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'));
+VALUES(100000001,1, 4, TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,0, 1, TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'));
+VALUES(100000001,0, 3, TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 1, TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'));
+VALUES(100000001,1, 3, TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
 VALUES(100000001,0, 1, TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
 VALUES(100000001,1, 1, TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 1, Null);
+VALUES(100000001,1, 2, Null);
 INSERT INTO CargoManifest(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,0, 1, Null);
+VALUES(100000001,0, 2, Null);
 
 -- Container_CargoManifest --
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(5, 1, 1,1,1);
+VALUES(1, 1, 1,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(3, 1, 1,2,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 1, 2,1,1);
+VALUES(8, 1, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(9, 1, 1,1,2);
 
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 2, 2,1,1);
+VALUES(8, 2, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(3, 2, 1,2,1);
+VALUES(9, 2, 1,2,1);
 
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(4, 3, 1,1,1);
+VALUES(1, 3, 1,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(6, 3, 2,1,1);
+VALUES(3, 3, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(10, 3, 1,1,2);
+VALUES(4, 3, 1,1,2);
+INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+VALUES(7, 3, 1,2,2);
+INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+VALUES(10, 3, 1,2,2);
 
+INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+VALUES(7, 4, 1,1,2);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(10, 4, 1,1,2);
 
@@ -197,7 +203,11 @@ VALUES(6, 5, 1,3,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(6, 6, 1,3,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(2, 6, 1,2,1);
+VALUES(3, 6, 1,2,1);
+INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+VALUES(4, 6, 1,2,1);
+INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+VALUES(5, 6, 1,2,1);
 
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(1, 7, 1,1,1);
@@ -222,11 +232,11 @@ VALUES(100000001,0, 1, TO_TIMESTAMP('2021-10-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS
 
 -- ShipTrip --
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(100000001, 3, 4, TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
+VALUES(100000001, 2, 4, TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(100000001, 1, 3, TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
+VALUES(100000001, 4, 3, TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(100000001, 2, 1, TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
+VALUES(100000001, 3, 1, TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
 VALUES(100000001, 1, 2, TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'), NULL, 'in progress');
 
@@ -262,18 +272,19 @@ VALUES(100000001, TO_TIMESTAMP('2021-11-26 23:48:27', 'YYYY-MM-DD HH24:MI:SS'), 
 
 
 SELECT 'CAPTAIN' AS "Table Name",COUNT(*) AS "Number Of Rows" FROM CAPTAIN UNION ALL
-(SELECT 'CARGOMANIFEST',COUNT(*) FROM CARGOMANIFEST UNION  
-SELECT 'CERTIFICATE',COUNT(*) FROM CERTIFICATE UNION  
-SELECT 'CONTAINER',COUNT(*) FROM CONTAINER UNION  
-SELECT 'CONTAINER_CARGOMANIFEST',COUNT(*) FROM CONTAINER_CARGOMANIFEST UNION  
-SELECT 'CSCPLATE',COUNT(*) FROM CSCPLATE UNION  
-SELECT 'CSCPLATE_CERTIFICATE',COUNT(*) FROM CSCPLATE_CERTIFICATE UNION  
-SELECT 'DYNAMICDATA',COUNT(*) FROM DYNAMICDATA UNION  
-SELECT 'FLEET',COUNT(*) FROM FLEET UNION  
-SELECT 'SHIP',COUNT(*) FROM SHIP UNION  
-SELECT 'SHIPMENT',COUNT(*) FROM SHIPMENT UNION  
-SELECT 'SHIPTRIP',COUNT(*) FROM SHIPTRIP UNION  
-SELECT 'STORAGE',COUNT(*) FROM STORAGE UNION  
-SELECT 'STORAGETYPE',COUNT(*) FROM STORAGETYPE UNION  
+(SELECT 'CARGOMANIFEST',COUNT(*) FROM CARGOMANIFEST UNION
+SELECT 'CERTIFICATE',COUNT(*) FROM CERTIFICATE UNION
+SELECT 'CONTAINER',COUNT(*) FROM CONTAINER UNION
+SELECT 'CONTAINER_CARGOMANIFEST',COUNT(*) FROM CONTAINER_CARGOMANIFEST UNION
+SELECT 'CSCPLATE',COUNT(*) FROM CSCPLATE UNION
+SELECT 'CSCPLATE_CERTIFICATE',COUNT(*) FROM CSCPLATE_CERTIFICATE UNION
+SELECT 'DYNAMICDATA',COUNT(*) FROM DYNAMICDATA UNION
+SELECT 'FLEET',COUNT(*) FROM FLEET UNION
+SELECT 'SHIP',COUNT(*) FROM SHIP UNION
+SELECT 'SHIPMENT',COUNT(*) FROM SHIPMENT UNION
+SELECT 'SHIPTRIP',COUNT(*) FROM SHIPTRIP UNION
+SELECT 'STORAGE',COUNT(*) FROM STORAGE UNION
+SELECT 'STORAGETYPE',COUNT(*) FROM STORAGETYPE UNION
 SELECT 'VESSELTYPE',COUNT(*) FROM VESSELTYPE)
+
 

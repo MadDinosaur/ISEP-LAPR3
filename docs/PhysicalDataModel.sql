@@ -49,8 +49,6 @@ CREATE TABLE Container
 (
     num                     INTEGER
         CONSTRAINT pkContainerNum PRIMARY KEY,
-    storage_identification  INTEGER NULL,
-        FOREIGN KEY (storage_identification) REFERENCES Storage (identification),
     csc_plate_serial_number INTEGER
         CONSTRAINT nnContainerCscPlateSerialNumber NOT NULL,
     check_digit             NUMBER(1)
