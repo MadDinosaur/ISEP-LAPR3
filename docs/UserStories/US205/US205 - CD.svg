@@ -51,13 +51,13 @@
       ><path d="M0 0 L0 15 L95 15 L95 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath16"
-      ><path d="M-7 -7 L141 -7 L141 51 L-7 51 L-7 -7 Z"
+      ><path d="M-7 -7 L197 -7 L197 51 L-7 51 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
-      ><path d="M0 0 L0 25 L130 25 L130 0 Z"
+      ><path d="M0 0 L0 25 L186 25 L186 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
-      ><path d="M0 0 L0 15 L130 15 L130 0 Z"
+      ><path d="M0 0 L0 15 L186 15 L186 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath19"
       ><path d="M-7 -7 L91 -7 L91 68 L-7 68 L-7 -7 Z"
@@ -163,7 +163,7 @@
     ></g
     ><g font-size="11px" transform="matrix(1,0,0,1,124,165)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath2)" stroke="none"
-      >+getPortStore()</text
+      >+getStorageStore()</text
     ></g
     ><g font-size="11px" transform="matrix(1,0,0,1,124,165)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="44" clip-path="url(#clipPath2)" stroke="none"
@@ -230,19 +230,19 @@
       >Ship</text
     ></g
     ><g font-size="11px" transform="translate(266,274)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="130" height="40" y="0" clip-path="url(#clipPath16)" stroke="none"
+    ><rect x="0" width="186" height="40" y="0" clip-path="url(#clipPath16)" stroke="none"
     /></g
     ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(266,274)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="130" height="40" y="0" clip-path="url(#clipPath16)"
-      /><line y2="15" fill="none" x1="0" clip-path="url(#clipPath16)" x2="130" y1="15"
+    ><rect fill="none" x="0" width="186" height="40" y="0" clip-path="url(#clipPath16)"
+      /><line y2="15" fill="none" x1="0" clip-path="url(#clipPath16)" x2="186" y1="15"
     /></g
     ><g font-size="11px" transform="matrix(1,0,0,1,266,289)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath17)" stroke="none"
-      >+getClosest(coordinates)</text
+      >+searchClosestStorage(coordinates)</text
     ></g
     ><g font-size="11px" transform="translate(266,274)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"
-    ><text x="39" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
-      >PortStore</text
+    ><text x="57" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
+      >StorageStore</text
     ></g
     ><g font-size="11px" transform="translate(333,348)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
     ><rect x="0" width="80" height="57" y="0" clip-path="url(#clipPath19)" stroke="none"
@@ -307,11 +307,11 @@
     ><text x="120" xml:space="preserve" y="12" clip-path="url(#clipPath29)" stroke="none"
       >ContainerSqlStore</text
     ></g
-    ><g font-size="11px" transform="translate(225,300)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(392,304)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="10" xml:space="preserve" y="35" clip-path="url(#clipPath31)" stroke="none"
       >contains</text
     ></g
-    ><g font-size="11px" transform="translate(392,303)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><g font-size="11px" transform="translate(225,300)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="10" xml:space="preserve" y="35" clip-path="url(#clipPath31)" stroke="none"
       >contains</text
     ></g
