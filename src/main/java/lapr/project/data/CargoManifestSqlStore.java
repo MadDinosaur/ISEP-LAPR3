@@ -41,7 +41,29 @@ public class CargoManifestSqlStore {
         }
     }
 
-    public static int getOccupancyRate(DatabaseConnection databaseConnection, int captain_id, int manifest_id) throws SQLException{
-        throw new UnsupportedOperationException("Not yet implemented");
+    /**
+     * Searches the databse for a desired ship to know the occupancy rate
+     * @param databaseConnection the current database connection
+     * @param ship_mmsi the ship's mmsi
+     * @param manifest_id the cargo manifest id
+     * @return the occupancy rate of a desired ship
+     * @throws SQLException throws an exception if any of the commands is invalid
+     */
+    public static double getOccupancyRate(DatabaseConnection databaseConnection, int ship_mmsi, int manifest_id) throws SQLException{
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand;
+
+        sqlCommand = "select occupancy_rate(?,?) FROM DUAL";
+
+        try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
+            getManifestData.setInt(1, ship_mmsi);
+            getManifestData.setInt(2,manifest_id);
+            try(ResultSet occupancy_rate = getManifestData.executeQuery()) {
+                if (occupancy_rate.next())
+                    return occupancy_rate.getDouble(1);
+                else
+                    return 0;
+            }
+        }
     }
 }

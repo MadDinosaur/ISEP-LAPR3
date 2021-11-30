@@ -1,7 +1,10 @@
 package lapr.project.controller;
 
+import lapr.project.data.CargoManifestSqlStore;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.data.MainStorage;
+
+import java.sql.SQLException;
 
 public class GetOccupancyRateController {
     /**
@@ -27,11 +30,16 @@ public class GetOccupancyRateController {
 
     /**
      * gets the occupancy rate of a given ship and returns it
-     * @param captain_id captain's ID
+     * @param ship_mmsi captain's ID
      * @param manifest_id Cargo Manifest ID
      * @return occupancy rate
      */
-    public String getOccupancyRate(int captain_id, int manifest_id){
-        throw new UnsupportedOperationException("Not yet implemented");
+    public double getOccupancyRate(int ship_mmsi, int manifest_id){
+        try{
+            return CargoManifestSqlStore.getOccupancyRate(databaseConnection, ship_mmsi, manifest_id);
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+            return 0;
+        }
     }
 }
