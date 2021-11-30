@@ -22,6 +22,9 @@ public class ContainerSqlStore implements Persistable {
      */
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
+        if (databaseConnection == null || object == null)
+            return false;
+
         Connection connection = databaseConnection.getConnection();
 
         Container container = (Container) object;
