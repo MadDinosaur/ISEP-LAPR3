@@ -31,7 +31,7 @@ class ContainerSqlStoreTest {
         try {
             connection.setAutoCommit(false);
 
-            ContainerSqlStore containerSqlStore = mock(ContainerSqlStore.class);
+            containerSqlStore = mock(ContainerSqlStore.class);
         } catch (Exception ex) {
             Logger.getLogger(ContainerSqlStoreTest.class.getName())
                     .log(Level.SEVERE, null, ex);
@@ -44,14 +44,17 @@ class ContainerSqlStoreTest {
     }
 
     @Test
-    void delete() {
+    void deleteNull() {
+        Assertions.assertFalse(containerSqlStore.delete(null, null));
     }
 
     @Test
-    void checkContainerInShipment() {
+    void checkContainerInShipmentNull() {
+        Assertions.assertFalse(containerSqlStore.checkContainerInShipment(null, null, -1));
     }
 
     @Test
-    void getContainerStatus() {
+    void getContainerStatusNull() {
+        Assertions.assertTrue(containerSqlStore.getContainerStatus(null, -1).isEmpty());
     }
 }

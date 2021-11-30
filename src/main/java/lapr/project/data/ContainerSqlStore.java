@@ -22,10 +22,9 @@ public class ContainerSqlStore implements Persistable {
      */
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
-        if (databaseConnection == null || object == null)
-            return false;
-
-        Connection connection = databaseConnection.getConnection();
+        Connection connection;
+        try{ connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) { return false; }
 
         Container container = (Container) object;
 
@@ -65,10 +64,11 @@ public class ContainerSqlStore implements Persistable {
      */
     @Override
     public boolean delete(DatabaseConnection databaseConnection, Object object) {
+        Connection connection;
+        try{ connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) { return false; }
+
         boolean returnValue = false;
-
-        Connection connection = databaseConnection.getConnection();
-
         Container container = (Container) object;
 
         try {
@@ -98,7 +98,9 @@ public class ContainerSqlStore implements Persistable {
      * @return whether the container exists in shipment
      */
     public boolean checkContainerInShipment(DatabaseConnection databaseConnection, String clientId, int containerNum) {
-        Connection connection = databaseConnection.getConnection();
+        Connection connection;
+        try{ connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) { return false; }
 
         try {
             String sqlCommand;
@@ -126,8 +128,11 @@ public class ContainerSqlStore implements Persistable {
      * @return a list of Pair<String, String>, where column headers are paired with their respective value
      */
     public List<Pair<String, String>> getContainerStatus(DatabaseConnection databaseConnection, int containerNum) {
-        Connection connection = databaseConnection.getConnection();
         List<Pair<String, String>> rows = new ArrayList<>();
+
+        Connection connection;
+        try{ connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) { return rows; }
 
         try {
             String sqlCommand;
