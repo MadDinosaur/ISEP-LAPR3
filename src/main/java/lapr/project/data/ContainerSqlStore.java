@@ -48,7 +48,7 @@ public class ContainerSqlStore implements Persistable {
             returnValue = true;
         } catch (SQLException ex) {
             Logger.getLogger(ContainerSqlStore.class.getName())
-                    .log(Level.SEVERE, null, ex);
+                    .log(Level.SEVERE, ex.getMessage());
             databaseConnection.registerError(ex);
         }
         return returnValue;
@@ -82,7 +82,7 @@ public class ContainerSqlStore implements Persistable {
             returnValue = true;
 
         } catch (SQLException exception) {
-            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
             databaseConnection.registerError(exception);
         }
 
@@ -125,8 +125,10 @@ public class ContainerSqlStore implements Persistable {
             }
 
         } catch (SQLException exception) {
-            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
             databaseConnection.registerError(exception);
+        } catch (NullPointerException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
         }
         return rows;
     }
