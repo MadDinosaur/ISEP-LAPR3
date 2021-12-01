@@ -16,7 +16,6 @@ public class presentationTests {
 
     @BeforeEach
     private void setUp(){
-
         ReadShipFileController readShipFileController = new ReadShipFileController();
         readShipFileController.readFileAndSaveData("bships.csv");
     }

@@ -37,10 +37,9 @@ public class StorageStore extends Tree2D<Storage> {
         List<Storage> newFullList = inOrder();
         List<Node<Storage>> nodeList = new ArrayList<>();
 
-        for(Storage storage : toAddList){
+        for(Storage storage : toAddList)
             if(validateStorage(storage))
                 newFullList.add(storage);
-        }
 
         for(Storage storage : newFullList){
             Coordinate coordinate = storage.getCoordinate();

@@ -28,13 +28,13 @@ public class StorageFileReader {
             String line;
             List<String[]> dataSet = new ArrayList<>();
 
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null)
                 dataSet.add(line.split(","));
-            }
+
             storageList = populateList(dataSet);
 
         }catch (IOException e){
-            e.printStackTrace();;
+            e.printStackTrace();
             return null;
         }
         return storageList;

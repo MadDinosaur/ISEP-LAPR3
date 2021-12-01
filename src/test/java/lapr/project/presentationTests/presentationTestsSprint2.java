@@ -8,7 +8,6 @@ public class presentationTestsSprint2 {
 
     @BeforeEach
     private void setUp(){
-
         ReadStorageFileController readStorageFileController = new ReadStorageFileController();
         readStorageFileController.readFileAndSaveData("bports.csv");
     }

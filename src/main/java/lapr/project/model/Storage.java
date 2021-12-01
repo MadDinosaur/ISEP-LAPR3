@@ -147,5 +147,8 @@ public class Storage  {
      */
     public String getName() { return name; }
 
-
+    @Override
+    public String toString() {
+        return String.format("Storage %d: Name - %s; Continent - %s; Country - %s; Longitude - %f; Latitude - %f", identification, name, continent, country, coordinate.getLongitude(), coordinate.getLatitude());
+    }
 }

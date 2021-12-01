@@ -12,7 +12,6 @@ public class Tree2D<T> {
         protected Node<T> left;
         protected Node<T> right;
 
-
         /**
          *
          * @param e An element stored at this node
