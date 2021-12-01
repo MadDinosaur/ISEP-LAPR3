@@ -31,13 +31,19 @@ public class MainStorage {
         loadProperties();
         shipStore = new ShipStore();
         storageStore = new StorageStore();
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        databaseConnection = connectionFactory.getDatabaseConnection();
-        loadFromDatabase(Boolean.parseBoolean(System.getProperty("database.load")));
+        connectToDatabase();
+        loadFromDatabase();
     }
 
-    private void loadFromDatabase(boolean load) {
-        if (load) {
+    private void connectToDatabase(){
+        if (System.getProperty("database.load").equals("true") || System.getProperty("database.insert").equals("true")) {
+            ConnectionFactory connectionFactory = new ConnectionFactory();
+            databaseConnection = connectionFactory.getDatabaseConnection();
+        }
+    }
+
+    private void loadFromDatabase() {
+        if (System.getProperty("database.load").equals("true")) {
             ShipSqlStore shipSqlStore = new ShipSqlStore();
             shipSqlStore.loadShips(databaseConnection, shipStore);
         }
