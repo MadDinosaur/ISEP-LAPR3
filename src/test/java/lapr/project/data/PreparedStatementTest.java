@@ -10,12 +10,22 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
+/**
+ * A mock instance of the java.sql class Prepared Statement
+ * ONLY USED FOR TESTING WITHOUT DATABASE CONNECTION
+ */
 public class PreparedStatementTest implements PreparedStatement {
     private Map<Integer,String> params = new HashMap<>();
     private String command;
+    private ResultSet result;
 
     public PreparedStatementTest(String sqlCommand) {
         this.command = sqlCommand;
+    }
+
+    public PreparedStatementTest(String sqlCommand, ResultSet result) {
+        this.command = sqlCommand;
+        this.result = result;
     }
 
     @Override
@@ -30,7 +40,7 @@ public class PreparedStatementTest implements PreparedStatement {
     }
     @Override
     public ResultSet executeQuery() throws SQLException {
-        return null;
+        return result;
     }
 
     @Override

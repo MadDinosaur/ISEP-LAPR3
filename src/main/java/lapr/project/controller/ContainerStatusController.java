@@ -52,15 +52,14 @@ public class ContainerStatusController {
      * @return the status of the container
      */
     public String getContainerStatusToString(int containerNum) {
-        try {
-            List<Pair<String, String>> list = getContainerStatus(containerNum);
+        List<Pair<String, String>> list = getContainerStatus(containerNum);
 
-            StringBuilder string = new StringBuilder();
-            for (Pair<String, String> value: list)
-                string.append(String.format("%s: %s ", value.get1st(), value.get2nd()));
-            return string.toString();
-        } catch (UnauthorizedOperationException e) {
-            return e.getMessage();
-        }
+        StringBuilder string = new StringBuilder();
+
+        if (list.isEmpty()) string.append("Container not found.");
+
+        for (Pair<String, String> value: list)
+            string.append(String.format("%s: %s ", value.get1st(), value.get2nd()));
+        return string.toString();
     }
 }
