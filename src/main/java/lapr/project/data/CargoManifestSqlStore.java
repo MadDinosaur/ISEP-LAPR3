@@ -2,10 +2,7 @@ package lapr.project.data;
 
 import oracle.ucp.util.Pair;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class CargoManifestSqlStore {
 
@@ -42,7 +39,7 @@ public class CargoManifestSqlStore {
     }
 
     /**
-     * Searches the databse for a desired ship to know the occupancy rate
+     * Searches the database for a desired ship to know the occupancy rate
      * @param databaseConnection the current database connection
      * @param ship_mmsi the ship's mmsi
      * @param manifest_id the cargo manifest id
@@ -53,7 +50,7 @@ public class CargoManifestSqlStore {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "select occupancy_rate(?,?) FROM DUAL";
+        sqlCommand = "select func.occupancy_rate(?,?) FROM DUAL";
 
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, ship_mmsi);
@@ -66,4 +63,35 @@ public class CargoManifestSqlStore {
             }
         }
     }
+
+    /**
+     * Searches the database for a desired ship to know the occupancy rate at a given moment
+     * @param databaseConnection the current database connection
+     * @param mmsi the ship's mmsi
+     * @param givenMoment the moment to search for
+     * @return the occupancy rate of the desired ship and moment
+     * @throws SQLException throws an exception if any of the commands is invalid
+     */
+    public static double getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,Timestamp givenMoment) throws SQLException{
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand;
+
+        sqlCommand = "SELECT func_occupancy_rate_given_moment(?,?) as Occupancy_Rate, s.mmsi, s.imo, s.callsign, s.capacity FROM SHIP s\n" +
+                "WHERE s.mmsi = ?";
+
+        try(PreparedStatement getData = connection.prepareStatement(sqlCommand)){
+            getData.setInt(1,mmsi);
+            getData.setTimestamp(2,givenMoment);
+            getData.setInt(3,mmsi);
+            try(ResultSet occupancyRateSet = getData.executeQuery()){
+                if (occupancyRateSet.next())
+                    return occupancyRateSet.getDouble(1);
+                else
+                    return 0;
+            }
+        }
+    }
+
+
+
 }

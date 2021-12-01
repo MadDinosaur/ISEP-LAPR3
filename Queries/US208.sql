@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION occupancy_rate(id_ship ship.mmsi%type, manifest_id cargomanifest.id%type)
+CREATE OR REPLACE FUNCTION func_occupancy_rate(id_ship ship.mmsi%type, manifest_id cargomanifest.id%type)
 RETURN number
 IS 
     Ship_Capacity number(5,2);
