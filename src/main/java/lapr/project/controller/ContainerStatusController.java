@@ -33,11 +33,10 @@ public class ContainerStatusController {
      * Container Identifier
      * Type of Location
      * Name of Location
-     * @param clientId the requesting client id
      * @param containerNum the container identification
      * @return a list of Pair<String, String>, where column headers are paired with their respective value
      */
-    private List<Pair<String, String>> getContainerStatus(String clientId, int containerNum) {
+    private List<Pair<String, String>> getContainerStatus(int containerNum) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
         ContainerSqlStore containerStore = new ContainerSqlStore();
@@ -49,13 +48,12 @@ public class ContainerStatusController {
      * Container Identifier
      * Type of Location
      * Name of Location
-     * @param clientId the requesting client id
      * @param containerNum the container identification
      * @return the status of the container
      */
-    public String getContainerStatusToString(String clientId, int containerNum) {
+    public String getContainerStatusToString(int containerNum) {
         try {
-            List<Pair<String, String>> list = getContainerStatus(clientId, containerNum);
+            List<Pair<String, String>> list = getContainerStatus(containerNum);
 
             StringBuilder string = new StringBuilder();
             for (Pair<String, String> value: list)
