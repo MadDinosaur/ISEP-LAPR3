@@ -174,16 +174,16 @@ VALUES(9, 2, 1,2,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(1, 3, 1,1,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(3, 3, 2,1,1);
+VALUES(3, 3, 2,1,2);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(4, 3, 1,1,2);
+VALUES(4, 3, 2,1,2);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(7, 3, 1,2,2);
+VALUES(7, 3, 1,1,2);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(10, 3, 1,2,2);
 
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(7, 4, 1,1,2);
+VALUES(7, 4, 1,2,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(10, 4, 1,1,2);
 
@@ -205,9 +205,9 @@ VALUES(6, 6, 1,3,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(3, 6, 1,2,1);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(4, 6, 1,2,1);
+VALUES(4, 6, 1,2,2);
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(5, 6, 1,2,1);
+VALUES(5, 6, 2,2,1);
 
 INSERT INTO Container_CargoManifest(container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(1, 7, 1,1,1);
