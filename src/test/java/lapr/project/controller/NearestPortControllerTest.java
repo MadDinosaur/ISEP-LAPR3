@@ -68,7 +68,6 @@ class NearestPortControllerTest {
     public void validControllerTest() {
         NearestPortController controller = new NearestPortController();
         s1.getPositioningDataList().insert( new PositioningData("31/12/2020 17:20", coord4, (float)12.9, (float)13.1, 355, "Sea", "B"));
-        System.out.println(s1.getCallSign());
         PositioningDataDTO positioningData = controller.getPositioningData("CSSH", "31/12/2020 17:40");
         assertEquals(positioningData.getBdt(), "31/12/2020 17:20");
     }
