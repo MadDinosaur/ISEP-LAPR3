@@ -26,7 +26,7 @@ class StorageStoreTest {
 
         storage1 = new Storage(10138, "Marsaxlokk", "Europe", "Malta", coord1);
         storage2 = new Storage(10358, "Aarhus", "Europe", "Denmark", coord2);
-        storage3 = new Storage(10563, "Copenhagen", "Europe", "Denmark", coord2);
+        storage3 = new Storage(10563, "Copenhagen", "Europe", "Denmark", coord3);
 
         storageList.add(storage1);
         storageList.add(storage2);
