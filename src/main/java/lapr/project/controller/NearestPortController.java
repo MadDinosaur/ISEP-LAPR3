@@ -11,6 +11,8 @@ import lapr.project.model.Storage;
 import lapr.project.store.ShipStore;
 import lapr.project.store.StorageStore;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class NearestPortController {
@@ -52,11 +54,20 @@ public class NearestPortController {
      * @param date the date that is wished
      * @return returns a positioning data
      */
-    public PositioningDataDTO getPositioningData(String callSign, Date date){
+    public PositioningDataDTO getPositioningData(String callSign, String date){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date dateFormated = null;
+        try {
+            dateFormated = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         Ship ship = shipStore.getShipByCallSign(callSign);
-        PositioningData positioningData = ship.getPositioningDataList().getNearestTime(date);
-        if (positioningData != null){
-            return PositioningDataMapper.toDTO(positioningData);
+        if (ship != null) {
+            PositioningData positioningData = ship.getPositioningDataList().getNearestTime(dateFormated);
+            if (positioningData != null) {
+                return PositioningDataMapper.toDTO(positioningData);
+            }
         }
         return null;
     }
@@ -68,6 +79,10 @@ public class NearestPortController {
      * @return returns the nearest storage from the given point
      */
     public StorageDTO getNearestStorage(double x, double y){
-        return StorageMapper.toDTO(storageStore.findNearestNeighbour(x, y));
+        Storage storage = storageStore.findNearestNeighbour(x, y);
+        if (storage != null)
+            return StorageMapper.toDTO(storage);
+        else
+            return null;
     }
 }

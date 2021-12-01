@@ -34,7 +34,6 @@ public class GetManifestInformationController {
      * @param captain_id the chosen captain's id
      * @param year the chosen year
      * @return true if the result is not null
-     * @throws SQLException throws this exception if some of the values are nt within expected values
      */
     public Pair<Integer, Integer> findCargoManifests(int captain_id, int year) {
         try {
