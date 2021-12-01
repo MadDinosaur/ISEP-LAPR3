@@ -2,10 +2,7 @@ package lapr.project.controller;
 
 import lapr.project.data.MainStorage;
 import lapr.project.mappers.dto.PositioningDataDTO;
-import lapr.project.model.Coordinate;
-import lapr.project.model.PositioningData;
-import lapr.project.model.Ship;
-import lapr.project.model.Storage;
+import lapr.project.model.*;
 import lapr.project.store.ShipStore;
 import lapr.project.store.StorageStore;
 import lapr.project.store.list.PositioningDataTree;
@@ -27,10 +24,13 @@ class NearestPortControllerTest {
     Storage storage1, storage2, storage3;
     Coordinate coord1, coord2, coord3, coord4;
     Ship s1;
-    List<Storage> storageList = new ArrayList<>();
+    List<Tree2D.Node<Storage>> storageList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
+        for (Ship ship : shipStore.inOrder())
+            shipStore.remove(ship);
+
         coord1 = new Coordinate(14.54306f, 35.84194f);
         coord2 = new Coordinate(10.21666667f, 56.15f);
         coord3 = new Coordinate(12.61666667f, 55.7f);
@@ -40,9 +40,9 @@ class NearestPortControllerTest {
         storage2 = new Storage(10358, "Aarhus", "Europe", "Denmark", coord2);
         storage3 = new Storage(10563, "Copenhagen", "Europe", "Denmark", coord3);
 
-        storageList.add(storage1);
-        storageList.add(storage2);
-        storageList.add(storage3);
+        storageList.add(new Tree2D.Node<>(storage1, coord1.getLongitude(), coord1.getLatitude()));
+        storageList.add(new Tree2D.Node<>(storage2, coord2.getLongitude(), coord2.getLatitude()));
+        storageList.add(new Tree2D.Node<>(storage3, coord3.getLongitude(), coord3.getLatitude()));
 
         PositioningDataTree positioningDataTree = new PositioningDataTree();
 
@@ -66,7 +66,7 @@ class NearestPortControllerTest {
 
         assertNull(controller.getNearestStorage(Float.parseFloat(positioningData.getLongitude()), Float.parseFloat(positioningData.getLatitude())));
 
-        storageStore.addStorageList(storageList);
+        storageStore.insert(storageList);
         assertEquals(controller.getNearestStorage(Float.parseFloat(positioningData.getLongitude()), Float.parseFloat(positioningData.getLatitude())).getIdentification(), "10358");
     }
 
