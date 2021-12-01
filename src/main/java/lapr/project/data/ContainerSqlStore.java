@@ -91,37 +91,6 @@ public class ContainerSqlStore implements Persistable {
     }
 
     /**
-     * Checks if a given container belongs to any shipment from a given client
-     * @param databaseConnection the database connection to perform the query on
-     * @param clientId the given client identification
-     * @param containerNum the given container number
-     * @return whether the container exists in shipment
-     */
-    public boolean checkContainerInShipment(DatabaseConnection databaseConnection, String clientId, int containerNum) {
-        Connection connection;
-        try{ connection = databaseConnection.getConnection();
-        } catch (NullPointerException e) { return false; }
-
-        try {
-            String sqlCommand;
-
-            sqlCommand = "select * from shipment where clientId = ? and container_num = ?";
-            try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
-                selectContainerPreparedStatement.setString(1, clientId);
-                selectContainerPreparedStatement.setInt(2, containerNum);
-
-                //checks if it returns any rows
-                return selectContainerPreparedStatement.executeQuery().next();
-            }
-
-        } catch (SQLException exception) {
-            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, null, exception);
-            databaseConnection.registerError(exception);
-        }
-        return false;
-    }
-
-    /**
      * Returns the type and location of a given container
      * @param databaseConnection the database connection to perform the query on
      * @param containerNum the given container number

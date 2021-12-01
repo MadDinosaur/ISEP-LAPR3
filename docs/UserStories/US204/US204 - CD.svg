@@ -48,10 +48,10 @@
       ><path d="M0 0 L0 15 L120 15 L120 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath15"
-      ><path d="M-7 -7 L380 -7 L380 64 L-7 64 L-7 -7 Z"
+      ><path d="M-7 -7 L380 -7 L380 57 L-7 57 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath16"
-      ><path d="M0 0 L0 38 L369 38 L369 0 Z"
+      ><path d="M0 0 L0 31 L369 31 L369 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
       ><path d="M0 0 L0 15 L369 15 L369 0 Z"
@@ -164,18 +164,14 @@
       >DatabaseConnection</text
     ></g
     ><g font-size="11px" transform="translate(275,76)" fill-opacity="1" fill="rgb(122,207,245)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="rgb(122,207,245)" font-weight="bold" stroke-opacity="1"
-    ><rect x="0" width="369" height="53" y="0" clip-path="url(#clipPath15)" stroke="none"
+    ><rect x="0" width="369" height="46" y="0" clip-path="url(#clipPath15)" stroke="none"
     /></g
     ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(275,76)" stroke-miterlimit="0" stroke-opacity="1" fill="black" font-weight="bold" font-family="sans-serif" stroke-linejoin="round" font-size="11px" image-rendering="optimizeQuality"
-    ><rect fill="none" x="0" width="369" height="53" y="0" clip-path="url(#clipPath15)"
+    ><rect fill="none" x="0" width="369" height="46" y="0" clip-path="url(#clipPath15)"
       /><line y2="15" fill="none" x1="0" clip-path="url(#clipPath15)" x2="369" y1="15"
     /></g
     ><g font-size="11px" transform="matrix(1,0,0,1,275,91)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="2" xml:space="preserve" y="14" clip-path="url(#clipPath16)" stroke="none"
-      >+checkContainerInShipment(databaseConnection, clientId, containerNum)</text
-    ></g
-    ><g font-size="11px" transform="matrix(1,0,0,1,275,91)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="2" xml:space="preserve" y="29" clip-path="url(#clipPath16)" stroke="none"
       >+getContainerStatus(databaseConnection, containerNum)</text
     ></g
     ><g font-size="11px" transform="translate(275,76)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" font-weight="bold" stroke-opacity="1"

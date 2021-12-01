@@ -41,11 +41,7 @@ public class ContainerStatusController {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
         ContainerSqlStore containerStore = new ContainerSqlStore();
-        if (containerStore.checkContainerInShipment(dbconnection, clientId, containerNum)) {
-            return containerStore.getContainerStatus(dbconnection, containerNum);
-        }
-
-        throw new UnauthorizedOperationException("Unauthorized access. Container is not part of client's shipment.");
+        return containerStore.getContainerStatus(dbconnection, containerNum);
     }
 
     /**
