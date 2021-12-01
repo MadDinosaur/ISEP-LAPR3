@@ -49,11 +49,6 @@ class ContainerSqlStoreTest {
     }
 
     @Test
-    void checkContainerInShipmentNull() {
-        Assertions.assertFalse(containerSqlStore.checkContainerInShipment(null, null, -1));
-    }
-
-    @Test
     void getContainerStatusNull() {
         Assertions.assertTrue(containerSqlStore.getContainerStatus(null, -1).isEmpty());
     }
