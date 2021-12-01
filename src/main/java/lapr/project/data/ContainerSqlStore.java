@@ -50,7 +50,6 @@ public class ContainerSqlStore implements Persistable {
             Logger.getLogger(ContainerSqlStore.class.getName())
                     .log(Level.SEVERE, null, ex);
             databaseConnection.registerError(ex);
-            returnValue = false;
         }
         return returnValue;
     }
