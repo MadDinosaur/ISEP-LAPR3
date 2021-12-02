@@ -50,7 +50,7 @@ public class CargoManifestSqlStore {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "select func.occupancy_rate(?,?) FROM DUAL";
+        sqlCommand = "select func_occupancy_rate(?,?) FROM DUAL";
 
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, ship_mmsi);
