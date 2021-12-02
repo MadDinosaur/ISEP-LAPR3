@@ -1,5 +1,6 @@
 package lapr.project.data;
 
+import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
@@ -217,7 +218,6 @@ public class ShipSqlStore implements Persistable {
         }
     }
 
-
     /**
      * Delete an object from the database.
      *
@@ -258,6 +258,11 @@ public class ShipSqlStore implements Persistable {
         return returnValue;
     }
 
+    /**
+     * Loads all ships from the database into the shipStore class.
+     * @param databaseConnection the database's connection
+     * @param shipStore the ship store to insert ships into
+     */
     public void loadShips(DatabaseConnection databaseConnection, ShipStore shipStore){
         Connection connection = databaseConnection.getConnection();
         String sqlCommand = "Select * from ship";
@@ -276,5 +281,27 @@ public class ShipSqlStore implements Persistable {
             Logger.getLogger(ShipStore.class.getName()).log(Level.SEVERE, null, exception);
             databaseConnection.registerError(exception);
         }
+    }
+
+    /**
+     * Returns a ship object given a determined ship captain id.
+     * @param databaseConnection the database's connection
+     * @param captainId the ship captain in charge of the wanted ship
+     * @return the ship of the given captain, in DTO form (String), or null if an error occurs
+     */
+    public ShipDTO getShipByCaptainId(DatabaseConnection databaseConnection, String captainId) {
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand = "select * from ship where captain_id = ?";
+        try (PreparedStatement getShipByCaptainId = connection.prepareStatement(sqlCommand)) {
+            try (ResultSet shipData = getShipByCaptainId.executeQuery()) {
+                return new ShipDTO(shipData.getString("mmsi"), shipData.getString("name"), shipData.getString("imo"),
+                        shipData.getString("callsign"), shipData.getString("vessel_type_id"), shipData.getString("ship_length"),
+                        shipData.getString("ship_width"), shipData.getString("draft"));
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(ShipStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+        }
+        return null;
     }
 }

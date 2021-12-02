@@ -5,6 +5,7 @@ import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
 import oracle.ucp.util.Pair;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,9 +104,7 @@ public class ContainerSqlStore implements Persistable {
         } catch (NullPointerException e) { return rows; }
 
         try {
-            String sqlCommand;
-
-            sqlCommand = "select * from (" +
+            String sqlCommand = "select * from (" +
                     "    select container.num as container_num," +
                     "           (case when cargomanifest.loading_flag = 1 then 'ship' else 'port' end) as location_type," +
                     "           (case when cargomanifest.loading_flag = 1 then (select name from ship where mmsi = cargomanifest.ship_mmsi) else (select name from storage where identification = cargomanifest.storage_identification) end) as location_name," +
@@ -132,4 +131,60 @@ public class ContainerSqlStore implements Persistable {
         }
         return rows;
     }
+
+    /**
+     * Returns the containers to be offloaded in a given port by a given ship,
+     * including container identifier, type, position, and load.
+     * @param databaseConnection the database connection to perform the query on
+     * @param shipMmsi the given ship identifier
+     * @param portId the given port identifier
+     * @return a String matrix, where first row are headers and next rows are the respective values
+     */
+    public List<List<String>> getNextUnloadingManifest(DatabaseConnection databaseConnection, String shipMmsi, int portId) {
+        List<List<String>> containers = new ArrayList<>();
+
+        Connection connection;
+        try{ connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) { return containers; }
+
+        try {
+            String sqlCommand = "select num as container_num," +
+                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type," +
+                    "       container_position_x, container_position_y, container_position_z," +
+                    "       payload" +
+                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num" +
+                    "where cargo_manifest_id in" +
+                    "      (select cargo_manifest_id" +
+                    "      from cargomanifest" +
+                    "      where ship_mmsi = ?" +
+                    "        and cargomanifest.storage_identification = ?" +
+                    "        and loading_flag = 0" +
+                    "        and finishing_date_time is null)";
+            try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                selectContainerPreparedStatement.setString(1, shipMmsi);
+                selectContainerPreparedStatement.setInt(2, portId);
+
+                ResultSet result = selectContainerPreparedStatement.executeQuery();
+                ResultSetMetaData headers = result.getMetaData();
+                //Set column headers
+                containers.add(new ArrayList<>());
+                for (int i = 0; i < headers.getColumnCount(); i++)
+                    containers.get(0).set(i, headers.getColumnName(i + 1));
+                //Set row values
+                int j = 1;
+                while (result.next()) {
+                    containers.add(new ArrayList<>());
+                    for (int i = 0; i < headers.getColumnCount(); i++)
+                        containers.get(j).set(i, result.getString(i + 1));
+                    j++;
+                }
+            }
+            } catch (SQLException exception) {
+                Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+                databaseConnection.registerError(exception);
+            } catch (NullPointerException exception) {
+                Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+            }
+            return containers;
+        }
 }

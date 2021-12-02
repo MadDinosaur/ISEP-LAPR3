@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,6 +123,7 @@ class ContainerSqlStoreTest {
             when(resultSet.getString(2)).thenReturn("ship");
             when(resultSetHeaders.getColumnName(3)).thenReturn("location_name");
             when(resultSet.getString(3)).thenReturn("100000001");
+            when(resultSetHeaders.getColumnCount()).thenReturn(3);
 
             //Method call
             List<Pair<String, String>> actual = containerSqlStore.getContainerStatus(databaseConnection, 200031);
@@ -141,14 +143,89 @@ class ContainerSqlStoreTest {
 
             //SQL query result wrapping test
             List<Pair<String, String>> expected = new ArrayList<>();
-            expected.add(new Pair("container_num", "200031"));
+            expected.add(new Pair<>("container_num", "200031"));
             expected.add(new Pair<>("location_type", "ship"));
             expected.add(new Pair<>("location_name", "100000001"));
 
+            Assertions.assertEquals(actual.size(), expected.size());
             for(int i = 0; i < actual.size(); i++) {
                 Assertions.assertEquals(actual.get(i).get1st(), expected.get(i).get1st());
                 Assertions.assertEquals(actual.get(i).get2nd(), expected.get(i).get2nd());
             }
+        } catch (Exception ex) {
+            Logger.getLogger(ContainerSqlStoreTest.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Test
+    void getNextUnloadingManifestNull() {
+        Assertions.assertTrue(containerSqlStore.getNextUnloadingManifest(null, null, -1).isEmpty());
+    }
+
+    @Test
+    void getNextUnloadingManifestNotNull() {
+        try {
+            //Setup statement and mock result
+            String sqlCommand = "select num as container_num," +
+                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type," +
+                    "       container_position_x, container_position_y, container_position_z," +
+                    "       payload" +
+                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num" +
+                    "where cargo_manifest_id in" +
+                    "      (select cargo_manifest_id" +
+                    "      from cargomanifest" +
+                    "      where ship_mmsi = ?" +
+                    "        and cargomanifest.storage_identification = ?" +
+                    "        and loading_flag = 0" +
+                    "        and finishing_date_time is null)";
+
+            PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
+
+            when(connection.prepareStatement(sqlCommand)).thenReturn(preparedStatementTest);
+            when(resultSet.getMetaData()).thenReturn(resultSetHeaders);
+            when(resultSetHeaders.getColumnName(1)).thenReturn("container_num");
+            when(resultSet.getString(1)).thenReturn("200031");
+            when(resultSetHeaders.getColumnName(2)).thenReturn("type");
+            when(resultSet.getString(2)).thenReturn("non-refrigerated");
+            when(resultSetHeaders.getColumnName(3)).thenReturn("container_position_x");
+            when(resultSet.getString(3)).thenReturn("1");
+            when(resultSetHeaders.getColumnName(4)).thenReturn("container_position_y");
+            when(resultSet.getString(4)).thenReturn("2");
+            when(resultSetHeaders.getColumnName(5)).thenReturn("container_position_z");
+            when(resultSet.getString(5)).thenReturn("3");
+            when(resultSetHeaders.getColumnName(6)).thenReturn("payload");
+            when(resultSet.getString(6)).thenReturn("28300.0");
+            when(resultSetHeaders.getColumnCount()).thenReturn(6);
+
+            //Method call
+            List<List<String>> actual = containerSqlStore.getNextUnloadingManifest(databaseConnection, "10000001", 1);
+
+            //SQL command build test
+            String expectedSqlCommand = "select num as container_num," +
+                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type," +
+                    "       container_position_x, container_position_y, container_position_z," +
+                    "       payload" +
+                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num" +
+                    "where cargo_manifest_id in" +
+                    "      (select cargo_manifest_id" +
+                    "      from cargomanifest" +
+                    "      where ship_mmsi = 10000001" +
+                    "        and cargomanifest.storage_identification = 1" +
+                    "        and loading_flag = 0" +
+                    "        and finishing_date_time is null)";
+            Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
+
+            //SQL query result wrapping test
+            List<List<String>> expected = new ArrayList<>();
+            expected.add(Arrays.asList("container_num", "type", "container_position_x", "container_position_y", "container_position_z", "payload"));
+            expected.add(Arrays.asList("200031", "non-refrigerated", "1", "2", "3", "28300.0"));
+
+            Assertions.assertEquals(actual.size(), expected.size());
+            for (int i = 0; i < actual.size(); i++)
+                for (int j = 0; j < actual.get(0).size(); j++)
+                    Assertions.assertEquals(actual.get(i).get(j), expected.get(i).get(j));
+
         } catch (Exception ex) {
             Logger.getLogger(ContainerSqlStoreTest.class.getName())
                     .log(Level.SEVERE, null, ex);
