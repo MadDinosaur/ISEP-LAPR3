@@ -42,8 +42,8 @@ class StorageSqlStoreTest {
 
     @Test
     void save() {
-        when(databaseConnection.getConnection()).thenReturn(connection);
         try {
+            when(databaseConnection.getConnection()).thenReturn(connection);
             String sqlCommand = "insert into storage(storage_type_id, name, continent, country, latitude, longitude, identification) values (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand);
             when(connection.prepareStatement(sqlCommand)).thenReturn(preparedStatementTest);
@@ -60,8 +60,6 @@ class StorageSqlStoreTest {
             String expected = "insert into storage(storage_type_id, name, continent, country, latitude, longitude, identification) values (1, name, continent, country, 20.0, 10.0, 1)";
             Assertions.assertEquals(expected, preparedStatementTest.toString());
 
-            Logger.getLogger(StorageSqlStoreTest.class.getName()).log(Level.INFO, "Added Storage!");
-
             when(resultSet.next()).thenReturn(true);
 
             sqlCommand = "update storage set storage_type_id = ?, name = ?, continent = ?, country = ?, latitude = ?, longitude = ? where identification = ?";
@@ -74,8 +72,6 @@ class StorageSqlStoreTest {
 
             expected = "update storage set storage_type_id = 1, name = abcd, continent = continent, country = country, latitude = 20.0, longitude = 10.0 where identification = 1";
             Assertions.assertEquals(expected, preparedStatementTest.toString());
-
-            Logger.getLogger(StorageSqlStoreTest.class.getName()).log(Level.INFO, "Changed Storage!");
         } catch (Exception ex) {
             Logger.getLogger(StorageSqlStoreTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -84,16 +80,17 @@ class StorageSqlStoreTest {
     @Test
     void delete() {
         try {
-            when(storageSqlStore.delete(databaseConnection, storage)).thenReturn(true);
+            when(databaseConnection.getConnection()).thenReturn(connection);
+
+            String sqlCommand = "delete from storage where identification = ?";
+            PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand);
+            when(connection.prepareStatement(sqlCommand)).thenReturn(preparedStatementTest);
+
             boolean result = storageSqlStore.delete(databaseConnection, storage);
             assertTrue(result);
 
-            Logger.getLogger(StorageSqlStoreTest.class.getName()).log(Level.INFO, "Deleted Storage!");
-
-            when(storageSqlStore.delete(databaseConnection, storage)).thenReturn(false);
-            result = storageSqlStore.delete(databaseConnection, storage);
-            assertFalse(result);
-
+            String expected = "delete from storage where identification = 1";
+            Assertions.assertEquals(expected, preparedStatementTest.toString());
         } catch (Exception ex) {
             Logger.getLogger(StorageSqlStoreTest.class.getName()).log(Level.SEVERE, null, ex);
         }
