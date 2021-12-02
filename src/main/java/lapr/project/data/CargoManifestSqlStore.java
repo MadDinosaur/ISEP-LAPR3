@@ -41,25 +41,25 @@ public class CargoManifestSqlStore {
     /**
      * Searches the database for a desired ship to know the occupancy rate
      * @param databaseConnection the current database connection
-     * @param ship_mmsi the ship's mmsi
-     * @param manifest_id the cargo manifest id
+     * @param shipMmsi the ship's mmsi
+     * @param manifestId the cargo manifest id
      * @return the occupancy rate of a desired ship
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static double getOccupancyRate(DatabaseConnection databaseConnection, int ship_mmsi, int manifest_id) throws SQLException{
+    public static double getOccupancyRate(DatabaseConnection databaseConnection, int shipMmsi, int manifestId) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "SELECT func_occupancy_rate(100000001,1)\n" +
+        sqlCommand = "SELECT func_occupancy_rate(?,?)\n" +
                 "as Occupancy_Rate, s.mmsi, s.imo, s.callsign, s.capacity, c.id  FROM SHIP s, CARGOMANIFEST c\n" +
-                "WHERE s.mmsi = 100000001\n" +
-                "AND c.id=1";
+                "WHERE s.mmsi = ?\n" +
+                "AND c.id=?";
 
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
-            getManifestData.setInt(1, ship_mmsi);
-            getManifestData.setInt(2,manifest_id);
-            getManifestData.setInt(3, ship_mmsi);
-            getManifestData.setInt(4,manifest_id);
+            getManifestData.setInt(1, shipMmsi);
+            getManifestData.setInt(2,manifestId);
+            getManifestData.setInt(3, shipMmsi);
+            getManifestData.setInt(4,manifestId);
             try(ResultSet occupancy_rate = getManifestData.executeQuery()) {
                 if (occupancy_rate.next())
                     return occupancy_rate.getDouble(1);
