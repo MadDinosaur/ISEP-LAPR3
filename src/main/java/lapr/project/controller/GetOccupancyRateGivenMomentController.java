@@ -37,7 +37,7 @@ public class GetOccupancyRateGivenMomentController {
      * @param givenMoment the moment to search for
      * @return the occupancy rate of the desired ship and moment
      */
-    public Pair<String,Double> 3(int mmsi, Timestamp givenMoment){
+    public Pair<String,Double> getOccupancyRateGivenMoment(int mmsi, Timestamp givenMoment){
         try{
             return CargoManifestSqlStore.getOccupancyRateGivenMoment(databaseConnection, mmsi, givenMoment);
         }catch (SQLException throwable){
