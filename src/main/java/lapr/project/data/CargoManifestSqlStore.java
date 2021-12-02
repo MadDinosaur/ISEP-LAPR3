@@ -65,16 +65,17 @@ public class CargoManifestSqlStore {
     }
 
     /**
-     * Searches the database for a desired ship to know the occupancy rate at a given moment
+     * Searches the database for a desired ship to know the occupancy rate at a given moment and its data
      * @param databaseConnection the current database connection
      * @param mmsi the ship's mmsi
      * @param givenMoment the moment to search for
      * @return the occupancy rate of the desired ship and moment
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static double getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,Timestamp givenMoment) throws SQLException{
+    public static Pair<String,Double> getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,Timestamp givenMoment) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
+        StringBuilder string = new StringBuilder();
 
         sqlCommand = "SELECT func_occupancy_rate_given_moment(?,?) as Occupancy_Rate, s.mmsi, s.imo, s.callsign, s.capacity FROM SHIP s\n" +
                 "WHERE s.mmsi = ?";
@@ -84,10 +85,19 @@ public class CargoManifestSqlStore {
             getData.setTimestamp(2,givenMoment);
             getData.setInt(3,mmsi);
             try(ResultSet occupancyRateSet = getData.executeQuery()){
-                if (occupancyRateSet.next())
-                    return occupancyRateSet.getDouble(1);
-                else
-                    return 0;
+                if (occupancyRateSet.next()) {
+                    string.append("Ship's data - MMSI: ");
+                    string.append(occupancyRateSet.getInt(2));
+                    string.append(" IMO: ");
+                    string.append(occupancyRateSet.getInt(3));
+                    string.append(" Callsign: ");
+                    string.append(occupancyRateSet.getString(4));
+                    string.append(" Capacity: ");
+                    string.append(occupancyRateSet.getDouble(5));
+
+                    return new Pair<>(string.toString(), occupancyRateSet.getDouble(1));
+                } else
+                    return null;
             }
         }
     }

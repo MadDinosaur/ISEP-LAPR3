@@ -6,6 +6,8 @@ import lapr.project.data.MainStorage;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import oracle.ucp.util.Pair;
+
 
 public class GetOccupancyRateGivenMomentController {
     /**
@@ -35,12 +37,12 @@ public class GetOccupancyRateGivenMomentController {
      * @param givenMoment the moment to search for
      * @return the occupancy rate of the desired ship and moment
      */
-    public double getOccupancyRateGivenMoment(int mmsi, Timestamp givenMoment){
+    public Pair<String,Double> getOccupancyRateGivenMoment(int mmsi, Timestamp givenMoment){
         try{
             return CargoManifestSqlStore.getOccupancyRateGivenMoment(databaseConnection, mmsi, givenMoment);
-        }catch (SQLException throwables){
-            throwables.printStackTrace();
-            return 0;
+        }catch (SQLException throwable){
+            throwable.printStackTrace();
+            return null;
         }
     }
 }
