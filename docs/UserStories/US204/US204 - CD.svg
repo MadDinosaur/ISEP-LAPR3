@@ -81,15 +81,27 @@
       ><path d="M0 0 L0 147 L104 147 L104 80 L41 80 L41 64 L104 64 L104 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath26"
-      ><path d="M-87 -16 L174 -16 L174 32 L-87 32 L-87 -16 Z"
+      ><path d="M0 0 L410 0 L410 344 L0 344 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath27"
-      ><path d="M-97 -16 L164 -16 L164 32 L-97 32 L-97 -16 Z"
+      ><path d="M0 0 L0 147 L43 147 L43 163 L0 163 L0 240 L66 240 L66 256 L0 256 L0 344 L410 344 L410 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath28"
-      ><path d="M-62 -16 L124 -16 L124 32 L-62 32 L-62 -16 Z"
+      ><path d="M0 0 L158 0 L158 283 L0 283 L0 0 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath29"
+      ><path d="M0 0 L0 98 L43 98 L43 114 L0 114 L0 191 L66 191 L66 207 L0 207 L0 283 L158 283 L158 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath30"
+      ><path d="M-87 -16 L174 -16 L174 32 L-87 32 L-87 -16 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath31"
+      ><path d="M-97 -16 L164 -16 L164 32 L-97 32 L-97 -16 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath32"
+      ><path d="M-62 -16 L124 -16 L124 32 L-62 32 L-62 -16 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath33"
       ><path d="M-72 -16 L114 -16 L114 32 L-72 32 L-72 -16 Z"
       /></clipPath
     ></defs
@@ -199,14 +211,27 @@
     ><g stroke-linecap="butt" font-size="11px" transform="translate(44,249)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
     ><line y2="93" fill="none" x1="50" clip-path="url(#clipPath25)" x2="50" y1="50"
     /></g
+    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(106,73)" stroke-opacity="1" fill="black" stroke-dasharray="5" font-family="sans-serif" stroke-linejoin="round" font-size="11px" stroke-dashoffset="1" image-rendering="optimizeQuality"
+    ><line y2="290" fill="none" x1="356" clip-path="url(#clipPath27)" x2="356" y1="50"
+      /><line y2="290" fill="none" x1="356" clip-path="url(#clipPath27)" x2="50" y1="290"
+      /><line clip-path="url(#clipPath27)" stroke-dashoffset="0" fill="none" x1="50" x2="62" y1="290" y2="296" stroke-dasharray="none"
+      /><line clip-path="url(#clipPath27)" stroke-dashoffset="0" fill="none" x1="50" x2="62" y1="290" y2="284" stroke-dasharray="none"
+    /></g
+    ><g fill-opacity="1" text-rendering="geometricPrecision" stroke="black" stroke-linecap="butt" transform="translate(106,122)" stroke-opacity="1" fill="black" stroke-dasharray="5" font-family="sans-serif" stroke-linejoin="round" font-size="11px" stroke-dashoffset="1" image-rendering="optimizeQuality"
+    ><line y2="229" fill="none" x1="50" clip-path="url(#clipPath29)" x2="104" y1="229"
+      /><line y2="50" fill="none" x1="104" clip-path="url(#clipPath29)" x2="104" y1="229"
+      /><line y2="50" fill="none" x1="104" clip-path="url(#clipPath29)" x2="60" y1="50"
+      /><line clip-path="url(#clipPath29)" stroke-dashoffset="0" fill="none" x1="60" x2="72" y1="50" y2="56" stroke-dasharray="none"
+      /><line clip-path="url(#clipPath29)" stroke-dashoffset="0" fill="none" x1="60" x2="72" y1="50" y2="44" stroke-dasharray="none"
+    /></g
     ><g font-size="11px" transform="translate(95,313)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><path d="M8 13 L3 0 L13 0 Z" stroke="none" clip-path="url(#clipPath27)"
-      /><text x="28" xml:space="preserve" y="12" clip-path="url(#clipPath26)" transform="translate(-10,0)" stroke="none"
+    ><path d="M8 13 L3 0 L13 0 Z" stroke="none" clip-path="url(#clipPath31)"
+      /><text x="28" xml:space="preserve" y="12" clip-path="url(#clipPath30)" transform="translate(-10,0)" stroke="none"
       >generates</text
     ></g
     ><g font-size="11px" transform="translate(97,220)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><path d="M8 13 L3 0 L13 0 Z" stroke="none" clip-path="url(#clipPath29)"
-      /><text x="27" xml:space="preserve" y="12" clip-path="url(#clipPath28)" transform="translate(-10,0)" stroke="none"
+    ><path d="M8 13 L3 0 L13 0 Z" stroke="none" clip-path="url(#clipPath33)"
+      /><text x="27" xml:space="preserve" y="12" clip-path="url(#clipPath32)" transform="translate(-10,0)" stroke="none"
       >uses</text
     ></g
     ><g font-size="8px" fill-opacity="1" fill="rgb(120,120,120)" text-rendering="geometricPrecision" image-rendering="optimizeQuality" stroke="rgb(120,120,120)" stroke-opacity="1"

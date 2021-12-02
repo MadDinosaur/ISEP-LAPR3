@@ -84,14 +84,14 @@ public class StorageSqlStore implements Persistable {
      * @return True if the Storage is registered, False if otherwise.
      * @throws SQLException in case something goes wrong during the Database connection
      */
-    private boolean isStorageOnDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
+    public boolean isStorageOnDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
         boolean isStorageOnDatabase;
 
-        String sqlCommand = "select * from storage where identification = ?";
+        String sqlCommandSelect = "select * from storage where identification = ?";
 
-        PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
+        PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommandSelect);
 
         getStoragesPreparedStatement.setInt(1, storage.getIdentification());
 
