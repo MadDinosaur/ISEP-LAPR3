@@ -30,13 +30,13 @@ public class GetOccupancyRateController {
 
     /**
      * gets the occupancy rate of a given ship and returns it
-     * @param ship_mmsi captain's ID
-     * @param manifest_id Cargo Manifest ID
+     * @param shipMmsi captain's ID
+     * @param manifestId Cargo Manifest ID
      * @return occupancy rate
      */
-    public double getOccupancyRate(int ship_mmsi, int manifest_id){
+    public double getOccupancyRate(int shipMmsi, int manifestId){
         try{
-            return CargoManifestSqlStore.getOccupancyRate(databaseConnection, ship_mmsi, manifest_id);
+            return CargoManifestSqlStore.getOccupancyRate(databaseConnection, shipMmsi, manifestId);
         }catch (SQLException throwables){
             throwables.printStackTrace();
             return 0;
