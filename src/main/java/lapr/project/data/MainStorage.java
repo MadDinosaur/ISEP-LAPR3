@@ -32,20 +32,12 @@ public class MainStorage {
         shipStore = new ShipStore();
         storageStore = new StorageStore();
         connectToDatabase();
-        loadFromDatabase();
     }
 
     private void connectToDatabase(){
         if (System.getProperty("database.load").equals("true") || System.getProperty("database.insert").equals("true")) {
             ConnectionFactory connectionFactory = new ConnectionFactory();
             databaseConnection = connectionFactory.getDatabaseConnection();
-        }
-    }
-
-    private void loadFromDatabase() {
-        if (System.getProperty("database.load").equals("true")) {
-            ShipSqlStore shipSqlStore = new ShipSqlStore();
-            shipSqlStore.loadShips(databaseConnection, shipStore);
         }
     }
 

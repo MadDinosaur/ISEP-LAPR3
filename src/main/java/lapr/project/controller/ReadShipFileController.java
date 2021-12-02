@@ -47,10 +47,14 @@ public class ReadShipFileController {
             ShipSqlStore shipSqlStore = new ShipSqlStore();
             List<Ship> shipList = shipStore.createShip(shipData);
             for (Ship ship : shipList) {
-                shipStore.addShip(ship);
-                if (insert)
+                if (insert) {
                     shipSqlStore.save(databaseConnection, ship);
+                    shipSqlStore.loadShips(databaseConnection, shipStore);
+                }else
+                    shipStore.addShip(ship);
             }
         }
     }
+
+
 }

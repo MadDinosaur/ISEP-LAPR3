@@ -7,6 +7,8 @@ import lapr.project.mappers.dto.StorageDTO;
 import lapr.project.model.Storage;
 import lapr.project.store.StorageFileReader;
 import lapr.project.store.StorageStore;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReadStorageFileController {
@@ -49,12 +51,21 @@ public class ReadStorageFileController {
     }
 
     public void readFileAndSaveData(String path) {
-        DatabaseConnection databaseConnection  = MainStorage.getInstance().getDatabaseConnection();
-        readFileAndSaveDataToDB(path, databaseConnection);
+        List<Storage> storageList = new ArrayList<>();
 
-        StorageSqlStore storageSqlStore = new StorageSqlStore();
+        if (Boolean.parseBoolean(System.getProperty("database.insert"))) {
+            DatabaseConnection databaseConnection = MainStorage.getInstance().getDatabaseConnection();
+            StorageSqlStore storageSqlStore = new StorageSqlStore();
 
-        List<Storage> storageList = storageSqlStore.getStorageDataFromDataBase(databaseConnection);
+            readFileAndSaveDataToDB(path, databaseConnection);
+            storageList = storageSqlStore.getStorageDataFromDataBase(databaseConnection);
+        } else {
+            List<StorageDTO> storageData = StorageFileReader.readStorageFile(path);
+
+            if (storageData != null)
+                storageList = storageStore.createStorageList(storageData);
+        }
+
 
         storageStore.addStorageList(storageList);
     }
