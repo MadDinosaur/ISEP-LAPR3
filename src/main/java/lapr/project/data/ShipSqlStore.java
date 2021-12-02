@@ -287,16 +287,16 @@ public class ShipSqlStore implements Persistable {
      * Returns a ship object given a determined ship captain id.
      * @param databaseConnection the database's connection
      * @param captainId the ship captain in charge of the wanted ship
-     * @return the ship of the given captain, in DTO form (String), or null if an error occurs
+     * @return the ship of the given captain, or null if an error occurs
      */
-    public ShipDTO getShipByCaptainId(DatabaseConnection databaseConnection, String captainId) {
+    public Ship getShipByCaptainId(DatabaseConnection databaseConnection, String captainId) {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand = "select * from ship where captain_id = ?";
         try (PreparedStatement getShipByCaptainId = connection.prepareStatement(sqlCommand)) {
             try (ResultSet shipData = getShipByCaptainId.executeQuery()) {
-                return new ShipDTO(shipData.getString("mmsi"), shipData.getString("name"), shipData.getString("imo"),
-                        shipData.getString("callsign"), shipData.getString("vessel_type_id"), shipData.getString("ship_length"),
-                        shipData.getString("ship_width"), shipData.getString("draft"));
+                return new Ship(shipData.getString("mmsi"), shipData.getString("name"),shipData.getInt("imo") ,
+                        shipData.getString("callsign") , shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
+                        shipData.getFloat("ship_width"),  shipData.getFloat("draft"));
             }
         } catch (SQLException exception) {
             Logger.getLogger(ShipStore.class.getName()).log(Level.SEVERE, null, exception);
