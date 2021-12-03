@@ -4,11 +4,9 @@ import lapr.project.data.ContainerSqlStore;
 import lapr.project.data.DatabaseConnection;
 import lapr.project.data.MainStorage;
 import lapr.project.data.ShipSqlStore;
-import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.Ship;
 import lapr.project.model.Storage;
 import lapr.project.store.StorageStore;
-import oracle.ucp.util.Pair;
 
 import java.util.List;
 
@@ -36,9 +34,10 @@ public class ContainerLoadingInfoController {
      * including container identifier, type, position, and load.
      * The "next port" is the closest port to the ship's current location.
      * @param captainId the ship's captain identification
+     * @param loading flag to indicate a loading (true) or offloading (false) operation
      * @return a String matrix, where first row are headers and next rows are the respective values
      */
-    private List<List<String>> getNextUnloadingManifest(String captainId) {
+    private List<List<String>> getNextContainerManifest(String captainId, boolean loading) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
         ContainerSqlStore containerStore = new ContainerSqlStore();
@@ -48,7 +47,7 @@ public class ContainerLoadingInfoController {
         Ship ship = shipStore.getShipByCaptainId(dbconnection, captainId);
         Storage port = storageStore.searchClosestStorage(ship.getPositioningDataList().arrivalCoordinates());
 
-        return containerStore.getNextUnloadingManifest(dbconnection, ship.getMmsi(), port.getIdentification());
+        return containerStore.getContainerManifest(dbconnection, ship.getMmsi(), port.getIdentification(), loading);
     }
 
     /**
@@ -57,9 +56,10 @@ public class ContainerLoadingInfoController {
      * The first line of the table is comprised of headers, remaining rows are container information.
      * @param captainId the ship's captain identification
      * @param portId the next port identification
+     * @param loading flag to indicate a loading (true) or offloading (false) operation
      * @return a String matrix, where first row are headers and next rows are the respective values
      */
-    private List<List<String>> getNextUnloadingManifest(String captainId, int portId) {
+    private List<List<String>> getNextContainerManifest(String captainId, int portId, boolean loading) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
         ContainerSqlStore containerStore = new ContainerSqlStore();
@@ -67,7 +67,7 @@ public class ContainerLoadingInfoController {
 
         Ship ship = shipStore.getShipByCaptainId(dbconnection, captainId);
 
-        return containerStore.getNextUnloadingManifest(dbconnection, ship.getMmsi(), portId);
+        return containerStore.getContainerManifest(dbconnection, ship.getMmsi(), portId, loading);
     }
 
     /**
@@ -77,10 +77,11 @@ public class ContainerLoadingInfoController {
      * Position
      * Load
      * @param captainId the ship's captain identification
+     * @param loading flag to indicate a loading (true) or offloading (false) operation
      * @return the list of containers
      */
-    public String getNextUnloadingManifestToString(String captainId) {
-        List<List<String>> list = getNextUnloadingManifest(captainId);
+    public String getNextContainerManifestToString(String captainId, boolean loading) {
+        List<List<String>> list = getNextContainerManifest(captainId, loading);
 
         StringBuilder string = new StringBuilder();
 
@@ -103,8 +104,8 @@ public class ContainerLoadingInfoController {
      * @param captainId the ship's captain identification
      * @return the list of containers
      */
-    public String getNextUnloadingManifestToString(String captainId, int portId) {
-        List<List<String>> list = getNextUnloadingManifest(captainId, portId);
+    public String getNextContainerManifestToString(String captainId, int portId, boolean loading) {
+        List<List<String>> list = getNextContainerManifest(captainId, portId, loading);
 
         StringBuilder string = new StringBuilder();
 

@@ -159,12 +159,13 @@ class ContainerSqlStoreTest {
     }
 
     @Test
-    void getNextUnloadingManifestNull() {
-        Assertions.assertTrue(containerSqlStore.getNextUnloadingManifest(null, null, -1).isEmpty());
+    void getContainerManifestNull() {
+        Assertions.assertTrue(containerSqlStore.getContainerManifest(null, null, -1, false).isEmpty());
+        Assertions.assertTrue(containerSqlStore.getContainerManifest(null, null, -1, true).isEmpty());
     }
 
     @Test
-    void getNextUnloadingManifestNotNull() {
+    void getContainerManifestNotNull() {
         try {
             //Setup statement and mock result
             String sqlCommand = "select num as container_num," +
@@ -177,13 +178,14 @@ class ContainerSqlStoreTest {
                     "      from cargomanifest" +
                     "      where ship_mmsi = ?" +
                     "        and cargomanifest.storage_identification = ?" +
-                    "        and loading_flag = 0" +
+                    "        and loading_flag = ?" +
                     "        and finishing_date_time is null)";
 
             PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
 
             when(connection.prepareStatement(sqlCommand)).thenReturn(preparedStatementTest);
             when(resultSet.getMetaData()).thenReturn(resultSetHeaders);
+            when(resultSet.next()).thenReturn(true).thenReturn(false);
             when(resultSetHeaders.getColumnName(1)).thenReturn("container_num");
             when(resultSet.getString(1)).thenReturn("200031");
             when(resultSetHeaders.getColumnName(2)).thenReturn("type");
@@ -199,7 +201,7 @@ class ContainerSqlStoreTest {
             when(resultSetHeaders.getColumnCount()).thenReturn(6);
 
             //Method call
-            List<List<String>> actual = containerSqlStore.getNextUnloadingManifest(databaseConnection, "10000001", 1);
+            List<List<String>> actual = containerSqlStore.getContainerManifest(databaseConnection, "10000001", 1, false);
 
             //SQL command build test
             String expectedSqlCommand = "select num as container_num," +

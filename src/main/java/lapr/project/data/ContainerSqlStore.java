@@ -133,14 +133,15 @@ public class ContainerSqlStore implements Persistable {
     }
 
     /**
-     * Returns the containers to be offloaded in a given port by a given ship,
+     * Returns the containers to be loaded/offloaded in a given port by a given ship,
      * including container identifier, type, position, and load.
      * @param databaseConnection the database connection to perform the query on
      * @param shipMmsi the given ship identifier
      * @param portId the given port identifier
+     * @param loading flag to indicate a loading (true) or offloading (false) operation
      * @return a String matrix, where first row are headers and next rows are the respective values
      */
-    public List<List<String>> getNextUnloadingManifest(DatabaseConnection databaseConnection, String shipMmsi, int portId) {
+    public List<List<String>> getContainerManifest(DatabaseConnection databaseConnection, String shipMmsi, int portId, boolean loading) {
         List<List<String>> containers = new ArrayList<>();
 
         Connection connection;
@@ -158,24 +159,25 @@ public class ContainerSqlStore implements Persistable {
                     "      from cargomanifest" +
                     "      where ship_mmsi = ?" +
                     "        and cargomanifest.storage_identification = ?" +
-                    "        and loading_flag = 0" +
+                    "        and loading_flag = ?" +
                     "        and finishing_date_time is null)";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setString(1, shipMmsi);
                 selectContainerPreparedStatement.setInt(2, portId);
+                selectContainerPreparedStatement.setInt(3, loading ? 1 : 0);
 
                 ResultSet result = selectContainerPreparedStatement.executeQuery();
                 ResultSetMetaData headers = result.getMetaData();
                 //Set column headers
                 containers.add(new ArrayList<>());
-                for (int i = 0; i < headers.getColumnCount(); i++)
-                    containers.get(0).set(i, headers.getColumnName(i + 1));
+                for (int i = 1; i <= headers.getColumnCount(); i++)
+                    containers.get(0).add(headers.getColumnName(i));
                 //Set row values
                 int j = 1;
                 while (result.next()) {
                     containers.add(new ArrayList<>());
-                    for (int i = 0; i < headers.getColumnCount(); i++)
-                        containers.get(j).set(i, result.getString(i + 1));
+                    for (int i = 1; i <= headers.getColumnCount(); i++)
+                        containers.get(j).add(result.getString(i));
                     j++;
                 }
             }
