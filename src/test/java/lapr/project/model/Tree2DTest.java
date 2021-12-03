@@ -78,7 +78,7 @@ class Tree2DTest {
 
         assertTrue(instance.toString().isEmpty());
 
-        assertNotNull(instance.balanceFactor());
+        assertTrue(instance.balanceFactor().isEmpty());
     }
 
     @Test
