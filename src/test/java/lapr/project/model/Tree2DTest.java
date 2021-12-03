@@ -72,6 +72,8 @@ class Tree2DTest {
 
         assertEquals(expected, result);
 
+        assertNotNull(instance.balanceFactor());
+        
         instance = new Tree2D<>();
 
         assertTrue(instance.toString().isEmpty());
