@@ -171,28 +171,4 @@ public class SorterTraveledDistanceTest {
 
         assertEquals(expected, result);
     }
-
-    @Test
-    public void testNumberMovementEquals(){
-        int expected = -1;
-        int result = sorterTraveledDistance.compare(s5,s3);
-
-        assertEquals(expected, result);
-    }
-
-    @Test
-    public void testNumberMovementsLess2(){
-        int expected = -2;
-        int result = sorterTraveledDistance.compare(s5,s4);
-
-        assertEquals(expected,result);
-    }
-
-    @Test
-    public void testNumberMovementsGreater2(){
-        int expected = 2;
-        int result = sorterTraveledDistance.compare(s4,s5);
-
-        assertEquals(expected,result);
-    }
 }
