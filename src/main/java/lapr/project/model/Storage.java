@@ -149,6 +149,6 @@ public class Storage  {
 
     @Override
     public String toString() {
-        return String.format("Storage %d: Name - %s; Continent - %s; Country - %s; Longitude - %f; Latitude - %f", identification, name, continent, country, coordinate.getLongitude(), coordinate.getLatitude());
+        return String.format("Storage %d: Name - %s; Continent - %s; Country - %s; Longitude - %.2f; Latitude - %.2f", identification, name, continent, country, coordinate.getLongitude(), coordinate.getLatitude());
     }
 }
