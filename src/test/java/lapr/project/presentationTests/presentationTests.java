@@ -243,7 +243,7 @@ public class presentationTests {
     }
 
     private void writeOutput(String output, String filename){
-        try (FileWriter myWriter = new FileWriter("output\\" + filename + ".txt")) {
+        try (FileWriter myWriter = new FileWriter("output\\sprint1\\" + filename + ".txt")) {
             if(output!=null)
             myWriter.write(output);
         } catch (IOException e) {
