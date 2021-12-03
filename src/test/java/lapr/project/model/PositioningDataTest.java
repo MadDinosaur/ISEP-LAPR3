@@ -27,8 +27,6 @@ class PositioningDataTest {
         assertEquals(positioningData.getSog(), 0);
         positioningData.setSog(-10);
         assertEquals(positioningData.getSog(), 0);
-        positioningData.setSog(100);
-        assertEquals(positioningData.getSog(),100);
         assertEquals(positioningData.getCog(), cog);
         positioningData.setCog(-359);
         assertEquals(positioningData.getCog(), 0);
