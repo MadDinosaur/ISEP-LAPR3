@@ -1,14 +1,10 @@
 package lapr.project.data;
 
 import lapr.project.model.Container;
-import lapr.project.model.Ship;
-import lapr.project.store.ShipStore;
 import oracle.ucp.util.Pair;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
