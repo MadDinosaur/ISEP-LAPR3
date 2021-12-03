@@ -12,7 +12,8 @@ class GetManifestInformationControllerTest {
 
     @Test
     public void test(){
-        GetManifestInformationController controller = mock(GetManifestInformationController.class);
+        GetManifestInformationController controller = new GetManifestInformationController();
+        controller = mock(GetManifestInformationController.class);
 
         when(controller.findCargoManifests(1, 2020)).thenReturn(new Pair<>(2, 2));
         Pair<Integer, Integer> result = controller.findCargoManifests(1, 2020);
