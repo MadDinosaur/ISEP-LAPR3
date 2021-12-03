@@ -40,6 +40,8 @@ public class StorageTest {
         assertEquals(storage.getCountry(),country2);
         assertEquals(storage.getIdentification(),identification2);
         assertEquals(storage.getName(),name2);
+        storage.setIdentification(12345);
+        assertEquals(storage.getIdentification(),12345);
     }
 
     @Test
@@ -73,5 +75,11 @@ public class StorageTest {
 
     }
 
-
+    @Test
+    public void storageToStringTest(){
+        Storage storage = new Storage(identification,name,continent,country,coordinate);
+        String result = storage.toString();
+        String expected = "Storage 29002: Name - Liverpool; Continent - Europe; Country - United Kingdom; Longitude - 53,46; Latitude - -3,03";
+        assertEquals(expected,result);
+    }
 }
