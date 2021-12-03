@@ -15,15 +15,15 @@ public class ReadStorageFileControllerTest {
     @Test
     public void controllerTest(){
         ReadStorageFileController readStorageController = new ReadStorageFileController();
-        readStorageController.readFileAndSaveData("sports.csv");
+        readStorageController.readFileAndSaveData("bports.csv");
         assertNotNull(MainStorage.getInstance().getStorageStore().findNearestNeighbour(-3,53));
     }
 
-//    @Test
-//    public void controllerNoFileTest(){
-//        ReadStorageFileController readStorageController = new ReadStorageFileController();
-//        readStorageController.readFileAndSaveData("");
-//        assertNull(MainStorage.getInstance().getStorageStore().findNearestNeighbour(-3,53));
-//    }
+    @Test
+    public void controllerNoFileTest(){
+        ReadStorageFileController readStorageController = new ReadStorageFileController();
+        readStorageController.readFileAndSaveData("asd");
+        assertNull(MainStorage.getInstance().getStorageStore().findNearestNeighbour(-3,53));
+    }
 
 }
