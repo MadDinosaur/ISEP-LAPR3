@@ -281,4 +281,11 @@ public class Tree2D<T> {
             return rightChild + 1;
         }
     }
+
+    /**
+     * Empties the tree
+     */
+    public void empty(){
+        this.root = null;
+    }
 }

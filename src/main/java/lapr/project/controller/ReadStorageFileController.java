@@ -59,13 +59,13 @@ public class ReadStorageFileController {
 
             readFileAndSaveDataToDB(path, databaseConnection);
             storageList = storageSqlStore.getStorageDataFromDataBase(databaseConnection);
+            storageStore.empty();
         } else {
             List<StorageDTO> storageData = StorageFileReader.readStorageFile(path);
 
             if (storageData != null)
                 storageList = storageStore.createStorageList(storageData);
         }
-
 
         storageStore.addStorageList(storageList);
     }
