@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import lapr.project.exception.IllegalStorageException;
 import org.junit.jupiter.api.Test;
 
 
@@ -24,6 +25,21 @@ public class StorageTest {
         assertEquals(storage.getName(),name);
         storage.setName("Barcelona");
         assertEquals(storage.getName(),"Barcelona");
+    }
+
+    @Test
+    public void createValidStorage21CharacterTest(){
+        String continent2 = "123456789012345678901";
+        String country2 = "123456789012345678901";
+        String name2 = "123456789012345678901";
+        int identification2 = 1234567890;
+        Storage storage = new Storage(identification2,name2,continent2,country2,coordinate);
+        assertNotNull(storage);
+        assertEquals(storage.getCoordinate(),coordinate);
+        assertEquals(storage.getContinent(),continent2);
+        assertEquals(storage.getCountry(),country2);
+        assertEquals(storage.getIdentification(),identification2);
+        assertEquals(storage.getName(),name2);
     }
 
     @Test
