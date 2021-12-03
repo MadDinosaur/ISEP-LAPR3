@@ -52,8 +52,8 @@ public class Storage  {
         if (id == 0)
             throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be empty or 0))");
 
-        String identification = Integer.toString(id);
-        if (identification.length() > 10)
+        String identification2 = Integer.toString(id);
+        if (identification2.length() > 10)
             throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be bigger than 10 characters)");
     }
 

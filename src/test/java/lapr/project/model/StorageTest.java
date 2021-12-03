@@ -73,7 +73,14 @@ public class StorageTest {
 
         assertTrue(actualMessage3.contains(expectedMessage3));
 
+        Exception exception4 = assertThrows(IllegalArgumentException.class, () ->{
+            Storage storage = new Storage(-2147483647,name,continent,country,coordinate);
+        });
+        String expectedMessage4 = "Identification \"-2147483647\" is not supported. (Cannot be bigger than 10 characters)";
+        String actualMessage4 = exception4.getMessage();
+        assertTrue(actualMessage4.contains(expectedMessage4));
     }
+
 
     @Test
     public void storageToStringTest(){
