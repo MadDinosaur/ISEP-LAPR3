@@ -28,7 +28,7 @@ class ContainerTest {
         assertEquals(payload, c1.getPayload());
         assertFalse(c1.isRefrigerated());
 
-        Container c2 = new Container(containerNum,0,isoCode, 0, 0, 0,0,refrigerated);
+        Container c2 = new Container(containerNum,0,isoCode, 0, 0, 0,0,true);
         assertNotNull(c2);
     }
 
