@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import lapr.project.exception.IllegalStorageException;
 import org.junit.jupiter.api.Test;
 
 
@@ -24,6 +25,23 @@ public class StorageTest {
         assertEquals(storage.getName(),name);
         storage.setName("Barcelona");
         assertEquals(storage.getName(),"Barcelona");
+    }
+
+    @Test
+    public void createValidStorage21CharacterTest(){
+        String continent2 = "123456789012345678901";
+        String country2 = "123456789012345678901";
+        String name2 = "123456789012345678901";
+        int identification2 = 1234567890;
+        Storage storage = new Storage(identification2,name2,continent2,country2,coordinate);
+        assertNotNull(storage);
+        assertEquals(storage.getCoordinate(),coordinate);
+        assertEquals(storage.getContinent(),continent2);
+        assertEquals(storage.getCountry(),country2);
+        assertEquals(storage.getIdentification(),identification2);
+        assertEquals(storage.getName(),name2);
+        storage.setIdentification(12345);
+        assertEquals(storage.getIdentification(),12345);
     }
 
     @Test
@@ -55,7 +73,19 @@ public class StorageTest {
 
         assertTrue(actualMessage3.contains(expectedMessage3));
 
+        Exception exception4 = assertThrows(IllegalArgumentException.class, () ->{
+            Storage storage = new Storage(-2147483647,name,continent,country,coordinate);
+        });
+        String expectedMessage4 = "Identification \"-2147483647\" is not supported. (Cannot be bigger than 10 characters)";
+        String actualMessage4 = exception4.getMessage();
+        assertTrue(actualMessage4.contains(expectedMessage4));
     }
 
 
+    @Test
+    public void storageToStringTest(){
+        Storage storage = new Storage(identification,name,continent,country,coordinate);
+        String result = storage.toString();
+        assertNotNull(result);
+    }
 }

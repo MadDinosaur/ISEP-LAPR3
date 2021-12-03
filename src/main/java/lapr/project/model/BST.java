@@ -79,11 +79,10 @@ public class BST<E extends Comparable<E>>  {
     protected Node<E> find(Node<E> node, E element){
         if (node.getElement().compareTo(element) == 0)
             return node;
-        if (node.getElement().compareTo(element) > 0) {
+        else if (node.getElement().compareTo(element) > 0)
             return find(node.getLeft(), element );
-        } else if (node.getElement().compareTo(element) < 0)
+        else
             return find(node.getRight(), element );
-        return node;
     }
     
     /*

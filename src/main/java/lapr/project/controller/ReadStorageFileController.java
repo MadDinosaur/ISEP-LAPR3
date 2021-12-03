@@ -39,7 +39,7 @@ public class ReadStorageFileController {
      * Reads a file and saves the data in that file in the Database
      * @param path the path to the file
      */
-    public void readFileAndSaveDataToDB(String path, DatabaseConnection databaseConnection){
+    private void readFileAndSaveDataToDB(String path, DatabaseConnection databaseConnection){
         List<StorageDTO> storageData = StorageFileReader.readStorageFile(path);
 
         if (storageData != null){
@@ -59,13 +59,13 @@ public class ReadStorageFileController {
 
             readFileAndSaveDataToDB(path, databaseConnection);
             storageList = storageSqlStore.getStorageDataFromDataBase(databaseConnection);
+            storageStore.empty();
         } else {
             List<StorageDTO> storageData = StorageFileReader.readStorageFile(path);
 
             if (storageData != null)
                 storageList = storageStore.createStorageList(storageData);
         }
-
 
         storageStore.addStorageList(storageList);
     }

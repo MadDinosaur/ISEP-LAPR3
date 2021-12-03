@@ -41,6 +41,8 @@ class Tree2DTest {
 
         instance.insert(nodeList);
         assertEquals(arr.length, instance.size());
+        instance.empty();
+        assertEquals(instance.size(), 0);
     }
 
     @Test
@@ -72,9 +74,13 @@ class Tree2DTest {
 
         assertEquals(expected, result);
 
+        assertNotNull(instance.balanceFactor());
+        
         instance = new Tree2D<>();
 
         assertTrue(instance.toString().isEmpty());
+
+        assertTrue(instance.balanceFactor().isEmpty());
     }
 
     @Test

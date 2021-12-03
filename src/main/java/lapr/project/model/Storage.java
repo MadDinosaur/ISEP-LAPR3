@@ -52,8 +52,8 @@ public class Storage  {
         if (id == 0)
             throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be empty or 0))");
 
-        String identification = Integer.toString(id);
-        if (identification.length() > 10)
+        String identification2 = Integer.toString(id);
+        if (identification2.length() > 10)
             throw new IllegalStorageException("Identification \"" + id + "\" is not supported. (Cannot be bigger than 10 characters)");
     }
 
@@ -149,6 +149,6 @@ public class Storage  {
 
     @Override
     public String toString() {
-        return String.format("Storage %d: Name - %s; Continent - %s; Country - %s; Longitude - %f; Latitude - %f", identification, name, continent, country, coordinate.getLongitude(), coordinate.getLatitude());
+        return String.format("Storage %d: Name - %s; Continent - %s; Country - %s; Longitude - %.2f; Latitude - %.2f", identification, name, continent, country, coordinate.getLongitude(), coordinate.getLatitude());
     }
 }

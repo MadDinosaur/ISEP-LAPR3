@@ -23,11 +23,15 @@ class PositioningDataTest {
         assertNotNull(positioningData);
         assertEquals(positioningData.getCoordinate(), coordinate);
         assertEquals(positioningData.getSog(), sog);
+        positioningData.setSog(0);
+        assertEquals(positioningData.getSog(), 0);
         positioningData.setSog(-10);
         assertEquals(positioningData.getSog(), 0);
         assertEquals(positioningData.getCog(), cog);
-        positioningData.setCog(-358);
-        assertEquals(positioningData.getCog(), 1);
+        positioningData.setCog(-359);
+        assertEquals(positioningData.getCog(), 0);
+        positioningData.setCog(0);
+        assertEquals(positioningData.getCog(), 0);
         assertEquals(positioningData.getHeading(), heading);
         positioningData.setHeading(359);
         assertEquals(positioningData.getHeading(), 359);

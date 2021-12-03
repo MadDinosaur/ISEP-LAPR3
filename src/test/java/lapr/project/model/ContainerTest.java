@@ -2,12 +2,13 @@ package lapr.project.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.NotNull;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ContainerTest {
     int containerNum = 200031;
-    int checkDigit = 7;
+    int checkDigit = 9;
     String isoCode = "22G1";
     double grossWeight =  30480.0;
     double tareWeight = 2180.0;
@@ -26,6 +27,9 @@ class ContainerTest {
         assertEquals(tareWeight, c1.getTareWeight());
         assertEquals(payload, c1.getPayload());
         assertFalse(c1.isRefrigerated());
+
+        Container c2 = new Container(containerNum,0,isoCode, 0, 0, 0,0,true);
+        assertNotNull(c2);
     }
 
     @Test
@@ -83,5 +87,23 @@ class ContainerTest {
         String actualMessage6 = exception6.getMessage();
 
         assertTrue(actualMessage6.contains(expectedMessage6));
+
+        Exception exception7 = assertThrows(IllegalArgumentException.class, () -> {
+            Container container = new Container(containerNum, -1, isoCode, grossWeight, tareWeight, payload, maxVol, refrigerated);
+        });
+
+        String expectedMessage7 = "Check digit must be between 0 and 9.";
+        String actualMessage7 = exception7.getMessage();
+
+        assertTrue(actualMessage7.contains(expectedMessage7));
+
+        Exception exception8 = assertThrows(IllegalArgumentException.class, () -> {
+            Container container = new Container(containerNum, checkDigit, null, grossWeight, tareWeight, payload, maxVol, refrigerated);
+        });
+
+        String expectedMessage8 = "Iso code must have 4 characters.";
+        String actualMessage8 = exception8.getMessage();
+
+        assertTrue(actualMessage8.contains(expectedMessage8));
     }
 }

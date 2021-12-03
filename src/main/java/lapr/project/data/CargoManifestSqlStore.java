@@ -50,16 +50,11 @@ public class CargoManifestSqlStore {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "SELECT func_occupancy_rate(?,?)\n" +
-                "as Occupancy_Rate, s.mmsi, s.imo, s.callsign, s.capacity, c.id  FROM SHIP s, CARGOMANIFEST c\n" +
-                "WHERE s.mmsi = ?\n" +
-                "AND c.id=?";
+        sqlCommand = "SELECT func_occupancy_rate(?,?) FROM DUAL";
 
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, shipMmsi);
             getManifestData.setInt(2,manifestId);
-            getManifestData.setInt(3, shipMmsi);
-            getManifestData.setInt(4,manifestId);
             try(ResultSet occupancy_rate = getManifestData.executeQuery()) {
                 if (occupancy_rate.next())
                     return occupancy_rate.getDouble(1);

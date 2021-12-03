@@ -91,12 +91,13 @@ public class StorageSqlStore implements Persistable {
 
         String sqlCommandSelect = "select * from storage where identification = ?";
 
-        PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommandSelect);
+        try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommandSelect)) {
 
-        getStoragesPreparedStatement.setInt(1, storage.getIdentification());
+            getStoragesPreparedStatement.setInt(1, storage.getIdentification());
 
-        try (ResultSet storagesResultSet = getStoragesPreparedStatement.executeQuery()) {
-            isStorageOnDatabase = storagesResultSet.next();
+            try (ResultSet storagesResultSet = getStoragesPreparedStatement.executeQuery()) {
+                isStorageOnDatabase = storagesResultSet.next();
+            }
         }
         
         return isStorageOnDatabase;
@@ -138,18 +139,19 @@ public class StorageSqlStore implements Persistable {
     private void executeStorageStatementOnDatabase(DatabaseConnection databaseConnection, Storage storage, String sqlCommand) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
-        PreparedStatement saveStoragePreparedStatement = connection.prepareStatement(sqlCommand);
+        try(PreparedStatement saveStoragePreparedStatement = connection.prepareStatement(sqlCommand)) {
 
-        //TODO: Hard-coded para colocar o storage-type como 1 (Port) visto que
-        // apenas estamos a usar Ports por enquanto, enventualmente pode vir a ser necessário mudar isto
-        saveStoragePreparedStatement.setInt(1, 1);
-        saveStoragePreparedStatement.setString(2, storage.getName());
-        saveStoragePreparedStatement.setString(3, storage.getContinent());
-        saveStoragePreparedStatement.setString(4, storage.getCountry());
-        saveStoragePreparedStatement.setFloat(5, storage.getCoordinate().getLatitude());
-        saveStoragePreparedStatement.setFloat(6, storage.getCoordinate().getLongitude());
-        saveStoragePreparedStatement.setInt(7, storage.getIdentification());
-        saveStoragePreparedStatement.executeUpdate();
+            //TODO: Hard-coded para colocar o storage-type como 1 (Port) visto que
+            // apenas estamos a usar Ports por enquanto, enventualmente pode vir a ser necessário mudar isto
+            saveStoragePreparedStatement.setInt(1, 1);
+            saveStoragePreparedStatement.setString(2, storage.getName());
+            saveStoragePreparedStatement.setString(3, storage.getContinent());
+            saveStoragePreparedStatement.setString(4, storage.getCountry());
+            saveStoragePreparedStatement.setFloat(5, storage.getCoordinate().getLatitude());
+            saveStoragePreparedStatement.setFloat(6, storage.getCoordinate().getLongitude());
+            saveStoragePreparedStatement.setInt(7, storage.getIdentification());
+            saveStoragePreparedStatement.executeUpdate();
+        }
     }
 
     public List<Storage> getStorageDataFromDataBase(DatabaseConnection databaseConnection) {

@@ -178,6 +178,42 @@ public class Tree2D<T> {
     }
 
     /**
+     * A method that returns the tree with all of its balanced factor in a tree
+     * @return a string of the element
+     */
+    public String balanceFactor(){
+        StringBuilder sb = new StringBuilder();
+        balanceFactor(root, 0, sb);
+
+        return sb.toString();
+    }
+
+    /**
+     * A method that shows the balance factor of the whole tree
+     * @param root the tree's root
+     * @param level the current level
+     * @param sb the string builder
+     */
+    private void balanceFactor(Node<T> root, int level, StringBuilder sb){
+        if(root==null)
+            return;
+
+        balanceFactor(root.right, level+1, sb);
+        int balance = height(root.right) - height(root.left);
+
+        if (level!=0){
+            for(int i=0;i<level-1;i++)
+                sb.append("|\t");
+
+            sb.append("|------>"+balance +"\n");
+        }
+        else
+            sb.append(balance +"\n");
+
+        balanceFactor(root.left, level+1, sb);
+    }
+
+    /**
      * Returns the size of the tree
      * @return size of the tree
      */
@@ -185,6 +221,11 @@ public class Tree2D<T> {
         return size(root);
     }
 
+    /**
+     * returns the size of a given node
+     * @param node the node being analyzed
+     * @return the size of the node
+     */
     private int size(Node<T> node){
         if (node == null)
             return 0;
@@ -217,5 +258,34 @@ public class Tree2D<T> {
         inOrderSubtree(node.left, snapshot);
         snapshot.add(node.element);
         inOrderSubtree(node.right, snapshot);
+    }
+
+    /**
+     * return the height of any given node
+     * @param node the node in question
+     * @return the height of a node
+     */
+    protected int height(Node<T> node){
+        if (node == null)
+            return -1;
+
+        if (node.left == null && node.right == null)
+            return 0;
+
+        int leftChild = height(node.left);
+        int rightChild = height(node.right);
+
+        if (leftChild > rightChild) {
+            return leftChild + 1;
+        } else {
+            return rightChild + 1;
+        }
+    }
+
+    /**
+     * Empties the tree
+     */
+    public void empty(){
+        this.root = null;
     }
 }

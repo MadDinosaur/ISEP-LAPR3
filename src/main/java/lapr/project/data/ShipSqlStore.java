@@ -1,6 +1,5 @@
 package lapr.project.data;
 
-import lapr.project.mappers.dto.ShipDTO;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
