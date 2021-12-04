@@ -1,13 +1,17 @@
 package lapr.project.data;
 
+import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
+import lapr.project.model.Storage;
 import lapr.project.store.ShipStore;
+import oracle.ucp.util.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -296,5 +300,44 @@ public class ShipSqlStore implements Persistable {
             databaseConnection.registerError(exception);
         }
         return null;
+    }
+
+    /**
+     * Fetches a list of ships that are gonna be available on the next monday, this list contains a Pair
+     * that has the ship's mmsi and the Storage identification number where the ship will be located on monday
+     *
+     * @param databaseConnection a connection to the database
+     * @return a list of ships that are available and their respective location
+     */
+    public List<Pair<Integer, Integer>> getAvailableShipsOnMonday(DatabaseConnection databaseConnection) {
+        Connection connection = databaseConnection.getConnection();
+        List<Pair<Integer, Integer>> availableShipAndLocationList = new ArrayList<>();
+
+        try {
+            String sqlCommand = "SELECT st1.ship_mmsi, st1.storage_identification_destination\n" +
+                    "FROM shiptrip st1\n" +
+                    "LEFT JOIN shiptrip st2\n" +
+                    "    ON (\n" +
+                    "        st1.ship_mmsi = st2.ship_mmsi \n" +
+                    "        AND st1.arrival_date < st2.arrival_date\n" +
+                    "    ) \n" +
+                    "WHERE st2.arrival_date IS NULL \n" +
+                    "    AND NEXT_DAY(CURRENT_DATE, 'SEGUNDA') > st1.arrival_date;";
+
+            PreparedStatement getAvailableShipsPreparedStatement = connection.prepareStatement(sqlCommand);
+
+            try (ResultSet availableShipsResultSet = getAvailableShipsPreparedStatement.executeQuery()) {
+                while (availableShipsResultSet.next()) {
+                    Pair<Integer, Integer> availableShipAndLocation = new Pair<>(availableShipsResultSet.getInt(1), availableShipsResultSet.getInt(2));
+                    availableShipAndLocationList.add(availableShipAndLocation);
+                }
+                return availableShipAndLocationList;
+            }
+
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+            return null;
+        }
     }
 }
