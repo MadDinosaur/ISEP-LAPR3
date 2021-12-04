@@ -10,6 +10,7 @@ BEGIN
     FROM cargomanifest c, container_cargoManifest cc, ship s, container con
     WHERE s.mmsi = id_ship
     AND c.id = manifest_id
+    AND c.loading_flag IS NOT NULL
     AND c.ship_mmsi = s.mmsi
     AND cc.cargo_manifest_id = c.id
     AND cc.container_num = con.num
