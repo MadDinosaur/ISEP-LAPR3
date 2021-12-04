@@ -35,7 +35,7 @@ public class GetManifestInformationController {
      * @param year the chosen year
      * @return true if the result is not null
      */
-    public Pair<Integer, Integer> findCargoManifests(int captain_id, int year) {
+    public Pair<Integer, Double> findCargoManifests(int captain_id, int year) {
         try {
             return CargoManifestSqlStore.getCargoManifestInYear(databaseConnection, captain_id, year);
         } catch (SQLException throwables) {

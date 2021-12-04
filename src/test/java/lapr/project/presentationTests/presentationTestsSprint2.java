@@ -7,6 +7,8 @@ import lapr.project.data.StorageSqlStore;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.StorageDTO;
 import lapr.project.model.PositioningData;
+import lapr.project.model.Ship;
+import oracle.sql.TIMESTAMP;
 import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -138,7 +140,7 @@ public class presentationTestsSprint2 {
     public void US207(){
         if (dataBase){
             GetManifestInformationController controller = new GetManifestInformationController();
-            Pair<Integer, Integer> values = controller.findCargoManifests(1, 2020);
+            Pair<Integer, Double> values = controller.findCargoManifests(1, 2020);
             StringBuilder sb = new StringBuilder();
 
             sb.append("YEAR - 2020 \n\n");
@@ -179,24 +181,15 @@ public class presentationTestsSprint2 {
     public void US209() throws ParseException {
         if (dataBase){
             GetOccupancyRateGivenMomentController controller = new GetOccupancyRateGivenMomentController();
-            SimpleDateFormat dateFormate = new SimpleDateFormat("dd-MM-yyyy HH:mm:SS");
-            Date date = dateFormate.parse("2020-05-20 7:59:23");
-            long time = date.getTime();
-            Timestamp timestamp = new Timestamp(time);
-            Pair<String, Double> values = controller.getOccupancyRateGivenMoment(100000001, timestamp);
+            Pair<String, Double> values = controller.getOccupancyRateGivenMoment(100000001, "2020-05-20 7:59:23");
 
             StringBuilder sb = new StringBuilder();
 
             sb.append("Moment - 2020-05-20 7:59:23 \n\n");
             sb.append(values.get1st()).append(" -   Occupancy rate: ").append(values.get2nd());
+            values = controller.getOccupancyRateGivenMoment(100000001, "2020-09-9 6:19:45");
 
-
-            date = dateFormate.parse("2020-09-8 15:45:21");
-            time = date.getTime();
-            timestamp = new Timestamp(time);
-            values = controller.getOccupancyRateGivenMoment(100000001, timestamp);
-
-            sb.append("Moment - 2020-09-8 15:45:21 \n\n");
+            sb.append("\n\nMoment - 2020-09-9 6:19:45 \n\n");
             sb.append(values.get1st()).append(" -   Occupancy rate: ").append(values.get2nd());
 
             writeOutput(sb.toString(), "US209");
@@ -206,28 +199,6 @@ public class presentationTestsSprint2 {
     @Test
     public void US210() {
         if (dataBase){
-            GetOccupancyRateGivenMomentController controller = new GetOccupancyRateGivenMomentController();
-            SimpleDateFormat dateFormate = new SimpleDateFormat("dd-MM-yyyy HH:mm:SS");
-            Date date = dateFormate.parse("2020-05-20 7:59:23");
-            long time = date.getTime();
-            Timestamp timestamp = new Timestamp(time);
-            Pair<String, Double> values = controller.getOccupancyRateGivenMoment(100000001, timestamp);
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.append("Moment - 2020-05-20 7:59:23 \n\n");
-            sb.append(values.get1st()).append(" -   Occupancy rate: ").append(values.get2nd());
-
-
-            date = dateFormate.parse("2020-09-8 15:45:21");
-            time = date.getTime();
-            timestamp = new Timestamp(time);
-            values = controller.getOccupancyRateGivenMoment(100000001, timestamp);
-
-            sb.append("Moment - 2020-09-8 15:45:21 \n\n");
-            sb.append(values.get1st()).append(" -   Occupancy rate: ").append(values.get2nd());
-
-            writeOutput(sb.toString(), "US210");
         }
     }
 

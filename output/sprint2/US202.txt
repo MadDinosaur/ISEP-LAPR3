@@ -1,8 +1,0 @@
-POSITION : 
-
-The Ship "D5VK6" at that given moment is at : Longitude - -78.76733 and Latitude - 26.52601
-
-
-Neares Port: 
-
-ID - 25007/ Name - New Jersey/ Continent - America/ Country - United States/ Longitude - -74.166664/ Latitude - 40.666668

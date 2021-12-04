@@ -15,8 +15,8 @@ class GetManifestInformationControllerTest {
         GetManifestInformationController controller = new GetManifestInformationController();
         controller = mock(GetManifestInformationController.class);
 
-        when(controller.findCargoManifests(1, 2020)).thenReturn(new Pair<>(2, 2));
-        Pair<Integer, Integer> result = controller.findCargoManifests(1, 2020);
+        when(controller.findCargoManifests(1, 2020)).thenReturn(new Pair<>(2, 2.23));
+        Pair<Integer, Double> result = controller.findCargoManifests(1, 2020);
         assertEquals(new Pair<>(2, 2), result);
     }
 

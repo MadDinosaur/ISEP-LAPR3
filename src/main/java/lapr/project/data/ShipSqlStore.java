@@ -1,9 +1,7 @@
 package lapr.project.data;
 
-import lapr.project.model.Coordinate;
 import lapr.project.model.PositioningData;
 import lapr.project.model.Ship;
-import lapr.project.model.Storage;
 import lapr.project.store.ShipStore;
 import oracle.ucp.util.Pair;
 
@@ -18,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ShipSqlStore implements Persistable {
-    
+
     /**
      * Save an objet to the database.
      *
@@ -148,7 +146,7 @@ public class ShipSqlStore implements Persistable {
                 }
             }
         }
-        sqlCommand = "insert into ship(mmsi, fleet_id, captain_id, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft, captain_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        sqlCommand = "insert into ship(mmsi, fleet_id, captain_id, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         try(PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
@@ -170,7 +168,6 @@ public class ShipSqlStore implements Persistable {
             saveShipPreparedStatement.setFloat(11, ship.getWidth());
             saveShipPreparedStatement.setFloat(12, ship.getCapacity());
             saveShipPreparedStatement.setFloat(13, ship.getDraft());
-            saveShipPreparedStatement.setString(14, ship.getMmsi());
             saveShipPreparedStatement.executeUpdate();
         }
     }
@@ -271,7 +268,7 @@ public class ShipSqlStore implements Persistable {
                             shipData.getString("callsign") , shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
                             shipData.getFloat("ship_width"),  shipData.getFloat("draft"));
                     ship.setPositioningDataList(dynamicDataSqlStore.loadDynamicData(databaseConnection, shipData.getString("mmsi")));
-                    shipStore.insert(ship);
+                    shipStore.addShip(ship);
                 }
             }
         } catch (SQLException exception) {
@@ -290,10 +287,12 @@ public class ShipSqlStore implements Persistable {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand = "select * from ship where captain_id = ?";
         try (PreparedStatement getShipByCaptainId = connection.prepareStatement(sqlCommand)) {
+            getShipByCaptainId.setString(1, captainId);
             try (ResultSet shipData = getShipByCaptainId.executeQuery()) {
-                return new Ship(shipData.getString("mmsi"), shipData.getString("name"),shipData.getInt("imo") ,
-                        shipData.getString("callsign") , shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
-                        shipData.getFloat("ship_width"),  shipData.getFloat("draft"));
+                if(shipData.next())
+                    return new Ship(shipData.getString("mmsi"), shipData.getString("name"),shipData.getInt("imo") ,
+                            shipData.getString("callsign") , shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
+                            shipData.getFloat("ship_width"),  shipData.getFloat("draft"));
             }
         } catch (SQLException exception) {
             Logger.getLogger(ShipStore.class.getName()).log(Level.SEVERE, null, exception);

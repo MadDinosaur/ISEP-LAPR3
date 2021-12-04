@@ -14,24 +14,24 @@ public class CargoManifestSqlStore {
      * @return a result set with all of the captains carried cargo manifest in a given year
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static Pair<Integer, Integer> getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
+    public static Pair<Integer, Double> getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "SELECT COUNT(c.id), AVG(count(cc.container_num))\n" +
-                "    FROM container_cargoManifest cc, cargomanifest c, ship s\n" +
-                "         WHERE s.captain_id = ?\n" +
-                "         AND c.ship_mmsi = s.mmsi\n" +
-                "         AND EXTRACT(YEAR FROM c.finishing_date_time) = ?\n" +
-                "         AND cc.cargo_manifest_id = c.id\n" +
-                "         AND c.loading_flag IS NOT NULL\n" +
-                "         GROUP BY c.id;";
+        sqlCommand = "select count(c.id), avg(count(cc.container_num))\n" +
+                "    from container_cargoManifest cc, cargomanifest c, ship s\n" +
+                "         where s.captain_id = ?\n" +
+                "         and c.ship_mmsi = s.mmsi\n" +
+                "         and extract(year from c.finishing_date_time) = ?\n" +
+                "         and cc.cargo_manifest_id = c.id\n" +
+                "         and c.loading_flag is not null\n" +
+                "         group by c.id";
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, captainId);
             getManifestData.setInt(2, year);
             try(ResultSet shipAddressesResultSet = getManifestData.executeQuery()) {
                 if (shipAddressesResultSet.next())
-                    return new Pair<>(shipAddressesResultSet.getInt(1), shipAddressesResultSet.getInt(2));
+                    return new Pair<>(shipAddressesResultSet.getInt(1), shipAddressesResultSet.getDouble(2));
                 else
                     return null;
             }
@@ -72,18 +72,16 @@ public class CargoManifestSqlStore {
      * @return the occupancy rate of the desired ship and moment
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static Pair<String,Double> getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,Timestamp givenMoment) throws SQLException{
+    public static Pair<String,Double> getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,String givenMoment) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
         StringBuilder string = new StringBuilder();
 
-        sqlCommand = "SELECT func_occupancy_rate_given_moment(?,?) as Occupancy_Rate, s.mmsi, s.imo, s.callsign, s.capacity FROM SHIP s\n" +
-                "WHERE s.mmsi = ?";
+        sqlCommand = "select func_occupancy_rate_given_moment(s.mmsi, TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS')) as Occupancy_Rate, s.mmsi, s.imo, s.callsign, s.capacity FROM SHIP s WHERE s.mmsi = ?";
 
         try(PreparedStatement getData = connection.prepareStatement(sqlCommand)){
-            getData.setInt(1,mmsi);
-            getData.setTimestamp(2,givenMoment);
-            getData.setInt(3,mmsi);
+            getData.setString(1,givenMoment);
+            getData.setInt(2,mmsi);
             try(ResultSet occupancyRateSet = getData.executeQuery()){
                 if (occupancyRateSet.next()) {
                     string.append("Ship's data - MMSI: ");
@@ -94,7 +92,6 @@ public class CargoManifestSqlStore {
                     string.append(occupancyRateSet.getString(4));
                     string.append(" Capacity: ");
                     string.append(occupancyRateSet.getDouble(5));
-
                     return new Pair<>(string.toString(), occupancyRateSet.getDouble(1));
                 } else
                     return null;
