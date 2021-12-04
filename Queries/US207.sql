@@ -11,6 +11,7 @@ BEGIN
          AND c.ship_mmsi = s.mmsi
          AND EXTRACT(YEAR FROM c.finishing_date_time) = moment
          AND cc.cargo_manifest_id = c.id
+         AND c.loading_flag IS NOT NULL
          GROUP BY c.id;
 
     IF number_manifest > 0 THEN
