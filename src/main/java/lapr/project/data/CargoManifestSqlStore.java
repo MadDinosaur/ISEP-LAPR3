@@ -18,15 +18,14 @@ public class CargoManifestSqlStore {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "SELECT COUNT(c.id) AS \"Transported Cargo Manifest\", AVG(count(cc.container_num)) AS \"Average Number of containers\"\n" +
-                "    FROM container_cargoManifest cc, cargomanifest c, ship s, captain cp\n" +
-                "    WHERE s.captain_id = ?\n" +
-                "    AND s.captain_id = cp.id\n" +
-                "    AND c.ship_mmsi = s.mmsi\n" +
-                "    AND EXTRACT(YEAR FROM c.finishing_date_time) = ?\n" +
-                "    AND cc.cargo_manifest_id = c.id\n" +
-                "    AND c.loading_flag IS NOT NULL\n" +
-                "    GROUP BY c.id";
+        sqlCommand = "SELECT COUNT(c.id), AVG(count(cc.container_num))\n" +
+                "    FROM container_cargoManifest cc, cargomanifest c, ship s\n" +
+                "         WHERE s.captain_id = ?\n" +
+                "         AND c.ship_mmsi = s.mmsi\n" +
+                "         AND EXTRACT(YEAR FROM c.finishing_date_time) = ?\n" +
+                "         AND cc.cargo_manifest_id = c.id\n" +
+                "         AND c.loading_flag IS NOT NULL\n" +
+                "         GROUP BY c.id;";
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, captainId);
             getManifestData.setInt(2, year);
