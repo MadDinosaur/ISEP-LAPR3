@@ -1,24 +1,13 @@
 -- REFERENTIAL RESTRICTIONS
 -- Tests if the foreign key refers to a primary key value of some table in the database.
 
-
 -- CONSTRAINT fkStorageTypeId -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO Storage(identification,storage_type_id,name,continent,country,latitude,longitude)
 VALUES (1,1,'TestStorage','TestContinent','TestCountry',91.0,181.0);
 
--- CONSTRAINT fkContainerStorageIdentification -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
-
-INSERT INTO StorageType(name)
-VALUES ('Port');
-
-INSERT INTO Storage(identification,storage_type_id,name,continent,country,latitude,longitude)
-VALUES (2,1,'TestStorage2','TestContinent','TestCountry',90.0,180.0);
-
 -- CONSTRAINT fkContainerCscPlateSerialNumber -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (1,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
 -- CONSTRAINT fkCscPlateSerialNumber -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO CscPlate_certificate(csc_plate_serial_number, certificate_id)
@@ -49,11 +38,11 @@ VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.9
 INSERT INTO DynamicData(ship_mmsi,base_date_time,latitude,longitude,sog,cog,heading,position,transceiver_class)
 VALUES (999999999,CURRENT_TIMESTAMP,91,181,0.0,359.0,511.0,NULL,'A');
 
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (1,2,1,0,'TST1',9999999,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (1,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
 -- CONSTRAINT fkCargoManifestShipMmsi -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
-INSERT INTO CargoManifest(ship_mmsi,loading_flag, date_time) VALUES (1,1,TO_DATE('01/01/2000','DD/MM/YYYY'));
+INSERT INTO CargoManifest(ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (1,1,1,CURRENT_TIMESTAMP);
 
 -- CONSTRAINT fkContainerCargoManifestCargoManifestId -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO Container_CargoManifest(container_num,cargo_manifest_id,container_position_x,container_position_y,container_position_z) VALUES(1,1,0,0,0);
@@ -69,28 +58,17 @@ INSERT INTO Shipment(container_num,storage_identification_origin,storage_identif
 
 -- CONSTRAINT fkShipMMSI -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(123456789, 1, 1, NULL, NULL, 'finished');
+VALUES(123456789, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + 1, 'finished');
 
 INSERT INTO vesselType(id)
 VALUES (1);
 
--- CONSTRAINT fkShipCaptainId -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft, captain_id)
 VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99,1);
 
-INSERT INTO captain(id)
-VALUES (1);
-
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft, captain_id)
-VALUES (123456789,2,'TestShip',9999999,0,0,99999999,1,999.99,999.99,999.99,999.99,1);
-
--- CONSTRAINT fkStorageOrigin -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
+-- CONSTRAINT fkStorageDestination -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(123456789, 1, 2, NULL, NULL, 'finished');
-
--- CONSTRAINT fkStorageOrigin -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
-INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(123456789, 2, 1, NULL, NULL, 'finished');
+VALUES(123456789, 1, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + 1, 'finished');
 
 
 
@@ -126,48 +104,45 @@ VALUES (3,1,'TestStorageNULL','TestContinent','TestCountry',0.0,NULL);
 INSERT INTO Storage(identification,storage_type_id,name,continent,country,latitude,longitude)
 VALUES (3,1,'TestStorageNULL','TestContinent','TestCountry',0.0,182.0);
 
--- CONSTRAINT nnContainerStorageIdentification -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,NULL,1,0,'TST1',9999999,9999999,999999,999.9,1);
 -- CONSTRAINT nnContainerCscPlateSerialNumber -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,NULL,0,'TST1',9999999,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,NULL,0,'TST1',9999999,9999999,999999,999.9,1);
 -- CONSTRAINT nnCheckDigit -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,NULL,'TST1',9999999,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,NULL,'TST1',9999999,9999999,999999,999.9,1);
 -- CONSTRAINT nnIsoCode -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,NULL,9999999,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,NULL,9999999,9999999,999999,999.9,1);
 -- CONSTRAINT nnGrossWeight -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',NULL,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',NULL,9999999,999999,999.9,1);
 -- CONSTRAINT ckGrossWeight -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',-9999999,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',-9999999,9999999,999999,999.9,1);
 -- CONSTRAINT nnTareWeight -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,NULL,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,NULL,999999,999.9,1);
 -- CONSTRAINT ckTareWeight -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,-9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,-9999999,999999,999.9,1);
 -- CONSTRAINT nnPayload -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,9999999,NULL,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,9999999,NULL,999.9,1);
 -- CONSTRAINT ckPayload -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,9999999,-999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,9999999,-999999,999.9,1);
 -- CONSTRAINT nnMaxVolume -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,9999999,999999,NULL,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,9999999,999999,NULL,1);
 -- CONSTRAINT ckMaxVolume -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,9999999,999999,-999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,9999999,999999,-999.9,1);
 -- CONSTRAINT nnRefrigeratedFlag -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,9999999,999999,999.9,NULL);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,9999999,999999,999.9,NULL);
 -- CONSTRAINT ckRefrigerated -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (2,1,1,0,'TST1',9999999,9999999,999999,999.9,2);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (2,1,0,'TST1',9999999,9999999,999999,999.9,2);
 
 -- CONSTRAINT nnRules -- expected result FAIL
 INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
@@ -218,13 +193,15 @@ VALUES (NULL, 3);
 -- IDENTITY RESTRICTIONS
 -- Tests if the primary key in every table is unique and not null.
 
+-- CONSTRAINT pkContainerNum -- expected result FAIL
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (NULL,1,0,'TST1',9999999,9999999,999999,999.9,1);
+INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
+VALUES (1,1,0,'TST1',9999999,9999999,999999,999.9,1);
+
 -- CONSTRAINT pkStorageIdentification -- expected result FAIL
 INSERT INTO Storage(identification,storage_type_id,name,continent,country,latitude,longitude)
 VALUES (NULL,1,'TestStorageNULL','TestContinent','TestCountry',0.0,0.0);
-
--- CONSTRAINT pkContainerNum -- expected result FAIL
-INSERT INTO Container(num,storage_identification,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
-VALUES (NULL,1,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
 -- CONSTRAINT pkCscPlateSerialNumber -- expected result FAIL
 INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)
@@ -248,3 +225,14 @@ VALUES (4,'TST1237','TST1237','TestManufacturer','TestOwnerName','TestAddress','
 
 -- CONSTRAINT ckStorageOriginDestination -- expected result FAIL
 INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination) VALUES (1,1,1);
+
+--CONSTRAINT setStatus -- expected result FAIL
+INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
+VALUES(100000001, 2, 4, TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'), 'N/A');
+--CONSTRAINT ckTripDestination -- expected result FAIL
+INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
+VALUES(100000001, 2, 4, TO_TIMESTAMP('2020-05-25 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-05-20 17:48:36', 'YYYY-MM-DD HH24:MI:SS'), 'N/A');
+
+--CONSTRAINT ckPartialManifest -- expected result FAIL
+INSERT INTO CargoManifest(ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (123456789,1,NULL,CURRENT_TIMESTAMP);
+INSERT INTO CargoManifest(ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (123456789,NULL,1,CURRENT_TIMESTAMP);

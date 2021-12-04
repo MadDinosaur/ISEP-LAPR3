@@ -156,13 +156,67 @@ CREATE TABLE CargoManifest
     storage_identification INTEGER,
     loading_flag NUMBER(1)
         CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
-    finishing_date_time    TIMESTAMP,
+    finishing_date_time    TIMESTAMP
+        DEFAULT NULL,
     CONSTRAINT ckPartialManifest CHECK (
         -- Partial port cargo manifest
         (storage_identification IS NOT NULL AND loading_flag IS NOT NULL)
         -- Full ship cargo manifest
         OR (storage_identification IS NULL AND loading_flag IS NULL))
 );
+
+/*CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
+    BEFORE UPDATE OF finishing_date_time ON CargoManifest
+    FOR EACH ROW
+DECLARE
+    V_Prev_Cargo_Id CARGOMANIFEST.id%type;
+    V_Curr_Cargo_Id CargoManifest.id%type;
+    V_Ship_Mmsi CargoManifest.ship_mmsi%type;
+    V_Container_Load CONTAINER_CARGOMANIFEST%rowtype;
+    V_Container_Cargo CONTAINER_CARGOMANIFEST%rowtype;
+BEGIN
+    -- Determine if new insert is a partial cargo manifest
+    IF :new.LOADING_FLAG IS NOT NULL THEN
+
+        BEGIN
+            -- Save previous cargo manifest id
+            SELECT ID INTO V_Prev_Cargo_Id FROM CARGOMANIFEST WHERE STORAGE_IDENTIFICATION IS NULL AND FINISHING_DATE_TIME IS NULL;
+            -- Set finishing date on previous cargo manifest
+            UPDATE CARGOMANIFEST SET finishing_date_time = SYSDATE WHERE ID = V_Prev_Cargo_Id;
+            -- Generate a new ship cargo manifest
+            INSERT INTO CARGOMANIFEST (ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (V_Ship_Mmsi, NULL, NULL, NULL);
+            -- Save new cargo manifest id
+            SELECT ID INTO V_Curr_Cargo_Id FROM CARGOMANIFEST WHERE STORAGE_IDENTIFICATION IS NULL AND FINISHING_DATE_TIME IS NULL;
+            -- Copy containers onto new manifest
+            FOR V_Container_Cargo IN
+                (SELECT * FROM CONTAINER_CARGOMANIFEST WHERE cargo_manifest_id = V_Prev_Cargo_Id)
+                LOOP
+                    INSERT INTO CONTAINER_CARGOMANIFEST (container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+                    VALUES (V_Container_Cargo.container_num, V_Curr_Cargo_Id, V_Container_Cargo.container_position_x, V_Container_Cargo.container_position_y, V_Container_Cargo.container_position_z);
+                END LOOP;
+        EXCEPTION
+            -- If no previous cargo manifest exists
+            WHEN NO_DATA_FOUND THEN
+                -- Generate a new ship cargo manifest
+                INSERT INTO CARGOMANIFEST (ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (V_Ship_Mmsi, NULL, NULL, NULL);
+                -- Save new cargo manifest id
+                SELECT ID INTO V_Curr_Cargo_Id FROM CARGOMANIFEST WHERE STORAGE_IDENTIFICATION IS NULL AND FINISHING_DATE_TIME IS NULL;
+        END;
+        -- Select containers to be loaded/offloaded and add/remove them from ship cargo manifest
+        FOR V_Container_Load IN
+            (SELECT * FROM CONTAINER_CARGOMANIFEST WHERE cargo_manifest_id = :new.ID)
+            LOOP
+                CASE WHEN :new.LOADING_FLAG = 1
+                    THEN INSERT INTO CONTAINER_CARGOMANIFEST (container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+                VALUES (V_Container_Load.container_num, V_Curr_Cargo_Id, V_Container_Load.container_position_x, V_Container_Load.container_position_y, V_Container_Load.container_position_z);
+                ELSE
+                    DELETE FROM CONTAINER_CARGOMANIFEST WHERE CARGO_MANIFEST_ID = V_Curr_Cargo_Id AND CONTAINER_NUM = V_Container_Load.container_num;
+                END CASE;
+            END LOOP;
+    END IF;
+END trgUpdateCargoManifest;
+/
+alter trigger trgUpdateCargoManifest enable;*/
 
 CREATE TABLE Fleet
 (
@@ -250,18 +304,14 @@ CREATE TABLE ShipTrip
         CONSTRAINT nnTripIdentificationOrigin NOT NULL,
     storage_identification_destination INTEGER
         CONSTRAINT nnTripIdentificationDestination NOT NULL,
-    parting_date                       TIMESTAMP,
-    arrival_date                       TIMESTAMP,
+    parting_date                       TIMESTAMP
+        CONSTRAINT nnPartingDate NOT NULL,
+    arrival_date                       TIMESTAMP
+        CONSTRAINT nnArrivalDate NOT NULL,
     status VARCHAR(20)
         CONSTRAINT nnStatus NOT NULL
         CONSTRAINT setStatus CHECK (status IN ('in progress', 'not started', 'finished')),
-    CONSTRAINT ckTripDestination CHECK ((parting_date IS NULL) OR (parting_date IS NULL) OR (parting_date != arrival_date) )
-);
-
-CREATE TABLE Captain
-(
-    id                                  VARCHAR(10)
-        CONSTRAINT pkCaptainID PRIMARY KEY
+    CONSTRAINT ckTripDestination CHECK (parting_date < arrival_date)
 );
 
 -- define foreign keys and combined primary keys
@@ -288,7 +338,6 @@ ALTER TABLE CargoManifest
 
 ALTER TABLE Ship
     ADD CONSTRAINT fkShipFleetId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)
-    ADD CONSTRAINT fkShipCaptainId FOREIGN Key (captain_id) REFERENCES Captain(id)
     ADD CONSTRAINT fkShipVesselTypeId FOREIGN KEY (vessel_type_id) REFERENCES VesselType (id);
 
 ALTER TABLE DynamicData
@@ -304,4 +353,4 @@ ALTER TABLE ShipTrip
     ADD CONSTRAINT fkShipMMSI FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi)
     ADD CONSTRAINT fkStorageOrigin FOREIGN KEY (storage_identification_origin) REFERENCES Storage (identification)
     ADD CONSTRAINT fkStorageDestination FOREIGN KEY (storage_identification_destination) REFERENCES Storage (identification)
-    ADD CONSTRAINT pkShipTrip PRIMARY KEY (ship_mmsi, storage_identification_origin, storage_identification_destination);
+    ADD CONSTRAINT pkShipTrip PRIMARY KEY (ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date);
