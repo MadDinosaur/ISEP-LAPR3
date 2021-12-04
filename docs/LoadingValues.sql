@@ -238,8 +238,13 @@ VALUES(100000001, 4, 3, TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:S
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
 VALUES(100000001, 3, 1, TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(100000001, 1, 2, TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'), NULL, 'in progress');
-
+VALUES(100000001, 1, 2, TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-9 6:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'in progress');
+INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
+VALUES(100000002, 2, 1, TO_TIMESTAMP('2021-12-10 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-12 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'not started');
+INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
+VALUES(100000003, 1, 4, TO_TIMESTAMP('2021-12-3 23:23:51', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-5 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'in progress');
+INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
+VALUES(100000004, 2, 3, TO_TIMESTAMP('2021-12-1 11:54:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-6 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'in progress');
 
 -- DynamicData --
 INSERT INTO DynamicData(ship_mmsi, base_date_time, latitude, longitude, sog, cog, heading, transceiver_class)

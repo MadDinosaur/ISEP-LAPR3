@@ -7,9 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,10 +92,5 @@ class StorageSqlStoreTest {
         } catch (Exception ex) {
             Logger.getLogger(StorageSqlStoreTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Test
-    void getStorageDataFromDataBase() {
-
     }
 }
