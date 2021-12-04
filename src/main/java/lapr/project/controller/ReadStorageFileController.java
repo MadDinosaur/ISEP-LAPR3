@@ -15,7 +15,7 @@ public class ReadStorageFileController {
 
 
     /**
-     * the current ship store
+     * the current storage store
      */
     private final StorageStore storageStore;
 
