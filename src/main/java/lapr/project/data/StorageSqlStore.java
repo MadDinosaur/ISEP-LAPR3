@@ -154,6 +154,11 @@ public class StorageSqlStore implements Persistable {
         }
     }
 
+    /**
+     * Gets all the storages in the database and returns a list
+     * @param databaseConnection the connection to the database
+     * @return a list of storages
+     */
     public List<Storage> getStorageDataFromDataBase(DatabaseConnection databaseConnection) {
         Connection connection = databaseConnection.getConnection();
         List<Storage> storageList = new ArrayList<>();

@@ -1,24 +1,22 @@
 package lapr.project.presentationTests;
 
 import lapr.project.controller.*;
+import lapr.project.data.DatabaseConnection;
 import lapr.project.data.MainStorage;
 import lapr.project.data.ShipSqlStore;
 import lapr.project.data.StorageSqlStore;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.StorageDTO;
-import lapr.project.model.PositioningData;
-import lapr.project.model.Ship;
-import oracle.sql.TIMESTAMP;
 import oracle.ucp.util.Pair;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class presentationTestsSprint2 {
 
@@ -199,6 +197,44 @@ public class presentationTestsSprint2 {
     @Test
     public void US210() {
         if (dataBase){
+            DatabaseConnection dbconnection = MainStorage.getInstance().getDatabaseConnection();
+            Connection connection = dbconnection.getConnection();
+
+            AvailableShipsOnMondayController controller = new AvailableShipsOnMondayController();
+            List<Pair<Integer, Integer>> resultList = controller.getAvailableShipsOnMonday();
+            String resultString = controller.AvailableShipsOnMondayToString(resultList);
+
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.append("--TABLE SHIPTRIP'S INFO--\n");
+            strBuilder.append("+-----------+-------------+------------------+--------------+--------------+--------------+\n");
+            strBuilder.append("| SHIP MMSI | ORIGIN_PORT | DESTINATION_PORT | PARTING_DATE | ARRIVAL_DATE |    STATUS    |\n");
+
+            try {
+                String sqlCommand = "SELECT * FROM ShipTrip";
+
+                PreparedStatement getShipTripPreparedStatement = connection.prepareStatement(sqlCommand);
+
+                try (ResultSet shipTripResultSet = getShipTripPreparedStatement.executeQuery()) {
+                    while (shipTripResultSet.next()) {
+                        strBuilder.append("+-----------+-------------+------------------+--------------+--------------+--------------+\n");
+                        strBuilder.append("| ").append(String.format("%9s", shipTripResultSet.getInt(1)));
+                        strBuilder.append(" | ").append(String.format("%11s", shipTripResultSet.getInt(2)));
+                        strBuilder.append(" | ").append(String.format("%16s", shipTripResultSet.getInt(3)));
+                        strBuilder.append(" | ").append(String.format("%12s", shipTripResultSet.getDate(4)));
+                        strBuilder.append(" | ").append(String.format("%12s", shipTripResultSet.getDate(5)));
+                        strBuilder.append(" | ").append(String.format("%12s", shipTripResultSet.getString(6))).append(" |\n");
+                    }
+                }
+
+                strBuilder.append("+-----------+-------------+------------------+--------------+--------------+--------------+\n");
+                strBuilder.append("\n\nAVAILABLE SHIPS NEXT MONDAY:\n");
+                strBuilder.append(resultString);
+                writeOutput(strBuilder.toString(), "US210");
+
+            } catch (SQLException exception) {
+                Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+                dbconnection.registerError(exception);
+            }
         }
     }
 

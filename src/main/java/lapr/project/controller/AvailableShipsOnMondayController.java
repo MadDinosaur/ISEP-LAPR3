@@ -57,7 +57,7 @@ public class AvailableShipsOnMondayController {
             stringBuilder.append(count)
                     .append(". Ship's mmsi: ")
                     .append(pair.get1st())
-                    .append(" Port's identification number (where it will be located): ")
+                    .append(" || Port's identification number (where it will be located): ")
                     .append(pair.get2nd())
                     .append("\n");
 

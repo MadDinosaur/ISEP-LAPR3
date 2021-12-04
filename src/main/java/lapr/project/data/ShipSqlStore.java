@@ -321,7 +321,7 @@ public class ShipSqlStore implements Persistable {
                     "        AND st1.arrival_date < st2.arrival_date\n" +
                     "    ) \n" +
                     "WHERE st2.arrival_date IS NULL \n" +
-                    "    AND NEXT_DAY(CURRENT_DATE, 'SEGUNDA') > st1.arrival_date;";
+                    "    AND NEXT_DAY(CURRENT_DATE, 'SEGUNDA') > st1.arrival_date";
 
             PreparedStatement getAvailableShipsPreparedStatement = connection.prepareStatement(sqlCommand);
 
