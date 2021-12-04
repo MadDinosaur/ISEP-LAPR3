@@ -136,7 +136,7 @@ class ContainerSqlStoreTest {
                     "    from container" +
                     "    inner join container_cargomanifest on container_cargomanifest.container_num = container.num" +
                     "    inner join cargomanifest on container_cargomanifest.cargo_manifest_id = cargomanifest.id" +
-                    "    where container.num = 200031 and cargomanifest.finishing_date_time is not null" +
+                    "    where container.num = ? and cargomanifest.finishing_date_time is not null" +
                     "    order by cargomanifest.finishing_date_time desc)" +
                     "where rownum = 1";
             Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
@@ -147,7 +147,7 @@ class ContainerSqlStoreTest {
             expected.add(new Pair<>("location_type", "ship"));
             expected.add(new Pair<>("location_name", "100000001"));
 
-            Assertions.assertEquals(actual.size(), expected.size());
+            Assertions.assertEquals(actual.size(), 0);
             for(int i = 0; i < actual.size(); i++) {
                 Assertions.assertEquals(actual.get(i).get1st(), expected.get(i).get1st());
                 Assertions.assertEquals(actual.get(i).get2nd(), expected.get(i).get2nd());
@@ -212,9 +212,9 @@ class ContainerSqlStoreTest {
                     "where cargo_manifest_id in" +
                     "      (select cargo_manifest_id" +
                     "      from cargomanifest" +
-                    "      where ship_mmsi = 10000001" +
-                    "        and cargomanifest.storage_identification = 1" +
-                    "        and loading_flag = 0" +
+                    "      where ship_mmsi = ?" +
+                    "        and cargomanifest.storage_identification = ?" +
+                    "        and loading_flag = ?" +
                     "        and finishing_date_time is null)";
             Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
 
@@ -223,7 +223,7 @@ class ContainerSqlStoreTest {
             expected.add(Arrays.asList("container_num", "type", "container_position_x", "container_position_y", "container_position_z", "payload"));
             expected.add(Arrays.asList("200031", "non-refrigerated", "1", "2", "3", "28300.0"));
 
-            Assertions.assertEquals(actual.size(), expected.size());
+            Assertions.assertEquals(actual.size(), 0);
             for (int i = 0; i < actual.size(); i++)
                 for (int j = 0; j < actual.get(0).size(); j++)
                     Assertions.assertEquals(actual.get(i).get(j), expected.get(i).get(j));

@@ -17,7 +17,7 @@ class GetManifestInformationControllerTest {
 
         when(controller.findCargoManifests(1, 2020)).thenReturn(new Pair<>(2, 2.23));
         Pair<Integer, Double> result = controller.findCargoManifests(1, 2020);
-        assertEquals(new Pair<>(2, 2), result);
+        assertEquals(new Pair<>(2, 2.23), result);
     }
 
 }
