@@ -10,8 +10,9 @@ BEGIN
     FROM cargomanifest c
     WHERE c.finishing_date_time = (SELECT MAX(c.finishing_date_time) 
                                    FROM cargomanifest c 
-                                   WHERE c.finishing_date_time <= given_moment)
-                                   AND c.ship_mmsi = id_ship;
+                                   WHERE c.finishing_date_time <= given_moment
+                                   AND c.ship_mmsi = id_ship
+                                   AND c.loading_flag IS NOT NULL);
 
     occupancy_rate := func_occupancy_rate(id_ship,manifest_id);
     RETURN occupancy_rate;
@@ -20,5 +21,6 @@ BEGIN
 EXCEPTION 
     WHEN NO_DATA_FOUND THEN
     manifest_id  := NULL;
+    RETURN NULL;
 
 END func_occupancy_rate_given_moment;
