@@ -13,7 +13,6 @@ DROP TABLE VesselType CASCADE CONSTRAINTS PURGE;
 DROP TABLE Ship CASCADE CONSTRAINTS PURGE;
 DROP TABLE DynamicData CASCADE CONSTRAINTS PURGE;
 DROP TABLE ShipTrip CASCADE CONSTRAINTS PURGE;
-DROP TABLE Captain CASCADE CONSTRAINTS PURGE;
 
 -- create tables
 CREATE TABLE StorageType
@@ -164,59 +163,6 @@ CREATE TABLE CargoManifest
         -- Full ship cargo manifest
         OR (storage_identification IS NULL AND loading_flag IS NULL))
 );
-
-/*CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
-    BEFORE UPDATE OF finishing_date_time ON CargoManifest
-    FOR EACH ROW
-DECLARE
-    V_Prev_Cargo_Id CARGOMANIFEST.id%type;
-    V_Curr_Cargo_Id CargoManifest.id%type;
-    V_Ship_Mmsi CargoManifest.ship_mmsi%type;
-    V_Container_Load CONTAINER_CARGOMANIFEST%rowtype;
-    V_Container_Cargo CONTAINER_CARGOMANIFEST%rowtype;
-BEGIN
-    -- Determine if new insert is a partial cargo manifest
-    IF :new.LOADING_FLAG IS NOT NULL THEN
-
-        BEGIN
-            -- Save previous cargo manifest id
-            SELECT ID INTO V_Prev_Cargo_Id FROM CARGOMANIFEST WHERE STORAGE_IDENTIFICATION IS NULL AND FINISHING_DATE_TIME IS NULL;
-            -- Set finishing date on previous cargo manifest
-            UPDATE CARGOMANIFEST SET finishing_date_time = SYSDATE WHERE ID = V_Prev_Cargo_Id;
-            -- Generate a new ship cargo manifest
-            INSERT INTO CARGOMANIFEST (ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (V_Ship_Mmsi, NULL, NULL, NULL);
-            -- Save new cargo manifest id
-            SELECT ID INTO V_Curr_Cargo_Id FROM CARGOMANIFEST WHERE STORAGE_IDENTIFICATION IS NULL AND FINISHING_DATE_TIME IS NULL;
-            -- Copy containers onto new manifest
-            FOR V_Container_Cargo IN
-                (SELECT * FROM CONTAINER_CARGOMANIFEST WHERE cargo_manifest_id = V_Prev_Cargo_Id)
-                LOOP
-                    INSERT INTO CONTAINER_CARGOMANIFEST (container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-                    VALUES (V_Container_Cargo.container_num, V_Curr_Cargo_Id, V_Container_Cargo.container_position_x, V_Container_Cargo.container_position_y, V_Container_Cargo.container_position_z);
-                END LOOP;
-        EXCEPTION
-            -- If no previous cargo manifest exists
-            WHEN NO_DATA_FOUND THEN
-                -- Generate a new ship cargo manifest
-                INSERT INTO CARGOMANIFEST (ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (V_Ship_Mmsi, NULL, NULL, NULL);
-                -- Save new cargo manifest id
-                SELECT ID INTO V_Curr_Cargo_Id FROM CARGOMANIFEST WHERE STORAGE_IDENTIFICATION IS NULL AND FINISHING_DATE_TIME IS NULL;
-        END;
-        -- Select containers to be loaded/offloaded and add/remove them from ship cargo manifest
-        FOR V_Container_Load IN
-            (SELECT * FROM CONTAINER_CARGOMANIFEST WHERE cargo_manifest_id = :new.ID)
-            LOOP
-                CASE WHEN :new.LOADING_FLAG = 1
-                    THEN INSERT INTO CONTAINER_CARGOMANIFEST (container_num, cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-                VALUES (V_Container_Load.container_num, V_Curr_Cargo_Id, V_Container_Load.container_position_x, V_Container_Load.container_position_y, V_Container_Load.container_position_z);
-                ELSE
-                    DELETE FROM CONTAINER_CARGOMANIFEST WHERE CARGO_MANIFEST_ID = V_Curr_Cargo_Id AND CONTAINER_NUM = V_Container_Load.container_num;
-                END CASE;
-            END LOOP;
-    END IF;
-END trgUpdateCargoManifest;
-/
-alter trigger trgUpdateCargoManifest enable;*/
 
 CREATE TABLE Fleet
 (
