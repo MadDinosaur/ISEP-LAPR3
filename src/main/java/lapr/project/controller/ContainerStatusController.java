@@ -57,7 +57,7 @@ public class ContainerStatusController {
         if (list.isEmpty()) string.append("Container not found.");
 
         for (Pair<String, String> value: list)
-            string.append(String.format("%s: %s ", value.get1st(), value.get2nd()));
+            string.append(String.format("%s: %s \n", value.get1st(), value.get2nd()));
         return string.toString();
     }
 }

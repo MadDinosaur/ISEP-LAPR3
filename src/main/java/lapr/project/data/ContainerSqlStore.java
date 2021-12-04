@@ -100,16 +100,16 @@ public class ContainerSqlStore implements Persistable {
         } catch (NullPointerException e) { return rows; }
 
         try {
-            String sqlCommand = "select * from (" +
-                    "    select container.num as container_num," +
-                    "           (case when cargomanifest.loading_flag = 1 then 'ship' else 'port' end) as location_type," +
-                    "           (case when cargomanifest.loading_flag = 1 then (select name from ship where mmsi = cargomanifest.ship_mmsi) else (select name from storage where identification = cargomanifest.storage_identification) end) as location_name," +
-                    "    from container" +
-                    "    inner join container_cargomanifest on container_cargomanifest.container_num = container.num" +
-                    "    inner join cargomanifest on container_cargomanifest.cargo_manifest_id = cargomanifest.id" +
-                    "    where container.num = ? and cargomanifest.finishing_date_time is not null" +
-                    "    order by cargomanifest.finishing_date_time desc)" +
-                    "where rownum = 1";
+            String sqlCommand = "SELECT * FROM (\n" +
+                    "    SELECT CONTAINER.NUM as CONTAINER_NUM,\n" +
+                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN 'Ship' ELSE 'Port' END) as LOCATION_TYPE,\n" +
+                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN (SELECT NAME FROM SHIP WHERE MMSI = CARGOMANIFEST.SHIP_MMSI) ELSE (SELECT NAME FROM STORAGE WHERE IDENTIFICATION = CARGOMANIFEST.STORAGE_IDENTIFICATION) END) as LOCATION_NAME\n" +
+                    "    FROM CONTAINER\n" +
+                    "    INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
+                    "    INNER JOIN CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CARGO_MANIFEST_ID = CARGOMANIFEST.ID\n" +
+                    "    WHERE CONTAINER.NUM = ? AND CARGOMANIFEST.FINISHING_DATE_TIME IS NOT NULL AND CARGOMANIFEST.LOADING_FLAG IS NOT NULL\n" +
+                    "    ORDER BY CARGOMANIFEST.FINISHING_DATE_TIME DESC)\n" +
+                    "WHERE ROWNUM = 1;";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setInt(1, containerNum);
 
@@ -145,18 +145,18 @@ public class ContainerSqlStore implements Persistable {
         } catch (NullPointerException e) { return containers; }
 
         try {
-            String sqlCommand = "select num as container_num," +
-                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type," +
-                    "       container_position_x, container_position_y, container_position_z," +
-                    "       payload" +
-                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num" +
-                    "where cargo_manifest_id in" +
-                    "      (select cargo_manifest_id" +
-                    "      from cargomanifest" +
-                    "      where ship_mmsi = ?" +
-                    "        and cargomanifest.storage_identification = ?" +
-                    "        and loading_flag = ?" +
-                    "        and finishing_date_time is null)";
+            String sqlCommand = "SELECT NUM,\n" +
+                    "       (CASE WHEN REFRIGERATED_FLAG = 1 THEN 'Refrigerated' ELSE 'Non-refrigerated' END) as TYPE,\n" +
+                    "       CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z,\n" +
+                    "       PAYLOAD\n" +
+                    "FROM CONTAINER INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER.NUM = CONTAINER_CARGOMANIFEST.CONTAINER_NUM\n" +
+                    "WHERE CARGO_MANIFEST_ID IN\n" +
+                    "      (SELECT ID\n" +
+                    "      FROM CARGOMANIFEST\n" +
+                    "      WHERE SHIP_MMSI = ?\n" +
+                    "        AND CARGOMANIFEST.STORAGE_IDENTIFICATION = ?\n" +
+                    "        AND LOADING_FLAG = ?\n" +
+                    "        AND FINISHING_DATE_TIME IS NULL);";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setString(1, shipMmsi);
                 selectContainerPreparedStatement.setInt(2, portId);
