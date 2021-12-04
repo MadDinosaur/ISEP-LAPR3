@@ -131,14 +131,7 @@ public class ShipSqlStore implements Persistable {
     private void insertShipOnDatabase(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
-        String sqlCommand = "insert into captain(id) values(?)";
-
-        try(PreparedStatement createCaptain = connection.prepareStatement(sqlCommand)) {
-            createCaptain.setInt(1, Integer.parseInt(ship.getMmsi()));
-            createCaptain.executeUpdate();
-        }
-
-        sqlCommand = "Select id from vesselType where id = ?";
+        String sqlCommand = "Select id from vesselType where id = ?";
         try(PreparedStatement existsVesselType = connection.prepareStatement(sqlCommand)) {
             existsVesselType.setInt(1, ship.getVesselType());
             try (ResultSet vesselTypeResultSet = existsVesselType.executeQuery()) {
@@ -151,7 +144,7 @@ public class ShipSqlStore implements Persistable {
                 }
             }
         }
-        sqlCommand = "insert into ship(mmsi, fleet_id, captain_id, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        sqlCommand = "insert into ship(mmsi, fleet_id, captain_id, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft, captain_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         try(PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
@@ -173,6 +166,7 @@ public class ShipSqlStore implements Persistable {
             saveShipPreparedStatement.setFloat(11, ship.getWidth());
             saveShipPreparedStatement.setFloat(12, ship.getCapacity());
             saveShipPreparedStatement.setFloat(13, ship.getDraft());
+            saveShipPreparedStatement.setString(14, ship.getMmsi());
             saveShipPreparedStatement.executeUpdate();
         }
     }
