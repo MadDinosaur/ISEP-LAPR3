@@ -25,6 +25,7 @@
 
 | **Business Concept** | **Description** |
 | :---------| :-------|
+| **Cargo Manifest** | A document comprised of a list of containers. Ships carry a **full** cargo manifest, listing all containers on board. Ports and warehouses generate **partial** cargo manifests listing containers to be loaded or offloaded a certain ship. |
 | **Storage** | Place that stores shipping containers and where cargo loading and unloading happens *e.g. ports, warehouses*. |
 | **Check digit** | A digit that is used to detect errors in a shipping container number. |
 | **ISO code** | Container marking code to depict the length, height and type of container. |
