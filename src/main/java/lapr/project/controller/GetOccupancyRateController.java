@@ -8,15 +8,21 @@ import java.sql.SQLException;
 
 public class GetOccupancyRateController {
     /**
-     * the current ship store
+     * The current storage
      */
-    private final DatabaseConnection databaseConnection;
+    private final MainStorage mainStorage;
+
+    /**
+     * The current sql cargo manifest store
+     */
+    private final CargoManifestSqlStore cargoManifestStore;
 
     /**
      * Calls the creator with a the current storage instance
      */
-    public GetOccupancyRateController(){
-        this(MainStorage.getInstance());
+    public GetOccupancyRateController() {
+        this.mainStorage = MainStorage.getInstance();
+        this.cargoManifestStore = new CargoManifestSqlStore();
     }
 
     /**
@@ -24,8 +30,20 @@ public class GetOccupancyRateController {
      *
      * @param mainStorage the storage instance used to store all information
      */
-    public GetOccupancyRateController(MainStorage mainStorage){
-        this.databaseConnection = mainStorage.getDatabaseConnection();
+    public GetOccupancyRateController(MainStorage mainStorage) {
+        this.mainStorage = mainStorage;
+        this.cargoManifestStore = new CargoManifestSqlStore();
+    }
+
+    /**
+     * Creates a instance of the controller with the current storage instance and sql store
+     *
+     * @param mainStorage the storage instance used to store all information
+     * @param cargoManifestSqlStore the store instance used to store database requests
+     */
+    public GetOccupancyRateController(MainStorage mainStorage, CargoManifestSqlStore cargoManifestSqlStore) {
+        this.mainStorage = mainStorage;
+        this.cargoManifestStore = cargoManifestSqlStore;
     }
 
     /**
@@ -36,7 +54,7 @@ public class GetOccupancyRateController {
      */
     public double getOccupancyRate(int shipMmsi, int manifestId){
         try{
-            return CargoManifestSqlStore.getOccupancyRate(databaseConnection, shipMmsi, manifestId);
+            return cargoManifestStore.getOccupancyRate(mainStorage.getDatabaseConnection(), shipMmsi, manifestId);
         }catch (SQLException throwables){
             throwables.printStackTrace();
             return 0;
