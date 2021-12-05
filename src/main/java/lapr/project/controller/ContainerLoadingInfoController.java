@@ -15,19 +15,45 @@ public class ContainerLoadingInfoController {
      *  The current ship store
      */
     private final MainStorage mainStorage;
+    /**
+     * The current container sql store
+     */
+    private ContainerSqlStore containerStore;
+    /**
+     * The current ship sql store
+     */
+    private ShipSqlStore shipStore;
 
     /**
      * Calls the creator with the current storage instance
      */
     public ContainerLoadingInfoController() {
         this(MainStorage.getInstance());
+        containerStore = new ContainerSqlStore();
+        shipStore = new ShipSqlStore();
     }
 
     /**
      * Creates a instance of the controller with the current storage instance
      * @param storage the storage instance used to store all information
      */
-    public ContainerLoadingInfoController(MainStorage storage) {this.mainStorage = storage;}
+    public ContainerLoadingInfoController(MainStorage storage) {
+        this.mainStorage = storage;
+        containerStore = new ContainerSqlStore();
+        shipStore = new ShipSqlStore();
+    }
+
+    /**
+     * Creates a instance of the controller with the current sql stores (used for testing with mock DB connection classes)
+     * @param containerStore the sql container store
+     * @param shipStore the sql ship store
+     */
+    public ContainerLoadingInfoController(MainStorage storage, ContainerSqlStore containerStore, ShipSqlStore shipStore) {
+        this.mainStorage = storage;
+        this.containerStore = containerStore;
+        this.shipStore = shipStore;
+    }
+
 
     /**
      * Creates a table with list of containers to be offloaded in the next port,
@@ -40,8 +66,6 @@ public class ContainerLoadingInfoController {
     private List<List<String>> getNextContainerManifest(String captainId, boolean loading) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
-        ContainerSqlStore containerStore = new ContainerSqlStore();
-        ShipSqlStore shipStore = new ShipSqlStore();
         StorageStore storageStore = mainStorage.getStorageStore();
 
         Ship ship = shipStore.getShipByCaptainId(dbconnection, captainId);
@@ -61,9 +85,6 @@ public class ContainerLoadingInfoController {
      */
     public List<List<String>> getNextContainerManifest(String captainId, int portId, boolean loading) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
-
-        ContainerSqlStore containerStore = new ContainerSqlStore();
-        ShipSqlStore shipStore = new ShipSqlStore();
 
         Ship ship = shipStore.getShipByCaptainId(dbconnection, captainId);
 
