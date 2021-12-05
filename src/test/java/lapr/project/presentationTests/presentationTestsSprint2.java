@@ -91,13 +91,13 @@ public class presentationTestsSprint2 {
     public void US204(){
         if (dataBase){
             ContainerStatusController controller = new ContainerStatusController();
-            String values = controller.getContainerStatusToString(2);
+            String values = controller.getContainerStatusToString(controller.getContainerStatus(2));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Container in a ship \n\n");
             sb.append(values);
 
-            values = controller.getContainerStatusToString(7);
+            values = controller.getContainerStatusToString(controller.getContainerStatus(7));
 
             sb.append("\n\nContainer in a storage \n\n");
             sb.append(values);
@@ -110,7 +110,7 @@ public class presentationTestsSprint2 {
     public void US205(){
         if (dataBase){
             ContainerLoadingInfoController controller = new ContainerLoadingInfoController();
-            String values = controller.getNextContainerManifestToString("1", 2, false);
+            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("1", 2, false));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Containers to be offloaded \n\n");
@@ -124,7 +124,7 @@ public class presentationTestsSprint2 {
     public void US206(){
         if (dataBase){
             ContainerLoadingInfoController controller = new ContainerLoadingInfoController();
-            String values = controller.getNextContainerManifestToString("1", 2, true);
+            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("1", 2, true));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Containers to be loaded \n\n");

@@ -12,19 +12,28 @@ public class ContainerStatusController {
      *  The current ship store
      */
     private final MainStorage mainStorage;
+    /**
+     * The current container store
+     */
+    private final ContainerSqlStore containerStore;
 
     /**
      * Calls the creator with the current storage instance
      */
     public ContainerStatusController() {
-        this(MainStorage.getInstance());
+        this.mainStorage = MainStorage.getInstance();
+        this.containerStore = new ContainerSqlStore();
     }
 
     /**
      * Creates a instance of the controller with the current storage instance
      * @param storage the storage instance used to store all information
+     * @param containerStore the sql container store
      */
-    public ContainerStatusController(MainStorage storage) {this.mainStorage = storage;}
+    public ContainerStatusController(MainStorage storage, ContainerSqlStore containerStore) {
+        this.mainStorage = storage;
+        this.containerStore = containerStore;
+    }
 
     /**
      * Creates a table with a the status of a given container:
@@ -34,10 +43,9 @@ public class ContainerStatusController {
      * @param containerNum the container identification
      * @return a list of Pair<String, String>, where column headers are paired with their respective value
      */
-    private List<Pair<String, String>> getContainerStatus(int containerNum) {
+    public List<String> getContainerStatus(int containerNum) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
-        ContainerSqlStore containerStore = new ContainerSqlStore();
         return containerStore.getContainerStatus(dbconnection, containerNum);
     }
 
@@ -46,18 +54,13 @@ public class ContainerStatusController {
      * Container Identifier
      * Type of Location
      * Name of Location
-     * @param containerNum the container identification
+     * @param list of container information returned by getContainerStatus(containerNum)
      * @return the status of the container
      */
-    public String getContainerStatusToString(int containerNum) {
-        List<Pair<String, String>> list = getContainerStatus(containerNum);
+    public String getContainerStatusToString(List<String> list) {
+        if (list.isEmpty()) return "Container not found.";
+        if (list.size() != 3) return "Input parameters are incorrect. No containers can be searched.";
 
-        StringBuilder string = new StringBuilder();
-
-        if (list.isEmpty()) string.append("Container not found.");
-
-        for (Pair<String, String> value: list)
-            string.append(String.format("%s: %s \n", value.get1st(), value.get2nd()));
-        return string.toString();
+        return String.format("Container no. %s is currently in %s %s", list.get(0), list.get(1), list.get(2));
     }
 }

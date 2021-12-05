@@ -15,19 +15,45 @@ public class ContainerLoadingInfoController {
      *  The current ship store
      */
     private final MainStorage mainStorage;
+    /**
+     * The current container sql store
+     */
+    private ContainerSqlStore containerStore;
+    /**
+     * The current ship sql store
+     */
+    private ShipSqlStore shipStore;
 
     /**
      * Calls the creator with the current storage instance
      */
     public ContainerLoadingInfoController() {
         this(MainStorage.getInstance());
+        containerStore = new ContainerSqlStore();
+        shipStore = new ShipSqlStore();
     }
 
     /**
      * Creates a instance of the controller with the current storage instance
      * @param storage the storage instance used to store all information
      */
-    public ContainerLoadingInfoController(MainStorage storage) {this.mainStorage = storage;}
+    public ContainerLoadingInfoController(MainStorage storage) {
+        this.mainStorage = storage;
+        containerStore = new ContainerSqlStore();
+        shipStore = new ShipSqlStore();
+    }
+
+    /**
+     * Creates a instance of the controller with the current sql stores (used for testing with mock DB connection classes)
+     * @param containerStore the sql container store
+     * @param shipStore the sql ship store
+     */
+    public ContainerLoadingInfoController(MainStorage storage, ContainerSqlStore containerStore, ShipSqlStore shipStore) {
+        this.mainStorage = storage;
+        this.containerStore = containerStore;
+        this.shipStore = shipStore;
+    }
+
 
     /**
      * Creates a table with list of containers to be offloaded in the next port,
@@ -40,8 +66,6 @@ public class ContainerLoadingInfoController {
     private List<List<String>> getNextContainerManifest(String captainId, boolean loading) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
-        ContainerSqlStore containerStore = new ContainerSqlStore();
-        ShipSqlStore shipStore = new ShipSqlStore();
         StorageStore storageStore = mainStorage.getStorageStore();
 
         Ship ship = shipStore.getShipByCaptainId(dbconnection, captainId);
@@ -59,57 +83,27 @@ public class ContainerLoadingInfoController {
      * @param loading flag to indicate a loading (true) or offloading (false) operation
      * @return a String matrix, where first row are headers and next rows are the respective values
      */
-    private List<List<String>> getNextContainerManifest(String captainId, int portId, boolean loading) {
+    public List<List<String>> getNextContainerManifest(String captainId, int portId, boolean loading) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
-
-        ContainerSqlStore containerStore = new ContainerSqlStore();
-        ShipSqlStore shipStore = new ShipSqlStore();
 
         Ship ship = shipStore.getShipByCaptainId(dbconnection, captainId);
 
         return containerStore.getContainerManifest(dbconnection, ship.getMmsi(), portId, loading);
     }
 
-    /**
+     /**
      * Generates a text view of the containers to be offloaded in the next port:
      * Container Identifier
      * Type
      * Position
      * Load
-     * @param captainId the ship's captain identification
-     * @param loading flag to indicate a loading (true) or offloading (false) operation
+     * @param list container information list returned by getNextContainerManifest
      * @return the list of containers
      */
-    public String getNextContainerManifestToString(String captainId, boolean loading) {
-        List<List<String>> list = getNextContainerManifest(captainId, loading);
-
+    public String getNextContainerManifestToString(List<List<String>> list) {
         StringBuilder string = new StringBuilder();
 
-        if (list.isEmpty()) string.append("No containers found.");
-
-        for (List<String> row: list) {
-            for (String cell : row)
-                string.append(cell + "  ");
-            string.append("\n");
-        }
-        return string.toString();
-    }
-
-    /**
-     * Generates a text view of the containers to be offloaded in the next port:
-     * Container Identifier
-     * Type
-     * Position
-     * Load
-     * @param captainId the ship's captain identification
-     * @return the list of containers
-     */
-    public String getNextContainerManifestToString(String captainId, int portId, boolean loading) {
-        List<List<String>> list = getNextContainerManifest(captainId, portId, loading);
-
-        StringBuilder string = new StringBuilder();
-
-        if (list.isEmpty()) string.append("No containers found.");
+        if (list == null || list.size() < 2) return "No containers found.";
 
         for (List<String> row: list) {
             for (String cell : row)

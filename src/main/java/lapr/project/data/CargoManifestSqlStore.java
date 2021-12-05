@@ -14,7 +14,7 @@ public class CargoManifestSqlStore {
      * @return a result set with all of the captains carried cargo manifest in a given year
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static Pair<Integer, Double> getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
+    public Pair<Integer, Double> getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
@@ -46,7 +46,7 @@ public class CargoManifestSqlStore {
      * @return the occupancy rate of a desired ship
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static double getOccupancyRate(DatabaseConnection databaseConnection, int shipMmsi, int manifestId) throws SQLException{
+    public double getOccupancyRate(DatabaseConnection databaseConnection, int shipMmsi, int manifestId) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
@@ -72,7 +72,7 @@ public class CargoManifestSqlStore {
      * @return the occupancy rate of the desired ship and moment
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static Pair<String,Double> getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,String givenMoment) throws SQLException{
+    public Pair<String,Double> getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,String givenMoment) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
         StringBuilder string = new StringBuilder();

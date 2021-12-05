@@ -1,8 +1,14 @@
 package lapr.project.controller;
 
+import lapr.project.data.CargoManifestSqlStore;
+import lapr.project.data.DatabaseConnection;
+import lapr.project.data.MainStorage;
 import oracle.ucp.util.Pair;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,15 +19,40 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class GetOccupancyRateGivenMomentControllerTest {
+    GetOccupancyRateGivenMomentController controller;
+    MainStorage mainStorage;
+    DatabaseConnection databaseConnection;
+    Connection connection;
+    CargoManifestSqlStore cargoManifestStore;
+
+    @BeforeEach
+    void setUp() {
+        mainStorage =mock(MainStorage.class);
+        cargoManifestStore = mock(CargoManifestSqlStore.class);
+
+        controller = new GetOccupancyRateGivenMomentController(mainStorage, cargoManifestStore);
+
+        databaseConnection = mock(DatabaseConnection.class);
+        connection = mock(Connection.class);
+    }
 
     @Test
-    public void test() throws ParseException {
-        GetOccupancyRateGivenMomentController controller = mock(GetOccupancyRateGivenMomentController.class);
+    void getOccupancyRateGivenMoment() {
+        //data setup
+        int shipMmsi = 100000001;
+        String moment = "20/01/2021";
 
-        when(controller.getOccupancyRateGivenMoment(100000001,"2020-09-08 15:45:21")).thenReturn(new Pair<>("String",0.70));
+        Pair<String, Double> expected = new Pair("20/01/2021", 20.0);
 
-        Pair<String, Double> result = controller.getOccupancyRateGivenMoment(100000001,"2020-09-08 15:45:21");
+        //mock classes setup
+        when(mainStorage.getDatabaseConnection()).thenReturn(databaseConnection);
+        try {when(cargoManifestStore.getOccupancyRateGivenMoment(databaseConnection, shipMmsi, moment)).thenReturn(expected);
+        } catch (SQLException throwables) {throwables.printStackTrace();}
 
-        assertEquals(0.70, result.get2nd());
+        //method call
+        Pair<String, Double> actual = controller.getOccupancyRateGivenMoment(shipMmsi, moment);
+
+        assertEquals(actual.get1st(), expected.get1st());
+        assertEquals(actual.get2nd(), expected.get2nd());
     }
 }

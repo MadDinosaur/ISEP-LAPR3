@@ -1,3 +1,4 @@
+-- Procedure creating script --
 CREATE OR REPLACE PROCEDURE avg_manifest(cap_id ship.captain_id%type, moment integer)
 AS
     number_manifest integer;
@@ -20,3 +21,7 @@ BEGIN
         dbms_output.put_line('No manifests where transported this year');
     END IF;
 END;
+/
+
+-- Call procedure to test the function --
+exec avg_manifest(1, 2020);

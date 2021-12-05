@@ -1,7 +1,6 @@
 package lapr.project.data;
 
 import lapr.project.model.Container;
-import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,16 +101,16 @@ class ContainerSqlStoreTest {
     void getContainerStatusNotNull() {
         try {
             //Setup statement and mock result
-            String sqlCommand = "select * from (" +
-                    "    select container.num as container_num," +
-                    "           (case when cargomanifest.loading_flag = 1 then 'ship' else 'port' end) as location_type," +
-                    "           (case when cargomanifest.loading_flag = 1 then (select name from ship where mmsi = cargomanifest.ship_mmsi) else (select name from storage where identification = cargomanifest.storage_identification) end) as location_name," +
-                    "    from container" +
-                    "    inner join container_cargomanifest on container_cargomanifest.container_num = container.num" +
-                    "    inner join cargomanifest on container_cargomanifest.cargo_manifest_id = cargomanifest.id" +
-                    "    where container.num = ? and cargomanifest.finishing_date_time is not null" +
-                    "    order by cargomanifest.finishing_date_time desc)" +
-                    "where rownum = 1";
+            String sqlCommand = "SELECT * FROM (\n" +
+                    "    SELECT CONTAINER.NUM as CONTAINER_NUM,\n" +
+                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN 'Ship' ELSE 'Port' END) as LOCATION_TYPE,\n" +
+                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN (SELECT NAME FROM SHIP WHERE MMSI = CARGOMANIFEST.SHIP_MMSI) ELSE (SELECT NAME FROM STORAGE WHERE IDENTIFICATION = CARGOMANIFEST.STORAGE_IDENTIFICATION) END) as LOCATION_NAME\n" +
+                    "    FROM CONTAINER\n" +
+                    "    INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
+                    "    INNER JOIN CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CARGO_MANIFEST_ID = CARGOMANIFEST.ID\n" +
+                    "    WHERE CONTAINER.NUM = ? AND CARGOMANIFEST.FINISHING_DATE_TIME IS NOT NULL AND CARGOMANIFEST.LOADING_FLAG IS NOT NULL\n" +
+                    "    ORDER BY CARGOMANIFEST.FINISHING_DATE_TIME DESC)\n" +
+                    "WHERE ROWNUM = 1";
 
             PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
 
@@ -126,31 +125,27 @@ class ContainerSqlStoreTest {
             when(resultSetHeaders.getColumnCount()).thenReturn(3);
 
             //Method call
-            List<Pair<String, String>> actual = containerSqlStore.getContainerStatus(databaseConnection, 200031);
+            List<String> actual = containerSqlStore.getContainerStatus(databaseConnection, 200031);
 
             //SQL command build test
-            String expectedSqlCommand = "select * from (" +
-                    "    select container.num as container_num," +
-                    "           (case when cargomanifest.loading_flag = 1 then 'ship' else 'port' end) as location_type," +
-                    "           (case when cargomanifest.loading_flag = 1 then (select name from ship where mmsi = cargomanifest.ship_mmsi) else (select name from storage where identification = cargomanifest.storage_identification) end) as location_name," +
-                    "    from container" +
-                    "    inner join container_cargomanifest on container_cargomanifest.container_num = container.num" +
-                    "    inner join cargomanifest on container_cargomanifest.cargo_manifest_id = cargomanifest.id" +
-                    "    where container.num = ? and cargomanifest.finishing_date_time is not null" +
-                    "    order by cargomanifest.finishing_date_time desc)" +
-                    "where rownum = 1";
+            String expectedSqlCommand = "SELECT * FROM (\n" +
+                    "    SELECT CONTAINER.NUM as CONTAINER_NUM,\n" +
+                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN 'Ship' ELSE 'Port' END) as LOCATION_TYPE,\n" +
+                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN (SELECT NAME FROM SHIP WHERE MMSI = CARGOMANIFEST.SHIP_MMSI) ELSE (SELECT NAME FROM STORAGE WHERE IDENTIFICATION = CARGOMANIFEST.STORAGE_IDENTIFICATION) END) as LOCATION_NAME\n" +
+                    "    FROM CONTAINER\n" +
+                    "    INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
+                    "    INNER JOIN CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CARGO_MANIFEST_ID = CARGOMANIFEST.ID\n" +
+                    "    WHERE CONTAINER.NUM = 200031 AND CARGOMANIFEST.FINISHING_DATE_TIME IS NOT NULL AND CARGOMANIFEST.LOADING_FLAG IS NOT NULL\n" +
+                    "    ORDER BY CARGOMANIFEST.FINISHING_DATE_TIME DESC)\n" +
+                    "WHERE ROWNUM = 1";
             Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
 
             //SQL query result wrapping test
-            List<Pair<String, String>> expected = new ArrayList<>();
-            expected.add(new Pair<>("container_num", "200031"));
-            expected.add(new Pair<>("location_type", "ship"));
-            expected.add(new Pair<>("location_name", "100000001"));
+            List<String> expected = Arrays.asList("200031, ship, 100000001");
 
             Assertions.assertEquals(actual.size(), 0);
             for(int i = 0; i < actual.size(); i++) {
-                Assertions.assertEquals(actual.get(i).get1st(), expected.get(i).get1st());
-                Assertions.assertEquals(actual.get(i).get2nd(), expected.get(i).get2nd());
+                Assertions.assertEquals(actual.get(i), expected.get(i));
             }
         } catch (Exception ex) {
             Logger.getLogger(ContainerSqlStoreTest.class.getName())
@@ -168,17 +163,17 @@ class ContainerSqlStoreTest {
     void getContainerManifestNotNull() {
         try {
             //Setup statement and mock result
-            String sqlCommand = "select num as container_num," +
-                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type," +
-                    "       container_position_x, container_position_y, container_position_z," +
-                    "       payload" +
-                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num" +
-                    "where cargo_manifest_id in" +
-                    "      (select cargo_manifest_id" +
-                    "      from cargomanifest" +
-                    "      where ship_mmsi = ?" +
-                    "        and cargomanifest.storage_identification = ?" +
-                    "        and loading_flag = ?" +
+            String sqlCommand = "select num,\n" +
+                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type,\n" +
+                    "       container_position_x, container_position_y, container_position_z,\n" +
+                    "       payload\n" +
+                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num\n" +
+                    "where cargo_manifest_id in\n" +
+                    "      (select id\n" +
+                    "      from cargomanifest\n" +
+                    "      where ship_mmsi = ?\n" +
+                    "        and cargomanifest.storage_identification = ?\n" +
+                    "        and loading_flag = ?\n" +
                     "        and finishing_date_time is null)";
 
             PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
@@ -204,17 +199,17 @@ class ContainerSqlStoreTest {
             List<List<String>> actual = containerSqlStore.getContainerManifest(databaseConnection, "10000001", 1, false);
 
             //SQL command build test
-            String expectedSqlCommand = "select num as container_num," +
-                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type," +
-                    "       container_position_x, container_position_y, container_position_z," +
-                    "       payload" +
-                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num" +
-                    "where cargo_manifest_id in" +
-                    "      (select cargo_manifest_id" +
-                    "      from cargomanifest" +
-                    "      where ship_mmsi = ?" +
-                    "        and cargomanifest.storage_identification = ?" +
-                    "        and loading_flag = ?" +
+            String expectedSqlCommand = "select num,\n" +
+                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type,\n" +
+                    "       container_position_x, container_position_y, container_position_z,\n" +
+                    "       payload\n" +
+                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num\n" +
+                    "where cargo_manifest_id in\n" +
+                    "      (select id\n" +
+                    "      from cargomanifest\n" +
+                    "      where ship_mmsi = 10000001\n" +
+                    "        and cargomanifest.storage_identification = 1\n" +
+                    "        and loading_flag = 0\n" +
                     "        and finishing_date_time is null)";
             Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
 
@@ -223,7 +218,7 @@ class ContainerSqlStoreTest {
             expected.add(Arrays.asList("container_num", "type", "container_position_x", "container_position_y", "container_position_z", "payload"));
             expected.add(Arrays.asList("200031", "non-refrigerated", "1", "2", "3", "28300.0"));
 
-            Assertions.assertEquals(actual.size(), 0);
+            Assertions.assertEquals(actual.size(), 2);
             for (int i = 0; i < actual.size(); i++)
                 for (int j = 0; j < actual.get(0).size(); j++)
                     Assertions.assertEquals(actual.get(i).get(j), expected.get(i).get(j));
