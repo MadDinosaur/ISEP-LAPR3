@@ -24,3 +24,7 @@ EXCEPTION
     RETURN NULL;
 
 END func_occupancy_rate_given_moment;
+
+/
+-- Call function to test the function --
+SELECT FUNC_OCCUPANCY_RATE_GIVEN_MOMENT(100000001,TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) FROM DUAL;
