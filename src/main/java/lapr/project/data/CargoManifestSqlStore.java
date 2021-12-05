@@ -72,7 +72,7 @@ public class CargoManifestSqlStore {
      * @return the occupancy rate of the desired ship and moment
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static Pair<String,Double> getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,String givenMoment) throws SQLException{
+    public Pair<String,Double> getOccupancyRateGivenMoment(DatabaseConnection databaseConnection, int mmsi,String givenMoment) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
         StringBuilder string = new StringBuilder();

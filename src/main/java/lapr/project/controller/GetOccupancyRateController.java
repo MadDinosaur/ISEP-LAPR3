@@ -26,16 +26,6 @@ public class GetOccupancyRateController {
     }
 
     /**
-     * Creates a instance of the controller with the current storage instance
-     *
-     * @param mainStorage the storage instance used to store all information
-     */
-    public GetOccupancyRateController(MainStorage mainStorage) {
-        this.mainStorage = mainStorage;
-        this.cargoManifestStore = new CargoManifestSqlStore();
-    }
-
-    /**
      * Creates a instance of the controller with the current storage instance and sql store
      *
      * @param mainStorage the storage instance used to store all information
