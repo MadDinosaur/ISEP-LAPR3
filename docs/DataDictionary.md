@@ -44,6 +44,7 @@
 | **SOG** | Speed over ground. |
 | **COG** | Course over ground - direction relative to absolute North. |
 | **Transceiver class** | Class to transceiver used when sending data. |
+| **Available ship** | A ship that has no trips planned and has no trip in progress. |
 
 ## Database Technology
 
