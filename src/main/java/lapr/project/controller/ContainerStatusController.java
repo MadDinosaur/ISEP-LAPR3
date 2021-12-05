@@ -12,19 +12,28 @@ public class ContainerStatusController {
      *  The current ship store
      */
     private final MainStorage mainStorage;
+    /**
+     * The current container store
+     */
+    private final ContainerSqlStore containerStore;
 
     /**
      * Calls the creator with the current storage instance
      */
     public ContainerStatusController() {
-        this(MainStorage.getInstance());
+        this.mainStorage = MainStorage.getInstance();
+        this.containerStore = new ContainerSqlStore();
     }
 
     /**
      * Creates a instance of the controller with the current storage instance
      * @param storage the storage instance used to store all information
+     * @param containerStore the sql container store
      */
-    public ContainerStatusController(MainStorage storage) {this.mainStorage = storage;}
+    public ContainerStatusController(MainStorage storage, ContainerSqlStore containerStore) {
+        this.mainStorage = storage;
+        this.containerStore = containerStore;
+    }
 
     /**
      * Creates a table with a the status of a given container:
@@ -37,7 +46,6 @@ public class ContainerStatusController {
     public List<String> getContainerStatus(int containerNum) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
-        ContainerSqlStore containerStore = new ContainerSqlStore();
         return containerStore.getContainerStatus(dbconnection, containerNum);
     }
 
