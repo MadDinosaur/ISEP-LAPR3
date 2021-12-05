@@ -1,3 +1,4 @@
+-- Function creating script --
 CREATE OR REPLACE FUNCTION func_occupancy_rate(id_ship ship.mmsi%type, manifest_id cargomanifest.id%type)
 RETURN number
 IS 
@@ -17,3 +18,6 @@ BEGIN
     GROUP BY s.capacity;
     RETURN Container_Volume/Ship_Capacity;
 END;
+
+-- Call function to test it --
+SELECT func_occupancy_rate(100000001,1) FROM DUAL

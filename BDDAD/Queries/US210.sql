@@ -1,3 +1,4 @@
+-- Script Create or Replace the procedure --
 CREATE OR REPLACE PROCEDURE available_ship_mon
 AS
 BEGIN
@@ -15,3 +16,8 @@ BEGIN
         DBMS_OUTPUT.PUT_LINE('Ship mmsi: ' || ship.ship_mmsi || ' - Location (Port identification): ' || ship.storage_identification_destination);
     END LOOP;
 END;
+/
+
+-- Call procedure --
+SET SERVEROUTPUT ON;
+EXEC available_ship_mon();
