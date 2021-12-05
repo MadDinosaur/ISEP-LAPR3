@@ -102,6 +102,10 @@ class CloseShipRoutesControllerTest {
             //Compare Ships
             assertEquals(actual.get(i).get1st().get1st().getMmsi(), expected.get(i).get1st().get1st());
             assertEquals(actual.get(i).get1st().get2nd().getMmsi(), expected.get(i).get1st().get2nd());
+            assertEquals(actual.get(i).get1st().get1st().getTraveledDistance(), "1113.061279296875");
+            assertEquals(actual.get(i).get1st().get1st().getNumberOfMovements(), "2.0");
+            assertEquals(actual.get(i).get1st().get2nd().getTraveledDistance(), "N/A");
+            assertEquals(actual.get(i).get1st().get2nd().getNumberOfMovements(), "N/A");
             //Compare Distances
             assertEquals(String.format("%.2f",actual.get(i).get2nd().get1st()).replace(",","."),
                     expected.get(i).get2nd().get1st().toString());
