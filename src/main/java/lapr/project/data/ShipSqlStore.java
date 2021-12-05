@@ -323,14 +323,14 @@ public class ShipSqlStore implements Persistable {
                     "WHERE st2.arrival_date IS NULL \n" +
                     "    AND NEXT_DAY(CURRENT_DATE, 'SEGUNDA') > st1.arrival_date";
 
-            PreparedStatement getAvailableShipsPreparedStatement = connection.prepareStatement(sqlCommand);
-
-            try (ResultSet availableShipsResultSet = getAvailableShipsPreparedStatement.executeQuery()) {
-                while (availableShipsResultSet.next()) {
-                    Pair<Integer, Integer> availableShipAndLocation = new Pair<>(availableShipsResultSet.getInt(1), availableShipsResultSet.getInt(2));
-                    availableShipAndLocationList.add(availableShipAndLocation);
+            try (PreparedStatement getAvailableShipsPreparedStatement = connection.prepareStatement(sqlCommand)){
+                try (ResultSet availableShipsResultSet = getAvailableShipsPreparedStatement.executeQuery()) {
+                    while (availableShipsResultSet.next()) {
+                        Pair<Integer, Integer> availableShipAndLocation = new Pair<>(availableShipsResultSet.getInt(1), availableShipsResultSet.getInt(2));
+                        availableShipAndLocationList.add(availableShipAndLocation);
+                    }
+                    return availableShipAndLocationList;
                 }
-                return availableShipAndLocationList;
             }
 
         } catch (SQLException exception) {
