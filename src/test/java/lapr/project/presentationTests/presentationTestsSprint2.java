@@ -110,7 +110,7 @@ public class presentationTestsSprint2 {
     public void US205(){
         if (dataBase){
             ContainerLoadingInfoController controller = new ContainerLoadingInfoController();
-            String values = controller.getNextContainerManifestToString("1", 2, false);
+            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("1", 2, false));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Containers to be offloaded \n\n");
@@ -124,7 +124,7 @@ public class presentationTestsSprint2 {
     public void US206(){
         if (dataBase){
             ContainerLoadingInfoController controller = new ContainerLoadingInfoController();
-            String values = controller.getNextContainerManifestToString("1", 2, true);
+            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("1", 2, true));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Containers to be loaded \n\n");

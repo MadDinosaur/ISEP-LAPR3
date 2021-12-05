@@ -59,7 +59,7 @@ public class ContainerLoadingInfoController {
      * @param loading flag to indicate a loading (true) or offloading (false) operation
      * @return a String matrix, where first row are headers and next rows are the respective values
      */
-    private List<List<String>> getNextContainerManifest(String captainId, int portId, boolean loading) {
+    public List<List<String>> getNextContainerManifest(String captainId, int portId, boolean loading) {
         DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
 
         ContainerSqlStore containerStore = new ContainerSqlStore();
@@ -70,46 +70,19 @@ public class ContainerLoadingInfoController {
         return containerStore.getContainerManifest(dbconnection, ship.getMmsi(), portId, loading);
     }
 
-    /**
+     /**
      * Generates a text view of the containers to be offloaded in the next port:
      * Container Identifier
      * Type
      * Position
      * Load
-     * @param captainId the ship's captain identification
-     * @param loading flag to indicate a loading (true) or offloading (false) operation
+     * @param list container information list returned by getNextContainerManifest
      * @return the list of containers
      */
-    public String getNextContainerManifestToString(String captainId, boolean loading) {
-        List<List<String>> list = getNextContainerManifest(captainId, loading);
-
+    public String getNextContainerManifestToString(List<List<String>> list) {
         StringBuilder string = new StringBuilder();
 
-        if (list.isEmpty()) string.append("No containers found.");
-
-        for (List<String> row: list) {
-            for (String cell : row)
-                string.append(cell + "  ");
-            string.append("\n");
-        }
-        return string.toString();
-    }
-
-    /**
-     * Generates a text view of the containers to be offloaded in the next port:
-     * Container Identifier
-     * Type
-     * Position
-     * Load
-     * @param captainId the ship's captain identification
-     * @return the list of containers
-     */
-    public String getNextContainerManifestToString(String captainId, int portId, boolean loading) {
-        List<List<String>> list = getNextContainerManifest(captainId, portId, loading);
-
-        StringBuilder string = new StringBuilder();
-
-        if (list.isEmpty()) string.append("No containers found.");
+        if (list == null || list.size() < 2) return "No containers found.";
 
         for (List<String> row: list) {
             for (String cell : row)

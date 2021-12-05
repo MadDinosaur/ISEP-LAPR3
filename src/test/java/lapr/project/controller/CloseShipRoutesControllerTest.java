@@ -34,7 +34,7 @@ class CloseShipRoutesControllerTest {
     Ship s1, s2, s3;
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
 
         coordinate1 = new Coordinate(0, 0);
         coordinate2 = new Coordinate(10, 0);
