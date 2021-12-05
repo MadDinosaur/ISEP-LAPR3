@@ -14,7 +14,7 @@ public class CargoManifestSqlStore {
      * @return a result set with all of the captains carried cargo manifest in a given year
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public static Pair<Integer, Double> getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
+    public Pair<Integer, Double> getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
