@@ -25,14 +25,17 @@ world.
 
 ### Burndown Chart - Sprint 1
 
-![BurndownChart](docs/BurndownChart.png)
+![BurndownChart](docs/BurndownChart_Sprint1.png)
+
+### Sprint 2
+![BurndownChart](docs/BurndownChart_Sprint2.png)
 
 ### User Stories
 
 Below are user story descriptions and links for analysis and design (DM, CD, SD, SSD) diagrams for each one.
 
-|US|Description| |
-|:--|:--------|:------|
+|US|Description|
+|:---|:--------|
 [US101](docs/UserStories/US101)|As a traffic manager, I wish to import ships from a text file into a BST.|
 [US102](docs/UserStories/US102)|As a traffic manager I which to search the details of a ship using any of its codes: MMSI, IMO or Call Sign.|
 [US103](docs/UserStories/US103)|As a traffic manager I which to have the positional messages temporally organized and associated with each of the ships.|
@@ -43,7 +46,17 @@ Below are user story descriptions and links for analysis and design (DM, CD, SD,
 [US108](docs)|As Project Manager, I want the team to develop the data model required to support all the functionality and to fulfill the purpose of the system to develop.
 [US109](DataIntegrityRestrictionsTest.sql)|As Project Manager, I want the team to draft an SQL script to test  whether the database verifies all the data integrity restrictions that are required to fulfil the purpose of the system and the business constraints of the UoD.
 [US110](DataDictionary.md)|As Project Manager, I want the team to define the naming conventions to apply when defining identifiers or writing SQL or PL/SQL code.
-US111|As Project Manager, I want the team to create a SQL script to load the database with a minimum set of data sufficient to carry out data integrity verification and functional testing
+[US111](docs/LoadingValues.sql)|As Project Manager, I want the team to create a SQL script to load the database with a minimum set of data sufficient to carry out data integrity verification and functional testing.
+[US201](docs/UserStories/US201)|As a Port manager, I which to import ports from a text file and create a 2D-treewith port locations.|
+[US202](docs/UserStories/US202)|As a Traffic manager, I which to find the closest port of a ship given its CallSign,on a certain DateTime.
+[US203](docs)|As Project Manager, I want the team to review the relational data model in viewof the new user stories so it can support all the requirements to fulfil the purpose of thesystem being developed.
+[US204](docs/UserStories/US204)|As Client, I want to know the current situation of a specific container being used to transport my goods.
+[US205](docs/UserStories/US205)|As Ship Captain, I want the list of containers to be offloaded in the next port, including container identifier, type, position, and load.
+[US206](docs/UserStories/US206)|As Ship Captain, I want the list of containers to be loaded in the next port, including container identifier, type, and load.
+[US207](docs/UserStories/US207)|As Ship Captain, I want to know how many cargo manifests I have transported during a given year and the average number of containers per manifest.
+[US208](docs/UserStories/US208)|As Ship Captain, I want to know the occupancy rate (percentage) of a given ship for a given cargo manifest.
+[US209](docs/UserStories/US209)|As Ship Captain, I want to know the occupancy rate of a given ship at a given moment.
+[US210](docs/UserStories/US210)|As Traffic manager, I need to know which ships will be available on Monday next week and their location.
 
 ### Tests
 
