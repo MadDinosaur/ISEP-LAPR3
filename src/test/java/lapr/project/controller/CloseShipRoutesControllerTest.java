@@ -26,7 +26,7 @@ class CloseShipRoutesControllerTest {
     PositioningDataTree ship2Position = new PositioningDataTree();
     PositioningDataTree ship3Position = new PositioningDataTree();
 
-    ShipStore shipStore = MainStorage.getInstance().getShipStore();
+    ShipStore shipStore;
 
     Coordinate coordinate1, coordinate2, coordinate3, coordinate4, coordinate5, coordinate6;
     PositioningData ship1departure, ship1arrival, ship2departure, ship2arrival, ship3arrival, ship3departure;
@@ -35,6 +35,7 @@ class CloseShipRoutesControllerTest {
 
     @BeforeEach
     void setUp(){
+
 
         coordinate1 = new Coordinate(0, 0);
         coordinate2 = new Coordinate(10, 0);
@@ -84,6 +85,14 @@ class CloseShipRoutesControllerTest {
         s2.setPositioningDataList(ship2Position);
         s3.setPositioningDataList(ship3Position);
 
+        shipStore = MainStorage.getInstance().getShipStore();
+
+        if (!shipStore.isEmpty()) {
+            for (Ship ship : shipStore.inOrder()) {
+                shipStore.remove(ship);
+            }
+        }
+
         shipStore.addShip(s1);
         shipStore.addShip(s2);
         shipStore.addShip(s3);
@@ -116,9 +125,9 @@ class CloseShipRoutesControllerTest {
 
     @Test
     void getCloseShipRoutesEmpty() {
-        String expected = "No ships available.";
+        String expected = "Ship 1 MMSI : 229850001 - Ship 2 MMSI : 210950000 - OriginDist : 2,223949 - DestDist : 1,111949 - Traveled Distance1: 1113.061279296875 KM - Number of Movements1: 2.0 - Traveled Distance2: N/A KM - Number of Movements2: N/A\n\n\n";
         String actual = controller.getCloseShipRoutes();
 
-       assertEquals(actual, expected);
+       assertEquals(expected, actual);
     }
 }
