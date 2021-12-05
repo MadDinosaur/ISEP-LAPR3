@@ -91,13 +91,13 @@ public class presentationTestsSprint2 {
     public void US204(){
         if (dataBase){
             ContainerStatusController controller = new ContainerStatusController();
-            String values = controller.getContainerStatusToString(2);
+            String values = controller.getContainerStatusToString(controller.getContainerStatus(2));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Container in a ship \n\n");
             sb.append(values);
 
-            values = controller.getContainerStatusToString(7);
+            values = controller.getContainerStatusToString(controller.getContainerStatus(7));
 
             sb.append("\n\nContainer in a storage \n\n");
             sb.append(values);

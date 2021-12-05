@@ -90,14 +90,14 @@ public class ContainerSqlStore implements Persistable {
      * Returns the type and location of a given container
      * @param databaseConnection the database connection to perform the query on
      * @param containerNum the given container number
-     * @return a list of Pair<String, String>, where column headers are paired with their respective value
+     * @return a list of information about the given container (number, type and location)
      */
-    public List<Pair<String, String>> getContainerStatus(DatabaseConnection databaseConnection, int containerNum) {
-        List<Pair<String, String>> rows = new ArrayList<>();
+    public List<String> getContainerStatus(DatabaseConnection databaseConnection, int containerNum) {
+        List<String> resultOutput = new ArrayList<>();
 
         Connection connection;
         try{ connection = databaseConnection.getConnection();
-        } catch (NullPointerException e) { return rows; }
+        } catch (NullPointerException e) { return resultOutput; }
 
         try {
             String sqlCommand = "SELECT * FROM (\n" +
@@ -114,10 +114,8 @@ public class ContainerSqlStore implements Persistable {
                 selectContainerPreparedStatement.setInt(1, containerNum);
 
                 ResultSet result = selectContainerPreparedStatement.executeQuery();
-                result.next();
-                ResultSetMetaData headers = result.getMetaData();
-                for (int i = 1; i <= headers.getColumnCount(); i++)
-                    rows.add(new Pair<>(headers.getColumnName(i), result.getString(i)));
+                int i = 1; while(result.next()) {
+                    resultOutput.add(result.getString(i)); i++;}
             }
 
         } catch (SQLException exception) {
@@ -126,7 +124,7 @@ public class ContainerSqlStore implements Persistable {
         } catch (NullPointerException exception) {
             Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
         }
-        return rows;
+        return resultOutput;
     }
 
     /**
@@ -146,18 +144,18 @@ public class ContainerSqlStore implements Persistable {
         } catch (NullPointerException e) { return containers; }
 
         try {
-            String sqlCommand = "SELECT NUM,\n" +
-                    "       (CASE WHEN REFRIGERATED_FLAG = 1 THEN 'Refrigerated' ELSE 'Non-refrigerated' END) as TYPE,\n" +
-                    "       CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z,\n" +
-                    "       PAYLOAD\n" +
-                    "FROM CONTAINER INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER.NUM = CONTAINER_CARGOMANIFEST.CONTAINER_NUM\n" +
-                    "WHERE CARGO_MANIFEST_ID IN\n" +
-                    "      (SELECT ID\n" +
-                    "      FROM CARGOMANIFEST\n" +
-                    "      WHERE SHIP_MMSI = ?\n" +
-                    "        AND CARGOMANIFEST.STORAGE_IDENTIFICATION = ?\n" +
-                    "        AND LOADING_FLAG = ?\n" +
-                    "        AND FINISHING_DATE_TIME IS NULL)";
+            String sqlCommand = "select num,\n" +
+                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type,\n" +
+                    "       container_position_x, container_position_y, container_position_z,\n" +
+                    "       payload\n" +
+                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num\n" +
+                    "where cargo_manifest_id in\n" +
+                    "      (select id\n" +
+                    "      from cargomanifest\n" +
+                    "      where ship_mmsi = ?\n" +
+                    "        and cargomanifest.storage_identification = ?\n" +
+                    "        and loading_flag = ?\n" +
+                    "        and finishing_date_time is null)";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setString(1, shipMmsi);
                 selectContainerPreparedStatement.setInt(2, portId);

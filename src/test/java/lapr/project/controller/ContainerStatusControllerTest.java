@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,8 +40,24 @@ class ContainerStatusControllerTest {
 
     @Test
     void getContainerStatusToStringNonExistent() {
-        String actual = containerStatusController.getContainerStatusToString(-1);
+        String actual = containerStatusController.getContainerStatusToString(new ArrayList<>());
         String expected = "Container not found.";
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getContainerStatusToStringNonInvalidInput() {
+        String actual = containerStatusController.getContainerStatusToString(Arrays.asList("Ship", "Titanic"));
+        String expected = "Input parameters are incorrect. No containers can be searched.";
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void getContainerStatusToStringSuccess() {
+        String actual = containerStatusController.getContainerStatusToString(Arrays.asList("1", "Ship", "Titanic"));
+        String expected = "Container no. 1 is currently in Ship Titanic";
 
         Assertions.assertEquals(expected, actual);
     }
