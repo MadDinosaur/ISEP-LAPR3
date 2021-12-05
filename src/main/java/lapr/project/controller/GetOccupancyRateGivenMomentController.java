@@ -11,24 +11,32 @@ import oracle.ucp.util.Pair;
 
 public class GetOccupancyRateGivenMomentController {
     /**
-     * the current ship store
+     * The current storage
      */
-    private final DatabaseConnection databaseConnection;
+    private final MainStorage mainStorage;
+
+    /**
+     * The current sql cargo manifest store
+     */
+    private final CargoManifestSqlStore cargoManifestStore;
 
     /**
      * Calls the creator with a the current storage instance
      */
-    public GetOccupancyRateGivenMomentController(){
-        this(MainStorage.getInstance());
+    public GetOccupancyRateGivenMomentController() {
+        this.mainStorage = MainStorage.getInstance();
+        this.cargoManifestStore = new CargoManifestSqlStore();
     }
 
     /**
-     * Creates a instance of the controller with the current storage instance
+     * Creates a instance of the controller with the current storage instance and sql store
      *
      * @param mainStorage the storage instance used to store all information
+     * @param cargoManifestSqlStore the store instance used to store database requests
      */
-    public GetOccupancyRateGivenMomentController(MainStorage mainStorage){
-        this.databaseConnection = mainStorage.getDatabaseConnection();
+    public GetOccupancyRateGivenMomentController(MainStorage mainStorage, CargoManifestSqlStore cargoManifestSqlStore) {
+        this.mainStorage = mainStorage;
+        this.cargoManifestStore = cargoManifestSqlStore;
     }
 
     /**
@@ -39,7 +47,7 @@ public class GetOccupancyRateGivenMomentController {
      */
     public Pair<String,Double> getOccupancyRateGivenMoment(int mmsi, String givenMoment){
         try{
-            return CargoManifestSqlStore.getOccupancyRateGivenMoment(databaseConnection, mmsi, givenMoment);
+            return cargoManifestStore.getOccupancyRateGivenMoment(mainStorage.getDatabaseConnection(), mmsi, givenMoment);
         }catch (SQLException throwable){
             throwable.printStackTrace();
             return null;
