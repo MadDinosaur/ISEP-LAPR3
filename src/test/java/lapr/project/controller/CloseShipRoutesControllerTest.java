@@ -91,10 +91,11 @@ class CloseShipRoutesControllerTest {
 
     @Test
     void getCloseShipRoutesDTO() {
-        List<Pair<Pair<String, String>,Pair<Double, Double>>> expected = new ArrayList<>();
-        expected.add(new Pair(new Pair("229850001", "210950000"), new Pair(2.22,1.11)));
-
         List<Pair<Pair<ShipDTO, ShipDTO>,Pair<Double, Double>>> actual = controller.getCloseShipRoutesDTO();
+
+        List<Pair<Pair<String, String>,Pair<Double, Double>>> expected = new ArrayList<>();
+        if (!actual.isEmpty())
+            expected.add(new Pair(new Pair("229850001", "210950000"), new Pair(2.22,1.11)));
 
         assertEquals(actual.size(), expected.size());
         for(int i = 0; i < actual.size(); i++) {
@@ -111,8 +112,10 @@ class CloseShipRoutesControllerTest {
 
     @Test
     void getCloseShipRoutes() {
-       String expected = "Ship 1 MMSI : 229850001 - Ship 2 MMSI : 210950000 - OriginDist : 2,223949 - DestDist : 1,111949 - Traveled Distance1: 1113.061279296875 KM - Number of Movements1: 2.0 - Traveled Distance2: N/A KM - Number of Movements2: N/A\n\n\n";
-       String actual = controller.getCloseShipRoutes();
+        String expected = controller.getCloseShipRoutes().isEmpty() ?
+                "No ships available." :
+                "Ship 1 MMSI : 229850001 - Ship 2 MMSI : 210950000 - OriginDist : 2,223949 - DestDist : 1,111949 - Traveled Distance1: 1113.061279296875 KM - Number of Movements1: 2.0 - Traveled Distance2: N/A KM - Number of Movements2: N/A\n\n\n";
+        String actual = controller.getCloseShipRoutes();
 
        assertEquals(actual, expected);
     }
