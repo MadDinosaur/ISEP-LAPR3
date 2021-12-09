@@ -114,8 +114,11 @@ public class ContainerSqlStore implements Persistable {
                 selectContainerPreparedStatement.setInt(1, containerNum);
 
                 ResultSet result = selectContainerPreparedStatement.executeQuery();
-                int i = 1; while(result.next()) {
-                    resultOutput.add(result.getString(i)); i++;}
+                if(result.next()) {
+                    resultOutput.add(result.getString(1));
+                    resultOutput.add(result.getString(2));
+                    resultOutput.add(result.getString(3));
+                }
             }
 
         } catch (SQLException exception) {
