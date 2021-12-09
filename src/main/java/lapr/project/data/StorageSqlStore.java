@@ -68,12 +68,13 @@ public class StorageSqlStore implements Persistable {
      */
     private void saveStorageToDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
 
-        if (isStorageOnDatabase(databaseConnection, storage)) {
-            updateStorageOnDatabase(databaseConnection, storage);
-        } else {
-            insertStorageOnDatabase(databaseConnection, storage);
+        if (existsCountry(databaseConnection, storage.getCountry())) {
+            if (isStorageOnDatabase(databaseConnection, storage)) {
+                updateStorageOnDatabase(databaseConnection, storage);
+            } else {
+                insertStorageOnDatabase(databaseConnection, storage);
+            }
         }
-
     }
 
     /**
@@ -111,9 +112,34 @@ public class StorageSqlStore implements Persistable {
      * @throws SQLException in case something goes wrong during the Database connection
      */
     private void insertStorageOnDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
-        String sqlCommand = "insert into storage(storage_type_id, name, continent, country, latitude, longitude, identification) values (?, ?, ?, ?, ?, ?, ?)";
+        String sqlCommand = "insert into storage(storage_type_id, name, country_name, latitude, longitude, identification) values (?, ?, ?, ?, ?, ?, ?)";
 
         executeStorageStatementOnDatabase(databaseConnection, storage, sqlCommand);
+    }
+
+    /**
+     * Checks if a given country is already registered in the database
+     * @param databaseConnection Connection to the Database
+     * @param country an object of type Storage
+     * @return true if the country already exists
+     */
+    private boolean existsCountry(DatabaseConnection databaseConnection, String country){
+        Connection connection = databaseConnection.getConnection();
+
+        try {
+            String sqlCommand = "select * from country where country = ?";
+
+            PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
+            getStoragesPreparedStatement.setString(1, country);
+            try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
+               return countryResultSet.next();
+            }
+
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+            return false;
+        }
     }
 
     /**
@@ -124,7 +150,7 @@ public class StorageSqlStore implements Persistable {
      * @throws SQLException in case something goes wrong during the Database connection
      */
     private void updateStorageOnDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
-        String sqlCommand = "update storage set storage_type_id = ?, name = ?, continent = ?, country = ?, latitude = ?, longitude = ? where identification = ?";
+        String sqlCommand = "update storage set storage_type_id = ?, name = ?, country_name = ?, latitude = ?, longitude = ? where identification = ?";
 
         executeStorageStatementOnDatabase(databaseConnection, storage, sqlCommand);
     }
@@ -145,11 +171,10 @@ public class StorageSqlStore implements Persistable {
             // apenas estamos a usar Ports por enquanto, enventualmente pode vir a ser necessário mudar isto
             saveStoragePreparedStatement.setInt(1, 1);
             saveStoragePreparedStatement.setString(2, storage.getName());
-            saveStoragePreparedStatement.setString(3, storage.getContinent());
-            saveStoragePreparedStatement.setString(4, storage.getCountry());
-            saveStoragePreparedStatement.setFloat(5, storage.getCoordinate().getLatitude());
-            saveStoragePreparedStatement.setFloat(6, storage.getCoordinate().getLongitude());
-            saveStoragePreparedStatement.setInt(7, storage.getIdentification());
+            saveStoragePreparedStatement.setString(3, storage.getCountry());
+            saveStoragePreparedStatement.setFloat(4, storage.getCoordinate().getLatitude());
+            saveStoragePreparedStatement.setFloat(5, storage.getCoordinate().getLongitude());
+            saveStoragePreparedStatement.setInt(6, storage.getIdentification());
             saveStoragePreparedStatement.executeUpdate();
         }
     }
@@ -164,18 +189,18 @@ public class StorageSqlStore implements Persistable {
         List<Storage> storageList = new ArrayList<>();
 
         try {
-            String sqlCommand = "select * from storage";
+            String sqlCommand = "select s.identification, s.name, ct.continent, s.country_name, s.latitude, s.longitude  from storage s, country ct where s.country_name = ct.country";
 
             PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
 
             try (ResultSet storagesResultSet = getStoragesPreparedStatement.executeQuery()) {
                 while (storagesResultSet.next()) {
                     int identification = storagesResultSet.getInt(1);
-                    String name = storagesResultSet.getString(3);
-                    String continent = storagesResultSet.getString(4);
-                    String country = storagesResultSet.getString(5);
-                    float latitude = storagesResultSet.getFloat(6);
-                    float longitude = storagesResultSet.getFloat(7);
+                    String name = storagesResultSet.getString(2);
+                    String continent = storagesResultSet.getString(3);
+                    String country = storagesResultSet.getString(4);
+                    float latitude = storagesResultSet.getFloat(5);
+                    float longitude = storagesResultSet.getFloat(6);
 
                     Storage storage = new Storage(identification, name, continent, country, new Coordinate(longitude, latitude));
                     storageList.add(storage);
