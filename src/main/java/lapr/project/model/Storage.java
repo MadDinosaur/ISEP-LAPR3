@@ -2,7 +2,7 @@ package lapr.project.model;
 
 import lapr.project.exception.IllegalStorageException;
 
-public class Storage  {
+public class Storage extends Location {
 
 
     /**
@@ -15,29 +15,11 @@ public class Storage  {
      */
     private String name;
 
-    /**
-     *  The storage's continent name
-     */
-    private String continent;
-
-    /**
-     *  The storage's country name
-     */
-    private String country;
-
-    /**
-     *  The storage's coordinate
-     */
-    private Coordinate coordinate;
-
     public Storage(int identification,String name, String continent, String country,Coordinate coordinate){
+        super(continent, country, coordinate);
         setIdentification(identification);
         setName(name);
-        setCountry(country);
-        setContinent(continent);
-        setCoordinate(coordinate);
     }
-
 
     /**
      * Sets the storage's identification
@@ -76,70 +58,10 @@ public class Storage  {
     }
 
     /**
-     * Sets the storage's continent
-     * @param continent The storage's continent
-     */
-    public void setContinent(String continent){
-        checkContinentRules(continent);
-        this.continent = continent;
-    }
-
-    /**
-     * Checks the storage's continent to see if it is within the allowed boundaries
-     * @param continent The storage's continent
-     */
-    private void checkContinentRules(String continent){
-        if (continent.length() > 21)
-            throw  new IllegalStorageException("Continent \"" + continent + "\" is not supported.");
-    }
-
-    /**
-     * Sets the storage's country
-     * @param country The storage's country
-     */
-    public void setCountry(String country){
-        checkCountryRules(country);
-        this.country = country;
-    }
-
-    /**
-     * Checks the storage's country to see if it is within the allowed boundaries
-     * @param country The storage's country
-     */
-    private void checkCountryRules(String country){
-        if (country.length() > 21)
-            throw new IllegalStorageException("Country \"" + country + "\" is not supported.");
-    }
-
-    /**
-     * Sets the storage's coordinate
-     * @param coordinate The storage's coordinate
-     */
-    public void setCoordinate(Coordinate coordinate){ this.coordinate = coordinate; }
-
-    /**
-     * Gets the storage's coordinate
-     * @return The storage's coordinate
-     */
-    public Coordinate getCoordinate() { return coordinate; }
-
-    /**
      * Gets the storage's identification
      * @return The storage's identification
      */
     public int getIdentification() { return identification; }
-
-    /**
-     * Gets the storage's continent
-     * @return The storage's continent
-     */
-    public String getContinent() { return continent; }
-
-    /**
-     * Gets the storage's country
-     * @return The storage's country
-     */
-    public String getCountry() { return country; }
 
     /**
      * Gets the storage's name
@@ -147,8 +69,29 @@ public class Storage  {
      */
     public String getName() { return name; }
 
+    /**
+     * Transforms the storage into a string
+     * @return a string version of the storage
+     */
     @Override
     public String toString() {
-        return String.format("Storage %d: Name - %s; Continent - %s; Country - %s; Longitude - %.2f; Latitude - %.2f", identification, name, continent, country, coordinate.getLongitude(), coordinate.getLatitude());
+        return String.format("Storage %d: Name - %s; Continent - %s; Country - %s; Longitude - %.2f; Latitude - %.2f", identification, name, getContinent(), getCountry(), getCoordinate().getLongitude(), getCoordinate().getLatitude());
+    }
+
+    /**
+     * compares this object with another and returns true if their parameters are equal
+     * @param o the other object
+     * @return true if their parameters are equal
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Storage)) return false;
+        if (!super.equals(o)) return false;
+
+        Storage storage = (Storage) o;
+
+        if (getIdentification() != storage.getIdentification()) return false;
+        return getName() != null ? getName().equals(storage.getName()) : storage.getName() == null;
     }
 }

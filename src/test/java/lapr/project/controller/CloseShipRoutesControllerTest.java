@@ -128,6 +128,6 @@ class CloseShipRoutesControllerTest {
         String expected = "Ship 1 MMSI : 229850001 - Ship 2 MMSI : 210950000 - OriginDist : 2,223949 - DestDist : 1,111949 - Traveled Distance1: 1113.061279296875 KM - Number of Movements1: 2.0 - Traveled Distance2: N/A KM - Number of Movements2: N/A\n\n\n";
         String actual = controller.getCloseShipRoutes();
 
-       assertEquals(expected, actual);
+       assertEquals(expected.replaceAll(",", "."), actual.replaceAll(",", "."));
     }
 }
