@@ -24,7 +24,7 @@ public class BorderSQLStore implements Persistable {
         boolean returnValue = false;
 
         try {
-            if (!isBorderOnDataBase(databaseConnection, border) && !isCountryOnDataBase(databaseConnection, border)) {
+            if (!isBorderOnDataBase(databaseConnection, border) && isCountryOnDataBase(databaseConnection, border)) {
                 Connection connection = databaseConnection.getConnection();
                 String sqlCommand = "insert into Border(country_name, country_border) values(?,?)";
                 try(PreparedStatement saveCountryPreparedStatement = connection.prepareStatement(sqlCommand)) {

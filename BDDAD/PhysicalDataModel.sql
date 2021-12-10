@@ -33,7 +33,7 @@ CREATE TABLE Storage
         CONSTRAINT pkStorageIdentification PRIMARY KEY,
     storage_type_id        INTEGER
         CONSTRAINT nnStorageTypeId NOT NULL,
-    country_name           VARCHAR(20)
+    country_name           VARCHAR(30)
         CONSTRAINT nnCountry NOT NULL,
     name                   VARCHAR(20)
         CONSTRAINT nnStorageName NOT NULL,
@@ -263,17 +263,17 @@ CREATE TABLE ShipTrip
 
 CREATE TABLE Country
 (
-    country         VARCHAR(20)
+    country         VARCHAR(30)
         CONSTRAINT pkCountryName PRIMARY KEY,
     continent       VARCHAR(20)
         CONSTRAINT nnCountryContinent NOT NULL,
-    capital         VARCHAR(20)
+    capital         VARCHAR(30)
         CONSTRAINT nnCountryCapital NOT NULL,
     alpha2          VARCHAR(2)
         CONSTRAINT nnCountryAlpha2 NOT NULL,
     alpha3          VARCHAR(3)
         CONSTRAINT nnCountryAlpha3 NOT NULL,
-    population      INTEGER
+    population      NUMBER(6,2)
         CONSTRAINT nnCountryPopulation NOT NULL,
     latitude          NUMBER(7, 5)
         CONSTRAINT nnCapitalLatitude NOT NULL
@@ -285,9 +285,9 @@ CREATE TABLE Country
 
 CREATE TABLE Border
 (
-    country_name       VARCHAR(20)
+    country_name       VARCHAR(30)
         CONSTRAINT nnBorderContinent NOT NULL,
-    country_border     VARCHAR(20)
+    country_border     VARCHAR(30)
         CONSTRAINT nnBorderingContinent NOT NULL,
     CONSTRAINT ckBorderValidity CHECK (country_name != country_border)
 );

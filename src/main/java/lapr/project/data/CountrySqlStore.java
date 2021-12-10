@@ -95,7 +95,7 @@ public class CountrySqlStore implements Persistable {
                 saveCountryPreparedStatement.setString(2, country.getAlpha2());
                 saveCountryPreparedStatement.setString(3, country.getAlpha3());
                 saveCountryPreparedStatement.setString(4, country.getCountry());
-                saveCountryPreparedStatement.setInt(5, country.getPopulation());
+                saveCountryPreparedStatement.setFloat(5, country.getPopulation());
                 saveCountryPreparedStatement.setString(6, country.getCapital());
                 saveCountryPreparedStatement.setFloat(7, country.getCoordinate().getLatitude());
                 saveCountryPreparedStatement.setFloat(8, country.getCoordinate().getLongitude());
