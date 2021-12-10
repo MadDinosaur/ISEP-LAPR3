@@ -17,7 +17,7 @@ public class Country extends Location {
     /**
      * the country's population in millions
      */
-    private float population;
+    private int population;
 
     /**
      * the country's capital
@@ -34,7 +34,7 @@ public class Country extends Location {
      * @param population the country's population
      * @param capital the country's capital
      */
-    public Country(String continent, String country, Coordinate coordinate, String alpha2, String alpha3, float population, String capital) {
+    public Country(String continent, String country, Coordinate coordinate, String alpha2, String alpha3, int population, String capital) {
         super(continent, country, coordinate);
         setAlpha2(alpha2);
         setAlpha3(alpha3);
@@ -82,7 +82,7 @@ public class Country extends Location {
      * set's the country's population
      * @param population The country's population
      */
-    public void setPopulation(float population) {
+    public void setPopulation(int population) {
         checkPopulationRules(population);
         this.population = population;
     }
@@ -118,7 +118,7 @@ public class Country extends Location {
      * returns the country's population
      * @return the country's population
      */
-    public float getPopulation() {
+    public int getPopulation() {
         return population;
     }
 

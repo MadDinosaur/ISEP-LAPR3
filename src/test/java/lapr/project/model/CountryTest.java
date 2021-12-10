@@ -9,7 +9,7 @@ public class CountryTest {
     private String countryName = "United Kingdom";
     private String alpha2 = "UK";
     private String alpha3 = "UNK";
-    private float population = 0;
+    private int population = 0;
     private String capital = "London";
     private Coordinate coordinate = new Coordinate((float)53.46,(float)-3.03);
 
