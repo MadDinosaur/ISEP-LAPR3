@@ -7,7 +7,8 @@ DROP TABLE Certificate CASCADE CONSTRAINTS PURGE;
 DROP TABLE CscPlate_Certificate CASCADE CONSTRAINTS PURGE;
 DROP TABLE Container_CargoManifest CASCADE CONSTRAINTS PURGE;
 DROP TABLE Shipment CASCADE CONSTRAINTS PURGE;
-DROP TABLE CargoManifest CASCADE CONSTRAINTS PURGE;
+DROP TABLE CargoManifest_Partial CASCADE CONSTRAINTS PURGE;
+DROP TABLE CargoManifest_Full CASCADE CONSTRAINTS PURGE;
 DROP TABLE Fleet CASCADE CONSTRAINTS PURGE;
 DROP TABLE VesselType CASCADE CONSTRAINTS PURGE;
 DROP TABLE Ship CASCADE CONSTRAINTS PURGE;
@@ -122,16 +123,26 @@ CREATE TABLE CscPlate_Certificate
 
 CREATE TABLE Container_CargoManifest
 (
+    id INTEGER GENERATED ALWAYS AS IDENTITY
+        CONSTRAINT pkContainer_CargoManifest PRIMARY KEY,
     container_num        INTEGER
         CONSTRAINT nnContainerNum NOT NULL,
-    cargo_manifest_id    INTEGER
-        CONSTRAINT nnCargoManifestId NOT NULL,
+    full_cargo_manifest_id    INTEGER,
+    partial_cargo_manifest_id INTEGER,
+        -- make sure each row only has one type of cargo manifest
+        CONSTRAINT ckCargoManifestId CHECK (
+            (full_cargo_manifest_id IS NOT NULL AND partial_cargo_manifest_id IS NULL) OR
+            (full_cargo_manifest_id IS NULL AND partial_cargo_manifest_id IS NOT NULL)),
+        -- make sure each cargo manifest - container combination is unique
+        CONSTRAINT unCargoManifestContainer UNIQUE (container_num, full_cargo_manifest_id, partial_cargo_manifest_id),
     container_position_x INTEGER
         CONSTRAINT nnContainerPositionX NOT NULL,
     container_position_y INTEGER
         CONSTRAINT nnContainerPositionY NOT NULL,
     container_position_z INTEGER
-        CONSTRAINT nnContainerPositionZ NOT NULL
+        CONSTRAINT nnContainerPositionZ NOT NULL,
+        -- make sure containers are not in the same position on a cargo manifest
+        CONSTRAINT unContainerPosition UNIQUE (full_cargo_manifest_id, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 );
 
 CREATE TABLE Shipment
@@ -147,22 +158,27 @@ CREATE TABLE Shipment
     CONSTRAINT ckStorageOriginDestination CHECK (storage_identification_origin != storage_identification_destination)
 );
 
-CREATE TABLE CargoManifest
+CREATE TABLE CargoManifest_Partial
 (
     id           INTEGER GENERATED ALWAYS AS IDENTITY
         CONSTRAINT pkCargoManifestId PRIMARY KEY,
     ship_mmsi    NUMBER(9)
         CONSTRAINT nnCargoShipMMSI NOT NULL,
-    storage_identification INTEGER,
+    storage_identification INTEGER
+        CONSTRAINT nnCargoStorageIdentification NOT NULL,
     loading_flag NUMBER(1)
+        CONSTRAINT nnCargoLoadingFlag NOT NULL
         CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
     finishing_date_time    TIMESTAMP
-        DEFAULT NULL,
-    CONSTRAINT ckPartialManifest CHECK (
-        -- Partial port cargo manifest
-        (storage_identification IS NOT NULL AND loading_flag IS NOT NULL)
-        -- Full ship cargo manifest
-        OR (storage_identification IS NULL AND loading_flag IS NULL))
+        CONSTRAINT nnCargoFinishingDateTime NOT NULL
+);
+
+CREATE TABLE CargoManifest_Full
+(
+     id           INTEGER GENERATED ALWAYS AS IDENTITY
+        CONSTRAINT pkFullCargoManifestId PRIMARY KEY,
+    ship_mmsi    NUMBER(9)
+        CONSTRAINT nnFullCargoShipMMSI NOT NULL
 );
 
 CREATE TABLE Fleet
@@ -313,17 +329,20 @@ ALTER TABLE Container
 
 ALTER TABLE Container_CargoManifest
     ADD CONSTRAINT fkContainerCargoManifestContainerNum FOREIGN KEY (container_num) REFERENCES Container (num)
-    ADD CONSTRAINT fkContainerCargoManifestCargoManifestId FOREIGN KEY (cargo_manifest_id) REFERENCES CargoManifest (id)
-    ADD CONSTRAINT pkContainerCargoManifest PRIMARY KEY (container_num, cargo_manifest_id);
+    ADD CONSTRAINT fkContainerFullCargoManifestCargoManifestId FOREIGN KEY (full_cargo_manifest_id) REFERENCES CargoManifest_Full (id)
+    ADD CONSTRAINT fkContainerPartialCargoManifestCargoManifestId FOREIGN KEY (partial_cargo_manifest_id) REFERENCES CargoManifest_Partial (id);
 
 ALTER TABLE Shipment
     ADD CONSTRAINT fkShipmentStorageIdentificationOrigin FOREIGN KEY (storage_identification_origin) REFERENCES Storage (identification)
     ADD CONSTRAINT fkShipmentStorageIdentificationDestination FOREIGN KEY (storage_identification_destination) REFERENCES Storage (identification)
     ADD CONSTRAINT fkShipmentContainerNum FOREIGN KEY (container_num) REFERENCES Container (num);
 
-ALTER TABLE CargoManifest
+ALTER TABLE CargoManifest_Partial
     ADD CONSTRAINT fkContainerStorageIdentification FOREIGN KEY (storage_identification) REFERENCES Storage(identification)
     ADD CONSTRAINT fkCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi);
+
+ALTER TABLE CargoManifest_Full
+    ADD CONSTRAINT fkFullCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi);
 
 ALTER TABLE Ship
     ADD CONSTRAINT fkShipFleetId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)
