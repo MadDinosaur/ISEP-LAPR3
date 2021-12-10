@@ -44,7 +44,6 @@ public class ShipSqlStore implements Persistable {
             Logger.getLogger(ShipSqlStore.class.getName())
                     .log(Level.SEVERE, null, ex);
             databaseConnection.registerError(ex);
-            returnValue = false;
         }
         return returnValue;
     }
