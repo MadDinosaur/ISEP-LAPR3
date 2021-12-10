@@ -50,6 +50,17 @@ VALUES(9, 'Not frozen', 'Alloy', 'Daikin Industries', 'Bob', 'America', 'furniga
 INSERT INTO CscPlate(serial_number, rules, model, manufacturer_name, owner_name, owner_address, furnigation, approval_number, acep_number, date_manufactured, max_gross_mass, stacking_weight,racking_test)
 VALUES(10, 'Not frozen', 'Alloy', 'Daikin Industries', 'Bob', 'America', 'furnigation', 10, 10, TO_DATE('01/01/2000','DD/MM/YYYY'), 400, 4000, 51);
 
+-- Country --
+INSERT INTO Country(continent,alpha2,alpha3,country,population,capital,latitude,longitude)
+VALUES('America','GY','GUY','Guyana',786.5,'Georgetown',6.8,-58.15);
+INSERT INTO Country(continent,alpha2,alpha3,country,population,capital,latitude,longitude)
+VALUES('America','VE','VEN','Venezuela',31.02,'Caracas',10.48333333,-66.866667);
+INSERT INTO Country(continent,alpha2,alpha3,country,population,capital,latitude,longitude)
+VALUES('Europe','LU','LUX','Luxembourg',0.59,'Luxembourg',49.6,6.116667);
+INSERT INTO Country(continent,alpha2,alpha3,country,population,capital,latitude,longitude)
+VALUES('Europe','AT','AUT','Austria',8.77,'Vienna',48.2,16.366667);
+
+
 -- Inserts tables with relations --
 
 -- CscPlate_Certificate --
@@ -87,14 +98,14 @@ INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_
 VALUES(100000005,2,'Ship5',1000005,3,100,'SCS5',1,200,50,100,15,5);
 
 -- Storage --
-INSERT INTO Storage(identification, storage_type_id, name, continent, country, latitude,longitude)
-VALUES(1, 1, 'Storage1', 'Europe', 'United Kingdom', 55, 3);
-INSERT INTO Storage(identification, storage_type_id, name, continent, country, latitude,longitude)
-VALUES(2, 1, 'Storage2', 'America', 'USA', 37, -96);
-INSERT INTO Storage(identification, storage_type_id, name, continent, country, latitude,longitude)
-VALUES(3, 1, 'Storage3', 'Asia', 'Japan', 36, 138);
-INSERT INTO Storage(identification, storage_type_id, name, continent, country, latitude,longitude)
-VALUES(4, 1, 'Storage4', 'Oceania', 'Australia', 25, 133);
+INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
+VALUES(1, 1, 'Storage1', 'Guyana', 6, -57);
+INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
+VALUES(2, 1, 'Storage2', 'Venezuela', 11,-67);
+INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
+VALUES(3, 1, 'Storage3', 'Luxembourg', 50, 5.7);
+INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
+VALUES(4, 1, 'Storage4', 'Austria', 50,18);
 
 -- Container --
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
@@ -332,6 +343,9 @@ SELECT 'SHIPMENT',COUNT(*) FROM SHIPMENT UNION
 SELECT 'SHIPTRIP',COUNT(*) FROM SHIPTRIP UNION
 SELECT 'STORAGE',COUNT(*) FROM STORAGE UNION
 SELECT 'STORAGETYPE',COUNT(*) FROM STORAGETYPE UNION
-SELECT 'VESSELTYPE',COUNT(*) FROM VESSELTYPE)
+SELECT 'VESSELTYPE',COUNT(*) FROM VESSELTYPE UNION
+SELECT 'COUNTRY',COUNT(*) FROM COUNTRY UNION
+SELECT 'BORDER',COUNT(*) FROM BORDER UNION
+SELECT 'STORAGE_PATH',COUNT(*) FROM STORAGE_PATH)
 
 

@@ -13,6 +13,9 @@ DROP TABLE VesselType CASCADE CONSTRAINTS PURGE;
 DROP TABLE Ship CASCADE CONSTRAINTS PURGE;
 DROP TABLE DynamicData CASCADE CONSTRAINTS PURGE;
 DROP TABLE ShipTrip CASCADE CONSTRAINTS PURGE;
+DROP TABLE Country CASCADE CONSTRAINTS PURGE;
+DROP TABLE Border CASCADE CONSTRAINTS PURGE;
+DROP TABLE Storage_Path CASCADE CONSTRAINTS PURGE;
 
 -- create tables
 CREATE TABLE StorageType
@@ -30,18 +33,16 @@ CREATE TABLE Storage
         CONSTRAINT pkStorageIdentification PRIMARY KEY,
     storage_type_id        INTEGER
         CONSTRAINT nnStorageTypeId NOT NULL,
+    country_name           VARCHAR(20)
+        CONSTRAINT nnCountry NOT NULL,
     name                   VARCHAR(20)
         CONSTRAINT nnStorageName NOT NULL,
-    continent              VARCHAR(20)
-        CONSTRAINT nnContinent NOT NULL,
-    country                VARCHAR(20)
-        CONSTRAINT nnCountry NOT NULL,
     latitude               NUMBER(7, 5)
         CONSTRAINT nnStorageLatitude NOT NULL,
-    CONSTRAINT ckStorageLatitude CHECK (latitude BETWEEN -90 AND 90 OR latitude = 91),
+        CONSTRAINT ckStorageLatitude CHECK (latitude BETWEEN -90 AND 90 OR latitude = 91),
     longitude              NUMBER(8, 5)
         CONSTRAINT nnStorageLongitude NOT NULL,
-    CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181)
+        CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181)
 );
 
 CREATE TABLE Container
@@ -260,13 +261,55 @@ CREATE TABLE ShipTrip
     CONSTRAINT ckTripDestination CHECK (parting_date < arrival_date)
 );
 
+CREATE TABLE Country
+(
+    country         VARCHAR(20)
+        CONSTRAINT pkCountryName PRIMARY KEY,
+    continent       VARCHAR(20)
+        CONSTRAINT nnCountryContinent NOT NULL,
+    capital         VARCHAR(20)
+        CONSTRAINT nnCountryCapital NOT NULL,
+    alpha2          VARCHAR(2)
+        CONSTRAINT nnCountryAlpha2 NOT NULL,
+    alpha3          VARCHAR(3)
+        CONSTRAINT nnCountryAlpha3 NOT NULL,
+    population      INTEGER
+        CONSTRAINT nnCountryPopulation NOT NULL,
+    latitude          NUMBER(7, 5)
+        CONSTRAINT nnCapitalLatitude NOT NULL
+        CONSTRAINT ckCapitalLatitude CHECK (latitude BETWEEN -90 AND 91),
+    longitude         NUMBER(8, 5)
+        CONSTRAINT nnCapitalLongitude NOT NULL
+        CONSTRAINT ckCapitalLongitude CHECK (longitude BETWEEN -180 AND 181)
+);
+
+CREATE TABLE Border
+(
+    country_name       VARCHAR(20)
+        CONSTRAINT nnBorderContinent NOT NULL,
+    country_border     VARCHAR(20)
+        CONSTRAINT nnBorderingContinent NOT NULL,
+    CONSTRAINT ckBorderValidity CHECK (country_name != country_border)
+);
+
+CREATE TABLE Storage_Path
+(
+    storage_id1         INTEGER
+        CONSTRAINT nnPathStorageId1 NOT NULL,
+    storage_id2        INTEGER
+        CONSTRAINT nnPathStorageId2 NOT NULL,
+    distance           INTEGER
+        CONSTRAINT nnPathDistance NOT NULL,
+    CONSTRAINT ckPathValidity CHECK (storage_id1 != storage_id2)
+);
+
 -- define foreign keys and combined primary keys
 ALTER TABLE Storage
-    ADD CONSTRAINT fkStorageTypeId FOREIGN KEY (storage_type_id) REFERENCES StorageType (id);
+    ADD CONSTRAINT fkStorageTypeId FOREIGN KEY (storage_type_id) REFERENCES StorageType (id)
+    ADD CONSTRAINT fkCountryName FOREIGN KEY (country_name) REFERENCES Country (country);
 
 ALTER TABLE Container
     ADD CONSTRAINT fkContainerCscPlateSerialNumber FOREIGN KEY (csc_plate_serial_number) REFERENCES CscPlate (serial_number);
-
 
 ALTER TABLE Container_CargoManifest
     ADD CONSTRAINT fkContainerCargoManifestContainerNum FOREIGN KEY (container_num) REFERENCES Container (num)
@@ -300,3 +343,13 @@ ALTER TABLE ShipTrip
     ADD CONSTRAINT fkStorageOrigin FOREIGN KEY (storage_identification_origin) REFERENCES Storage (identification)
     ADD CONSTRAINT fkStorageDestination FOREIGN KEY (storage_identification_destination) REFERENCES Storage (identification)
     ADD CONSTRAINT pkShipTrip PRIMARY KEY (ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date);
+
+ALTER TABLE Border
+    ADD CONSTRAINT fkBorderCountry1 FOREIGN KEY (country_name) REFERENCES Country (country)
+    ADD CONSTRAINT fkBorderCountry2 FOREIGN KEY (country_border) REFERENCES Country (country)
+    ADD CONSTRAINT pkBorder PRIMARY KEY (country_name, country_border);
+
+ALTER TABLE Storage_Path
+    ADD CONSTRAINT fkPathStorage1 FOREIGN KEY (storage_id1) REFERENCES Storage (identification)
+    ADD CONSTRAINT fkPathStorage2 FOREIGN KEY (storage_id2) REFERENCES Storage (identification)
+    ADD CONSTRAINT pkStoragePath PRIMARY KEY (storage_id1, storage_id2);

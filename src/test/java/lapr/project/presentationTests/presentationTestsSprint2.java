@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 public class presentationTestsSprint2 {
 
-    boolean dataBase = false;
+    boolean dataBase = true;
 
 //    @Test
 //    public void insert(){
