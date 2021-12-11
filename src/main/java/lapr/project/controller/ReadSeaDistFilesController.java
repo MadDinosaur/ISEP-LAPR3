@@ -10,36 +10,15 @@ import java.util.List;
 public class ReadSeaDistFilesController {
 
     /**
-     * the current ship store
-     */
-    private final DatabaseConnection shipStore;
-
-    /**
-     * Calls the creator with a the current storage instance
-     */
-    public ReadSeaDistFilesController() {
-        this(MainStorage.getInstance());
-    }
-
-    /**
-     * Creates a instance of the controller with the current storage instance
-     *
-     * @param mainStorage the storage instance used to store all information
-     */
-    public ReadSeaDistFilesController(MainStorage mainStorage) {
-        this.shipStore = mainStorage.getDatabaseConnection();
-    }
-
-    /**
      * reads a file and saves the data in that file
      * @param path the path to the file
      */
     public void readCountryFileAndSaveData(String path){
-        List<Country> shipData = SeaDistFilesReader.readCountries(path);
+        List<Country> countryData = SeaDistFilesReader.readCountries(path);
         DatabaseConnection databaseConnection = MainStorage.getInstance().getDatabaseConnection();
-        if (databaseConnection != null && shipData != null) {
+        if (databaseConnection != null && countryData != null) {
             CountrySqlStore countrySqlStore = new CountrySqlStore();
-            for (Country country : shipData){
+            for (Country country : countryData){
                 countrySqlStore.save(databaseConnection, country);
             }
         }
@@ -50,11 +29,11 @@ public class ReadSeaDistFilesController {
      * @param path the path to the file
      */
     public void readBorderFileAndSaveData(String path){
-        List<Pair<String, String>> BorderData = SeaDistFilesReader.readBorders(path);
+        List<Pair<String, String>> borderData = SeaDistFilesReader.readBorders(path);
         DatabaseConnection databaseConnection = MainStorage.getInstance().getDatabaseConnection();
-        if (databaseConnection != null && BorderData != null) {
+        if (databaseConnection != null && borderData != null) {
             BorderSQLStore borderSQLStore = new BorderSQLStore();
-            for (Pair<String, String> border : BorderData){
+            for (Pair<String, String> border : borderData){
                 borderSQLStore.save(databaseConnection, border);
 
             }
