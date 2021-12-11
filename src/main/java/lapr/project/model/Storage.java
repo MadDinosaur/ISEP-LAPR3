@@ -87,11 +87,9 @@ public class Storage extends Location {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Storage)) return false;
-        if (!super.equals(o)) return false;
 
         Storage storage = (Storage) o;
 
-        if (getIdentification() != storage.getIdentification()) return false;
-        return getName() != null ? getName().equals(storage.getName()) : storage.getName() == null;
+        return getIdentification() != storage.getIdentification();
     }
 }

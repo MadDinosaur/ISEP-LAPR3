@@ -17,7 +17,7 @@ public class Country extends Location {
     /**
      * the country's population in millions
      */
-    private int population;
+    private float population;
 
     /**
      * the country's capital
@@ -34,7 +34,7 @@ public class Country extends Location {
      * @param population the country's population
      * @param capital the country's capital
      */
-    public Country(String continent, String country, Coordinate coordinate, String alpha2, String alpha3, int population, String capital) {
+    public Country(String continent, String country, Coordinate coordinate, String alpha2, String alpha3, float population, String capital) {
         super(continent, country, coordinate);
         setAlpha2(alpha2);
         setAlpha3(alpha3);
@@ -82,7 +82,7 @@ public class Country extends Location {
      * set's the country's population
      * @param population The country's population
      */
-    public void setPopulation(int population) {
+    public void setPopulation(float population) {
         checkPopulationRules(population);
         this.population = population;
     }
@@ -118,7 +118,7 @@ public class Country extends Location {
      * returns the country's population
      * @return the country's population
      */
-    public int getPopulation() {
+    public float getPopulation() {
         return population;
     }
 
@@ -164,13 +164,7 @@ public class Country extends Location {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Country)) return false;
-        if (!super.equals(o)) return false;
-
         Country country = (Country) o;
-
-        if (Float.compare(country.getPopulation(), getPopulation()) != 0) return false;
-        if (getAlpha2() != null ? !getAlpha2().equals(country.getAlpha2()) : country.getAlpha2() != null) return false;
-        if (getAlpha3() != null ? !getAlpha3().equals(country.getAlpha3()) : country.getAlpha3() != null) return false;
         return getCapital().equals(country.getCapital());
     }
 }

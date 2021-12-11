@@ -23,7 +23,7 @@ public class PathSqlStore implements Persistable {
         boolean returnValue = false;
 
         try {
-            if (!isStorageOnDataBase(databaseConnection, path.get1st()) && !isPathOnDataBase(databaseConnection, path.get1st())) {
+            if (isStorageOnDataBase(databaseConnection, path.get1st()) && !isPathOnDataBase(databaseConnection, path.get1st())) {
                 Connection connection = databaseConnection.getConnection();
                 String sqlCommand = "insert into Storage_Path(storage_id1, storage_id2, distance) values(?,?,?)";
                 try(PreparedStatement savePathPreparedStatement = connection.prepareStatement(sqlCommand)) {
@@ -86,15 +86,15 @@ public class PathSqlStore implements Persistable {
         try {
             String sqlCommand = "select * from Storage_Path where (storage_id1 = ? and storage_id2 = ?) or (storage_id1 = ? and storage_id2 = ?)";
 
-            PreparedStatement getPathPreparedStatement = connection.prepareStatement(sqlCommand);
-            getPathPreparedStatement.setString(1, path.get1st());
-            getPathPreparedStatement.setString(2, path.get2nd());
-            getPathPreparedStatement.setString(3, path.get2nd());
-            getPathPreparedStatement.setString(4, path.get1st());
-            try (ResultSet pathResultSet = getPathPreparedStatement.executeQuery()) {
-                return pathResultSet.next();
+            try(PreparedStatement getPathPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                getPathPreparedStatement.setString(1, path.get1st());
+                getPathPreparedStatement.setString(2, path.get2nd());
+                getPathPreparedStatement.setString(3, path.get2nd());
+                getPathPreparedStatement.setString(4, path.get1st());
+                try (ResultSet pathResultSet = getPathPreparedStatement.executeQuery()) {
+                    return pathResultSet.next();
+                }
             }
-
         } catch (SQLException exception) {
             Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
             databaseConnection.registerError(exception);
@@ -114,15 +114,17 @@ public class PathSqlStore implements Persistable {
 
         try {
             String sqlCommand = "select * from storage where identification = ? or identification = ?";
+            boolean returnValue = false;
 
-            PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
-            getStoragesPreparedStatement.setString(1, path.get1st());
-            getStoragesPreparedStatement.setString(2, path.get2nd());
-            try (ResultSet storageResultSet = getStoragesPreparedStatement.executeQuery()) {
-                storageResultSet.next();
-                return storageResultSet.next();
+            try (PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                getStoragesPreparedStatement.setString(1, path.get1st());
+                getStoragesPreparedStatement.setString(2, path.get2nd());
+                try (ResultSet storageResultSet = getStoragesPreparedStatement.executeQuery()) {
+                    storageResultSet.next();
+                    returnValue = storageResultSet.next();
+                }
             }
-
+            return returnValue;
         } catch (SQLException exception) {
             Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
             databaseConnection.registerError(exception);

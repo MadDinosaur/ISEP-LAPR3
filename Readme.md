@@ -14,7 +14,7 @@ world.
 ![CD](docs/CD.svg)
 
 ### Database Model
-![LogicalDataModel](docs/LogicalDataModel.svg)
+![LogicalDataModel](BDDAD/LogicalDataModel.svg)
 
 ## Project Scrum Management
 
