@@ -90,6 +90,6 @@ public class Storage extends Location {
 
         Storage storage = (Storage) o;
 
-        return getIdentification() != storage.getIdentification();
+        return getIdentification() == storage.getIdentification();
     }
 }

@@ -2,7 +2,10 @@ package lapr.project.data;
 
 import lapr.project.model.Coordinate;
 import lapr.project.model.Country;
+import lapr.project.model.Location;
 import lapr.project.model.Storage;
+import lapr.project.store.PortsGraph;
+import oracle.ucp.util.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -119,16 +122,149 @@ public class CountrySqlStore implements Persistable {
         try {
             String sqlCommand = "select * from country where country = ?";
 
-            PreparedStatement getCountryPreparedStatement = connection.prepareStatement(sqlCommand);
-            getCountryPreparedStatement.setString(1, country.getCountry());
-            try (ResultSet countryResultSet = getCountryPreparedStatement.executeQuery()) {
-                return countryResultSet.next();
+            try(PreparedStatement getCountryPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                getCountryPreparedStatement.setString(1, country.getCountry());
+                try (ResultSet countryResultSet = getCountryPreparedStatement.executeQuery()) {
+                    return countryResultSet.next();
+                }
             }
 
         } catch (SQLException exception) {
             Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
             databaseConnection.registerError(exception);
             return false;
+        }
+    }
+
+    /**
+     * loads the pathGraph information
+     * @param databaseConnection the app's database connection
+     */
+    public static void loadGraph(DatabaseConnection databaseConnection){
+        Connection connection = databaseConnection.getConnection();
+        PortsGraph portsGraph = new PortsGraph();
+
+        try {
+            String sqlCommand = "select * from country";
+
+            try(PreparedStatement getCountryPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                try (ResultSet countryResultSet = getCountryPreparedStatement.executeQuery()) {
+                    while (countryResultSet.next()){
+                        String continent = countryResultSet.getString(2);
+                        String ct = countryResultSet.getString(1);
+                        String alpha2 = countryResultSet.getString(4);
+                        String alpha3 = countryResultSet.getString(5);
+                        String capital = countryResultSet.getString(3);
+                        float population = countryResultSet.getFloat(6);
+                        float longitude = countryResultSet.getFloat(8);
+                        float latitude = countryResultSet.getFloat(7);
+                        Country country = new Country(continent, ct, new Coordinate(longitude, latitude), alpha2, alpha3, population, capital);
+                        portsGraph.insertLocation(country);
+                        loadPorts(databaseConnection, country, portsGraph);
+                    }
+                }
+            }
+            
+            loadBorders(databaseConnection, portsGraph);
+            loadPaths(databaseConnection, portsGraph);
+            MainStorage.getInstance().setPortsGraph(portsGraph);
+            
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+        }
+    }
+
+    /**
+     * loads tha path's between the ports
+     * @param databaseConnection the app's database connection
+     * @param portsGraph the graph whose paths are being added
+     */
+    private static void loadPaths(DatabaseConnection databaseConnection, PortsGraph portsGraph) {
+        Connection connection = databaseConnection.getConnection();
+
+        try {
+            String sqlCommand = "select * from Border";
+
+            try(PreparedStatement getBorderPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                try (ResultSet borderResultSet = getBorderPreparedStatement.executeQuery()) {
+                    while(borderResultSet.next())
+                        portsGraph.insertCountryPath(borderResultSet.getString(1), borderResultSet.getString(2));
+                }
+            }
+
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+        }
+    }
+
+    /**
+     * loads the connections between countries
+     * @param databaseConnection the app's connection to the database
+     * @param portsGraph the graph whose paths are being added
+     */
+    private static void loadBorders(DatabaseConnection databaseConnection, PortsGraph portsGraph) {
+        Connection connection = databaseConnection.getConnection();
+
+        try {
+            String sqlCommand = "select * from storage_path";
+
+            try(PreparedStatement getBorderPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                try (ResultSet borderResultSet = getBorderPreparedStatement.executeQuery()) {
+                    while(borderResultSet.next())
+                        portsGraph.insertPortPath(borderResultSet.getInt(1), borderResultSet.getInt(2), borderResultSet.getDouble(3));
+                }
+            }
+
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+        }
+    }
+
+    /**
+     * loads the ports from the database
+     * @param databaseConnection the app's database connection
+     * @param country the country which the ports belong to
+     * @param portsGraph the graph which the ports will be added
+     */
+    private static void loadPorts(DatabaseConnection databaseConnection, Country country, PortsGraph portsGraph) {
+        Connection connection = databaseConnection.getConnection();
+        try {
+            String sqlCommand = "select * from storage where country_name = ?";
+
+            try(PreparedStatement getPortPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                getPortPreparedStatement.setString(1, country.getCountry());
+
+                try (ResultSet countryResultSet = getPortPreparedStatement.executeQuery()) {
+                    Pair<Double, Location> distance = new Pair<>(Double.MAX_VALUE, null);
+
+                    while (countryResultSet.next()){
+                        int identification = countryResultSet.getInt(1);
+                        String name = countryResultSet.getString(4);
+                        float longitude = countryResultSet.getFloat(6);
+                        float latitude = countryResultSet.getFloat(5);
+
+                        Storage storage = new Storage(identification, name, country.getContinent(), country.getCountry(), new Coordinate(longitude, latitude));
+                        portsGraph.insertLocation(storage);
+
+                        double temp = country.distanceBetween(storage);
+                        if (temp < distance.get1st())
+                            distance = new Pair<>(temp, storage);
+                    }
+
+
+
+                    if (distance.get2nd() != null)
+                        portsGraph.insertPath(country, distance.get2nd(), distance.get1st());
+                }
+            }
+
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+
         }
     }
 }

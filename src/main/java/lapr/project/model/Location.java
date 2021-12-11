@@ -1,7 +1,6 @@
 package lapr.project.model;
 
 import lapr.project.exception.IllegalLocationException;
-import lapr.project.exception.IllegalStorageException;
 
 import java.util.Objects;
 
@@ -86,6 +85,15 @@ public abstract class Location {
     private void checkContinentRules(String continent){
         if (continent.length() > 21)
             throw  new IllegalLocationException("Continent \"" + continent + "\" is not supported.");
+    }
+
+    /**
+     * returns the distance between two locations
+     * @param location the other location to Evaluated
+     * @return returns the distance between the two locations
+     */
+    public double distanceBetween(Location location){
+        return this.getCoordinate().getDistanceBetweenCoordinates(location.getCoordinate());
     }
 
     @Override

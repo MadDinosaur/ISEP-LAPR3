@@ -1,5 +1,6 @@
 package lapr.project.data;
 
+import lapr.project.store.PortsGraph;
 import lapr.project.store.ShipStore;
 import lapr.project.store.StorageStore;
 
@@ -25,12 +26,18 @@ public class MainStorage {
     private DatabaseConnection databaseConnection;
 
     /**
+     * the app's graph of ports and countries
+     */
+    private PortsGraph portsGraph;
+
+    /**
      * initiates the Storage
      */
     private MainStorage() {
         loadProperties();
         shipStore = new ShipStore();
         storageStore = new StorageStore();
+        portsGraph = new PortsGraph();
         connectToDatabase();
     }
 
@@ -85,6 +92,22 @@ public class MainStorage {
      */
     public DatabaseConnection getDatabaseConnection() {
         return databaseConnection;
+    }
+
+    /**
+     * returns the app's port graph
+     * @return returns the app's port graph
+     */
+    public PortsGraph getPortsGraph() {
+        return portsGraph;
+    }
+
+    /**
+     * Set's the app's port graph
+     * @param portsGraph the new port graph
+     */
+    public void setPortsGraph(PortsGraph portsGraph) {
+        this.portsGraph = portsGraph;
     }
 
     /**
