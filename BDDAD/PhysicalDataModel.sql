@@ -127,8 +127,10 @@ CREATE TABLE Container_CargoManifest
         CONSTRAINT pkContainer_CargoManifest PRIMARY KEY,
     container_num        INTEGER
         CONSTRAINT nnContainerNum NOT NULL,
-    full_cargo_manifest_id    INTEGER,
-    partial_cargo_manifest_id INTEGER,
+    full_cargo_manifest_id    INTEGER
+        DEFAULT NULL,
+    partial_cargo_manifest_id INTEGER
+        DEFAULT NULL,
         -- make sure each row only has one type of cargo manifest
         CONSTRAINT ckCargoManifestId CHECK (
             (full_cargo_manifest_id IS NOT NULL AND partial_cargo_manifest_id IS NULL) OR
@@ -170,7 +172,6 @@ CREATE TABLE CargoManifest_Partial
         CONSTRAINT nnCargoLoadingFlag NOT NULL
         CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
     finishing_date_time    TIMESTAMP
-        CONSTRAINT nnCargoFinishingDateTime NOT NULL
 );
 
 CREATE TABLE CargoManifest_Full
@@ -178,7 +179,8 @@ CREATE TABLE CargoManifest_Full
      id           INTEGER GENERATED ALWAYS AS IDENTITY
         CONSTRAINT pkFullCargoManifestId PRIMARY KEY,
     ship_mmsi    NUMBER(9)
-        CONSTRAINT nnFullCargoShipMMSI NOT NULL
+        CONSTRAINT nnFullCargoShipMMSI NOT NULL,
+    finishing_date_time    TIMESTAMP
 );
 
 CREATE TABLE Fleet
