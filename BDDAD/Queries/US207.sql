@@ -6,12 +6,11 @@ AS
 BEGIN
     SELECT COUNT(c.id), AVG(count(cc.container_num))
     INTO number_manifest, avg_manifest
-    FROM container_cargoManifest cc, cargomanifest c, ship s
+    FROM container_cargoManifest cc, cargomanifest_partial c, ship s
          WHERE s.captain_id = cap_id
          AND c.ship_mmsi = s.mmsi
          AND EXTRACT(YEAR FROM c.finishing_date_time) = moment
-         AND cc.cargo_manifest_id = c.id
-         AND c.loading_flag IS NOT NULL
+         AND cc.partial_cargo_manifest_id = c.id
          GROUP BY c.id;
 
     IF number_manifest > 0 THEN
@@ -24,4 +23,4 @@ END;
 /
 
 -- Call procedure to test the function --
-exec avg_manifest(1, 2020);
+call avg_manifest(1, 2020);

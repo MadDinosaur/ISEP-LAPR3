@@ -7,12 +7,11 @@ IS
 BEGIN
     SELECT c.id 
     INTO manifest_id   
-    FROM cargomanifest c
+    FROM cargomanifest_partial c
     WHERE c.finishing_date_time = (SELECT MAX(c.finishing_date_time) 
-                                   FROM cargomanifest c 
+                                   FROM cargomanifest_partial c
                                    WHERE c.finishing_date_time <= given_moment
-                                   AND c.ship_mmsi = id_ship)
-                                   AND c.loading_flag IS NOT NULL;
+                                   AND c.ship_mmsi = id_ship);
 
     occupancy_rate := func_occupancy_rate(id_ship,manifest_id);
     RETURN occupancy_rate;

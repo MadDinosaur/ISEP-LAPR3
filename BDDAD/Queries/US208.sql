@@ -1,5 +1,5 @@
 -- Function creating script --
-CREATE OR REPLACE FUNCTION func_occupancy_rate(id_ship ship.mmsi%type, manifest_id cargomanifest.id%type)
+CREATE OR REPLACE FUNCTION func_occupancy_rate(id_ship ship.mmsi%type, manifest_id cargomanifest_full.id%type)
 RETURN number
 IS 
     Ship_Capacity number(5,2);
@@ -8,12 +8,11 @@ IS
 BEGIN
     SELECT (s.capacity), sum(con.max_volume)
     INTO Ship_Capacity, Container_Volume
-    FROM cargomanifest c, container_cargoManifest cc, ship s, container con
+    FROM cargomanifest_partial c, container_cargoManifest cc, ship s, container con
     WHERE s.mmsi = id_ship
     AND c.id = manifest_id
-    AND c.loading_flag IS NOT NULL
     AND c.ship_mmsi = s.mmsi
-    AND cc.cargo_manifest_id = c.id
+    AND cc.full_cargo_manifest_id = c.id
     AND cc.container_num = con.num
     GROUP BY s.capacity;
     RETURN Container_Volume/Ship_Capacity;

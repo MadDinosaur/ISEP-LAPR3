@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE containers_loaded(pShipMmsi cargomanifest.ship_mmsi%type, pPort cargomanifest.storage_identification%type)
+CREATE OR REPLACE PROCEDURE containers_loaded(pShipMmsi CARGOMANIFEST_PARTIAL.ship_mmsi%type, pPort CARGOMANIFEST_PARTIAL.storage_identification%type)
 AS
     vContainerNum container.num%type;
     vType varchar(20);
@@ -12,11 +12,11 @@ AS
         CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z,
         PAYLOAD
         FROM CONTAINER INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER.NUM = CONTAINER_CARGOMANIFEST.CONTAINER_NUM
-        WHERE CARGO_MANIFEST_ID IN
+        WHERE PARTIAL_CARGO_MANIFEST_ID IN
           (SELECT ID
-          FROM CARGOMANIFEST
+          FROM CARGOMANIFEST_PARTIAL
           WHERE SHIP_MMSI = pShipMmsi
-            AND CARGOMANIFEST.STORAGE_IDENTIFICATION = pPort
+            AND STORAGE_IDENTIFICATION = pPort
             AND LOADING_FLAG = 1
             AND FINISHING_DATE_TIME IS NULL);
 BEGIN
