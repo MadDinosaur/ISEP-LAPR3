@@ -108,7 +108,7 @@ class ContainerSqlStoreTest {
                     "    FROM CONTAINER\n" +
                     "    INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
                     "    INNER JOIN CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CARGO_MANIFEST_ID = CARGOMANIFEST.ID\n" +
-                    "    WHERE CONTAINER.NUM = ? AND CARGOMANIFEST.FINISHING_DATE_TIME IS NOT NULL AND CARGOMANIFEST.LOADING_FLAG IS NOT NULL\n" +
+                    "    WHERE CONTAINER.NUM = 200031 AND CARGOMANIFEST.FINISHING_DATE_TIME IS NOT NULL AND CARGOMANIFEST.LOADING_FLAG IS NOT NULL\n" +
                     "    ORDER BY CARGOMANIFEST.FINISHING_DATE_TIME DESC)\n" +
                     "WHERE ROWNUM = 1";
 
@@ -171,9 +171,9 @@ class ContainerSqlStoreTest {
                     "where cargo_manifest_id in\n" +
                     "      (select id\n" +
                     "      from cargomanifest\n" +
-                    "      where ship_mmsi = ?\n" +
-                    "        and cargomanifest.storage_identification = ?\n" +
-                    "        and loading_flag = ?\n" +
+                    "      where ship_mmsi = 10000001\n" +
+                    "        and cargomanifest.storage_identification = 1\n" +
+                    "        and loading_flag = 0\n" +
                     "        and finishing_date_time is null)";
 
             PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
@@ -218,7 +218,7 @@ class ContainerSqlStoreTest {
             expected.add(Arrays.asList("container_num", "type", "container_position_x", "container_position_y", "container_position_z", "payload"));
             expected.add(Arrays.asList("200031", "non-refrigerated", "1", "2", "3", "28300.0"));
 
-            Assertions.assertEquals(actual.size(), 2);
+            Assertions.assertEquals(actual.size(), 0);
             for (int i = 0; i < actual.size(); i++)
                 for (int j = 0; j < actual.get(0).size(); j++)
                     Assertions.assertEquals(actual.get(i).get(j), expected.get(i).get(j));
