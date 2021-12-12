@@ -187,4 +187,42 @@ public class ContainerSqlStore implements Persistable {
             }
             return containers;
         }
+
+    public List<List<String>> getContainerAudit(DatabaseConnection databaseConnection, int containerNum, int cargoManifestId) {
+        List<List<String>> auditLog = new ArrayList<>();
+
+        Connection connection;
+        try{ connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) { return auditLog; }
+
+        try {
+            String sqlCommand = "SELECT * FROM Container_AuditTrail\n" +
+                    "WHERE container_num = ? AND cargo_manifest_id = ?";
+            try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                selectContainerPreparedStatement.setInt(1, containerNum);
+                selectContainerPreparedStatement.setInt(2, cargoManifestId);
+
+                ResultSet result = selectContainerPreparedStatement.executeQuery();
+                ResultSetMetaData headers = result.getMetaData();
+                //Set column headers
+                auditLog.add(new ArrayList<>());
+                for (int i = 1; i <= headers.getColumnCount(); i++)
+                    auditLog.get(0).add(headers.getColumnName(i));
+                //Set row values
+                int j = 1;
+                while (result.next()) {
+                    auditLog.add(new ArrayList<>());
+                    for (int i = 1; i <= headers.getColumnCount(); i++)
+                        auditLog.get(j).add(result.getString(i));
+                    j++;
+                }
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+            databaseConnection.registerError(exception);
+        } catch (NullPointerException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+        }
+        return auditLog;
+    }
 }

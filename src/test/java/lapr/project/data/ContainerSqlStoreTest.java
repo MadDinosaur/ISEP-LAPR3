@@ -228,4 +228,57 @@ class ContainerSqlStoreTest {
                     .log(Level.SEVERE, null, ex);
         }
     }
+
+    @Test
+    void getContainerAuditNull() {
+        Assertions.assertTrue(containerSqlStore.getContainerAudit(null, -1, -1).isEmpty());
+    }
+
+    @Test
+    void getContainerAuditNotNull() {
+        try {
+            //Setup statement and mock result
+            String sqlCommand = "SELECT * FROM Container_AuditTrail\n" +
+                    "WHERE container_num = ? AND cargo_manifest_id = ?";
+
+            PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
+
+            when(connection.prepareStatement(sqlCommand)).thenReturn(preparedStatementTest);
+            when(resultSet.getMetaData()).thenReturn(resultSetHeaders);
+            when(resultSet.next()).thenReturn(true).thenReturn(false);
+            when(resultSetHeaders.getColumnName(1)).thenReturn("user_id");
+            when(resultSet.getString(1)).thenReturn("MYUSER");
+            when(resultSetHeaders.getColumnName(2)).thenReturn("date_time");
+            when(resultSet.getString(2)).thenReturn("2021-12-12 23:07:10");
+            when(resultSetHeaders.getColumnName(3)).thenReturn("operation_type");
+            when(resultSet.getString(3)).thenReturn("INSERT");
+            when(resultSetHeaders.getColumnName(4)).thenReturn("container_num");
+            when(resultSet.getString(4)).thenReturn("1");
+            when(resultSetHeaders.getColumnName(5)).thenReturn("cargo_manifest_id");
+            when(resultSet.getString(5)).thenReturn("1");
+            when(resultSetHeaders.getColumnCount()).thenReturn(5);
+
+            //Method call
+            List<List<String>> actual = containerSqlStore.getContainerAudit(databaseConnection, 1, 1);
+
+            //SQL command build test
+            String expectedSqlCommand = "SELECT * FROM Container_AuditTrail\n" +
+                    "WHERE container_num = 1 AND cargo_manifest_id = 1";
+            Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
+
+            //SQL query result wrapping test
+            List<List<String>> expected = new ArrayList<>();
+            expected.add(Arrays.asList("user_id", "date_time", "operation_type", "container_num", "cargo_manifest_id"));
+            expected.add(Arrays.asList("MYUSER", "2021-12-12 23:07:10", "INSERT", "1", "1"));
+
+            Assertions.assertEquals(actual.size(), 2);
+            for (int i = 0; i < actual.size(); i++)
+                for (int j = 0; j < actual.get(0).size(); j++)
+                    Assertions.assertEquals(actual.get(i).get(j), expected.get(i).get(j));
+
+        } catch (Exception ex) {
+            Logger.getLogger(ContainerSqlStoreTest.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
+    }
 }
