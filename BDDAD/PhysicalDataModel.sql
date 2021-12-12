@@ -172,6 +172,7 @@ CREATE TABLE CargoManifest_Partial
         CONSTRAINT nnCargoLoadingFlag NOT NULL
         CONSTRAINT ckLoadingFlag CHECK (loading_flag BETWEEN 0 AND 1),
     finishing_date_time    TIMESTAMP
+        DEFAULT NULL
 );
 
 CREATE TABLE CargoManifest_Full
@@ -181,6 +182,7 @@ CREATE TABLE CargoManifest_Full
     ship_mmsi    NUMBER(9)
         CONSTRAINT nnFullCargoShipMMSI NOT NULL,
     finishing_date_time    TIMESTAMP
+        DEFAULT NULL
 );
 
 CREATE TABLE Fleet

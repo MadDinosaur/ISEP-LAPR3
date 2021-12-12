@@ -136,45 +136,31 @@ INSERT INTO Shipment(container_num, storage_identification_origin, storage_ident
 VALUES(2,1,2);
 
 -- CargoManifestPartial --
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 2, TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO CargoManifest_Full(ship_mmsi, finishing_date_time)
-VALUES(100000001, TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,1, 2);
 
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,0, 4, TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO CargoManifest_Full(ship_mmsi, finishing_date_time)
-VALUES(100000001, TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,0, 4);
 
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 4, TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO CargoManifest_Full(ship_mmsi, finishing_date_time)
-VALUES(100000001, TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,1, 4);
 
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,0, 3,  TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO CargoManifest_Full(ship_mmsi, finishing_date_time)
-VALUES(100000001, TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,0, 3);
 
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 3, TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO CargoManifest_Full(ship_mmsi, finishing_date_time)
-VALUES(100000001, TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,1, 3);
 
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,0, 1, TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO CargoManifest_Full(ship_mmsi, finishing_date_time)
-VALUES(100000001, TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,0, 1);
 
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 1, TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'));
-INSERT INTO CargoManifest_Full(ship_mmsi, finishing_date_time)
-VALUES(100000001, TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'));
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,1, 1);
 
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,1, 2, null);
-INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification, finishing_date_time)
-VALUES(100000001,0, 2, null);
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,1, 2);
+INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
+VALUES(100000001,0, 2);
 
 -- Container_CargoManifest --
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
@@ -186,41 +172,16 @@ VALUES(8, 1, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(9, 1, 1,1,2);
 
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 1, 1,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(3, 1, 1,2,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(8, 1, 2,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(9, 1, 1,1,2);
-
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(8, 2, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(9, 2, 1,2,1);
 
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 2, 1,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(3, 2, 1,2,1);
-
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(4, 3, 2,1,2);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(7, 3, 1,1,2);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(10, 3, 1,2,2);
-
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 3, 1,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(3, 3, 1,2,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(4, 3, 2,1,2);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(7, 3, 1,1,2);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(10, 3, 1,2,2);
 
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
@@ -228,27 +189,9 @@ VALUES(7, 4, 1,2,1);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(10, 4, 1,1,2);
 
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 4, 1,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(3, 4, 1,2,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(4, 4, 2,1,2);
-
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(5, 5, 3,1,1);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(6, 5, 1,3,1);
-
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 5, 1,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(3, 5, 1,2,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(4, 5, 2,1,2);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(5, 5, 3,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(6, 5, 1,3,1);
 
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
@@ -260,15 +203,7 @@ VALUES(4, 6, 1,2,2);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(5, 6, 2,2,1);
 
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 6, 1,1,1);
-
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(2, 7, 1,2,1);
-
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(1, 7, 1,1,1);
-INSERT INTO Container_CargoManifest(container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(2, 7, 1,2,1);
 
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
@@ -282,6 +217,15 @@ INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, co
 VALUES(7, 9, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(8, 9, 1,1,2);
+
+-- CargoManifestPartial (Conclusion) --
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 1;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 2;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 3;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 4;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 5;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 6;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 7;
 
 -- ShipTrip --
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
