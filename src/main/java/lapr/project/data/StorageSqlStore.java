@@ -129,10 +129,11 @@ public class StorageSqlStore implements Persistable {
         try {
             String sqlCommand = "select * from country where country = ?";
 
-            PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
-            getStoragesPreparedStatement.setString(1, country);
-            try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
-               return countryResultSet.next();
+            try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                getStoragesPreparedStatement.setString(1, country);
+                try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
+                    return countryResultSet.next();
+                }
             }
 
         } catch (SQLException exception) {

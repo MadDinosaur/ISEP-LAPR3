@@ -82,7 +82,7 @@ public class MatrixGraph<V,E> extends CommonGraph<V,E> {
 
     @Override
     public Edge<V, E> edge(int vOrigKey, int vDestKey) {
-        if (vOrigKey >= numVerts && vDestKey >= numVerts)
+        if (vOrigKey >= numVerts || vDestKey >= numVerts)
             return null;
         return edgeMatrix[vOrigKey][vDestKey];
     }
