@@ -100,16 +100,16 @@ public class ContainerSqlStore implements Persistable {
         } catch (NullPointerException e) { return resultOutput; }
 
         try {
-            String sqlCommand = "SELECT * FROM (\n" +
-                    "    SELECT CONTAINER.NUM as CONTAINER_NUM,\n" +
-                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN 'Ship' ELSE 'Port' END) as LOCATION_TYPE,\n" +
-                    "           (CASE WHEN CARGOMANIFEST.LOADING_FLAG = 1 THEN (SELECT NAME FROM SHIP WHERE MMSI = CARGOMANIFEST.SHIP_MMSI) ELSE (SELECT NAME FROM STORAGE WHERE IDENTIFICATION = CARGOMANIFEST.STORAGE_IDENTIFICATION) END) as LOCATION_NAME\n" +
-                    "    FROM CONTAINER\n" +
-                    "    INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
-                    "    INNER JOIN CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CARGO_MANIFEST_ID = CARGOMANIFEST.ID\n" +
-                    "    WHERE CONTAINER.NUM = ? AND CARGOMANIFEST.FINISHING_DATE_TIME IS NOT NULL AND CARGOMANIFEST.LOADING_FLAG IS NOT NULL\n" +
-                    "    ORDER BY CARGOMANIFEST.FINISHING_DATE_TIME DESC)\n" +
-                    "WHERE ROWNUM = 1";
+            String sqlCommand = "SELECT * FROM(\n" +
+                    "       SELECT CONTAINER.NUM as CONTAINER_NUM,\n" +
+                    "           (CASE WHEN CP.LOADING_FLAG = 1 THEN 'Ship' ELSE 'Port' END) as LOCATION_TYPE,\n" +
+                    "           (CASE WHEN CP.LOADING_FLAG = 1 THEN (SELECT NAME FROM SHIP WHERE MMSI = CP.SHIP_MMSI) ELSE (SELECT NAME FROM STORAGE WHERE IDENTIFICATION = CP.STORAGE_IDENTIFICATION) END) as LOCATION_NAME\n" +
+                    "        FROM CONTAINER\n" +
+                    "        INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
+                    "        INNER JOIN CARGOMANIFEST_PARTIAL CP on CONTAINER_CARGOMANIFEST.PARTIAL_CARGO_MANIFEST_ID = CP.ID\n" +
+                    "        WHERE CONTAINER.NUM = ? AND CP.FINISHING_DATE_TIME IS NOT NULL\n" +
+                    "        ORDER BY CP.FINISHING_DATE_TIME DESC)\n" +
+                    "    WHERE ROWNUM = 1";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setInt(1, containerNum);
 
@@ -147,18 +147,18 @@ public class ContainerSqlStore implements Persistable {
         } catch (NullPointerException e) { return containers; }
 
         try {
-            String sqlCommand = "select num,\n" +
-                    "       (case when refrigerated_flag = 1 then 'refrigerated' else 'non-refrigerated' end) as type,\n" +
-                    "       container_position_x, container_position_y, container_position_z,\n" +
-                    "       payload\n" +
-                    "from container inner join container_cargomanifest on container.num = container_cargomanifest.container_num\n" +
-                    "where cargo_manifest_id in\n" +
-                    "      (select id\n" +
-                    "      from cargomanifest\n" +
-                    "      where ship_mmsi = ?\n" +
-                    "        and cargomanifest.storage_identification = ?\n" +
-                    "        and loading_flag = ?\n" +
-                    "        and finishing_date_time is null)";
+            String sqlCommand = "SELECT NUM,\n" +
+                    "        (CASE WHEN REFRIGERATED_FLAG = 1 THEN 'Refrigerated' ELSE 'Non-refrigerated' END) as \"TYPE\",\n" +
+                    "        CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z,\n" +
+                    "        PAYLOAD\n" +
+                    "        FROM CONTAINER INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER.NUM = CONTAINER_CARGOMANIFEST.CONTAINER_NUM\n" +
+                    "        WHERE PARTIAL_CARGO_MANIFEST_ID IN\n" +
+                    "          (SELECT ID\n" +
+                    "          FROM CARGOMANIFEST_PARTIAL\n" +
+                    "          WHERE SHIP_MMSI = ?\n" +
+                    "            AND STORAGE_IDENTIFICATION = ?\n" +
+                    "            AND LOADING_FLAG = ?\n" +
+                    "            AND FINISHING_DATE_TIME IS NULL)";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setString(1, shipMmsi);
                 selectContainerPreparedStatement.setInt(2, portId);
