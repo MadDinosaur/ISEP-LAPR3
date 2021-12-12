@@ -67,6 +67,18 @@ public class CountryTest {
         assertTrue(actualMessage4.contains(expectedMessage4));
     }
 
+    @Test
+    public void equalsTest(){
+        Country country1 = new Country(continent, countryName, coordinate, alpha2, alpha3, population, capital);
+        String a = "storage";
+        Country country2 = new Country(continent, countryName, coordinate, alpha2, alpha3, population, capital);
+
+        assertEquals(country1, country2);
+        assertNotEquals(a, country1);
+        assertEquals(country1, country2);
+        country2.setCapital("asd");
+        assertNotEquals(country1, country2);
+    }
 
     @Test
     public void storageToStringTest(){

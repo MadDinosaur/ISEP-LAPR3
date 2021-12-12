@@ -86,13 +86,14 @@ public class BorderSQLStore implements Persistable {
         try {
             String sqlCommand = "select * from border where (country_name = ? and country_border = ?) or (country_name = ? and country_border = ?)";
 
-            PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
-            getStoragesPreparedStatement.setString(1, border.get1st());
-            getStoragesPreparedStatement.setString(2, border.get2nd());
-            getStoragesPreparedStatement.setString(3, border.get2nd());
-            getStoragesPreparedStatement.setString(4, border.get1st());
-            try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
-                return countryResultSet.next();
+            try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                getStoragesPreparedStatement.setString(1, border.get1st());
+                getStoragesPreparedStatement.setString(2, border.get2nd());
+                getStoragesPreparedStatement.setString(3, border.get2nd());
+                getStoragesPreparedStatement.setString(4, border.get1st());
+                try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
+                    return countryResultSet.next();
+                }
             }
 
         } catch (SQLException exception) {
@@ -115,12 +116,13 @@ public class BorderSQLStore implements Persistable {
         try {
             String sqlCommand = "select * from country where country = ? or country = ?";
 
-            PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
-            getStoragesPreparedStatement.setString(1, border.get1st());
-            getStoragesPreparedStatement.setString(2, border.get2nd());
-            try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
-                countryResultSet.next();
-                return countryResultSet.next();
+            try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                getStoragesPreparedStatement.setString(1, border.get1st());
+                getStoragesPreparedStatement.setString(2, border.get2nd());
+                try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
+                    countryResultSet.next();
+                    return countryResultSet.next();
+                }
             }
 
         } catch (SQLException exception) {

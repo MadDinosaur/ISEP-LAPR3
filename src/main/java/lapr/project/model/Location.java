@@ -95,16 +95,4 @@ public abstract class Location {
     public double distanceBetween(Location location){
         return this.getCoordinate().getDistanceBetweenCoordinates(location.getCoordinate());
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Location location = (Location) o;
-
-        if (!Objects.equals(continent, location.continent)) return false;
-        if (!Objects.equals(country, location.country)) return false;
-        return Objects.equals(coordinate, location.coordinate);
-    }
 }

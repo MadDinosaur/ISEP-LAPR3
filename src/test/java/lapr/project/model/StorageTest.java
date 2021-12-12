@@ -91,4 +91,24 @@ public class StorageTest {
         String result = storage.toString();
         assertNotNull(result);
     }
+
+    @Test
+    public void equalsTest(){
+        Storage storage1 = new Storage(identification,name,continent,country,coordinate);
+        String a = "storage";
+        Storage storage2 = new Storage(identification,name,continent,country,coordinate);
+
+        assertEquals(storage1, storage1);
+        assertNotEquals(a, storage1);
+        assertEquals(storage1, storage2);
+        storage2.setIdentification(29003);
+        assertNotEquals(storage1, storage2);
+    }
+
+    @Test
+    public void distTest(){
+        Storage storage1 = new Storage(identification,name,continent,country,coordinate);
+        Storage storage2 = new Storage(identification,name,continent,country,new Coordinate(70, 30));
+        assertEquals((int)storage1.distanceBetween(storage2),4072);
+    }
 }
