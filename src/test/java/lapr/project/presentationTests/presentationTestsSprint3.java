@@ -1,5 +1,6 @@
 package lapr.project.presentationTests;
 
+import lapr.project.controller.ContainerAuditController;
 import lapr.project.controller.ReadSeaDistFilesController;
 import lapr.project.controller.ReadShipFileController;
 import lapr.project.controller.ReadStorageFileController;
@@ -33,6 +34,20 @@ public class presentationTestsSprint3 {
             StringBuilder sb = new StringBuilder();
             sb.append(MainStorage.getInstance().getPortsGraph().getMg());
             writeOutput(sb.toString(), "US301");
+        }
+    }
+
+    @Test
+    public void US304() {
+        if(dataBase) {
+            ContainerAuditController controller = new ContainerAuditController();
+            String values = controller.getContainerAuditToString(controller.getContainerAudit(1,1));
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("Audit log for container\n\n");
+            sb.append(values);
+
+            writeOutput(sb.toString(), "US304");
         }
     }
 
