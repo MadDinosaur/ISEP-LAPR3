@@ -10,13 +10,13 @@ public class ContainersWriter {
     /**
      * Hides the implicit public controller
      */
-    private ContainersWriter(){}
+    public ContainersWriter(){}
 
     /**
      * Writes in a file the list of containers
      * @param containers The list of containers to be written
      */
-    public static void writeContainers(List<String> containers){
+    public void writeContainers(List<String> containers){
 
         StringBuilder sb = new StringBuilder();
 
@@ -35,7 +35,7 @@ public class ContainersWriter {
      * @param filename The file's name
      */
     public static void writeOutput(String output, String filename){
-        try (FileWriter myWriter = new FileWriter("output\\sprint2\\" + filename + ".txt")) {
+        try (FileWriter myWriter = new FileWriter("output\\sprint3\\" + filename + ".txt")) {
             if(output!=null)
                 myWriter.write(output);
         } catch (IOException e) {
