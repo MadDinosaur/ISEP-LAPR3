@@ -1,5 +1,6 @@
 package lapr.project.data;
 
+import oracle.ucp.proxy.annotation.Pre;
 import oracle.ucp.util.Pair;
 
 import javax.xml.crypto.Data;
@@ -107,11 +108,15 @@ public class CargoManifestSqlStore {
     /**
      * Gets a list of containers that belong to a given manifest
      * @param databaseConnection a connection to the database
+     * @param manifestID the manifest's id
      * @return a list of containers from a given manifest
      */
     public List<String> getContainersGivenManifest(DatabaseConnection databaseConnection,int manifestID){
         Connection connection = databaseConnection.getConnection();
         List<String> containers = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        sb.append(getShipMeasures(databaseConnection,manifestID));
+        sb.append("\n");
 
         try{
             String sqlCommand = "SELECT c.container_num,c.container_position_x,c.container_position_y,c.container_position_z FROM container_cargoManifest c WHERE c.full_cargo_manifest_id =?";
@@ -121,7 +126,6 @@ public class CargoManifestSqlStore {
 
                 try (ResultSet containersSet = getContainersStatement.executeQuery()){
                     while(containersSet.next()){
-                        StringBuilder sb = new StringBuilder();
 
                         sb.append(containersSet.getInt(1));
                         sb.append(",");
@@ -131,15 +135,53 @@ public class CargoManifestSqlStore {
                         sb.append(",");
                         sb.append(containersSet.getInt(4));
                         containers.add(sb.toString());
+
+                        sb = new StringBuilder();
+
                     }
                     return containers;
                 }
             }
 
         }catch (SQLException exception){
-            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            Logger.getLogger(CargoManifestSqlStore.class.getName()).log(Level.SEVERE, null, exception);
             databaseConnection.registerError(exception);
             return null;
         }
+    }
+
+    /**
+     * Gets the width and length of tje ship for a given manifest
+     * @param databaseConnection a connection to the database
+     * @param manifestID The manifest's id
+     * @return the string with the measures
+     */
+    private String getShipMeasures(DatabaseConnection databaseConnection, int manifestID){
+        Connection connection = databaseConnection.getConnection();
+        StringBuilder measures = new StringBuilder();
+
+        try{
+            String sqlCommand = "SELECT s.ship_width,s.ship_length \n" +
+                    "FROM ship s \n" +
+                    "WHERE s.mmsi = (SELECT c.ship_mmsi FROM cargomanifest_full c WHERE c.id = ?)";
+            try (PreparedStatement getMeasuresStatement = connection.prepareStatement(sqlCommand)){
+                getMeasuresStatement.setInt(1,manifestID);
+
+                try(ResultSet measuresSet = getMeasuresStatement.executeQuery()) {
+                    if (measuresSet.next()) {
+                        measures.append(measuresSet.getDouble(1));
+                        measures.append(",");
+                        measures.append(measuresSet.getDouble(2));
+                        return measures.toString();
+                    }
+
+                }
+            }
+        }catch (SQLException exception){
+            Logger.getLogger(CargoManifestSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+            return null;
+        }
+        return null;
     }
 }
