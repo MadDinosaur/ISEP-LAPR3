@@ -7,7 +7,6 @@ DROP TABLE Certificate CASCADE CONSTRAINTS PURGE;
 DROP TABLE CscPlate_Certificate CASCADE CONSTRAINTS PURGE;
 DROP TABLE Container_CargoManifest CASCADE CONSTRAINTS PURGE;
 DROP TABLE Shipment CASCADE CONSTRAINTS PURGE;
-DROP TABLE CargoManifest CASCADE CONSTRAINTS PURGE;
 DROP TABLE CargoManifest_Partial CASCADE CONSTRAINTS PURGE;
 DROP TABLE CargoManifest_Full CASCADE CONSTRAINTS PURGE;
 DROP TABLE Fleet CASCADE CONSTRAINTS PURGE;
@@ -39,12 +38,16 @@ CREATE TABLE Storage
         CONSTRAINT nnCountry NOT NULL,
     name                   VARCHAR(20)
         CONSTRAINT nnStorageName NOT NULL,
+    max_volume            NUMBER(5,2)
+        CONSTRAINT nnStorageMaxVolume NOT NULL,
+        CONSTRAINT ckStorageMaxCapacity CHECK (max_volume >= 0),
     latitude               NUMBER(7, 5)
         CONSTRAINT nnStorageLatitude NOT NULL,
         CONSTRAINT ckStorageLatitude CHECK (latitude BETWEEN -90 AND 90 OR latitude = 91),
     longitude              NUMBER(8, 5)
         CONSTRAINT nnStorageLongitude NOT NULL,
         CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181)
+
 );
 
 CREATE TABLE Container

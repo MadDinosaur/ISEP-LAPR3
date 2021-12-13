@@ -98,14 +98,14 @@ INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_
 VALUES(100000005,2,'Ship5',1000005,3,100,'SCS5',1,200,50,100,15,5);
 
 -- Storage --
-INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
-VALUES(1, 1, 'Storage1', 'Guyana', 6, -57);
-INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
-VALUES(2, 1, 'Storage2', 'Venezuela', 11,-67);
-INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
-VALUES(3, 1, 'Storage3', 'Luxembourg', 50, 5.7);
-INSERT INTO Storage(identification, storage_type_id, name, country_name, latitude,longitude)
-VALUES(4, 1, 'Storage4', 'Austria', 50,18);
+INSERT INTO Storage(identification, storage_type_id, name, max_volume, country_name, latitude,longitude)
+VALUES(1, 1, 'Storage1', 500, 'Guyana', 6, -57);
+INSERT INTO Storage(identification, storage_type_id, name, max_volume, country_name, latitude,longitude)
+VALUES(2, 1, 'Storage2', 600,'Venezuela', 11,-67);
+INSERT INTO Storage(identification, storage_type_id, name, max_volume, country_name, latitude,longitude)
+VALUES(3, 1, 'Storage3', 700, 'Luxembourg', 50, 5.7);
+INSERT INTO Storage(identification, storage_type_id, name, max_volume, country_name, latitude,longitude)
+VALUES(4, 1, 'Storage4', 450, 'Austria', 50,18);
 
 -- Container --
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
