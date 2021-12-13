@@ -2,7 +2,12 @@ package lapr.project.data;
 
 import oracle.ucp.util.Pair;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CargoManifestSqlStore {
 
@@ -99,6 +104,42 @@ public class CargoManifestSqlStore {
         }
     }
 
+    /**
+     * Gets a list of containers that belong to a given manifest
+     * @param databaseConnection a connection to the database
+     * @return a list of containers from a given manifest
+     */
+    public List<String> getContainersGivenManifest(DatabaseConnection databaseConnection,int manifestID){
+        Connection connection = databaseConnection.getConnection();
+        List<String> containers = new ArrayList<>();
 
+        try{
+            String sqlCommand = "SELECT c.container_num,c.container_position_x,c.container_position_y,c.container_position_z FROM container_cargoManifest c WHERE c.full_cargo_manifest_id =?";
 
+            try (PreparedStatement getContainersStatement = connection.prepareStatement(sqlCommand)){
+                getContainersStatement.setInt(1,manifestID);
+
+                try (ResultSet containersSet = getContainersStatement.executeQuery()){
+                    while(containersSet.next()){
+                        StringBuilder sb = new StringBuilder();
+
+                        sb.append(containersSet.getInt(1));
+                        sb.append(",");
+                        sb.append(containersSet.getInt(2));
+                        sb.append(",");
+                        sb.append(containersSet.getInt(3));
+                        sb.append(",");
+                        sb.append(containersSet.getInt(4));
+                        containers.add(sb.toString());
+                    }
+                    return containers;
+                }
+            }
+
+        }catch (SQLException exception){
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+            return null;
+        }
+    }
 }
