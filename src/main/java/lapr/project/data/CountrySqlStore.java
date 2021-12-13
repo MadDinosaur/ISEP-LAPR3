@@ -140,7 +140,7 @@ public class CountrySqlStore implements Persistable {
      * loads the pathGraph information
      * @param databaseConnection the app's database connection
      */
-    public static void loadGraph(DatabaseConnection databaseConnection){
+    public static void loadGraph(DatabaseConnection databaseConnection, int n){
         Connection connection = databaseConnection.getConnection();
         PortsGraph portsGraph = new PortsGraph();
 
@@ -167,6 +167,7 @@ public class CountrySqlStore implements Persistable {
             
             loadBorders(databaseConnection, portsGraph);
             loadPaths(databaseConnection, portsGraph);
+            portsGraph.setUpGraph(n);
             MainStorage.getInstance().setPortsGraph(portsGraph);
             
         } catch (SQLException exception) {
@@ -243,8 +244,8 @@ public class CountrySqlStore implements Persistable {
                     while (countryResultSet.next()){
                         int identification = countryResultSet.getInt(1);
                         String name = countryResultSet.getString(4);
-                        float longitude = countryResultSet.getFloat(6);
-                        float latitude = countryResultSet.getFloat(5);
+                        float longitude = countryResultSet.getFloat(7);
+                        float latitude = countryResultSet.getFloat(6);
 
                         Storage storage = new Storage(identification, name, country.getContinent(), country.getCountry(), new Coordinate(longitude, latitude));
                         portsGraph.insertLocation(storage);

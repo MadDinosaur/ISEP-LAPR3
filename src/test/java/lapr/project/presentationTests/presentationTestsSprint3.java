@@ -30,7 +30,7 @@ public class presentationTestsSprint3 {
     @Test
     public void US301(){
         if (dataBase) {
-            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection());
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(), 4);
             StringBuilder sb = new StringBuilder();
             sb.append(MainStorage.getInstance().getPortsGraph().getMg());
             writeOutput(sb.toString(), "US301");

@@ -4,10 +4,9 @@ import lapr.project.model.Country;
 import lapr.project.model.Location;
 import lapr.project.model.Storage;
 import lapr.project.model.graph.matrix.MatrixGraph;
+import oracle.ucp.util.Pair;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class PortsGraph {
 
@@ -87,48 +86,88 @@ public class PortsGraph {
             mg.addEdge(country1, country2, country1.distanceBetween(country2));
     }
 
-//    public Map<Country, Integer> greedyColoring()
-//    {
-//        MatrixGraph<Location, Double> countryMg =  mg.clone();
-//
-//        for (Location location : countryMg.vertices())
-//            if (location instanceof Storage)
-//                countryMg.removeVertex(location);
-//
-//        int V = countryMg.numVertices();
-//
-//        int[] result = new int[V];
-//        Arrays.fill(result, -1);
-//
-//        result[0] = 0;
-//
-//        boolean[] available = new boolean[V];
-//        Arrays.fill(available, true);
-//
-//        for (int u = 1; u < V; u++)
-//        {
-//            for (Location location : countryMg.adjVertices(countryMg.vertex(u))) {
-//                int i = countryMg.key(location);
-//                if (result[i] != -1)
-//                    available[result[i]] = false;
-//            }
-//
-//            int cr;
-//            for (cr = 0; cr < V; cr++){
-//                if (available[cr])
-//                    break;
-//            }
-//
-//            result[u] = cr;
-//
-//            Arrays.fill(available, true);
-//        }
-//
-//        for (int u = 0; u < V; u++)
-//            System.out.println("Vertex " + countryMg.vertex(u).getCountry() + " --->  Color "
-//                    + result[u]);
-//        return null;
-//    }
+    /**
+     * returns a map with every country and their color
+     * @return returns a map with every country and their color
+     */
+    public Map<Country, Integer> colorCountries() {
+
+        Map<Country, Integer> countryIntegerMap = new HashMap<>();
+
+        int vertices = mg.numVertices();
+
+        int[] result = new int[vertices];
+        Arrays.fill(result, -1);
+
+        result[0] = 0;
+
+        boolean[] available = new boolean[vertices];
+        Arrays.fill(available, true);
+
+        for (int i = 1; i < vertices; i++)
+        {
+            Location loc = mg.vertex(i);
+            if (loc instanceof Country) {
+                for (Location location : mg.adjVertices(loc)) {
+                    int j = mg.key(location);
+                    if (result[j] != -1)
+                        available[result[j]] = false;
+                }
+
+                int cr;
+                for (cr = 0; cr < vertices; cr++) {
+                    if (available[cr])
+                        break;
+                }
+
+                result[i] = cr;
+
+                countryIntegerMap.put((Country) mg.vertex(i), result[i]);
+                Arrays.fill(available, true);
+            }
+        }
+        return countryIntegerMap;
+    }
+
+    /**
+     * set's up the graph by connecting each point to itself and every point to the closes port in another country
+     * @param n the number of closest port to add
+     */
+    public void setUpGraph(int n){
+            
+        List<Location> storages = new ArrayList<>();
+        
+        for (Location location : mg.vertices()){
+            if (location instanceof Storage) {
+                storages.add(location);
+            }
+            mg.addEdge(location, location, (double) 0);
+        }
+
+        if (n == 0)
+            return;
+
+        System.out.println(storages.size());
+        for (Location location1 : storages){
+            List<Pair<Location, Double>> closest = new ArrayList<>();
+            for (Location location2 : storages){
+                if(location1.getCountry().equals(location2.getCountry())){
+                    mg.addEdge(location1, location2, location1.distanceBetween(location1));
+                } else{
+                    closest.add(new Pair<>(location2, location1.distanceBetween(location2)));
+                }
+            }
+
+            closest.sort(Comparator.comparing(Pair::get2nd));
+
+            if(n >= closest.size())
+                n = closest.size() - 1;
+
+            for (int i = 0; i < n; i++){
+                mg.addEdge(location1, closest.get(i).get1st(), closest.get(i).get2nd());
+            }
+        }
+    }
 
     /**
      * returns the graph
