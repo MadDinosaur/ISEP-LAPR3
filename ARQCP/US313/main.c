@@ -1,56 +1,135 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
-#define X 2
-#define Y 3
-#define Z 5
+#define LENGTH_CONTAINER 14.5
+#define WIDTH_CONTAINER 2.5
+#define Z 9
+#define FILE_PATH "containers.txt"
 
-int m1[Y][Z] = {{1,2,3,4,5}, {6,7,8,9,10}, {11,12,13,14,15}};
+int main(void){
 
-int m2[X][Y][Z] = {
-        {{1,2,3,4,5}, {6,7,8,9,10}, {11,12,13,14,15}},
-        {{16,17,18,19,20}, {21,22,23,24,25}, {26,27,28,29,30}}
-};
+    /**
+     * The ship's length
+     **/
+    double lengthShip;
+
+    /**
+     * The ship's width
+     */
+    double widthShip;
+
+    /**
+     * The matrix's X size
+     */
+    int X;
+
+    /**
+     * The matrix's Y size
+     */
+    int Y;
+
+    /**
+     * The iterators to traverse the matrix
+     */
+    int i;
+    int j;
+    int k;
+
+    /**
+     * The temporary X value
+     */
+    int tempX;
+
+    /**
+     * The temporary Y value
+     */
+    int tempY;
+
+    /**
+     * The temporary Z value
+     */
+    int tempZ;
+
+    /**
+     * The temporary ID
+     */
+    int tempID;
 
 
 
+    FILE *in_file = fopen(FILE_PATH,"r");
 
-int get_even(){
-    int i,j,k, even = 0;
+    /**
+     * Checks if the file exists
+     */
+    if (in_file == NULL){
+        printf("Error! File not found\n");
+        exit(-1);
+    }
 
-    int *ptr = &m2[0][0][0];
+    /**
+     * Gets the value of the Ship's width and length
+     */
+    fscanf(in_file, "%lf,%lf", &widthShip, &lengthShip);
 
-    for(i=0;i<X;i++){
-        for(j=0;j<Y;j++){
-            for(k=0;k<Z;k++){
-                if(*ptr % 2 == 0)
-                    even++;
-                ptr++;
+    /**
+     * Gets the size of X and Y
+     */
+    X = floor(widthShip/WIDTH_CONTAINER);
+    Y = floor(lengthShip/LENGTH_CONTAINER);
+
+    /**
+     * The matrix created with size X,Y,Z that will store the containers' ID
+     */
+    int matrix[X][Y][Z];
+
+    /**
+     * Sets all the values of the matrix to 0
+     */
+    for(i=0;i<X;i++) {
+        for (j = 0; j < Y; j++) {
+            for (k = 0; k < Z; k++) {
+
+                matrix[i][j][k] = 0;
             }
         }
     }
 
-    return even;
+
+    double v;
+    v = fscanf(in_file,"%d,%d,%d,%d", &tempID,&tempX,&tempY,&tempZ);
+
+    /**
+     * A cycle for every line of the file
+     */
+    while (v != EOF) {
+        matrix[tempX][tempY][tempZ] = tempID;
+        v = fscanf(in_file, "%d,%d,%d,%d", &tempID, &tempX, &tempY, &tempZ);
+    }
+
+
+
+    // Show the matrix
+    for(i=0;i<X;i++) {
+        for (j = 0; j < Y; j++) {
+            for (k = 0; k < Z; k++) {
+
+                printf("%d ", matrix[i][j][k]);
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+
+    // Show the ship measures
+    printf("Width:%f Length:%f\n",widthShip,lengthShip);
+
+    // Show the array sizes
+    printf("X:%d Y:%d Z:%d\n",X,Y,Z);
+
+    /**
+     * Close the file
+     */
+    fclose(in_file);
 }
-
-
-int main(void) {
-
-
-    int *ptr1 = &m1[0][0];
-    printf("m1[2][3] = %d\n", m1[2][3]);
-    printf("m1[2][3] = %d\n", *(*m1 + (2*Z) + 3));
-    printf("m1[2][3] = %d\n", *(ptr1 + (2*Z) + 3));
-
-
-    int *ptr2 = &m2[0][0][0];
-    printf("m2[1][2][3] = %d\n",m2[1][2][3]);
-    printf("m2[1][2][3] = %d\n",*(*(*(m2+1) + 2) + 3));
-    printf("m2[1][2][3] = %d\n",*(ptr2 + (1*Y*Z) + (2*Z) + 3));
-
-    int even = get_even();
-    printf("Number of even elements = %d\n", even);
-
-
-    return 0;
-}
-
