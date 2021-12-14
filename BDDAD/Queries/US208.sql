@@ -17,6 +17,7 @@ BEGIN
     GROUP BY s.capacity;
     RETURN Container_Volume/Ship_Capacity;
 END;
+/
 
 -- Call function to test it --
 SELECT func_occupancy_rate(100000001,1) FROM DUAL
