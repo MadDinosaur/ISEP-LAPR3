@@ -17,8 +17,34 @@ DROP TABLE ShipTrip CASCADE CONSTRAINTS PURGE;
 DROP TABLE Country CASCADE CONSTRAINTS PURGE;
 DROP TABLE Border CASCADE CONSTRAINTS PURGE;
 DROP TABLE Storage_Path CASCADE CONSTRAINTS PURGE;
+DROP TABLE Role CASCADE CONSTRAINTS PURGE;
+DROP TABLE SystemUser CASCADE CONSTRAINTS PURGE;
+DROP TABLE Truck CASCADE CONSTRAINTS PURGE;
 
 -- create tables
+CREATE TABLE Role
+(
+    id   INTEGER GENERATED ALWAYS AS IDENTITY
+        CONSTRAINT pkRoleId PRIMARY KEY,
+    name VARCHAR(20)
+        CONSTRAINT nnRoleName NOT NULL
+        CONSTRAINT unRoleName UNIQUE
+);
+
+CREATE TABLE SystemUser
+(
+    registration_code VARCHAR(5)
+        CONSTRAINT pkSystemUserCode PRIMARY KEY,
+    name VARCHAR(20)
+        CONSTRAINT nnSystemUserName NOT NULL,
+    email VARCHAR(40)
+        CONSTRAINT nnSystemUserEmail NOT NULL
+        CONSTRAINT unSystemUserEmail UNIQUE
+        CONSTRAINT ckSystemUserEmail CHECK (email LIKE '%_@__%.__%'),
+    role_id INTEGER
+        CONSTRAINT nnSystemUserRoleId NOT NULL
+);
+
 CREATE TABLE StorageType
 (
     id   INTEGER GENERATED ALWAYS AS IDENTITY
@@ -161,15 +187,21 @@ CREATE TABLE Shipment
         CONSTRAINT nnStorageIdentificationOrigin NOT NULL,
     storage_identification_destination INTEGER
         CONSTRAINT nnStorageIdentificationDestination NOT NULL,
-    CONSTRAINT ckStorageOriginDestination CHECK (storage_identification_origin != storage_identification_destination)
+    CONSTRAINT ckStorageOriginDestination CHECK (storage_identification_origin != storage_identification_destination),
+    parting_date TIMESTAMP,
+    arrival_date TIMESTAMP,
+    system_user_code_client VARCHAR(5)
+        CONSTRAINT nnSystemUserCodeClient NOT NULL
 );
 
 CREATE TABLE CargoManifest_Partial
 (
     id           INTEGER GENERATED ALWAYS AS IDENTITY
         CONSTRAINT pkCargoManifestId PRIMARY KEY,
+    truck_id     INTEGER,
     ship_mmsi    NUMBER(9)
         CONSTRAINT nnCargoShipMMSI NOT NULL,
+        CONSTRAINT ckTransportation CHECK (truck_id IS NULL OR ship_mmsi IS NULL),
     storage_identification INTEGER
         CONSTRAINT nnCargoStorageIdentification NOT NULL,
     loading_flag NUMBER(1)
@@ -183,10 +215,17 @@ CREATE TABLE CargoManifest_Full
 (
      id           INTEGER GENERATED ALWAYS AS IDENTITY
         CONSTRAINT pkFullCargoManifestId PRIMARY KEY,
+    truck_id     INTEGER,
     ship_mmsi    NUMBER(9)
         CONSTRAINT nnFullCargoShipMMSI NOT NULL,
+        CONSTRAINT ckFullCargoTransportation CHECK (truck_id IS NULL OR ship_mmsi IS NULL),
     finishing_date_time    TIMESTAMP
         DEFAULT NULL
+);
+
+CREATE TABLE Truck
+(
+    id INTEGER CONSTRAINT pkTruckId PRIMARY KEY
 );
 
 CREATE TABLE Fleet
@@ -236,7 +275,7 @@ CREATE TABLE Ship
     draft                                    NUMBER(5, 2)
         CONSTRAINT nnDraft NOT NULL
         CONSTRAINT ckDraft CHECK (draft >= 0),
-    captain_id                              VARCHAR(10)
+    system_user_code_captain                              VARCHAR(5)
         CONSTRAINT nnCaptainID NOT NULL
         CONSTRAINT unCaptainID UNIQUE
 );
@@ -328,6 +367,9 @@ CREATE TABLE Storage_Path
 );
 
 -- define foreign keys and combined primary keys
+ALTER TABLE SystemUser
+    ADD CONSTRAINT fkSystemUserRoleId FOREIGN KEY (role_id) REFERENCES Role (id);
+
 ALTER TABLE Storage
     ADD CONSTRAINT fkStorageTypeId FOREIGN KEY (storage_type_id) REFERENCES StorageType (id)
     ADD CONSTRAINT fkCountryName FOREIGN KEY (country_name) REFERENCES Country (country);
@@ -343,18 +385,22 @@ ALTER TABLE Container_CargoManifest
 ALTER TABLE Shipment
     ADD CONSTRAINT fkShipmentStorageIdentificationOrigin FOREIGN KEY (storage_identification_origin) REFERENCES Storage (identification)
     ADD CONSTRAINT fkShipmentStorageIdentificationDestination FOREIGN KEY (storage_identification_destination) REFERENCES Storage (identification)
-    ADD CONSTRAINT fkShipmentContainerNum FOREIGN KEY (container_num) REFERENCES Container (num);
+    ADD CONSTRAINT fkShipmentContainerNum FOREIGN KEY (container_num) REFERENCES Container (num)
+    ADD CONSTRAINT fkShipmentSystemUser FOREIGN KEY (system_user_code_client) REFERENCES SystemUser (registration_code);
 
 ALTER TABLE CargoManifest_Partial
     ADD CONSTRAINT fkContainerStorageIdentification FOREIGN KEY (storage_identification) REFERENCES Storage(identification)
-    ADD CONSTRAINT fkCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi);
+    ADD CONSTRAINT fkCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi)
+    ADD CONSTRAINT fkCargoManifestTruckId FOREIGN KEY (truck_id) REFERENCES Truck (id);
 
 ALTER TABLE CargoManifest_Full
-    ADD CONSTRAINT fkFullCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi);
+    ADD CONSTRAINT fkFullCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi)
+    ADD CONSTRAINT fkFullCargoManifestTruckId FOREIGN KEY (truck_id) REFERENCES Truck (id);
 
 ALTER TABLE Ship
     ADD CONSTRAINT fkShipFleetId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)
-    ADD CONSTRAINT fkShipVesselTypeId FOREIGN KEY (vessel_type_id) REFERENCES VesselType (id);
+    ADD CONSTRAINT fkShipVesselTypeId FOREIGN KEY (vessel_type_id) REFERENCES VesselType (id)
+    ADD CONSTRAINT fkShipSystemUser FOREIGN KEY (system_user_code_captain) REFERENCES SystemUser (registration_code);
 
 ALTER TABLE DynamicData
     ADD CONSTRAINT fkDynamicDataShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi)
@@ -380,3 +426,53 @@ ALTER TABLE Storage_Path
     ADD CONSTRAINT fkPathStorage1 FOREIGN KEY (storage_id1) REFERENCES Storage (identification)
     ADD CONSTRAINT fkPathStorage2 FOREIGN KEY (storage_id2) REFERENCES Storage (identification)
     ADD CONSTRAINT pkStoragePath PRIMARY KEY (storage_id1, storage_id2);
+
+-- define database triggers
+CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
+    AFTER UPDATE ON CargoManifest_Partial
+    FOR EACH ROW
+    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL)
+    DECLARE
+        vCargoManifest_Full CargoManifest_Full%rowtype;
+        vContainer Container_CargoManifest%rowtype;
+    BEGIN
+        -- find current full manifest for the ship
+        BEGIN
+            SELECT * INTO vCargoManifest_Full FROM CargoManifest_Full
+            WHERE ship_mmsi = :new.ship_mmsi
+            AND finishing_date_time IS NULL;
+        EXCEPTION
+            -- if full manifest does not exist yet, create it
+            WHEN no_data_found THEN
+                 INSERT INTO CargoManifest_Full (ship_mmsi, finishing_date_time) VALUES (:new.ship_mmsi, NULL);
+                 SELECT * INTO vCargoManifest_Full FROM CargoManifest_Full
+                    WHERE ship_mmsi = :new.ship_mmsi
+                    AND finishing_date_time IS NULL;
+        END;
+
+        -- find and update containers to be loaded/offloaded
+        FOR vContainer IN (SELECT * FROM Container_CargoManifest WHERE partial_cargo_manifest_id = :new.id)
+            LOOP
+                IF :new.loading_flag = 1 THEN
+                    -- loading operation
+                    INSERT INTO Container_CargoManifest (container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+                    VALUES (vContainer.container_num, vCargoManifest_Full.id, vContainer.container_position_x, vContainer.container_position_y, vContainer.container_position_z);
+                ELSE
+                    -- unloading operation
+                    DELETE FROM Container_CargoManifest WHERE full_cargo_manifest_id = vCargoManifest_Full.id AND container_num = vContainer.container_num;
+                END IF;
+            END LOOP;
+
+        -- close modified cargo manifest and crate a new current one
+        UPDATE CargoManifest_Full SET finishing_date_time = CURRENT_TIMESTAMP WHERE id = vCargoManifest_Full.id;
+
+        INSERT INTO CargoManifest_Full (ship_mmsi) VALUES (vCargoManifest_Full.ship_mmsi);
+
+        FOR vContainer IN (SELECT * FROM Container_CargoManifest WHERE full_cargo_manifest_id = vCargoManifest_Full.id)
+            LOOP
+                INSERT INTO Container_CargoManifest (container_num, full_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
+                VALUES (vContainer.container_num, (SELECT id FROM CargoManifest_Full WHERE ship_mmsi = vCargoManifest_Full.ship_mmsi AND finishing_date_time IS NULL), vContainer.container_position_x, vContainer.container_position_y, vContainer.container_position_z);
+            END LOOP;
+    END;
+
+ALTER TRIGGER trgUpdateCargoManifest ENABLE;
