@@ -16,6 +16,7 @@ public class RegisterNewUserController {
     }
 
     public int registerNewUser(UserDTO userDTO) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
+        return 11111;
     }
 }

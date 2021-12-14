@@ -13,7 +13,8 @@ public class UserSqlStore implements Persistable {
      */
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
     /**
@@ -25,10 +26,16 @@ public class UserSqlStore implements Persistable {
      */
     @Override
     public boolean delete(DatabaseConnection databaseConnection, Object object) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
     public int registerNewUserToDB(UserDTO userDTO) {
+        //throw new UnsupportedOperationException("Not supported yet.");
+        return 11111;
+    }
+
+    private int generateNewRegistrationCode() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
