@@ -7,6 +7,8 @@
 #define Z 9
 #define FILE_PATH "containers.txt"
 
+int *ptr;
+
 int main(void){
 
     /**
@@ -83,6 +85,7 @@ int main(void){
      * The matrix created with size X,Y,Z that will store the containers' ID
      */
     int matrix[X][Y][Z];
+    ptr = &matrix[0][0][0];
 
     /**
      * Sets all the values of the matrix to 0
