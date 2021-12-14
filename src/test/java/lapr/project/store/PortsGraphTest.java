@@ -5,6 +5,8 @@ import lapr.project.model.Country;
 import lapr.project.model.Storage;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PortsGraphTest {
@@ -38,5 +40,13 @@ class PortsGraphTest {
 
         assertEquals(portsGraph.getMg().numVertices(), 4);
         assertEquals(portsGraph.getMg().numEdges(), 8);
+
+        portsGraph.setUpGraph(0);
+        portsGraph.setUpGraph(2);
+
+        Map<Country, Integer> map = portsGraph.colourCountries();
+        assertEquals(map.get(country1), 1);
+        assertEquals(map.get(country2), 0);
+        assertNotNull(portsGraph.showColours(map));
     }
 }

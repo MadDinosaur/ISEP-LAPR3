@@ -1,15 +1,15 @@
 package lapr.project.presentationTests;
 
-import lapr.project.controller.ContainerAuditController;
-import lapr.project.controller.ReadSeaDistFilesController;
-import lapr.project.controller.ReadShipFileController;
-import lapr.project.controller.ReadStorageFileController;
+import lapr.project.controller.*;
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
+import lapr.project.model.Country;
+import lapr.project.store.PortsGraph;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 public class presentationTestsSprint3 {
 
@@ -34,6 +34,17 @@ public class presentationTestsSprint3 {
             StringBuilder sb = new StringBuilder();
             sb.append(MainStorage.getInstance().getPortsGraph().getMg());
             writeOutput(sb.toString(), "US301");
+        }
+    }
+
+    @Test
+    public void US302(){
+        if (dataBase) {
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(), 0);
+            StringBuilder sb = new StringBuilder();
+            ColourGraphController colourGraphController = new ColourGraphController();
+            sb.append(colourGraphController.getCountryAndBorderColours(colourGraphController.getCountryColours()));
+            writeOutput(sb.toString(), "US302");
         }
     }
 
