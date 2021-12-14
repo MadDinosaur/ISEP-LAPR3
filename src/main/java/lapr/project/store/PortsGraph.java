@@ -91,11 +91,12 @@ public class PortsGraph {
      * @return returns a map with every country and their color
      */
     public Map<Country, Integer> colourCountries() {
-
         Map<Country, Integer> countryIntegerMap = new HashMap<>();
 
         int vertices = mg.numVertices();
 
+        if (vertices == 0)
+            return countryIntegerMap;
         int[] result = new int[vertices];
         Arrays.fill(result, -1);
 
@@ -130,6 +131,11 @@ public class PortsGraph {
         return countryIntegerMap;
     }
 
+    /**
+     * Creates a String with all of the graph countries colored and the color of it's bordering countries
+     * @param color the map with all the countries colours
+     * @return A String with all of the graph countries colored and the color of it's bordering countries
+     */
     public String showColours(Map<Country, Integer> color){
         StringBuilder sb = new StringBuilder();
         for (Country country : color.keySet()){
