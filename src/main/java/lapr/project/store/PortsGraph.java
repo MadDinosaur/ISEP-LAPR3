@@ -90,7 +90,7 @@ public class PortsGraph {
      * returns a map with every country and their color
      * @return returns a map with every country and their color
      */
-    public Map<Country, Integer> colorCountries() {
+    public Map<Country, Integer> colourCountries() {
 
         Map<Country, Integer> countryIntegerMap = new HashMap<>();
 
@@ -122,11 +122,28 @@ public class PortsGraph {
 
                 result[i] = cr;
 
-                countryIntegerMap.put((Country) mg.vertex(i), result[i]);
+
+                countryIntegerMap.put((Country) loc, result[i]);
                 Arrays.fill(available, true);
             }
         }
         return countryIntegerMap;
+    }
+
+    public String showColours(Map<Country, Integer> color){
+        StringBuilder sb = new StringBuilder();
+        for (Country country : color.keySet()){
+            sb.append("Country : ").append(country.getCountry()).append(" ----> Colour ").append(color.get(country)).append("\n");
+            List<Location> locations = (List<Location>) mg.adjVertices(country);
+            sb.append("Bordering Countries :\n");
+            for (Location location : locations) {
+                if (location instanceof Country && !location.equals(country))
+                    sb.append("Border Country : ").append(location.getCountry()).append(" ----> Colour ").append(color.get(location)).append("\n");
+            }
+
+            sb.append("\n\n");
+        }
+        return sb.toString();
     }
 
     /**
@@ -147,7 +164,6 @@ public class PortsGraph {
         if (n == 0)
             return;
 
-        System.out.println(storages.size());
         for (Location location1 : storages){
             List<Pair<Location, Double>> closest = new ArrayList<>();
             for (Location location2 : storages){

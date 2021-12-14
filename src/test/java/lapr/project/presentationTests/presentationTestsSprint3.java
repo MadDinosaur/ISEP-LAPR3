@@ -6,10 +6,12 @@ import lapr.project.controller.ReadShipFileController;
 import lapr.project.controller.ReadStorageFileController;
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
+import lapr.project.model.Country;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
 
 public class presentationTestsSprint3 {
 
@@ -33,6 +35,8 @@ public class presentationTestsSprint3 {
             CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(), 4);
             StringBuilder sb = new StringBuilder();
             sb.append(MainStorage.getInstance().getPortsGraph().getMg());
+            Map<Country, Integer> map = MainStorage.getInstance().getPortsGraph().colourCountries();
+            System.out.println(MainStorage.getInstance().getPortsGraph().showColours(map));
             writeOutput(sb.toString(), "US301");
         }
     }
