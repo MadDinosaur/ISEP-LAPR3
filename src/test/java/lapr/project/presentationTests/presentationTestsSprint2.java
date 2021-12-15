@@ -110,7 +110,7 @@ public class presentationTestsSprint2 {
     public void US205(){
         if (dataBase){
             ContainerLoadingInfoController controller = new ContainerLoadingInfoController();
-            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("CC001", 2, false));
+            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("1", 2, false));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Containers to be offloaded \n\n");
@@ -124,7 +124,7 @@ public class presentationTestsSprint2 {
     public void US206(){
         if (dataBase){
             ContainerLoadingInfoController controller = new ContainerLoadingInfoController();
-            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("CC001", 2, true));
+            String values = controller.getNextContainerManifestToString(controller.getNextContainerManifest("1", 2, true));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Containers to be loaded \n\n");
@@ -138,14 +138,14 @@ public class presentationTestsSprint2 {
     public void US207(){
         if (dataBase){
             GetManifestInformationController controller = new GetManifestInformationController();
-            Pair<Integer, Double> values = controller.findCargoManifests("CC001", 2020);
+            Pair<Integer, Double> values = controller.findCargoManifests("1", 2020);
             StringBuilder sb = new StringBuilder();
 
             sb.append("YEAR - 2020 \n\n");
             sb.append("Number of manifests transported : ").append(values.get1st()).append("\n");
             sb.append("Average number of containers transported : ").append(values.get2nd()).append("\n");
 
-            values = controller.findCargoManifests("CC001", 2021);
+            values = controller.findCargoManifests("1", 2021);
 
             sb.append("\n\nYEAR - 2021 \n\n");
             sb.append("Number of manifests transported : ").append(values.get1st()).append("\n");

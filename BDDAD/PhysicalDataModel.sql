@@ -530,6 +530,7 @@ CREATE OR REPLACE TRIGGER trgUpdateShipmentDates
 ALTER TRIGGER trgUpdateShipmentDates ENABLE;
 /
 
+DROP SEQUENCE user_sequence;
 CREATE SEQUENCE user_sequence;
 
 CREATE OR REPLACE TRIGGER user_gen_code
