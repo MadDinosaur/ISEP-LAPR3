@@ -1,6 +1,8 @@
 package lapr.project.controller;
 
+import lapr.project.data.DatabaseConnection;
 import lapr.project.data.MainStorage;
+import lapr.project.data.UserSqlStore;
 import lapr.project.mappers.dto.UserDTO;
 
 public class RegisterNewUserController {
@@ -15,8 +17,10 @@ public class RegisterNewUserController {
         this.mainStorage = mainStorage;
     }
 
-    public int registerNewUser(UserDTO userDTO) {
-        //throw new UnsupportedOperationException("Not supported yet.");
-        return 11111;
+    public String registerNewUser(UserDTO userDTO) {
+        DatabaseConnection dbconnection = mainStorage.getDatabaseConnection();
+        UserSqlStore userSqlStore = new UserSqlStore();
+
+        return userSqlStore.registerNewUserToDB(dbconnection, userDTO);
     }
 }

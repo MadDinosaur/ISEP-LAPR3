@@ -3,6 +3,7 @@ package lapr.project.presentationTests;
 import lapr.project.controller.*;
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
+import lapr.project.mappers.dto.UserDTO;
 import lapr.project.model.Country;
 import lapr.project.store.PortsGraph;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,23 @@ public class presentationTestsSprint3 {
             sb.append(values);
 
             writeOutput(sb.toString(), "US304");
+        }
+    }
+
+    @Test
+    public void US321() {
+        if (dataBase) {
+            RegisterNewUserController ctrl = new RegisterNewUserController();
+
+            UserDTO userDTO = new UserDTO(null, "José", "ze@gmai.com", "1");
+
+            StringBuilder strBuilder = new StringBuilder();
+
+            strBuilder.append("New user was created!\n")
+                    .append("Registration Code: ")
+                    .append(ctrl.registerNewUser(userDTO));
+
+            writeOutput(strBuilder.toString(), "US321");
         }
     }
 
