@@ -66,7 +66,6 @@ BEGIN
     -- check if container has already arrived
     SELECT NVL(ARRIVAL_DATE, CURRENT_TIMESTAMP) INTO vShipmentDestinationDate FROM SHIPMENT WHERE ID = pShipmentId;
 
-    DBMS_OUTPUT.PUT_LINE('Origin: ' || vShipmentOriginDate || ' Destination: ' || vShipmentDestinationDate);
     -- find all records between the timestamps
     DBMS_OUTPUT.PUT_LINE('Location | Operation | Mean of Transport | Timestamp');
     FOR vCargoManifest IN
