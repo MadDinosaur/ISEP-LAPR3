@@ -198,9 +198,10 @@ CREATE TABLE CargoManifest_Partial
 (
     id           INTEGER GENERATED ALWAYS AS IDENTITY
         CONSTRAINT pkCargoManifestId PRIMARY KEY,
-    truck_id     INTEGER,
+    truck_id     INTEGER
+        DEFAULT NULL,
     ship_mmsi    NUMBER(9)
-        CONSTRAINT nnCargoShipMMSI NOT NULL,
+        DEFAULT NULL,
         CONSTRAINT ckTransportation CHECK (truck_id IS NULL OR ship_mmsi IS NULL),
     storage_identification INTEGER
         CONSTRAINT nnCargoStorageIdentification NOT NULL,
@@ -215,10 +216,8 @@ CREATE TABLE CargoManifest_Full
 (
      id           INTEGER GENERATED ALWAYS AS IDENTITY
         CONSTRAINT pkFullCargoManifestId PRIMARY KEY,
-    truck_id     INTEGER,
     ship_mmsi    NUMBER(9)
         CONSTRAINT nnFullCargoShipMMSI NOT NULL,
-        CONSTRAINT ckFullCargoTransportation CHECK (truck_id IS NULL OR ship_mmsi IS NULL),
     finishing_date_time    TIMESTAMP
         DEFAULT NULL
 );
@@ -394,8 +393,7 @@ ALTER TABLE CargoManifest_Partial
     ADD CONSTRAINT fkCargoManifestTruckId FOREIGN KEY (truck_id) REFERENCES Truck (id);
 
 ALTER TABLE CargoManifest_Full
-    ADD CONSTRAINT fkFullCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi)
-    ADD CONSTRAINT fkFullCargoManifestTruckId FOREIGN KEY (truck_id) REFERENCES Truck (id);
+    ADD CONSTRAINT fkFullCargoManifestShipMmsi FOREIGN KEY (ship_mmsi) REFERENCES Ship (mmsi);
 
 ALTER TABLE Ship
     ADD CONSTRAINT fkShipFleetId FOREIGN KEY (fleet_id) REFERENCES Fleet (id)

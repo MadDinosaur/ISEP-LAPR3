@@ -1,5 +1,19 @@
 -- Inserts the values that have no relation to each other --
 
+-- Role --
+INSERT INTO Role(name)
+VALUES('Client');
+INSERT INTO Role(name)
+VALUES('Ship Captain');
+
+-- Truck --
+INSERT INTO Truck(id)
+VALUES(1);
+INSERT INTO Truck(id)
+VALUES(2);
+INSERT INTO Truck(id)
+VALUES(3);
+
 -- Fleet --
 INSERT INTO Fleet(id)
 VALUES(1);
@@ -62,6 +76,19 @@ VALUES('Europe','AT','AUT','Austria',8.77,'Vienna',48.2,16.366667);
 
 
 -- Inserts tables with relations --
+-- SystemUser --
+INSERT INTO SystemUser(registration_code, name, email, role_id)
+VALUES ('CC001', 'ExampleCaptain1', 'captain1@ship.com', 2);
+INSERT INTO SystemUser(registration_code, name, email, role_id)
+VALUES ('CC002', 'ExampleCaptain2', 'captain2@ship.com', 2);
+INSERT INTO SystemUser(registration_code, name, email, role_id)
+VALUES ('CC003', 'ExampleCaptain3', 'captain3@ship.com', 2);
+INSERT INTO SystemUser(registration_code, name, email, role_id)
+VALUES ('CC004', 'ExampleCaptain4', 'captain4@ship.com', 2);
+INSERT INTO SystemUser(registration_code, name, email, role_id)
+VALUES ('CC005', 'ExampleCaptain5', 'captain5@ship.com', 2);
+INSERT INTO SystemUser(registration_code, name, email, role_id)
+VALUES ('AA123', 'ExampleClient', 'example@client.com', 1);
 
 -- CscPlate_Certificate --
 INSERT INTO CscPlate_Certificate(csc_plate_serial_number, certificate_id)
@@ -86,16 +113,16 @@ INSERT INTO CscPlate_Certificate(csc_plate_serial_number, certificate_id)
 VALUES(10, 2);
 
 -- Ship --
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,captain_id)
-VALUES(100000001,1,'Ship1',1000001,3,100,'SCS1',1,200,50,100,15,1);
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,captain_id)
-VALUES(100000002,2,'Ship2',1000002,3,100,'SCS2',2,200,50,100,15,2);
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,captain_id)
-VALUES(100000003,1,'Ship3',1000003,3,100,'SCS3',1,200,50,100,15,3);
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,captain_id)
-VALUES(100000004,3,'Ship4',1000004,3,100,'SCS4',2,200,50,100,15,4);
-INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,captain_id)
-VALUES(100000005,2,'Ship5',1000005,3,100,'SCS5',1,200,50,100,15,5);
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
+VALUES(100000001,1,'Ship1',1000001,3,100,'SCS1',1,200,50,100,15,'CC001');
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
+VALUES(100000002,2,'Ship2',1000002,3,100,'SCS2',2,200,50,100,15,'CC002');
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
+VALUES(100000003,1,'Ship3',1000003,3,100,'SCS3',1,200,50,100,15,'CC003');
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
+VALUES(100000004,3,'Ship4',1000004,3,100,'SCS4',2,200,50,100,15,'CC004');
+INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
+VALUES(100000005,2,'Ship5',1000005,3,100,'SCS5',1,200,50,100,15,'CC005');
 
 -- Storage --
 INSERT INTO Storage(identification, storage_type_id, name, max_volume, country_name, latitude,longitude)
@@ -130,10 +157,10 @@ INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross
 VALUES(10, 10, 4, 'COD0', 200, 4000, 500, 6, 0);
 
 -- Shipment --
-INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination)
-VALUES(1,1,2);
-INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination)
-VALUES(2,1,2);
+INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination, system_user_code_client)
+VALUES(1,1,2, 'AA123');
+INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination, system_user_code_client)
+VALUES(2,1,2, 'AA123');
 
 -- CargoManifestPartial --
 INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
