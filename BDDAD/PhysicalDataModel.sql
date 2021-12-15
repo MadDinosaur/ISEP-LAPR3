@@ -520,6 +520,10 @@ CREATE OR REPLACE TRIGGER trgUpdateShipmentDates
             END LOOP;
             CLOSE vContainerCargoManifests;
         END IF;
+        DBMS_OUTPUT.PUT_LINE('Container no. ' || vContainerCargoManifest.container_num || ' shipment date updated.');
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN;
     END;
 /
 ALTER TRIGGER trgUpdateShipmentDates ENABLE;
