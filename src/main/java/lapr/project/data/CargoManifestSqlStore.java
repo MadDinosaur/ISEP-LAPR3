@@ -20,12 +20,11 @@ public class CargoManifestSqlStore {
      * @return a result set with all of the captains carried cargo manifest in a given year
      * @throws SQLException throws an exception if any of the commands is invalid
      */
-    public Pair<Integer, Double> getCargoManifestInYear(DatabaseConnection databaseConnection, int captainId, int year) throws SQLException {
+    public Pair<Integer, Double> getCargoManifestInYear(DatabaseConnection databaseConnection, String captainId, int year) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
         sqlCommand = "SELECT COUNT(c.id), AVG(count(cc.container_num))\n" +
-                "    INTO number_manifest, avg_manifest\n" +
                 "    FROM container_cargoManifest cc, cargomanifest_partial c, ship s\n" +
                 "         WHERE s.system_user_code_captain = ?\n" +
                 "         AND c.ship_mmsi = s.mmsi\n" +
@@ -33,7 +32,7 @@ public class CargoManifestSqlStore {
                 "         AND cc.partial_cargo_manifest_id = c.id\n" +
                 "         GROUP BY c.id";
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
-            getManifestData.setInt(1, captainId);
+            getManifestData.setString(1, captainId);
             getManifestData.setInt(2, year);
             try(ResultSet shipAddressesResultSet = getManifestData.executeQuery()) {
                 if (shipAddressesResultSet.next())

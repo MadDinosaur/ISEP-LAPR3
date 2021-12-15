@@ -33,7 +33,7 @@ CREATE TABLE Role
 
 CREATE TABLE SystemUser
 (
-    registration_code VARCHAR(5)
+    registration_code VARCHAR(10)
         CONSTRAINT pkSystemUserCode PRIMARY KEY,
     name VARCHAR(20)
         CONSTRAINT nnSystemUserName NOT NULL,
@@ -274,7 +274,7 @@ CREATE TABLE Ship
     draft                                    NUMBER(5, 2)
         CONSTRAINT nnDraft NOT NULL
         CONSTRAINT ckDraft CHECK (draft >= 0),
-    system_user_code_captain                              VARCHAR(5)
+    system_user_code_captain                              VARCHAR(10)
         CONSTRAINT nnCaptainID NOT NULL
         CONSTRAINT unCaptainID UNIQUE
 );

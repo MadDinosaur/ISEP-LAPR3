@@ -23,4 +23,4 @@ END;
 /
 
 -- Call procedure to test the function --
-call avg_manifest(1, 2020);
+call avg_manifest('CC001', 2020);

@@ -39,7 +39,7 @@ class GetManifestInformationControllerTest {
     @Test
     void findCargoManifests() {
         //data setup
-        int captainId = 1;
+        String captainId = "CC001";
         int year = 2021;
 
         Pair<Integer, Double> expected = new Pair(2, 3.4);
