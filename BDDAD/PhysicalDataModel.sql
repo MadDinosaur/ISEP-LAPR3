@@ -472,5 +472,55 @@ CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
                 VALUES (vContainer.container_num, (SELECT id FROM CargoManifest_Full WHERE ship_mmsi = vCargoManifest_Full.ship_mmsi AND finishing_date_time IS NULL), vContainer.container_position_x, vContainer.container_position_y, vContainer.container_position_z);
             END LOOP;
     END;
-
+/
 ALTER TRIGGER trgUpdateCargoManifest ENABLE;
+/
+
+CREATE OR REPLACE TRIGGER trgUpdateShipmentDates
+    AFTER UPDATE ON CargoManifest_Partial
+    FOR EACH ROW
+    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL)
+    DECLARE
+        -- list of containers in new cargo manifest
+        CURSOR vContainerCargoManifests IS SELECT * FROM CONTAINER_CARGOMANIFEST WHERE PARTIAL_CARGO_MANIFEST_ID = :new.ID;
+        -- individual container
+        vContainerCargoManifest CONTAINER_CARGOMANIFEST%rowtype;
+        -- shipment id
+        vShipmentId SHIPMENT.id%type;
+    BEGIN
+        -- container being loaded
+        IF :new.LOADING_FLAG = 1 THEN
+            OPEN vContainerCargoManifests;
+            LOOP
+                FETCH vContainerCargoManifests INTO vContainerCargoManifest;
+                EXIT WHEN vContainerCargoManifests%NOTFOUND;
+                -- checks if containers have been loaded from origin storage
+                SELECT ID INTO vShipmentId FROM SHIPMENT
+                    WHERE SHIPMENT.CONTAINER_NUM = vContainerCargoManifest.CONTAINER_NUM
+                    AND PARTING_DATE IS NULL
+                    AND STORAGE_IDENTIFICATION_ORIGIN = :new.STORAGE_IDENTIFICATION;
+                -- if no error is raised above, the load date is updated
+                UPDATE SHIPMENT SET PARTING_DATE = :new.FINISHING_DATE_TIME WHERE ID = vShipmentId ;
+            END LOOP;
+            CLOSE vContainerCargoManifests;
+        ELSE
+            -- container being offloaded
+            OPEN vContainerCargoManifests;
+            LOOP
+                FETCH vContainerCargoManifests INTO vContainerCargoManifest;
+                EXIT WHEN vContainerCargoManifests%NOTFOUND;
+                -- checks if containers have been offloaded into destination storage
+                SELECT ID INTO vShipmentId FROM SHIPMENT
+                    WHERE SHIPMENT.CONTAINER_NUM = vContainerCargoManifest.CONTAINER_NUM
+                    AND PARTING_DATE IS NOT NULL
+                    AND ARRIVAL_DATE IS NULL
+                    AND STORAGE_IDENTIFICATION_DESTINATION = :new.STORAGE_IDENTIFICATION;
+                -- if no error is raised above, the offload date is updated
+                UPDATE SHIPMENT SET ARRIVAL_DATE = :new.FINISHING_DATE_TIME WHERE ID = vShipmentId ;
+            END LOOP;
+            CLOSE vContainerCargoManifests;
+        END IF;
+    END;
+/
+ALTER TRIGGER trgUpdateShipmentDates ENABLE;
+/
