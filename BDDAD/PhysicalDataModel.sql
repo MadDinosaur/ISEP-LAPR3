@@ -429,7 +429,8 @@ ALTER TABLE Storage_Path
 CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
     AFTER UPDATE ON CargoManifest_Partial
     FOR EACH ROW
-    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL)
+    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL
+                                              AND new.ship_mmsi IS NOT NULL)
     DECLARE
         vCargoManifest_Full CargoManifest_Full%rowtype;
         vContainer Container_CargoManifest%rowtype;

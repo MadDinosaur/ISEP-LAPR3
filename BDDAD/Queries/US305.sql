@@ -42,6 +42,10 @@ CREATE OR REPLACE TRIGGER trgUpdateShipmentDates
             END LOOP;
             CLOSE vContainerCargoManifests;
         END IF;
+        DBMS_OUTPUT.PUT_LINE('Container no. ' || vContainerCargoManifest.container_num || ' shipment date updated.');
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN;
     END;
 /
 ALTER TRIGGER trgUpdateShipmentDates ENABLE;
@@ -55,29 +59,35 @@ BEGIN
     SELECT PARTING_DATE INTO vShipmentOriginDate FROM SHIPMENT WHERE ID = pShipmentId;
     -- check if container has begun route
     IF vShipmentOriginDate IS NULL THEN
-        DBMS_OUTPUT.PUT_LINE('Container is at source location. Please wait for departure.');
+        DBMS_OUTPUT.PUT_LINE('Container has not begun route. Please wait for departure.');
         RETURN;
     END IF;
 
-    SELECT ARRIVAL_DATE INTO vShipmentDestinationDate FROM SHIPMENT WHERE ID = pShipmentId;
     -- check if container has already arrived
-    IF vShipmentDestinationDate IS NULL THEN
-        vShipmentOriginDate := CURRENT_TIMESTAMP;
-    END IF;
+    SELECT NVL(ARRIVAL_DATE, CURRENT_TIMESTAMP) INTO vShipmentDestinationDate FROM SHIPMENT WHERE ID = pShipmentId;
 
+    DBMS_OUTPUT.PUT_LINE('Origin: ' || vShipmentOriginDate || ' Destination: ' || vShipmentDestinationDate);
     -- find all records between the timestamps
+    DBMS_OUTPUT.PUT_LINE('Location | Operation | Mean of Transport | Timestamp');
     FOR vCargoManifest IN
-        (SELECT PARTIAL_CARGO_MANIFEST_ID, SHIP_MMSI, STORAGE_IDENTIFICATION, LOADING_FLAG, FINISHING_DATE_TIME
+        (SELECT (SELECT NAME FROM STORAGE WHERE IDENTIFICATION = STORAGE_IDENTIFICATION) as Location,
+                (CASE WHEN LOADING_FLAG = 1 THEN 'Loaded' ELSE 'Offloaded' END) as Operation,
+                (CASE WHEN SHIP_MMSI IS NOT NULL THEN 'Ship' ELSE 'Truck' END) as "Mean of Transport",
+                FINISHING_DATE_TIME as Timestamp
         FROM CONTAINER_CARGOMANIFEST cc INNER JOIN CARGOMANIFEST_PARTIAL cp on cc.PARTIAL_CARGO_MANIFEST_ID = cp.ID
         WHERE CONTAINER_NUM = pContainerNum
         AND FINISHING_DATE_TIME BETWEEN vShipmentOriginDate AND vShipmentDestinationDate
         ORDER BY FINISHING_DATE_TIME)
     LOOP
-        DBMS_OUTPUT.PUT_LINE('Cargo Manifest Id | Loading | Storage Id | Ship Mmsi | Timestamp');
-        DBMS_OUTPUT.PUT_LINE(vCargoManifest.PARTIAL_CARGO_MANIFEST_ID || ' | ' || vCargoManifest.LOADING_FLAG || ' | ' || vCargoManifest.STORAGE_IDENTIFICATION || ' | ' || vCargoManifest.SHIP_MMSI || ' | ' || vCargoManifest.FINISHING_DATE_TIME);
+        DBMS_OUTPUT.PUT_LINE(vCargoManifest.Location || ' | ' || vCargoManifest.Operation || ' | ' || vCargoManifest."Mean of Transport" || ' | ' || vCargoManifest.Timestamp);
     END LOOP;
+EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('No container found.');
 END;
 /
-
-call container_route(22,6);
-
+call container_route(1,1); -- Container in standby
+call container_route(2,2); -- Container departed
+call container_route(3, 3); -- Container arrived
+call container_route(100, 100); -- Inexistent
+/

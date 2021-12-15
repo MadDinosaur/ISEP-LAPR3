@@ -1,7 +1,8 @@
 CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
     AFTER UPDATE ON CargoManifest_Partial
     FOR EACH ROW
-    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL)
+    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL
+                                              AND new.ship_mmsi IS NOT NULL)
     DECLARE
         vCargoManifest_Full CargoManifest_Full%rowtype;
         vContainer Container_CargoManifest%rowtype;
@@ -44,9 +45,9 @@ CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
                 VALUES (vContainer.container_num, (SELECT id FROM CargoManifest_Full WHERE ship_mmsi = vCargoManifest_Full.ship_mmsi AND finishing_date_time IS NULL), vContainer.container_position_x, vContainer.container_position_y, vContainer.container_position_z);
             END LOOP;
     END;
-
+/
 ALTER TRIGGER trgUpdateCargoManifest ENABLE;
-
+/
 -- Tests
 SELECT * FROM CONTAINER_CARGOMANIFEST WHERE FULL_CARGO_MANIFEST_ID = 8;
 
