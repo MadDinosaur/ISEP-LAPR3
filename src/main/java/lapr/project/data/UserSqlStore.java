@@ -1,8 +1,6 @@
 package lapr.project.data;
 
 import lapr.project.mappers.dto.UserDTO;
-
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +10,12 @@ import java.util.logging.Logger;
 
 public class UserSqlStore implements Persistable {
 
+    /**
+     * Inserts a new user into the database using the data from the given UserDTO
+     * @param databaseConnection the database's connection
+     * @param object the object to be added
+     * @return true if successful, false if not successful
+     */
     @Override
     public boolean save(DatabaseConnection databaseConnection, Object object) {
         UserDTO userDTO = (UserDTO) object;
@@ -31,6 +35,13 @@ public class UserSqlStore implements Persistable {
         return returnValue;
     }
 
+    /**
+     * Deletes the given user from the database
+     *
+     * @param databaseConnection the database's connection
+     * @param object the object to be deleted
+     * @return true if successful and false if not successful
+     */
     @Override
     public boolean delete(DatabaseConnection databaseConnection, Object object) {
         boolean returnValue = false;
@@ -175,6 +186,13 @@ public class UserSqlStore implements Persistable {
         }
     }
 
+    /**
+     * Returns the user's registration code using their email
+     *
+     * @param dbconnection Connection to the Database
+     * @param userDTO an object of type UserDTO
+     * @return a String containing the user's registration code
+     */
     private String getUserCode(DatabaseConnection dbconnection, UserDTO userDTO) {
         Connection connection = dbconnection.getConnection();
 
@@ -197,9 +215,19 @@ public class UserSqlStore implements Persistable {
         return null;
     }
 
+    /**
+     * Adds a new user to the database using the data from the UserDTO, and then returns the registration code
+     * that was created
+     *
+     * @param dbconnection Connection to the Database
+     * @param userDTO an object of type UserDTO
+     * @return the registration code of the user that was inserted to the database
+     */
     public String registerNewUserToDB(DatabaseConnection dbconnection, UserDTO userDTO) {
         userDTO.setRegistrationCode("null");
-        save(dbconnection, userDTO);
-        return getUserCode(dbconnection, userDTO);
+        if (save(dbconnection, userDTO))
+            return getUserCode(dbconnection, userDTO);
+        else
+            return null;
     }
 }
