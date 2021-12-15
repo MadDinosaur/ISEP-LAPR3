@@ -27,7 +27,7 @@ public class CargoManifestSqlStore {
         sqlCommand = "SELECT COUNT(c.id), AVG(count(cc.container_num))\n" +
                 "    INTO number_manifest, avg_manifest\n" +
                 "    FROM container_cargoManifest cc, cargomanifest_partial c, ship s\n" +
-                "         WHERE s.captain_id = ?\n" +
+                "         WHERE s.system_user_code_captain = ?\n" +
                 "         AND c.ship_mmsi = s.mmsi\n" +
                 "         AND EXTRACT(YEAR FROM c.finishing_date_time) = ?\n" +
                 "         AND cc.partial_cargo_manifest_id = c.id\n" +

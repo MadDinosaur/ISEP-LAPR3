@@ -145,7 +145,7 @@ public class ShipSqlStore implements Persistable {
                 }
             }
         }
-        sqlCommand = "insert into ship(mmsi, fleet_id, captain_id, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        sqlCommand = "insert into ship(mmsi, fleet_id, system_user_code_captain, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         try(PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
@@ -284,7 +284,7 @@ public class ShipSqlStore implements Persistable {
      */
     public Ship getShipByCaptainId(DatabaseConnection databaseConnection, String captainId) {
         Connection connection = databaseConnection.getConnection();
-        String sqlCommand = "select * from ship where captain_id = ?";
+        String sqlCommand = "select * from ship where system_user_code_captain = ?";
         try (PreparedStatement getShipByCaptainId = connection.prepareStatement(sqlCommand)) {
             getShipByCaptainId.setString(1, captainId);
             try (ResultSet shipData = getShipByCaptainId.executeQuery()) {

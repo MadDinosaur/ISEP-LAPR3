@@ -1,3 +1,5 @@
+DROP TABLE Container_AuditTrail;
+
 CREATE TABLE Container_AuditTrail
 (
     user_id           VARCHAR2(20)

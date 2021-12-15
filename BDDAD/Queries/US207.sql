@@ -1,5 +1,5 @@
 -- Procedure creating script --
-CREATE OR REPLACE PROCEDURE avg_manifest(cap_id ship.captain_id%type, moment integer)
+CREATE OR REPLACE PROCEDURE avg_manifest(cap_id ship.system_user_code_captain%type, moment integer)
 AS
     number_manifest integer;
     avg_manifest number(4, 3);
@@ -7,7 +7,7 @@ BEGIN
     SELECT COUNT(c.id), AVG(count(cc.container_num))
     INTO number_manifest, avg_manifest
     FROM container_cargoManifest cc, cargomanifest_partial c, ship s
-         WHERE s.captain_id = cap_id
+         WHERE s.system_user_code_captain = cap_id
          AND c.ship_mmsi = s.mmsi
          AND EXTRACT(YEAR FROM c.finishing_date_time) = moment
          AND cc.partial_cargo_manifest_id = c.id
