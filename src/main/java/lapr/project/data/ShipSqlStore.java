@@ -146,28 +146,33 @@ public class ShipSqlStore implements Persistable {
             }
         }
 
-        sqlCommand = "Select * from systemUser where registration_code = ?";
-        try(PreparedStatement existsVesselType = connection.prepareStatement(sqlCommand)) {
-            existsVesselType.setString(1, ship.getMmsi());
-            try (ResultSet vesselTypeResultSet = existsVesselType.executeQuery()) {
-                if (!vesselTypeResultSet.next()){
-                    sqlCommand = "INSERT INTO SystemUser(registration_code, name, email, role_id) VALUES (?, ?, ?, 2)";
-                    try(PreparedStatement VesselType = connection.prepareStatement(sqlCommand)) {
-                        VesselType.setString(1, ship.getMmsi());
-                        VesselType.setString(2, ship.getMmsi());
-                        VesselType.setString(3, ship.getMmsi() + "@captain.com");
-                        VesselType.execute();
+        String code = null;
+        while (code == null){
+            sqlCommand = "Select * from systemUser where email = ?";
+            try (PreparedStatement existsVesselType = connection.prepareStatement(sqlCommand)) {
+                existsVesselType.setString(1, ship.getMmsi() + "@captain.com");
+                try (ResultSet captainResultSet = existsVesselType.executeQuery()) {
+                    if (!captainResultSet.next()) {
+                        sqlCommand = "INSERT INTO SystemUser(name, email, role_id) VALUES (?, ?, 2)";
+                        try (PreparedStatement VesselType = connection.prepareStatement(sqlCommand)) {
+                            VesselType.setString(1, ship.getMmsi());
+                            VesselType.setString(2, ship.getMmsi() + "@captain.com");
+                            VesselType.execute();
+                        }
+                    } else {
+                        code = captainResultSet.getString(1);
                     }
                 }
             }
         }
+
         sqlCommand = "insert into ship(mmsi, fleet_id, system_user_code_captain, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
         try(PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
             saveShipPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
             saveShipPreparedStatement.setInt(2, 1);
-            saveShipPreparedStatement.setInt(3, Integer.parseInt(ship.getMmsi()));
+            saveShipPreparedStatement.setString(3, code);
             saveShipPreparedStatement.setString(4, ship.getShipName());
             saveShipPreparedStatement.setInt(5, ship.getImo());
             if (ship.getGenerator() != null) {

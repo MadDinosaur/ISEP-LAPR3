@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class presentationTestsSprint3 {
 
-    boolean dataBase = false;
+    boolean dataBase = true;
 
 //    @Test
 //    public void insert(){
@@ -60,6 +60,20 @@ public class presentationTestsSprint3 {
             sb.append(values);
 
             writeOutput(sb.toString(), "US304");
+        }
+    }
+
+    @Test
+    public void US305() {
+        if (dataBase) {
+            ContainerRouteController controller = new ContainerRouteController();
+            String values = controller.getContainerRouteToString(controller.getContainerRoute("AA123",3));
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("Route log for container\n\n");
+            sb.append(values);
+
+            writeOutput(sb.toString(), "US305");
         }
     }
 
