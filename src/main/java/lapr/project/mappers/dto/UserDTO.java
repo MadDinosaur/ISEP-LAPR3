@@ -31,4 +31,6 @@ public class UserDTO {
     public String getRole() {
         return role;
     }
+
+    public void setRegistrationCode(String registrationCode) { this.registrationCode = registrationCode; }
 }

@@ -429,7 +429,8 @@ ALTER TABLE Storage_Path
 CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
     AFTER UPDATE ON CargoManifest_Partial
     FOR EACH ROW
-    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL)
+    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL
+                                              AND new.ship_mmsi IS NOT NULL)
     DECLARE
         vCargoManifest_Full CargoManifest_Full%rowtype;
         vContainer Container_CargoManifest%rowtype;
@@ -527,4 +528,43 @@ CREATE OR REPLACE TRIGGER trgUpdateShipmentDates
     END;
 /
 ALTER TRIGGER trgUpdateShipmentDates ENABLE;
+/
+
+DROP SEQUENCE user_sequence;
+CREATE SEQUENCE user_sequence;
+
+CREATE OR REPLACE TRIGGER user_gen_code
+    BEFORE INSERT ON systemuser
+    FOR EACH ROW
+BEGIN
+   SELECT TO_CHAR(user_sequence.nextval)
+   INTO :new.registration_code
+   FROM dual;
+END;
+
+/
+ALTER TRIGGER user_gen_code ENABLE;
+/
+
+CREATE OR REPLACE TRIGGER tgrManifestInTransit
+BEFORE INSERT ON cargomanifest_partial
+FOR EACH ROW
+DECLARE
+    vShipmmsi cargomanifest_partial.ship_mmsi%type;
+BEGIN
+    SELECT ship_mmsi
+    INTO vShipmmsi
+        FROM shiptrip
+        WHERE ship_mmsi = :new.ship_mmsi
+        AND status = 'in progress';
+
+    raise_application_error(-20000, 'Ship is in transit, unable to add container to cargo manifest.');
+
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+                dbms_output.put_line('Verified if the ship is in transit.');
+END;
+
+/
+ALTER TRIGGER tgrManifestInTransit ENABLE;
 /

@@ -114,15 +114,15 @@ VALUES(10, 2);
 
 -- Ship --
 INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
-VALUES(100000001,1,'Ship1',1000001,3,100,'SCS1',1,200,50,100,15,'CC001');
+VALUES(100000001,1,'Ship1',1000001,3,100,'SCS1',1,200,50,100,15,1);
 INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
-VALUES(100000002,2,'Ship2',1000002,3,100,'SCS2',2,200,50,100,15,'CC002');
+VALUES(100000002,2,'Ship2',1000002,3,100,'SCS2',2,200,50,100,15,2);
 INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
-VALUES(100000003,1,'Ship3',1000003,3,100,'SCS3',1,200,50,100,15,'CC003');
+VALUES(100000003,1,'Ship3',1000003,3,100,'SCS3',1,200,50,100,15,3);
 INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
-VALUES(100000004,3,'Ship4',1000004,3,100,'SCS4',2,200,50,100,15,'CC004');
+VALUES(100000004,3,'Ship4',1000004,3,100,'SCS4',2,200,50,100,15,4);
 INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
-VALUES(100000005,2,'Ship5',1000005,3,100,'SCS5',1,200,50,100,15,'CC005');
+VALUES(100000005,2,'Ship5',1000005,3,100,'SCS5',1,200,50,100,15,5);
 
 -- Storage --
 INSERT INTO Storage(identification, storage_type_id, name, max_volume, country_name, latitude,longitude)
@@ -158,9 +158,11 @@ VALUES(10, 10, 4, 'COD0', 200, 4000, 500, 6, 0);
 
 -- Shipment --
 INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination, system_user_code_client)
-VALUES(1,1,2, 'AA123');
+VALUES(1,1,2, 6);
 INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination, system_user_code_client)
-VALUES(2,1,2, 'AA123');
+VALUES(2,1,2, 6);
+INSERT INTO SHIPMENT (CONTAINER_NUM, STORAGE_IDENTIFICATION_ORIGIN, STORAGE_IDENTIFICATION_DESTINATION, SYSTEM_USER_CODE_CLIENT)
+VALUES (3, 1, 3, 6);
 
 -- CargoManifestPartial --
 INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
@@ -188,6 +190,15 @@ INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identificatio
 VALUES(100000001,1, 2);
 INSERT INTO CargoManifest_Partial(ship_mmsi, loading_flag, storage_identification)
 VALUES(100000001,0, 2);
+
+INSERT INTO CARGOMANIFEST_PARTIAL (SHIP_MMSI, STORAGE_IDENTIFICATION, LOADING_FLAG)
+VALUES (100000001, 1, 1);
+INSERT INTO CARGOMANIFEST_PARTIAL (SHIP_MMSI, STORAGE_IDENTIFICATION, LOADING_FLAG)
+VALUES (100000001, 2, 0);
+INSERT INTO CARGOMANIFEST_PARTIAL (TRUCK_ID, STORAGE_IDENTIFICATION, LOADING_FLAG)
+VALUES (1, 2, 1);
+INSERT INTO CARGOMANIFEST_PARTIAL (TRUCK_ID, STORAGE_IDENTIFICATION, LOADING_FLAG)
+VALUES (1, 3, 0);
 
 -- Container_CargoManifest --
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
@@ -245,6 +256,15 @@ VALUES(7, 9, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(8, 9, 1,1,2);
 
+INSERT INTO CONTAINER_CARGOMANIFEST (CONTAINER_NUM, PARTIAL_CARGO_MANIFEST_ID, CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z)
+VALUES (3, 10, 0,0,0);
+INSERT INTO CONTAINER_CARGOMANIFEST (CONTAINER_NUM, PARTIAL_CARGO_MANIFEST_ID, CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z)
+VALUES (3, 11, 0,0,0);
+INSERT INTO CONTAINER_CARGOMANIFEST (CONTAINER_NUM, PARTIAL_CARGO_MANIFEST_ID, CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z)
+VALUES (3, 12, 0,0,0);
+INSERT INTO CONTAINER_CARGOMANIFEST (CONTAINER_NUM, PARTIAL_CARGO_MANIFEST_ID, CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z)
+VALUES (3, 13, 0,0,0);
+
 -- CargoManifestPartial (Conclusion) --
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 1;
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 2;
@@ -253,6 +273,10 @@ UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 5;
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 6;
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 7;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-01 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 10;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-02 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 11;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-03 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 12;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-04 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 13;
 
 -- ShipTrip --
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
