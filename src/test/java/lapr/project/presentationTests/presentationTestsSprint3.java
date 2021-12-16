@@ -44,7 +44,7 @@ public class presentationTestsSprint3 {
             CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(), 0);
             StringBuilder sb = new StringBuilder();
             ColourGraphController colourGraphController = new ColourGraphController();
-            sb.append(colourGraphController.getCountryAndBorderColours(colourGraphController.getCountryColours()));
+            sb.append(colourGraphController.getCountryAndBorderColours());
             writeOutput(sb.toString(), "US302");
         }
     }

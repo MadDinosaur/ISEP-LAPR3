@@ -1,6 +1,8 @@
 package lapr.project.controller;
 
 import lapr.project.data.MainStorage;
+import lapr.project.mappers.CountryMapper;
+import lapr.project.mappers.dto.CountryDTO;
 import lapr.project.model.Country;
 import lapr.project.store.PortsGraph;
 import lapr.project.store.ShipStore;
@@ -33,8 +35,8 @@ public class ColourGraphController {
      * returns the countries colours
      * @return returns the countries colours
      */
-    public Map<Country, Integer> getCountryColours(){
-        return portsGraph.colourCountries();
+    public Map<CountryDTO, Integer> getCountryColours(){
+        return CountryMapper.toDTO(portsGraph.colourCountries());
     }
 
     /**
@@ -43,7 +45,7 @@ public class ColourGraphController {
      * @param map the graph's colours
      * @return A String of the country's colour and it' bordering countries
      */
-    public String getCountryAndBorderColours(Map<Country, Integer> map){
-        return portsGraph.showColours(map);
+    public String getCountryAndBorderColours(){
+        return portsGraph.showColours(portsGraph.colourCountries());
     }
 }
