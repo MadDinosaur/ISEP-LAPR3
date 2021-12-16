@@ -46,6 +46,13 @@
 | **Transceiver class** | Class to transceiver used when sending data. |
 | **Available ship** | A ship that has no trips planned and has no trip in progress. |
 
+## Database Exception Codes
+| **Code** | **Exception** | **Message** |
+| :------- | : ------------| :-----------|
+| -20000 | Ship is in transit, can't add container to cargo manifest | 'Ship is in transit, unable to add container to cargo manifest.' | 
+| -20014 | Ship capacity was exceeded. | 'You cannot add this container to the ship.' |
+
+
 ## Database Technology
 
 This database uses **ORACLE SQL**, for the following reasons:
