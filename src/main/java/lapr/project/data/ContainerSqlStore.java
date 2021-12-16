@@ -111,8 +111,9 @@ public class ContainerSqlStore implements Persistable {
                 selectContainerPreparedStatement.setInt(1, containerNum);
                 selectContainerPreparedStatement.setString(2, clientId);
 
-                ResultSet result = selectContainerPreparedStatement.executeQuery();
-                return result.next();
+                try(ResultSet result = selectContainerPreparedStatement.executeQuery()) {
+                    return result.next();
+                }
             }
         } catch (SQLException | NullPointerException exception) {
             Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
@@ -255,19 +256,20 @@ public class ContainerSqlStore implements Persistable {
                 selectContainerPreparedStatement.setInt(1, containerNum);
                 selectContainerPreparedStatement.setInt(2, cargoManifestId);
 
-                ResultSet result = selectContainerPreparedStatement.executeQuery();
-                ResultSetMetaData headers = result.getMetaData();
-                //Set column headers
-                auditLog.add(new ArrayList<>());
-                for (int i = 1; i <= headers.getColumnCount(); i++)
-                    auditLog.get(0).add(headers.getColumnName(i));
-                //Set row values
-                int j = 1;
-                while (result.next()) {
+                try(ResultSet result = selectContainerPreparedStatement.executeQuery()) {
+                    ResultSetMetaData headers = result.getMetaData();
+                    //Set column headers
                     auditLog.add(new ArrayList<>());
                     for (int i = 1; i <= headers.getColumnCount(); i++)
-                        auditLog.get(j).add(result.getString(i));
-                    j++;
+                        auditLog.get(0).add(headers.getColumnName(i));
+                    //Set row values
+                    int j = 1;
+                    while (result.next()) {
+                        auditLog.add(new ArrayList<>());
+                        for (int i = 1; i <= headers.getColumnCount(); i++)
+                            auditLog.get(j).add(result.getString(i));
+                        j++;
+                    }
                 }
             }
         } catch (SQLException exception) {
@@ -304,8 +306,9 @@ public class ContainerSqlStore implements Persistable {
                 selectContainerPreparedStatement.setInt(1, containerNum);
                 selectContainerPreparedStatement.setString(2, clientId);
 
-                ResultSet result = selectContainerPreparedStatement.executeQuery();
-                return result.getInt(1);
+                try(ResultSet result = selectContainerPreparedStatement.executeQuery()) {
+                    return result.getInt(1);
+                }
             }
         } catch (SQLException | NullPointerException exception) {
             Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
@@ -325,10 +328,11 @@ public class ContainerSqlStore implements Persistable {
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setInt(1, shipmentId);
 
-                ResultSet result = selectContainerPreparedStatement.executeQuery();
+                try(ResultSet result = selectContainerPreparedStatement.executeQuery()) {
 
-                if (result.next())
-                    return result.getTimestamp(1);
+                    if (result.next())
+                        return result.getTimestamp(1);
+                }
 
             }
         } catch (SQLException | NullPointerException exception) {
@@ -349,10 +353,11 @@ public class ContainerSqlStore implements Persistable {
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setInt(1, shipmentId);
 
-                ResultSet result = selectContainerPreparedStatement.executeQuery();
+                try(ResultSet result = selectContainerPreparedStatement.executeQuery()) {
 
-                if (result.next())
-                    return result.getTimestamp(1);
+                    if (result.next())
+                        return result.getTimestamp(1);
+                }
 
             }
         } catch (SQLException | NullPointerException exception) {
@@ -397,19 +402,20 @@ public class ContainerSqlStore implements Persistable {
                 selectContainerPreparedStatement.setTimestamp(2, departureDate);
                 selectContainerPreparedStatement.setTimestamp(3, arrivalDate);
 
-                ResultSet result = selectContainerPreparedStatement.executeQuery();
-                ResultSetMetaData headers = result.getMetaData();
-                //Set column headers
-                routeLog.add(new ArrayList<>());
-                for (int i = 1; i <= headers.getColumnCount(); i++)
-                    routeLog.get(0).add(headers.getColumnName(i));
-                //Set row values
-                int j = 1;
-                while (result.next()) {
+                try(ResultSet result = selectContainerPreparedStatement.executeQuery()) {
+                    ResultSetMetaData headers = result.getMetaData();
+                    //Set column headers
                     routeLog.add(new ArrayList<>());
                     for (int i = 1; i <= headers.getColumnCount(); i++)
-                        routeLog.get(j).add(result.getString(i));
-                    j++;
+                        routeLog.get(0).add(headers.getColumnName(i));
+                    //Set row values
+                    int j = 1;
+                    while (result.next()) {
+                        routeLog.add(new ArrayList<>());
+                        for (int i = 1; i <= headers.getColumnCount(); i++)
+                            routeLog.get(j).add(result.getString(i));
+                        j++;
+                    }
                 }
             }
         } catch (SQLException exception) {
