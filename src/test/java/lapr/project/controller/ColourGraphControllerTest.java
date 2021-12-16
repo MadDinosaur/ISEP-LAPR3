@@ -10,7 +10,8 @@ class ColourGraphControllerTest {
     public void ColourGraphControllerTest1(){
         ColourGraphController colourGraphController = new ColourGraphController();
         assertEquals(colourGraphController.getCountryColours().size(), 0);
-        assertNotNull(colourGraphController.getCountryAndBorderColours(colourGraphController.getCountryColours()));
+        assertNotNull(colourGraphController.getCountryColours());
+        assertNotNull(colourGraphController.getCountryAndBorderColours());
     }
 
 }
