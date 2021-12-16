@@ -19,3 +19,13 @@ END;
 
 /
 ALTER TRIGGER tgrManifestInTransit ENABLE;
+/
+
+SELECT * FROM SHIPTRIP WHERE STATUS = 'in progress';
+
+-- Will throw the exception --
+INSERT INTO CARGOMANIFEST_PARTIAL(ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (100000004, 3, 1, NULL);
+
+-- Will not throw the exeception --
+INSERT INTO CARGOMANIFEST_PARTIAL(ship_mmsi, storage_identification, loading_flag, finishing_date_time) VALUES (100000002, 3, 1, NULL);
+
