@@ -9,7 +9,7 @@ class ReadSeaDistFilesControllerTest {
 
     @Test
     public void readSeaDistFileController(){
-        ReadSeaDistFilesController controller = mock(ReadSeaDistFilesController.class);
+        ReadSeaDistFilesController controller = new ReadSeaDistFilesController();
         controller.readSeaDistFileAndSaveData("seadists.csv");
         controller.readCountryFileAndSaveData("countries.csv");
         controller.readBorderFileAndSaveData("Borders.csv");
