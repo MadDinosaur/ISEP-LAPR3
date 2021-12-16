@@ -213,7 +213,7 @@ VALUES(9, 1, 1,1,2);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(8, 2, 2,1,1);
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
-VALUES(9, 2, 1,2,1);
+VALUES(9, 2, 1,1,2);
 
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
 VALUES(4, 3, 2,1,2);
@@ -266,17 +266,17 @@ INSERT INTO CONTAINER_CARGOMANIFEST (CONTAINER_NUM, PARTIAL_CARGO_MANIFEST_ID, C
 VALUES (3, 13, 0,0,0);
 
 -- CargoManifestPartial (Conclusion) --
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 1;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 2;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 3;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 4;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 5;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 6;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS') WHERE id = 7;
-UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-01 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 10;
-UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-02 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 11;
-UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-03 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 12;
-UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-04 7:59:23', 'YYYY-MM-DD HH24:MI:SS') WHERE ID = 13;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 1;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 2;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 3;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 4;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 5;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 6;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 7;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-01 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 10;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-02 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 11;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-03 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 12;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-04 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 13;
 
 -- ShipTrip --
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
