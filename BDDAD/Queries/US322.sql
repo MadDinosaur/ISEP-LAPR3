@@ -1,8 +1,8 @@
 CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
     AFTER UPDATE ON CargoManifest_Partial
     FOR EACH ROW
-    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL
-                                              AND new.ship_mmsi IS NOT NULL)
+    WHEN (old.status LIKE 'pending' AND new.status LIKE 'finished'
+                                    AND new.ship_mmsi IS NOT NULL)
     DECLARE
         vCargoManifest_Full CargoManifest_Full%rowtype;
         vContainer Container_CargoManifest%rowtype;
@@ -11,7 +11,7 @@ CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
         BEGIN
             SELECT * INTO vCargoManifest_Full FROM CargoManifest_Full
             WHERE ship_mmsi = :new.ship_mmsi
-            AND finishing_date_time IS NULL;
+            AND FINISHING_DATE_TIME IS NULL;
         EXCEPTION
             -- if full manifest does not exist yet, create it
             WHEN no_data_found THEN

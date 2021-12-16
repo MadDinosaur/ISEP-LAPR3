@@ -11,7 +11,9 @@ BEGIN
     WHERE c.finishing_date_time = (SELECT MAX(c.finishing_date_time) 
                                    FROM cargomanifest_partial c
                                    WHERE c.finishing_date_time <= given_moment
-                                   AND c.ship_mmsi = id_ship);
+                                   AND c.status LIKE 'finished'
+                                   AND c.ship_mmsi = id_ship)
+    AND C.STATUS LIKE 'finished';
 
     occupancy_rate := func_occupancy_rate(id_ship,manifest_id);
     RETURN occupancy_rate;

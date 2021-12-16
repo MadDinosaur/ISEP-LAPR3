@@ -9,6 +9,7 @@ BEGIN
     FROM container_cargoManifest cc, cargomanifest_partial c, ship s
          WHERE s.system_user_code_captain = cap_id
          AND c.ship_mmsi = s.mmsi
+         AND c.status LIKE 'finished'
          AND EXTRACT(YEAR FROM c.finishing_date_time) = moment
          AND cc.partial_cargo_manifest_id = c.id
          GROUP BY c.id;
@@ -23,4 +24,4 @@ END;
 /
 
 -- Call procedure to test the function --
-call avg_manifest('CC001', 2020);
+call avg_manifest('1', 2020);

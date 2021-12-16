@@ -484,7 +484,7 @@ ALTER TRIGGER trgUpdateCargoManifest ENABLE;
 CREATE OR REPLACE TRIGGER trgUpdateShipmentDates
     AFTER UPDATE ON CargoManifest_Partial
     FOR EACH ROW
-    WHEN (old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL)
+    WHEN (old.status LIKE 'pending' AND new.status LIKE 'finished')
     DECLARE
         -- list of containers in new cargo manifest
         CURSOR vContainerCargoManifests IS SELECT * FROM CONTAINER_CARGOMANIFEST WHERE PARTIAL_CARGO_MANIFEST_ID = :new.ID;

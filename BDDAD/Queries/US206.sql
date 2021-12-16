@@ -18,7 +18,7 @@ AS
           WHERE SHIP_MMSI = pShipMmsi
             AND STORAGE_IDENTIFICATION = pPort
             AND LOADING_FLAG = 1
-            AND FINISHING_DATE_TIME IS NULL);
+            AND STATUS LIKE 'finished');
 BEGIN
     OPEN containers;
     DBMS_OUTPUT.PUT_LINE('Container no. | Type | Position | Load');
