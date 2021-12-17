@@ -14,6 +14,11 @@ BEGIN
     AND LOADING_FLAG = 0 
     AND cc.partial_cargo_manifest_id = cp.id
     AND cc.container_num = con.num
+    AND cp.FINISHING_DATE_TIME = (SELECT MAX(finishing_date_time)
+                                    FROM CARGOMANIFEST_PARTIAL
+                                    INNER JOIN CONTAINER_CARGOMANIFEST ccc ON cargomanifest_partial.id = ccc.partial_cargo_manifest_id 
+                                    WHERE ccc.container_NUM = con.num
+                                  )
     group by s.MAX_VOLUME;
     RETURN Container_Volume/Storage_Capacity;
 END;
