@@ -146,7 +146,7 @@ public class ContainerSqlStore implements Persistable {
                     "        FROM CONTAINER\n" +
                     "        INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
                     "        INNER JOIN CARGOMANIFEST_PARTIAL CP on CONTAINER_CARGOMANIFEST.PARTIAL_CARGO_MANIFEST_ID = CP.ID\n" +
-                    "        WHERE CONTAINER.NUM = ? AND CP.FINISHING_DATE_TIME IS NOT NULL\n" +
+                    "        WHERE CONTAINER.NUM = pContainer_Num AND CP.STATUS LIKE 'finished'\n" +
                     "        ORDER BY CP.FINISHING_DATE_TIME DESC)\n" +
                     "    WHERE ROWNUM = 1";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
@@ -201,7 +201,7 @@ public class ContainerSqlStore implements Persistable {
                     "          WHERE SHIP_MMSI = ?\n" +
                     "            AND STORAGE_IDENTIFICATION = ?\n" +
                     "            AND LOADING_FLAG = ?\n" +
-                    "            AND FINISHING_DATE_TIME IS NULL)";
+                    "            AND STATUS LIKE 'finished')";
             try (PreparedStatement selectContainerPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 selectContainerPreparedStatement.setString(1, shipMmsi);
                 selectContainerPreparedStatement.setInt(2, portId);

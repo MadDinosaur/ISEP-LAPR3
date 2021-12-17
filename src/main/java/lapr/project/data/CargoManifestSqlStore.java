@@ -28,6 +28,7 @@ public class CargoManifestSqlStore {
                 "    FROM container_cargoManifest cc, cargomanifest_partial c, ship s\n" +
                 "         WHERE s.system_user_code_captain = ?\n" +
                 "         AND c.ship_mmsi = s.mmsi\n" +
+                "         AND c.status LIKE 'finished'\n" +
                 "         AND EXTRACT(YEAR FROM c.finishing_date_time) = ?\n" +
                 "         AND cc.partial_cargo_manifest_id = c.id\n" +
                 "         GROUP BY c.id";
