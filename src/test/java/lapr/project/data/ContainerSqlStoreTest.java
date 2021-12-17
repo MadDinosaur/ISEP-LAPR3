@@ -109,7 +109,7 @@ class ContainerSqlStoreTest {
                     "        FROM CONTAINER\n" +
                     "        INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
                     "        INNER JOIN CARGOMANIFEST_PARTIAL CP on CONTAINER_CARGOMANIFEST.PARTIAL_CARGO_MANIFEST_ID = CP.ID\n" +
-                    "        WHERE CONTAINER.NUM = ? AND CP.FINISHING_DATE_TIME IS NOT NULL\n" +
+                    "        WHERE CONTAINER.NUM = pContainer_Num AND CP.STATUS LIKE 'finished'\n" +
                     "        ORDER BY CP.FINISHING_DATE_TIME DESC)\n" +
                     "    WHERE ROWNUM = 1";
 
@@ -137,7 +137,7 @@ class ContainerSqlStoreTest {
                     "        FROM CONTAINER\n" +
                     "        INNER JOIN CONTAINER_CARGOMANIFEST ON CONTAINER_CARGOMANIFEST.CONTAINER_NUM = CONTAINER.NUM\n" +
                     "        INNER JOIN CARGOMANIFEST_PARTIAL CP on CONTAINER_CARGOMANIFEST.PARTIAL_CARGO_MANIFEST_ID = CP.ID\n" +
-                    "        WHERE CONTAINER.NUM = 200031 AND CP.FINISHING_DATE_TIME IS NOT NULL\n" +
+                    "        WHERE CONTAINER.NUM = pContainer_Num AND CP.STATUS LIKE 'finished'\n" +
                     "        ORDER BY CP.FINISHING_DATE_TIME DESC)\n" +
                     "    WHERE ROWNUM = 1";
             Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
@@ -176,7 +176,7 @@ class ContainerSqlStoreTest {
                     "          WHERE SHIP_MMSI = ?\n" +
                     "            AND STORAGE_IDENTIFICATION = ?\n" +
                     "            AND LOADING_FLAG = ?\n" +
-                    "            AND FINISHING_DATE_TIME IS NULL)";
+                    "            AND STATUS LIKE 'finished')";
 
             PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
 
@@ -212,7 +212,7 @@ class ContainerSqlStoreTest {
                     "          WHERE SHIP_MMSI = 10000001\n" +
                     "            AND STORAGE_IDENTIFICATION = 1\n" +
                     "            AND LOADING_FLAG = 0\n" +
-                    "            AND FINISHING_DATE_TIME IS NULL)";
+                    "            AND STATUS LIKE 'finished')";
             Assertions.assertEquals(expectedSqlCommand, preparedStatementTest.toString());
 
             //SQL query result wrapping test
