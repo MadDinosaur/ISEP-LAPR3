@@ -49,7 +49,10 @@
 ## Database Exception Codes
 | **Code** | **Exception** | **Message** |
 | :------- | : ------------| :-----------|
-| -20000 | Ship is in transit, can't add container to cargo manifest | 'Ship is in transit, unable to add container to cargo manifest.' | 
+| -20000 | Ship is in transit, can't add container to cargo manifest | 'Ship is in transit, unable to add container to cargo manifest.' |
+| -20001 | Invalid client identifier. | 'Invalid identifier. Client does not exist' |
+| -20002 | Invalid container identifier. | 'Error Code: 10 - Invalid identifier - Container no. X' |
+| -20003 | Container not leased to client. | 'Error Code: 11 - Invalid access - Container no. X' |
 | -20014 | Ship capacity was exceeded. | 'You cannot add this container to the ship.' |
 
 
