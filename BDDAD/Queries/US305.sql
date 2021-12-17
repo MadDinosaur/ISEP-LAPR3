@@ -50,13 +50,19 @@ CREATE OR REPLACE TRIGGER trgUpdateShipmentDates
 /
 ALTER TRIGGER trgUpdateShipmentDates ENABLE;
 /
-CREATE OR REPLACE PROCEDURE container_route(pShipmentId SHIPMENT.id%type, pContainerNum CONTAINER.num%type)
+CREATE OR REPLACE PROCEDURE container_route(pClientId SHIPMENT.id%type, pContainerNum CONTAINER.num%type)
 AS
+    vShipmentId SHIPMENT.id%type;
     vShipmentOriginDate CARGOMANIFEST_PARTIAL.finishing_date_time%type;
     vShipmentDestinationDate CARGOMANIFEST_PARTIAL.finishing_date_time%type;
     vCargoManifest CARGOMANIFEST_PARTIAL%rowtype;
 BEGIN
-    SELECT PARTING_DATE INTO vShipmentOriginDate FROM SHIPMENT WHERE ID = pShipmentId;
+    -- check if identifiers are valid
+    check_container_shipment(pClientId, pContainerNum);
+    -- if no error raised, get shipment id
+    SELECT id INTO vShipmentId FROM SHIPMENT WHERE SYSTEM_USER_CODE_CLIENT = pClientId AND CONTAINER_NUM = pContainerNum;
+
+    SELECT PARTING_DATE INTO vShipmentOriginDate FROM SHIPMENT WHERE ID = vShipmentId;
     -- check if container has begun route
     IF vShipmentOriginDate IS NULL THEN
         DBMS_OUTPUT.PUT_LINE('Container has not begun route. Please wait for departure.');
@@ -64,7 +70,7 @@ BEGIN
     END IF;
 
     -- check if container has already arrived
-    SELECT NVL(ARRIVAL_DATE, CURRENT_TIMESTAMP) INTO vShipmentDestinationDate FROM SHIPMENT WHERE ID = pShipmentId;
+    SELECT NVL(ARRIVAL_DATE, CURRENT_TIMESTAMP) INTO vShipmentDestinationDate FROM SHIPMENT WHERE ID = vShipmentId;
 
     -- find all records between the timestamps
     DBMS_OUTPUT.PUT_LINE('Location | Operation | Mean of Transport | Timestamp');
@@ -85,8 +91,8 @@ EXCEPTION
             DBMS_OUTPUT.PUT_LINE('No container found.');
 END;
 /
-call container_route(1,1); -- Container in standby
-call container_route(2,2); -- Container departed
-call container_route(3, 3); -- Container arrived
-call container_route(100, 100); -- Inexistent
+call container_route(6,1); -- Container in standby
+call container_route(6,2); -- Container departed
+call container_route(6, 3); -- Container arrived
+call container_route(6, 100); -- Inexistent (throws error)
 /
