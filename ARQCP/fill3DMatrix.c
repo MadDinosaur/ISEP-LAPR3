@@ -7,9 +7,9 @@
 #define Z 9
 #define FILE_PATH "containers.txt"
 
-int *ptr;
+extern int *ptr;
 
-int main(void){
+void fill3DMatrix(void){
 
     /**
      * The ship's length
