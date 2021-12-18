@@ -1,7 +1,7 @@
 # A Makefile for the project program
-INCLUDES = isContainerHere.h fill3DMatrix.h
-SOURCES = isContainerHere.s fill3DMatrix.c main.c
-OBJFILES = isContainerHere.o fill3DMatrix.o main.o
+INCLUDES = isContainerHere.h occupiedSlots.h fill3DMatrix.h
+SOURCES = isContainerHere.s occupiedSlots.s fill3DMatrix.c main.c
+OBJFILES = isContainerHere.o occupiedSlots.o fill3DMatrix.o main.o
 EXEC = prog
 
 .SUFFIXES : .c .o .s
