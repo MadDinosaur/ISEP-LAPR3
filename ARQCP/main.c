@@ -48,7 +48,8 @@ void callOccupiedSlots() {
     }
 
     //calls the function and receives the amount of occupied slots from those selected
-    char occupied = occupiedSlots(locations[0][0]);
+    char *ptrLocations = &locations[0][0];
+    char occupied = occupiedSlots(ptrLocations);
 
     printf("There are %d containers in the chosen locations\n", occupied);
 
