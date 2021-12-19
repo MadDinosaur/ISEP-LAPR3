@@ -113,13 +113,13 @@ public class PortsGraph {
                         available[result[j]] = false;
                 }
 
-                int cr;
-                for (cr = 0; cr < vertices; cr++) {
-                    if (available[cr])
+                int color;
+                for (color = 0; color < vertices; color++) {
+                    if (available[color])
                         break;
                 }
 
-                result[i] = cr;
+                result[i] = color;
 
 
                 countryIntegerMap.put((Country) loc, result[i]);
@@ -178,10 +178,9 @@ public class PortsGraph {
             if (n != 0) {
                 closest.sort(Comparator.comparing(Pair::get2nd));
 
-                if (n >= closest.size())
-                    n = closest.size();
+                int numEdges = Math.min(n, closest.size());
 
-                for (int i = 0; i < n; i++) {
+                for (int i = 0; i < numEdges; i++) {
                     mg.addEdge(location1, closest.get(i).get1st(), closest.get(i).get2nd());
                 }
             }
