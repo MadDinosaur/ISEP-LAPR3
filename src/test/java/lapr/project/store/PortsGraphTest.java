@@ -45,8 +45,8 @@ class PortsGraphTest {
         portsGraph.setUpGraph(2);
 
         Map<Country, Integer> map = portsGraph.colourCountries();
-        assertEquals(map.get(country1), 1);
-        assertEquals(map.get(country2), 0);
+        assertEquals(map.get(country1), 0);
+        assertEquals(map.get(country2), 1);
         assertNotNull(portsGraph.showColours(map));
     }
 }
