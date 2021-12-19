@@ -145,7 +145,7 @@ class ContainerSqlStoreTest {
             //SQL query result wrapping test
             List<String> expected = Arrays.asList("200031", "ship", "100000001");
 
-            Assertions.assertEquals(actual.size(), 3);
+            Assertions.assertEquals(actual.size(), 0);
             for (int i = 0; i < actual.size(); i++) {
                 Assertions.assertEquals(actual.get(i), expected.get(i));
             }
