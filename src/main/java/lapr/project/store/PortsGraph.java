@@ -100,12 +100,10 @@ public class PortsGraph {
         int[] result = new int[vertices];
         Arrays.fill(result, -1);
 
-        result[0] = 0;
-
         boolean[] available = new boolean[vertices];
         Arrays.fill(available, true);
 
-        for (int i = 1; i < vertices; i++)
+        for (int i = 0; i < vertices; i++)
         {
             Location loc = mg.vertex(i);
             if (loc instanceof Country) {
@@ -167,26 +165,25 @@ public class PortsGraph {
             mg.addEdge(location, location, (double) 0);
         }
 
-        if (n == 0)
-            return;
-
         for (Location location1 : storages){
             List<Pair<Location, Double>> closest = new ArrayList<>();
             for (Location location2 : storages){
                 if(location1.getCountry().equals(location2.getCountry())){
-                    mg.addEdge(location1, location2, location1.distanceBetween(location1));
+                    mg.addEdge(location1, location2, location1.distanceBetween(location2));
                 } else{
                     closest.add(new Pair<>(location2, location1.distanceBetween(location2)));
                 }
             }
 
-            closest.sort(Comparator.comparing(Pair::get2nd));
+            if (n != 0) {
+                closest.sort(Comparator.comparing(Pair::get2nd));
 
-            if(n >= closest.size())
-                n = closest.size() - 1;
+                if (n >= closest.size())
+                    n = closest.size();
 
-            for (int i = 0; i < n; i++){
-                mg.addEdge(location1, closest.get(i).get1st(), closest.get(i).get2nd());
+                for (int i = 0; i < n; i++) {
+                    mg.addEdge(location1, closest.get(i).get1st(), closest.get(i).get2nd());
+                }
             }
         }
     }
