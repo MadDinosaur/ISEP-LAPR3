@@ -3,7 +3,6 @@
 #include "isContainerHere.h"
 #include "occupiedSlots.h"
 
-int *ptr;
 
 void callIsContainerHere() {
     char location[3];
@@ -49,7 +48,7 @@ void callOccupiedSlots() {
 
     //calls the function and receives the amount of occupied slots from those selected
     char *ptrLocations = &locations[0][0];
-    char occupied = occupiedSlots(ptrLocations);
+    char occupied = occupiedSlots(ptrLocations, positions);
 
     printf("There are %d containers in the chosen locations\n", occupied);
 

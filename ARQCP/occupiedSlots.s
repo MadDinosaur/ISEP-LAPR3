@@ -2,12 +2,35 @@
     .global occupiedSlots
 
 occupiedSlots:
-     movq $0, %rax
-     movw (%rdi), %cx
-     cmp $0, %cx
-     jl end
+	pushq %rbx
+    movq $0, %rcx
+    movslq %edx, %rdx
+    movb $0, %dl
+    cmpq %rcx, %rsi
+    jne loop_locations
+	jmp end
+     
+loop_locations:
+	pushq %rcx
+	pushq %rsi
+	pushq %rdi
+	pushq %rdx
+	
+	leaq (%rdi, %rcx, 1), %rdi
+	movb $2, %al
+	
+	popq %rcx
+	popq %rsi
+	popq %rdi
+	popq %rdx
 
-     movw $1, %ax
+	addb %al, %dl
+	incq %rcx
+	
+	cmpq %rcx, %rsi
+    jne loop_locations
 
 end:
-     ret
+	movb %dl, %al
+	popq %rbx
+    ret

@@ -4,10 +4,11 @@
 
 #define LENGTH_CONTAINER 14.5
 #define WIDTH_CONTAINER 2.5
-#define Z 9
+#define HEIGHT 9
 #define FILE_PATH "containers.txt"
 
-extern int *ptr;
+int X, Y, Z;
+int *ptr;
 
 void fill3DMatrix(void){
 
@@ -20,16 +21,6 @@ void fill3DMatrix(void){
      * The ship's width
      */
     double widthShip;
-
-    /**
-     * The matrix's X size
-     */
-    int X;
-
-    /**
-     * The matrix's Y size
-     */
-    int Y;
 
     /**
      * The iterators to traverse the matrix
@@ -80,6 +71,7 @@ void fill3DMatrix(void){
      */
     X = floor(widthShip/WIDTH_CONTAINER);
     Y = floor(lengthShip/LENGTH_CONTAINER);
+    Z = HEIGHT;
 
     /**
      * The matrix created with size X,Y,Z that will store the containers' ID
