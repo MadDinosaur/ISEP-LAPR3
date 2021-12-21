@@ -5,8 +5,7 @@
 
 char *ptrLocations;
 char *ptrLoc;
-int positions;
-
+int positions = 0;
 void callIsContainerHere() {
     char location[3];
     ptrLoc = location;
@@ -27,7 +26,6 @@ void callIsContainerHere() {
 }
 
 void callOccupiedSlots() {
-    int positions = 0;
 
     //reads the amount of positions that are being analysed
     printf("Input the desired amount of positions:\nX: ");

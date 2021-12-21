@@ -1,18 +1,23 @@
 .section .data
 	.global ptrLocations
 	.global positions
+	.global ptrLoc
 	
 .section .text
     .global occupiedSlots
 
 occupiedSlots:
 	pushq %rbx
-    movq $0, %rcx
-    movslq positions(%rip), %rdx
+	
+    movq positions(%rip), %rdx
     leaq ptrLocations(%rip), %rdi
-    movb $0, %dl
-    cmpq %rcx, %rsi
+    
+    movq $0, %rcx
+    movb $0, %sil
+    
+    cmpq %rcx, %rdx
     jne loop_locations
+    
 	jmp end
      
 loop_locations:
@@ -21,21 +26,23 @@ loop_locations:
 	pushq %rdi
 	pushq %rdx
 	
+	imulq $3, %rcx
+	movb (%rdi, %rcx, 1), %dl
+	movb %dl, ptrLoc(%rip)
+	call isContainerHere
 	
-	movb $2, %al
-	
-	popq %rcx
-	popq %rsi
-	popq %rdi
 	popq %rdx
+	popq %rdi
+	popq %rsi
+	popq %rcx
 
-	addb %al, %dl
+	addb %al, %sil
 	incq %rcx
 	
-	cmpq %rcx, %rsi
+	cmpq %rcx, %rdx
     jne loop_locations
 
 end:
-	movb %dl, %al
+	movb %sil, %al
 	popq %rbx
     ret
