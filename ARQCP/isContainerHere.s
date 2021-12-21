@@ -1,3 +1,6 @@
+.section .data
+	.global ptrLoc
+	
 .section .text
     .global isContainerHere
 

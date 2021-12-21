@@ -1,10 +1,15 @@
+.section .data
+	.global ptrLocations
+	.global positions
+	
 .section .text
     .global occupiedSlots
 
 occupiedSlots:
 	pushq %rbx
     movq $0, %rcx
-    movslq %edx, %rdx
+    movslq positions(%rip), %rdx
+    leaq ptrLocations(%rip), %rdi
     movb $0, %dl
     cmpq %rcx, %rsi
     jne loop_locations
@@ -16,7 +21,7 @@ loop_locations:
 	pushq %rdi
 	pushq %rdx
 	
-	leaq (%rdi, %rcx, 1), %rdi
+	
 	movb $2, %al
 	
 	popq %rcx

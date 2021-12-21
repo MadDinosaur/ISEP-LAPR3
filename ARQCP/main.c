@@ -3,10 +3,13 @@
 #include "isContainerHere.h"
 #include "occupiedSlots.h"
 
+char *ptrLocations;
+char *ptrLoc;
+int positions;
 
 void callIsContainerHere() {
     char location[3];
-    char* ptrLoc = location;
+    ptrLoc = location;
 
     fill3DMatrix();
 
@@ -17,7 +20,7 @@ void callIsContainerHere() {
     printf("Z: ");
     scanf("%hhd", (ptrLoc + 2));
 
-    if (isContainerHere(ptrLoc)) 
+    if (isContainerHere()) 
         printf("Yes! There is a container in the location (%d, %d, %d)\n", *ptrLoc, *(ptrLoc + 1), *(ptrLoc + 2));
     else 
         printf("No! There is not a container in the location (%d, %d, %d)\n", *ptrLoc, *(ptrLoc + 1), *(ptrLoc + 2));
@@ -47,8 +50,8 @@ void callOccupiedSlots() {
     }
 
     //calls the function and receives the amount of occupied slots from those selected
-    char *ptrLocations = &locations[0][0];
-    char occupied = occupiedSlots(ptrLocations, positions);
+    ptrLocations = &locations[0][0];
+    char occupied = occupiedSlots();
 
     printf("There are %d containers in the chosen locations\n", occupied);
 
