@@ -1,7 +1,9 @@
 package lapr.project.data;
 
+
 import lapr.project.model.Coordinate;
 import lapr.project.model.Storage;
+import oracle.ucp.util.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -213,6 +215,44 @@ public class StorageSqlStore implements Persistable {
             Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
             databaseConnection.registerError(exception);
             return null;
+        }
+    }
+
+    public Pair<Integer, Double> getOccupancyRate(DatabaseConnection databaseConnection, int storageId) throws SQLException{
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand;
+
+        sqlCommand = "select storage.identification,func_occupancy_rate_storage(?)\n" +
+                "from storage, dual" +
+                "where storage.identification = ?";
+        try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
+            getManifestData.setInt(1, storageId);
+            try(ResultSet shipAddressesResultSet = getManifestData.executeQuery()) {
+                if (shipAddressesResultSet.next())
+                    return new Pair<>(shipAddressesResultSet.getInt(1), shipAddressesResultSet.getDouble(2));
+                else
+                    return null;
+            }
+        }
+    }
+
+    public Pair<Integer, Integer> getEstimateLeavingContainers30Days(DatabaseConnection databaseConnection, int storageId) throws SQLException{
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand;
+
+        sqlCommand = "select storage.identification, func_estimate_number_leaving_containers(?)\n" +
+                "from storage, dual" +
+                "where storage.identification = ?";
+
+        try(PreparedStatement getEstimate = connection.prepareStatement(sqlCommand)){
+            getEstimate.setInt(1, storageId);
+            try(ResultSet resultSet = getEstimate.executeQuery()){
+                if(resultSet.next()){
+                    return new Pair<>(resultSet.getInt(1), resultSet.getInt(2));
+                }else{
+                    return null;
+                }
+            }
         }
     }
 }

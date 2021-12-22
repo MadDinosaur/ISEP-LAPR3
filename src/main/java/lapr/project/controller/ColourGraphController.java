@@ -42,7 +42,6 @@ public class ColourGraphController {
     /**
      * this controller is purely used to support a requirement and is in no way Functional
      * It Creates a String with the countries the mao has and with it's bordering countries
-     * @param map the graph's colours
      * @return A String of the country's colour and it' bordering countries
      */
     public String getCountryAndBorderColours(){

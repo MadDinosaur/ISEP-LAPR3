@@ -10,7 +10,7 @@ BEGIN
     FROM CONTAINER con, STORAGE s, CARGOMANIFEST_PARTIAL cp, CONTAINER_CARGOMANIFEST cc
     WHERE s.identification = id_storage
     AND cp.storage_identification = s.identification
-    AND cp.FINISHING_DATE_TIME IS NOT NULL
+    AND cp.status like 'finished'
     AND LOADING_FLAG = 0 
     AND cc.partial_cargo_manifest_id = cp.id
     AND cc.container_num = con.num
