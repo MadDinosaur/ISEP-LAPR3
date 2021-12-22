@@ -78,6 +78,38 @@ public class presentationTestsSprint3 {
     }
 
     @Test
+    public void US3017_20() {
+        if (dataBase) {
+            CalculateContainerResistivityController controller = new CalculateContainerResistivityController();
+            StringBuilder s = new StringBuilder();
+
+            String external = "Zinc";
+            String median = "Steel";
+            String internal = "Fiber-glass";
+
+            s.append("Not Refrigerated Container example\n\n");
+            s.append("External Material: ").append(external).append("  Width = 0.03");
+            s.append("\nMedian Material: ").append(median).append("  Width = 0.10");
+            s.append("\nInternal Material: ").append(external).append("  Width = 0.02");
+
+            s.append("\n\nThermal Resistance = ").append(controller.getResistivityByArea(external, median, internal, 0.03, 0.10, 0.02));
+
+            external = "Stone Wool";
+            median = "Steel";
+            internal = "Iron";
+
+            s.append("\n\n\n\nRefrigerated Container example\n\n");
+            s.append("External Material: ").append(external).append("  Width = 0.07");
+            s.append("\nMedian Material: ").append(median).append("  Width = 0.10");
+            s.append("\nInternal Material: ").append(external).append("  Width = 0.06");
+
+            s.append("\n\nThermal Resistance = ").append(controller.getResistivityByArea(external, median, internal, 0.07, 0.10, 0.06));
+
+            writeOutput(s.toString(), "US3017_20");
+        }
+    }
+
+    @Test
     public void US321() {
         if (dataBase) {
             RegisterNewUserController ctrl = new RegisterNewUserController();
