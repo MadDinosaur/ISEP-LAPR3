@@ -8,7 +8,7 @@ IS
 BEGIN
     SELECT (s.capacity), sum(con.max_volume)
     INTO Ship_Capacity, Container_Volume
-    FROM cargomanifest_partial c, container_cargoManifest cc, ship s, container con
+    FROM cargomanifest_full c, container_cargoManifest cc, ship s, container con
     WHERE s.mmsi = id_ship
     AND c.id = manifest_id
     AND c.ship_mmsi = s.mmsi
@@ -20,4 +20,4 @@ END;
 /
 
 -- Call function to test it --
-SELECT func_occupancy_rate(100000001,1) FROM DUAL
+SELECT func_occupancy_rate(100000001,1) FROM DUAL;
