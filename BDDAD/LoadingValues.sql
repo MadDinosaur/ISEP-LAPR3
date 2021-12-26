@@ -63,6 +63,8 @@ INSERT INTO CscPlate(serial_number, rules, model, manufacturer_name, owner_name,
 VALUES(9, 'Not frozen', 'Alloy', 'Daikin Industries', 'Bob', 'America', 'furnigation', 9, 9, TO_DATE('01/01/2000','DD/MM/YYYY'), 400, 4000, 51);
 INSERT INTO CscPlate(serial_number, rules, model, manufacturer_name, owner_name, owner_address, furnigation, approval_number, acep_number, date_manufactured, max_gross_mass, stacking_weight,racking_test)
 VALUES(10, 'Not frozen', 'Alloy', 'Daikin Industries', 'Bob', 'America', 'furnigation', 10, 10, TO_DATE('01/01/2000','DD/MM/YYYY'), 400, 4000, 51);
+INSERT INTO CscPlate(serial_number, rules, model, manufacturer_name, owner_name, owner_address, furnigation, approval_number, acep_number, date_manufactured, max_gross_mass, stacking_weight,racking_test)
+VALUES(11, 'Not frozen', 'Alloy', 'Daikin Industries', 'Bob', 'America', 'furnigation', 11, 11, TO_DATE('01/01/2000','DD/MM/YYYY'), 400, 4000, 51);
 
 -- Country --
 INSERT INTO Country(continent,alpha2,alpha3,country,population,capital,latitude,longitude)
@@ -111,6 +113,9 @@ INSERT INTO CscPlate_Certificate(csc_plate_serial_number, certificate_id)
 VALUES(9, 3);
 INSERT INTO CscPlate_Certificate(csc_plate_serial_number, certificate_id)
 VALUES(10, 2);
+INSERT INTO CscPlate_Certificate(csc_plate_serial_number, certificate_id)
+VALUES(11, 2);
+
 
 -- Ship --
 INSERT INTO Ship(mmsi,fleet_id,name,imo,num_generator,gen_power,callsign,vessel_type_id,ship_length,ship_width,capacity,draft,system_user_code_captain)
@@ -155,6 +160,8 @@ INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross
 VALUES(9, 9, 4, 'COD9', 200, 4000, 500, 13, 0);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
 VALUES(10, 10, 4, 'COD0', 200, 4000, 500, 6, 0);
+INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
+VALUES(11, 11, 4, 'COF0', 200, 4000, 500, 500, 0);
 
 -- Shipment --
 INSERT INTO Shipment(container_num, storage_identification_origin, storage_identification_destination, system_user_code_client)
