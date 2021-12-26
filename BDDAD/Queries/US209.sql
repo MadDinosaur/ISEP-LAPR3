@@ -1,4 +1,4 @@
-create or replace FUNCTION func_occupancy_rate_given_moment(id_ship ship.mmsi%type,given_moment DATE)
+create or replace FUNCTION func_occupancy_rate_given_moment(id_ship ship.mmsi%type, given_moment DATE)
 RETURN number 
 IS
     occupancy_rate number;
@@ -7,13 +7,12 @@ IS
 BEGIN
     SELECT c.id 
     INTO manifest_id   
-    FROM cargomanifest_partial c
-    WHERE c.finishing_date_time = (SELECT MAX(c.finishing_date_time) 
-                                   FROM cargomanifest_partial c
-                                   WHERE c.finishing_date_time <= given_moment
-                                   AND c.status LIKE 'finished'
-                                   AND c.ship_mmsi = id_ship);
-    AND C.STATUS LIKE 'finished';
+    FROM cargomanifest_full c
+    WHERE c.finishing_date_time = (SELECT MAX(cf.finishing_date_time)
+                                   FROM cargomanifest_full cf
+                                   WHERE cf.finishing_date_time <= given_moment
+                                   AND cf.status LIKE 'finished'
+                                   AND cf.ship_mmsi = id_ship);
 
     occupancy_rate := func_occupancy_rate(id_ship,manifest_id);
     RETURN occupancy_rate;

@@ -225,7 +225,7 @@ CREATE TABLE CargoManifest_Full
     finishing_date_time    TIMESTAMP
         DEFAULT NULL,
     status VARCHAR(20)
-        DEFAULT NULL
+        DEFAULT 'pending'
         CONSTRAINT setFullCargoStatus CHECK (status IN ('pending', 'finished', NULL))
 );
 
@@ -434,7 +434,7 @@ ALTER TABLE Storage_Path
 
 -- define database triggers
 CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
-    AFTER UPDATE ON CargoManifest_Partial
+    AFTER UPDATE OR INSERT ON CargoManifest_Partial
     FOR EACH ROW
     WHEN (((old.finishing_date_time IS NULL AND new.finishing_date_time IS NOT NULL)
         OR (new.finishing_date_time <> old.finishing_date_time)
@@ -453,7 +453,7 @@ CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
             EXCEPTION
                 -- if full manifest does not exist yet, create it
                 WHEN no_data_found THEN
-                     INSERT INTO CargoManifest_Full (ship_mmsi, finishing_date_time) VALUES (:new.ship_mmsi, NULL);
+                     INSERT INTO CargoManifest_Full (ship_mmsi, status) VALUES (:new.ship_mmsi, NULL);
                      SELECT * INTO vCargoManifest_Full FROM CargoManifest_Full
                         WHERE ship_mmsi = :new.ship_mmsi
                         AND finishing_date_time IS NULL;
@@ -475,7 +475,7 @@ CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
             -- close modified cargo manifest and create a new current one
             UPDATE CargoManifest_Full SET finishing_date_time = :new.finishing_date_time, status = 'finished' WHERE id = vCargoManifest_Full.id;
 
-            INSERT INTO CargoManifest_Full (ship_mmsi) VALUES (vCargoManifest_Full.ship_mmsi);
+            INSERT INTO CargoManifest_Full (ship_mmsi, status) VALUES (vCargoManifest_Full.ship_mmsi, NULL);
 
             FOR vContainer IN (SELECT * FROM Container_CargoManifest WHERE full_cargo_manifest_id = vCargoManifest_Full.id)
                 LOOP
