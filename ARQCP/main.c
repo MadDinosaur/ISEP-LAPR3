@@ -26,27 +26,28 @@ void callIsContainerHere() {
 }
 
 void callOccupiedSlots() {
-
+	
     //reads the amount of positions that are being analysed
-    printf("Input the desired amount of positions:\nX: ");
+    printf("Input the desired amount of positions: ");
     scanf("%d", &positions);
 
     if (positions <= 0)
         return;
 
     //initiates the array with 3 coordinates for each position
-    char locations[3][positions];
+    char locations[positions][3];
 
     //Loops for the amount of positions and fills each coordinate
     for(int i = 0; i < positions; i++){
         printf("Input the desired location-%d:\nX: ", i + 1);
-        scanf("%hhd", &locations[0][i]);
+        scanf("%hhd", &locations[i][0]);
         printf("Y: ");
-        scanf("%hhd", &locations[1][i]);
+        scanf("%hhd", &locations[i][1]);
         printf("Z: ");
-        scanf("%hhd", &locations[2][i]);
+        scanf("%hhd", &locations[i][2]);
     }
-
+	
+	printf("Z: ");
     //calls the function and receives the amount of occupied slots from those selected
     ptrLocations = &locations[0][0];
     char occupied = occupiedSlots();
