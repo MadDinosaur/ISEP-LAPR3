@@ -2,6 +2,7 @@ package lapr.project.controller;
 
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
+import lapr.project.model.graph.matrix.MatrixGraph;
 import lapr.project.store.PortsGraph;
 
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class GetPlaceClosestToAllPlacesController {
      * @param storage the storage instance used to store all information
      */
     public GetPlaceClosestToAllPlacesController(MainStorage storage) {
-        this.mainStorage = storage;;
+        this.mainStorage = storage;
     }
 
     /**
@@ -34,12 +35,9 @@ public class GetPlaceClosestToAllPlacesController {
      */
     public HashMap<String, List<String>> getPlaceClosestToAllPlaces(){
         CountrySqlStore sqlStore = new CountrySqlStore();
+        PortsGraph pg = new PortsGraph();
         HashMap<String, PortsGraph> graphMap = sqlStore.loadGraphMapByContinent(mainStorage.getDatabaseConnection(), 0);
 
-        //Este mapa vai ter como key o continente e depois uma lista com os locais mais proximos (meti como string
-        // mas se achares melhor mudar muda).
-        HashMap<String, List<String>> resultMap = new HashMap<>();
-
-        return null;
+        return pg.minDistanceByCountry(graphMap);
     }
 }
