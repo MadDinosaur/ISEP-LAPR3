@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class presentationTestsSprint3 {
 
-    boolean dataBase = false;
+    boolean dataBase = true;
 
 //    @Test
 //    public void insert(){
@@ -46,6 +48,23 @@ public class presentationTestsSprint3 {
             ColourGraphController colourGraphController = new ColourGraphController();
             sb.append(colourGraphController.getCountryAndBorderColours());
             writeOutput(sb.toString(), "US302");
+        }
+    }
+
+    @Test
+    public void US303(){
+        if (dataBase){
+            GetPlaceClosestToAllPlacesController controller = new GetPlaceClosestToAllPlacesController();
+            HashMap<String, List<String>> result = controller.getPlaceClosestToAllPlaces();
+            StringBuilder sb = new StringBuilder();
+
+            for (String s : result.keySet()){
+                sb.append(s);
+                sb.append(": ");
+                sb.append(result.get(s));
+                sb.append("\n");
+            }
+            writeOutput(sb.toString(),"US303");
         }
     }
 

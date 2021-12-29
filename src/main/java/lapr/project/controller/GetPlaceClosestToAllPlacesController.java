@@ -2,7 +2,6 @@ package lapr.project.controller;
 
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
-import lapr.project.model.graph.matrix.MatrixGraph;
 import lapr.project.store.PortsGraph;
 
 import java.util.HashMap;
@@ -38,6 +37,6 @@ public class GetPlaceClosestToAllPlacesController {
         PortsGraph pg = new PortsGraph();
         HashMap<String, PortsGraph> graphMap = sqlStore.loadGraphMapByContinent(mainStorage.getDatabaseConnection(), 0);
 
-        return pg.minDistanceByCountry(graphMap);
+        return pg.minDistanceByContinent(graphMap);
     }
 }
