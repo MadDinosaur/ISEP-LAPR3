@@ -20,4 +20,4 @@ END;
 /
 
 -- Call function to test it --
-SELECT func_occupancy_rate(100000001,1) FROM DUAL;
+SELECT func_occupancy_rate(100000001,2) FROM DUAL;
