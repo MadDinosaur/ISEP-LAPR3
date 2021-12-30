@@ -3,6 +3,7 @@ package lapr.project.presentationTests;
 import lapr.project.controller.*;
 import lapr.project.data.*;
 import lapr.project.mappers.dto.UserDTO;
+import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
@@ -94,6 +95,21 @@ public class presentationTestsSprint3 {
             sb.append(values);
 
             writeOutput(sb.toString(), "US305");
+        }
+    }
+
+    @Test
+    public void US306(){
+        if(dataBase){
+            WarehouseOccupancyAndEstimateController controller = new WarehouseOccupancyAndEstimateController();
+            Pair<Integer, Double> pair1 = controller.getOccupancyRate(1);
+            Pair<Integer, Integer> pair2 = controller.getEstimateLeavingContainers30Days(2);
+            StringBuilder s = new StringBuilder();
+            s.append(String.format("Occupancy rate from storage: %d %n", pair1.get1st()));
+            s.append(String.format("Occupancy Rate: %f%n%n", pair1.get2nd()));
+            s.append(String.format("Estimate containers leaving warehouse no %d in 30 days %n", pair2.get1st()));
+            s.append(String.format("Number of Leaving Containers %d%n", pair2.get2nd()));
+            writeOutput(s.toString(), "US306");
         }
     }
 

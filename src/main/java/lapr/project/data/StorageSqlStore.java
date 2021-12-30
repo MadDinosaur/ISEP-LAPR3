@@ -222,8 +222,8 @@ public class StorageSqlStore implements Persistable {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "select storage.identification,func_occupancy_rate_storage(?)\n" +
-                "from storage, dual" +
+        sqlCommand = "select storage.identification,func_occupancy_rate_storage(storage.identification)\n" +
+                "from storage, dual\n" +
                 "where storage.identification = ?";
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, storageId);
@@ -240,8 +240,8 @@ public class StorageSqlStore implements Persistable {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "select storage.identification, func_estimate_number_leaving_containers(?)\n" +
-                "from storage, dual" +
+        sqlCommand = "select storage.identification, func_estimate_number_leaving_containers(storage.identification)\n" +
+                "from storage, dual\n" +
                 "where storage.identification = ?";
 
         try(PreparedStatement getEstimate = connection.prepareStatement(sqlCommand)){
