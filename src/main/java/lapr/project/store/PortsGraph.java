@@ -3,6 +3,7 @@ package lapr.project.store;
 import lapr.project.model.Country;
 import lapr.project.model.Location;
 import lapr.project.model.Storage;
+import lapr.project.model.graph.Algorithms;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import oracle.ucp.util.Pair;
 
@@ -185,6 +186,63 @@ public class PortsGraph {
                 }
             }
         }
+    }
+
+    /** Gets a list with locations of all places with the less distance
+     * Overall Complexity: V*V
+     *
+     * @param minDistGraph The matrix of costs provided by the Floyd Warshall algorithm
+     * @param size The number of vertices
+     * @return returns a list with locations of all places with the less distance
+     */
+    private List<String> minDistanceLocation(MatrixGraph<Location,Double> minDistGraph, int size){
+
+        List<String> result = new ArrayList<>();             // The result list
+        double min = Double.MAX_VALUE;                       // The current min distance
+
+        for(int i = 0; i < size;i++){                        // Each line...
+            double sum = 0;                                  // ... has its own sum
+
+
+            for(int j = 0; j < size; j++){
+
+                if(j != i){
+                    sum = sum + minDistGraph.edge(i,j).getWeight(); // After adding all the weights of the line...
+                }
+            }
+            double average = sum / size;                            // ... calculates the average of the line
+
+            if ( min >= average) {                                  // If the average is just equal, adds the index to the list
+
+                if (min > average) {                                // If the average is smaller...
+                    min = average;                                  // ... min gets updated...
+                    result.clear();                                 // ... and result cleared
+                }
+                result.add(minDistGraph.vertex(i).toString());
+
+            }
+
+        }
+        return  result;                                              // The list of indexes is returned
+    }
+
+    /** Gets a map for every continent and its correspondent closest places
+     *
+     * @param graphMap a map with every continent and its correspondent ports
+     * @return returns a map for every continent and its correspondent closest places
+     */
+    public HashMap<String, List<String>> minDistanceByContinent(HashMap<String, PortsGraph> graphMap){
+
+        HashMap<String, List<String>> resultMap = new HashMap<>();                           // The result map to be returned
+       for(String key : graphMap.keySet()){                                                  // For each key AKA Continent
+
+           MatrixGraph g = graphMap.get(key).getMg();                                        // Gets the respective graph
+
+           MatrixGraph<Location,Double> minDistGraph = Algorithms.FloydWarshallAlgorithm(g,Double::compare,Double::sum);      // Gets the minDist graph using Floyd Warshall Algorithm
+
+           resultMap.put(key,minDistanceLocation(minDistGraph,g.numVertices()));
+       }
+        return  resultMap;
     }
 
     /**

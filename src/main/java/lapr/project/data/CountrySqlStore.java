@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,17 +137,46 @@ public class CountrySqlStore implements Persistable {
         }
     }
 
+    public HashMap<String, PortsGraph> loadGraphMapByContinent(DatabaseConnection databaseConnection, int n) {
+        Connection connection = databaseConnection.getConnection();
+        HashMap<String, PortsGraph> graphMap = new HashMap<>();
+
+        try {
+            String sqlCommand = "select continent from country group by continent";
+
+            try (PreparedStatement getContinentPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                try (ResultSet continentResultSet = getContinentPreparedStatement.executeQuery()) {
+                    while (continentResultSet.next()) {
+                        String continent = continentResultSet.getString(1);
+
+                        sqlCommand = "select * from country where continent like '"+ continent +"'";
+
+                        graphMap.put(continent, loadGraph(databaseConnection, n, sqlCommand));
+                    }
+                }
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+            return null;
+        }
+
+        return graphMap;
+    }
+
+    public static PortsGraph loadGraph(DatabaseConnection databaseConnection, int n){
+        return loadGraph(databaseConnection, n, "select * from country");
+    }
+
     /**
      * loads the pathGraph information
      * @param databaseConnection the app's database connection
      */
-    public static void loadGraph(DatabaseConnection databaseConnection, int n){
+    public static PortsGraph loadGraph(DatabaseConnection databaseConnection, int n, String sqlCommand){
         Connection connection = databaseConnection.getConnection();
         PortsGraph portsGraph = new PortsGraph();
 
         try {
-            String sqlCommand = "select * from country";
-
             try(PreparedStatement getCountryPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 try (ResultSet countryResultSet = getCountryPreparedStatement.executeQuery()) {
                     while (countryResultSet.next()){
@@ -168,11 +198,14 @@ public class CountrySqlStore implements Persistable {
             loadBorders(databaseConnection, portsGraph);
             loadPaths(databaseConnection, portsGraph);
             portsGraph.setUpGraph(n);
+
             MainStorage.getInstance().setPortsGraph(portsGraph);
+            return portsGraph;
             
         } catch (SQLException exception) {
             Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
             databaseConnection.registerError(exception);
+            return null;
         }
     }
 
@@ -181,7 +214,7 @@ public class CountrySqlStore implements Persistable {
      * @param databaseConnection the app's database connection
      * @param portsGraph the graph whose paths are being added
      */
-    private static void loadPaths(DatabaseConnection databaseConnection, PortsGraph portsGraph) {
+    private static void loadBorders(DatabaseConnection databaseConnection, PortsGraph portsGraph) {
         Connection connection = databaseConnection.getConnection();
 
         try {
@@ -205,7 +238,7 @@ public class CountrySqlStore implements Persistable {
      * @param databaseConnection the app's connection to the database
      * @param portsGraph the graph whose paths are being added
      */
-    private static void loadBorders(DatabaseConnection databaseConnection, PortsGraph portsGraph) {
+    private static void loadPaths(DatabaseConnection databaseConnection, PortsGraph portsGraph) {
         Connection connection = databaseConnection.getConnection();
 
         try {
