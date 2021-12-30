@@ -11,7 +11,7 @@ int positions = 0;
 void callFreeAndOccupiedSpaces(){
     fill3DMatrix();
     long freeOccupied = freeSpaces();
-    printf("Number of free and occupied spaces, in order: %lx\n", freeOccupied);
+    printf("Number of free and occupied spaces, in order: %lX\n", freeOccupied);
 }
 
 void callIsContainerHere() {

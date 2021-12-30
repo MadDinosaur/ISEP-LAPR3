@@ -136,7 +136,7 @@ nextZ:
 
 end:
 
-	shl $4, %r15d
+	shl $16, %r15d
 
 	movslq %r15d, %rax
 
