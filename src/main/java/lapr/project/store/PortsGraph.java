@@ -196,7 +196,6 @@ public class PortsGraph {
      * @return returns a list with locations of all places with the less distance
      */
     private List<String> minDistanceLocation(MatrixGraph<Location,Double> minDistGraph,int size,int n){
-
         List<String> result = new ArrayList<>();                    // The result list
         List<Pair<Double,String>> temporary = new ArrayList<>();
 
@@ -211,7 +210,6 @@ public class PortsGraph {
             }
             double average = sum / size;                            // ... calculates the average of the line
 
-
             temporary.add(new Pair<>(average,minDistGraph.vertex(i).toString()));   // Introduces in a list a Pair with the average and the correspondent vertex
         }
 
@@ -221,7 +219,6 @@ public class PortsGraph {
             result.add(temporary.get(k).get2nd());
         }
 
-
         return  result;                                              // The list of indexes is returned
     }
 
@@ -230,17 +227,17 @@ public class PortsGraph {
      * @param graphMap a map with every continent and its correspondent ports
      * @return returns a map for every continent and its correspondent closest places
      */
-    public HashMap<String, List<String>> minDistanceByContinent(HashMap<String, PortsGraph> graphMap,int n){
-
+    public HashMap<String, List<String>> minDistanceByContinent(HashMap<String, PortsGraph> graphMap, int n){
         HashMap<String, List<String>> resultMap = new HashMap<>();                           // The result map to be returned
-       for(String key : graphMap.keySet()){                                                  // For each key AKA Continent
 
-           MatrixGraph g = graphMap.get(key).getMg();                                        // Gets the respective graph
+        for(String key : graphMap.keySet()){                                                  // For each key AKA Continent
 
-           MatrixGraph<Location,Double> minDistGraph = Algorithms.FloydWarshallAlgorithm(g,Double::compare,Double::sum);      // Gets the minDist graph using Floyd Warshall Algorithm
+            MatrixGraph<Location,Double> g = graphMap.get(key).getMg();                                        // Gets the respective graph
 
-           resultMap.put(key,minDistanceLocation(minDistGraph,g.numVertices(),n));
-       }
+            MatrixGraph<Location,Double> minDistGraph = Algorithms.FloydWarshallAlgorithm(g,Double::compare,Double::sum);      // Gets the minDist graph using Floyd Warshall Algorithm
+
+            resultMap.put(key,minDistanceLocation(minDistGraph,g.numVertices(),n));
+        }
         return  resultMap;
     }
 

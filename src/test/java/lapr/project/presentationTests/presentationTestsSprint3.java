@@ -1,18 +1,14 @@
 package lapr.project.presentationTests;
 
 import lapr.project.controller.*;
-import lapr.project.data.CountrySqlStore;
-import lapr.project.data.MainStorage;
+import lapr.project.data.*;
 import lapr.project.mappers.dto.UserDTO;
-import lapr.project.model.Country;
-import lapr.project.store.PortsGraph;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class presentationTestsSprint3 {
 
@@ -59,9 +55,9 @@ public class presentationTestsSprint3 {
             StringBuilder sb = new StringBuilder();
 
             for (String s : result.keySet()){
-                sb.append("===================================================================== ");
+                sb.append("============================================================ ");
                 sb.append(s);
-                sb.append(" =====================================================================");
+                sb.append(" ============================================================");
                 sb.append("\n");
                 for(String string : result.get(s)){
                     sb.append(string);
