@@ -54,31 +54,31 @@
       ><path d="M-7 -7 L19 -7 L19 134 L-7 134 L-7 -7 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
-      ><path d="M-126 -30 L252 -30 L252 60 L-126 60 L-126 -30 Z"
+      ><path d="M-98 -15 L196 -15 L196 30 L-98 30 L-98 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
-      ><path d="M-114 -30 L228 -30 L228 60 L-114 60 L-114 -30 Z"
+      ><path d="M-172 -15 L344 -15 L344 30 L-172 30 L-172 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath19"
-      ><path d="M-82 -15 L164 -15 L164 30 L-82 30 L-82 -15 Z"
+      ><path d="M-208 -15 L416 -15 L416 30 L-208 30 L-208 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath20"
-      ><path d="M-77 -30 L154 -30 L154 60 L-77 60 L-77 -30 Z"
+      ><path d="M-92 -15 L184 -15 L184 30 L-92 30 L-92 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath21"
       ><path d="M-116 -30 L232 -30 L232 60 L-116 60 L-116 -30 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath22"
-      ><path d="M-92 -15 L184 -15 L184 30 L-92 30 L-92 -15 Z"
+      ><path d="M-77 -30 L154 -30 L154 60 L-77 60 L-77 -30 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath23"
-      ><path d="M-208 -15 L416 -15 L416 30 L-208 30 L-208 -15 Z"
+      ><path d="M-82 -15 L164 -15 L164 30 L-82 30 L-82 -15 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath24"
-      ><path d="M-172 -15 L344 -15 L344 30 L-172 30 L-172 -15 Z"
+      ><path d="M-114 -30 L228 -30 L228 60 L-114 60 L-114 -30 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath25"
-      ><path d="M-98 -15 L196 -15 L196 30 L-98 30 L-98 -15 Z"
+      ><path d="M-126 -30 L252 -30 L252 60 L-126 60 L-126 -30 Z"
       /></clipPath
       ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath26"
       ><path d="M0 0 L448 0 L448 104 L0 104 L0 0 Z"
@@ -320,27 +320,21 @@
     ><g stroke-linecap="butt" font-size="11px" transform="translate(1485,396)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1" stroke-miterlimit="0"
     ><rect fill="none" x="0" width="8" height="40" y="0" clip-path="url(#clipPath15)"
     /></g
-    ><g font-size="11px" transform="translate(1753,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="8" xml:space="preserve" y="12" clip-path="url(#clipPath17)" stroke="none"
-      >dataBaseConnection :</text
-      ><text x="10" xml:space="preserve" y="27" clip-path="url(#clipPath17)" stroke="none"
-      >DataBaseConnection</text
+    ><g font-size="11px" transform="translate(2,37)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="10" xml:space="preserve" y="12" clip-path="url(#clipPath17)" stroke="none"
+      >Traffic Manager</text
     ></g
-    ><g font-size="11px" transform="translate(1561,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="8" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
-      >connectionFactory :</text
-      ><text x="10" xml:space="preserve" y="27" clip-path="url(#clipPath18)" stroke="none"
-      >ConnectionFactory</text
+    ><g font-size="11px" transform="translate(317,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="7" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
+      >: GetPlaceClosestToAllPlacesUI</text
     ></g
-    ><g font-size="11px" transform="translate(1448,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="11" xml:space="preserve" y="12" clip-path="url(#clipPath19)" stroke="none"
-      >: Algorithms</text
+    ><g font-size="11px" transform="translate(540,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="6" xml:space="preserve" y="12" clip-path="url(#clipPath19)" stroke="none"
+      >: GetPlaceClosestToAllPlacesController</text
     ></g
-    ><g font-size="11px" transform="translate(1213,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="28" xml:space="preserve" y="12" clip-path="url(#clipPath20)" stroke="none"
-      >pg :</text
-      ><text x="9" xml:space="preserve" y="27" clip-path="url(#clipPath20)" stroke="none"
-      >PortsGraph</text
+    ><g font-size="11px" transform="translate(909,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="11" xml:space="preserve" y="12" clip-path="url(#clipPath20)" stroke="none"
+      >: MainStorage</text
     ></g
     ><g font-size="11px" transform="translate(1029,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
     ><text x="34" xml:space="preserve" y="12" clip-path="url(#clipPath21)" stroke="none"
@@ -348,21 +342,27 @@
       ><text x="14" xml:space="preserve" y="27" clip-path="url(#clipPath21)" stroke="none"
       >CountrySQLStore</text
     ></g
-    ><g font-size="11px" transform="translate(909,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="11" xml:space="preserve" y="12" clip-path="url(#clipPath22)" stroke="none"
-      >: MainStorage</text
+    ><g font-size="11px" transform="translate(1213,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="28" xml:space="preserve" y="12" clip-path="url(#clipPath22)" stroke="none"
+      >pg :</text
+      ><text x="9" xml:space="preserve" y="27" clip-path="url(#clipPath22)" stroke="none"
+      >PortsGraph</text
     ></g
-    ><g font-size="11px" transform="translate(540,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="6" xml:space="preserve" y="12" clip-path="url(#clipPath23)" stroke="none"
-      >: GetPlaceClosestToAllPlacesController</text
+    ><g font-size="11px" transform="translate(1448,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="11" xml:space="preserve" y="12" clip-path="url(#clipPath23)" stroke="none"
+      >: Algorithms</text
     ></g
-    ><g font-size="11px" transform="translate(317,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="7" xml:space="preserve" y="12" clip-path="url(#clipPath24)" stroke="none"
-      >: GetPlaceClosestToAllPlacesUI</text
+    ><g font-size="11px" transform="translate(1561,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="8" xml:space="preserve" y="12" clip-path="url(#clipPath24)" stroke="none"
+      >connectionFactory :</text
+      ><text x="10" xml:space="preserve" y="27" clip-path="url(#clipPath24)" stroke="none"
+      >ConnectionFactory</text
     ></g
-    ><g font-size="11px" transform="translate(2,37)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
-    ><text x="10" xml:space="preserve" y="12" clip-path="url(#clipPath25)" stroke="none"
-      >Traffic Manager</text
+    ><g font-size="11px" transform="translate(1753,2)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="black" stroke-opacity="1"
+    ><text x="8" xml:space="preserve" y="12" clip-path="url(#clipPath25)" stroke="none"
+      >dataBaseConnection :</text
+      ><text x="10" xml:space="preserve" y="27" clip-path="url(#clipPath25)" stroke="none"
+      >DataBaseConnection</text
     ></g
     ><g stroke-linecap="butt" font-size="11px" transform="translate(5,30)" fill-opacity="1" fill="black" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke-linejoin="round" stroke="black" stroke-opacity="1"
     ><line y2="50" fill="none" x1="50" clip-path="url(#clipPath27)" x2="394" y1="50"
@@ -512,8 +512,8 @@
       >2.1: getPlaceClosestToAllPlaces(n)</text
     ></g
     ><g font-size="11px" transform="translate(141,120)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
-    ><rect x="0" width="172" height="15" y="0" clip-path="url(#clipPath24)" stroke="none"
-      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath24)" stroke="none"
+    ><rect x="0" width="172" height="15" y="0" clip-path="url(#clipPath18)" stroke="none"
+      /><text fill="black" x="9" xml:space="preserve" y="12" clip-path="url(#clipPath18)" stroke="none"
       >2: Inserts the number of places</text
     ></g
     ><g font-size="11px" transform="translate(136,90)" fill-opacity="1" fill="white" text-rendering="geometricPrecision" image-rendering="optimizeQuality" font-family="sans-serif" stroke="white" stroke-opacity="1"
