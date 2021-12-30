@@ -48,7 +48,7 @@ CALL check_container_shipment('1', 1);
 
 -- Container not leased (throw exception)
 SELECT * FROM SHIPMENT;
-CALL check_container_shipment('29', 6);
+CALL check_container_shipment('6', 6);
 
 -- Valid data (does not throw exception)
-CALL check_container_shipment('6', 6);
+CALL check_container_shipment('6', 1);

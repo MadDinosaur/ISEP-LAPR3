@@ -8,7 +8,8 @@ BEGIN
     SELECT c.id 
     INTO manifest_id   
     FROM cargomanifest_full c
-    WHERE c.finishing_date_time = (SELECT MAX(cf.finishing_date_time)
+    WHERE c.ship_mmsi = id_ship
+    AND c.finishing_date_time = (SELECT MAX(cf.finishing_date_time)
                                    FROM cargomanifest_full cf
                                    WHERE cf.finishing_date_time <= given_moment
                                    AND cf.status LIKE 'finished'
