@@ -157,6 +157,20 @@ public class presentationTestsSprint3 {
     }
 
     @Test
+    public void US310() {
+        if(dataBase) {
+            GetOccupancyMapController controller = new GetOccupancyMapController();
+            String values = controller.getOccupancyMapToString(controller.getOccupancyMap(3, 12,2021));
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("Occupancy map for storage no. 3 on 12/2021\n\n");
+            sb.append(values);
+
+            writeOutput(sb.toString(), "US310");
+        }
+    }
+
+    @Test
     public void US321() {
         if (dataBase) {
             RegisterNewUserController ctrl = new RegisterNewUserController();
