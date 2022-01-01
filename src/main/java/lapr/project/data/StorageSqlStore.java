@@ -289,7 +289,9 @@ public class StorageSqlStore implements Persistable {
 
 
                     Array a = call.getArray(1);
-                    occupancyMap = Arrays.asList((String[]) a.getArray());
+                    for (String occupancy: (String[]) a.getArray())
+                        if (occupancy != null)
+                            occupancyMap.add(occupancy);
                 }
             }
             s.executeUpdate("begin dbms_output.disable(); end;");

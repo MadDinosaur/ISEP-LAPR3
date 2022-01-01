@@ -20,6 +20,7 @@ BEGIN
     SELECT MAX_VOLUME INTO vStorageCapacity FROM STORAGE WHERE IDENTIFICATION = pStorageId;
 
     DBMS_OUTPUT.PUT_LINE('Storage no. ' || pStorageId || ' Occupancy Map for ' || pMonth || '/' || pYear);
+    DBMS_OUTPUT.PUT_LINE(' ');
     DBMS_OUTPUT.PUT_LINE('Date | Occupancy Rate');
 
     OPEN vOccupancyDates;

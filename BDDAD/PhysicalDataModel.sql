@@ -777,3 +777,32 @@ CREATE OR REPLACE TRIGGER tgrValidateCapacity
 /
 ALTER TRIGGER tgrValidateCapacity ENABLE;
 /
+
+CREATE OR REPLACE TRIGGER trgContainerAudit
+AFTER INSERT OR UPDATE OR DELETE ON CONTAINER_CARGOMANIFEST
+FOR EACH ROW
+WHEN (old.PARTIAL_CARGO_MANIFEST_ID IS NOT NULL OR new.PARTIAL_CARGO_MANIFEST_ID IS NOT NULL)
+    DECLARE
+        vOperationType Container_AuditTrail.operation_type%type;
+        vContainerNum Container_AuditTrail.container_num%type;
+        vCargoManifestId Container_AuditTrail.cargo_manifest_id%type;
+    BEGIN
+        IF DELETING THEN
+            vContainerNum := :old.CONTAINER_NUM;
+            vCargoManifestId := :old.PARTIAL_CARGO_MANIFEST_ID;
+            vOperationType := 'DELETE';
+        ELSE
+            vContainerNum := :new.CONTAINER_NUM;
+            vCargoManifestId := :new.PARTIAL_CARGO_MANIFEST_ID;
+            IF INSERTING THEN
+                vOperationType := 'INSERT';
+            ELSE
+                vOperationType := 'UPDATE';
+           END IF;
+        END IF;
+        INSERT INTO Container_AuditTrail VALUES (USER, CURRENT_TIMESTAMP, vOperationType, vContainerNum, vCargoManifestId);
+    END;
+/
+
+ALTER TRIGGER trgContainerAudit ENABLE;
+/
