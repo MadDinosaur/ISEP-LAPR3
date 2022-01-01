@@ -8,7 +8,7 @@
 	.global freeSpaces
 
 freeSpaces:
-	pushq %rbx                  #pushs rbx to the stack
+	pushq %rbx                  #saves the stack pointer
 
 	movq $0, %rdi				#coordinate X, initiates at 0
 	movq $0, %r14				#coordinate Y, initiates at 0
