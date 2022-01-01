@@ -281,16 +281,16 @@ public class StorageSqlStore implements Persistable {
         Connection connection = databaseConnection.getConnection();
         List<Integer> containerList = new ArrayList<>();
 
-        try {
-            String sqlCommand = "select con.num\n" +
-                    "    FROM STORAGE s, CARGOMANIFEST_PARTIAL cp, container_cargomanifest cc, container con\n" +
-                    "    where s.identification = ?\n" +
-                    "    and s.identification = cp.storage_identification\n" +
-                    "    and cp.id = cc.partial_cargo_manifest_id\n" +
-                    "    and status like 'pending' \n" +
-                    "    and cp.finishing_date_time between current_timestamp and current_timestamp + 30";
+        String sqlCommand = "select con.num\n" +
+                "    FROM STORAGE s, CARGOMANIFEST_PARTIAL cp, container_cargomanifest cc, container con\n" +
+                "    where s.identification = ?\n" +
+                "    and s.identification = cp.storage_identification\n" +
+                "    and cp.id = cc.partial_cargo_manifest_id\n" +
+                "    and status like 'pending' \n" +
+                "    and cp.finishing_date_time between current_timestamp and current_timestamp + 30";
 
-            PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand);
+        try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)){
+            getStoragesPreparedStatement.setInt(1,storageId);
             try (ResultSet storagesResultSet = getStoragesPreparedStatement.executeQuery()) {
                 while (storagesResultSet.next()) {
                     int num = storagesResultSet.getInt(1);
