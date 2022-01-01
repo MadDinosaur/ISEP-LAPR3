@@ -58,6 +58,18 @@ Below are user story descriptions and links for analysis and design (DM, CD, SD,
 [US209](docs/UserStories/US209)|As Ship Captain, I want to know the occupancy rate of a given ship at a given moment.
 [US210](docs/UserStories/US210)|As Traffic manager, I need to know which ships will be available on Monday next week and their location.
 
+### Physics
+  
+To accommodate the design choice made to represent the user stories of physics a little method was made in which the following materials are registered: 
+    
+    - Stone Wool
+    - Cork
+    - Fiber-glass
+    - Steel
+    - Iron
+    - Zinc
+    - Aluminium
+
 ### Tests
 
 Demo tests can be found on *src\test\java\lapr\project\presentationTests*, which output a file with the results of each user story.
