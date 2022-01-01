@@ -51,21 +51,27 @@ public class presentationTestsSprint3 {
     @Test
     public void US303(){
         if (dataBase){
+            int n = 10;
             GetPlaceClosestToAllPlacesController controller = new GetPlaceClosestToAllPlacesController();
-            HashMap<String, List<String>> result = controller.getPlaceClosestToAllPlaces(5);
+            HashMap<String, List<String>> result = controller.getPlaceClosestToAllPlaces(n);
             StringBuilder sb = new StringBuilder();
 
+                sb.append("V TOP ");
+                sb.append(n);
+                sb.append(" CLOSEST PLACES V");
+                sb.append("\n");
             for (String s : result.keySet()){
                 sb.append("============================================================ ");
                 sb.append(s);
                 sb.append(" ============================================================");
                 sb.append("\n");
                 for(String string : result.get(s)){
+                    sb.append(">>    ");
                     sb.append(string);
                     sb.append("\n");
                 }
-                sb.append("\n");
             }
+            sb.append(" ===============================================================================================================================");
             writeOutput(sb.toString(),"US303");
         }
     }
