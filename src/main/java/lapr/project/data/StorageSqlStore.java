@@ -287,7 +287,8 @@ public class StorageSqlStore implements Persistable {
                 "    and s.identification = cp.storage_identification\n" +
                 "    and cp.id = cc.partial_cargo_manifest_id\n" +
                 "    and status like 'pending' \n" +
-                "    and cp.finishing_date_time between current_timestamp and current_timestamp + 30";
+                "    and cp.finishing_date_time between current_timestamp and current_timestamp + 30\n" +
+                "    and con.num = cc.container_num";
 
         try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)){
             getStoragesPreparedStatement.setInt(1,storageId);
