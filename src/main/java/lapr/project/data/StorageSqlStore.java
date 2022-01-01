@@ -5,14 +5,11 @@ import lapr.project.model.Coordinate;
 import lapr.project.model.Storage;
 import oracle.ucp.util.Pair;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 public class StorageSqlStore implements Persistable {
 
@@ -65,7 +62,7 @@ public class StorageSqlStore implements Persistable {
      * is registered, it updates it. If it is not, it inserts a new one.
      *
      * @param databaseConnection Connection to the Database
-     * @param storage an object of type Storage
+     * @param storage            an object of type Storage
      * @throws SQLException in case something goes wrong during the Database connection
      */
     private void saveStorageToDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
@@ -83,7 +80,7 @@ public class StorageSqlStore implements Persistable {
      * Checks if a Storage is registered on the Database by its ID.
      *
      * @param databaseConnection Connection to the Database
-     * @param storage an object of type Storage
+     * @param storage            an object of type Storage
      * @return True if the Storage is registered, False if otherwise.
      * @throws SQLException in case something goes wrong during the Database connection
      */
@@ -94,7 +91,7 @@ public class StorageSqlStore implements Persistable {
 
         String sqlCommandSelect = "select * from storage where identification = ?";
 
-        try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommandSelect)) {
+        try (PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommandSelect)) {
 
             getStoragesPreparedStatement.setInt(1, storage.getIdentification());
 
@@ -102,7 +99,7 @@ public class StorageSqlStore implements Persistable {
                 isStorageOnDatabase = storagesResultSet.next();
             }
         }
-        
+
         return isStorageOnDatabase;
     }
 
@@ -110,7 +107,7 @@ public class StorageSqlStore implements Persistable {
      * Adds a new Storage record to the database.
      *
      * @param databaseConnection Connection to the Database
-     * @param storage an object of type Storage
+     * @param storage            an object of type Storage
      * @throws SQLException in case something goes wrong during the Database connection
      */
     private void insertStorageOnDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
@@ -121,17 +118,18 @@ public class StorageSqlStore implements Persistable {
 
     /**
      * Checks if a given country is already registered in the database
+     *
      * @param databaseConnection Connection to the Database
-     * @param country an object of type Storage
+     * @param country            an object of type Storage
      * @return true if the country already exists
      */
-    private boolean existsCountry(DatabaseConnection databaseConnection, String country){
+    private boolean existsCountry(DatabaseConnection databaseConnection, String country) {
         Connection connection = databaseConnection.getConnection();
 
         try {
             String sqlCommand = "select * from country where country = ?";
 
-            try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)) {
+            try (PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 getStoragesPreparedStatement.setString(1, country);
                 try (ResultSet countryResultSet = getStoragesPreparedStatement.executeQuery()) {
                     return countryResultSet.next();
@@ -149,7 +147,7 @@ public class StorageSqlStore implements Persistable {
      * Updates an existing Storage record on the database.
      *
      * @param databaseConnection Connection to the Database
-     * @param storage an object of type Storage
+     * @param storage            an object of type Storage
      * @throws SQLException in case something goes wrong during the Database connection
      */
     private void updateStorageOnDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
@@ -162,13 +160,13 @@ public class StorageSqlStore implements Persistable {
      * Executes the save Storage Statement.
      *
      * @param databaseConnection Connection to the Database
-     * @param storage an object of type Storage
+     * @param storage            an object of type Storage
      * @throws SQLException in case something goes wrong during the Database connection
      */
     private void executeStorageStatementOnDatabase(DatabaseConnection databaseConnection, Storage storage, String sqlCommand) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
-        try(PreparedStatement saveStoragePreparedStatement = connection.prepareStatement(sqlCommand)) {
+        try (PreparedStatement saveStoragePreparedStatement = connection.prepareStatement(sqlCommand)) {
 
             //TODO: Hard-coded para colocar o storage-type como 1 (Port) visto que
             // apenas estamos a usar Ports por enquanto, enventualmente pode vir a ser necessário mudar isto
@@ -184,6 +182,7 @@ public class StorageSqlStore implements Persistable {
 
     /**
      * Gets all the storages in the database and returns a list
+     *
      * @param databaseConnection the connection to the database
      * @return a list of storages
      */
@@ -218,7 +217,15 @@ public class StorageSqlStore implements Persistable {
         }
     }
 
-    public Pair<Integer, Double> getOccupancyRate(DatabaseConnection databaseConnection, int storageId) throws SQLException{
+    /**
+     * gets the occupancy rate
+     *
+     * @param databaseConnection the connection to the database
+     * @param storageId          the storage id
+     * @return the occupancy rate
+     * @throws SQLException in case something goes wrong during the Database connection
+     */
+    public Pair<Integer, Double> getOccupancyRate(DatabaseConnection databaseConnection, int storageId) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
@@ -227,7 +234,7 @@ public class StorageSqlStore implements Persistable {
                 "where storage.identification = ?";
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, storageId);
-            try(ResultSet shipAddressesResultSet = getManifestData.executeQuery()) {
+            try (ResultSet shipAddressesResultSet = getManifestData.executeQuery()) {
                 if (shipAddressesResultSet.next())
                     return new Pair<>(shipAddressesResultSet.getInt(1), shipAddressesResultSet.getDouble(2));
                 else
@@ -236,7 +243,75 @@ public class StorageSqlStore implements Persistable {
         }
     }
 
-    public Pair<Integer, Integer> getEstimateLeavingContainers30Days(DatabaseConnection databaseConnection, int storageId) throws SQLException{
+    /**
+     * Gets the occupancy rate of a given storage during a given month.
+     * Returns only the first date of the month and dates when the occupancy rates suffered changes.
+     *
+     * @param databaseConnection the connection to the database
+     * @param storageId          the storage identification
+     * @param month              the month to lookup
+     * @param year               the year to lookup
+     * @return a list of String composed of a date and the respective occupancy rate percentage
+     */
+    public List<String> getOccupancyMap(DatabaseConnection databaseConnection, int storageId, int month, int year) {
+        List<String> occupancyMap = new ArrayList<>();
+
+        Connection connection;
+        try {
+            connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) {
+            return occupancyMap;
+        }
+
+        try (Statement s = connection.createStatement()) {
+            //Enable DBMS_OUTPUT
+            s.executeUpdate("begin dbms_output.enable(); end;");
+            //Call procedure
+            String sqlCommand = "begin occupation_map_given_month(?,?,?); end;";
+            try (PreparedStatement occupancyMapPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                occupancyMapPreparedStatement.setInt(1, storageId);
+                occupancyMapPreparedStatement.setInt(2, month);
+                occupancyMapPreparedStatement.setInt(3, year);
+
+                occupancyMapPreparedStatement.executeUpdate();
+
+                // Fetch the SERVEROUTPUT explicitly, using DBMS_OUTPUT.GET_LINES
+                try (CallableStatement call = connection.prepareCall(
+                        "declare "
+                                + "  num integer := 1000;"
+                                + "begin "
+                                + "  dbms_output.get_lines(?, num);"
+                                + "end;"
+                )) {
+                    call.registerOutParameter(1, Types.ARRAY,
+                            "DBMSOUTPUT_LINESARRAY");
+                    call.execute();
+
+
+                    Array a = call.getArray(1);
+                    occupancyMap = Arrays.asList((String[]) a.getArray());
+                }
+            }
+            s.executeUpdate("begin dbms_output.disable(); end;");
+        } catch (SQLException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+            databaseConnection.registerError(exception);
+        } catch (NullPointerException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+        }
+        return occupancyMap;
+    }
+
+
+    /**
+     * gets the number of leaving containers in 30 days
+     *
+     * @param databaseConnection the connection to the database
+     * @param storageId          the storage id
+     * @return the number of leaving containers
+     * @throws SQLException in case something goes wrong during the Database connection
+     */
+    public Pair<Integer, Integer> getEstimateLeavingContainers30Days(DatabaseConnection databaseConnection, int storageId) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
@@ -244,15 +319,52 @@ public class StorageSqlStore implements Persistable {
                 "from storage, dual\n" +
                 "where storage.identification = ?";
 
-        try(PreparedStatement getEstimate = connection.prepareStatement(sqlCommand)){
+        try (PreparedStatement getEstimate = connection.prepareStatement(sqlCommand)) {
             getEstimate.setInt(1, storageId);
-            try(ResultSet resultSet = getEstimate.executeQuery()){
-                if(resultSet.next()){
+            try (ResultSet resultSet = getEstimate.executeQuery()) {
+                if (resultSet.next()) {
                     return new Pair<>(resultSet.getInt(1), resultSet.getInt(2));
-                }else{
+                } else {
                     return null;
                 }
             }
+        }
+    }
+
+    /**
+     * gets a list of all the leaving container id
+     *
+     * @param databaseConnection the connection to the database
+     * @param storageId          the storage id
+     * @return list of leaving containers
+     * @throws SQLException in case something goes wrong during the Database connection
+     */
+    public List<Integer> getContainers30Days(DatabaseConnection databaseConnection, int storageId) throws SQLException {
+        Connection connection = databaseConnection.getConnection();
+        List<Integer> containerList = new ArrayList<>();
+
+        String sqlCommand = "select con.num\n" +
+                "    FROM STORAGE s, CARGOMANIFEST_PARTIAL cp, container_cargomanifest cc, container con\n" +
+                "    where s.identification = ?\n" +
+                "    and s.identification = cp.storage_identification\n" +
+                "    and cp.id = cc.partial_cargo_manifest_id\n" +
+                "    and status like 'pending' \n" +
+                "    and cp.finishing_date_time between current_timestamp and current_timestamp + 30\n" +
+                "    and con.num = cc.container_num";
+
+        try (PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)) {
+            getStoragesPreparedStatement.setInt(1, storageId);
+            try (ResultSet storagesResultSet = getStoragesPreparedStatement.executeQuery()) {
+                while (storagesResultSet.next()) {
+                    int num = storagesResultSet.getInt(1);
+                    containerList.add(num);
+                }
+                return containerList;
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+            return null;
         }
     }
 }

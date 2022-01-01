@@ -6,6 +6,7 @@ import lapr.project.data.MainStorage;
 import lapr.project.data.StorageSqlStore;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class WarehouseOccupancyAndEstimateController {
     /**
@@ -37,6 +38,11 @@ public class WarehouseOccupancyAndEstimateController {
         this.storageStore = storageSqlStore;
     }
 
+    /**
+     * Gets the storage identification number and it's occupancy rate
+     * @param storageId the storage id
+     * @return storage id and it's occupancy rate
+     */
     public Pair<Integer,Double> getOccupancyRate(int storageId){
         try {
             return storageStore.getOccupancyRate(mainStorage.getDatabaseConnection(), storageId);
@@ -46,9 +52,28 @@ public class WarehouseOccupancyAndEstimateController {
         }
     }
 
+    /**
+     * Gets the number of leaving containers in a space of 30 days
+     * @param storageId the storage id
+     * @return storage id with the number of leaving containers
+     */
     public Pair<Integer,Integer> getEstimateLeavingContainers30Days(int storageId){
         try {
             return storageStore.getEstimateLeavingContainers30Days(mainStorage.getDatabaseConnection(), storageId);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Gets the id of the containers leaving the storage in 30 days
+     * @param storageId the storage id
+     * @return a list of leaving container id
+     */
+    public List<Integer> getContainers30Days(int storageId){
+        try {
+            return storageStore.getContainers30Days(mainStorage.getDatabaseConnection(), storageId);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;

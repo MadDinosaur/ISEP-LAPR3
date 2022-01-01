@@ -51,21 +51,27 @@ public class presentationTestsSprint3 {
     @Test
     public void US303(){
         if (dataBase){
+            int n = 10;
             GetPlaceClosestToAllPlacesController controller = new GetPlaceClosestToAllPlacesController();
-            HashMap<String, List<String>> result = controller.getPlaceClosestToAllPlaces(5);
+            HashMap<String, List<String>> result = controller.getPlaceClosestToAllPlaces(n);
             StringBuilder sb = new StringBuilder();
 
+                sb.append("V TOP ");
+                sb.append(n);
+                sb.append(" CLOSEST PLACES V");
+                sb.append("\n");
             for (String s : result.keySet()){
                 sb.append("============================================================ ");
                 sb.append(s);
                 sb.append(" ============================================================");
                 sb.append("\n");
                 for(String string : result.get(s)){
+                    sb.append(">>    ");
                     sb.append(string);
                     sb.append("\n");
                 }
-                sb.append("\n");
             }
+            sb.append(" ===============================================================================================================================");
             writeOutput(sb.toString(),"US303");
         }
     }
@@ -109,6 +115,11 @@ public class presentationTestsSprint3 {
             s.append(String.format("Occupancy Rate: %f%n%n", pair1.get2nd()));
             s.append(String.format("Estimate containers leaving warehouse no %d in 30 days %n", pair2.get1st()));
             s.append(String.format("Number of Leaving Containers %d%n", pair2.get2nd()));
+            s.append(String.format("List Of Leaving Containers ID: %n"));
+            List<Integer> containerId = controller.getContainers30Days(2);
+            for (Integer integer : containerId) {
+                s.append(String.format("    Container ID: %d%n", integer));
+            }
             writeOutput(s.toString(), "US306");
         }
     }
@@ -142,6 +153,20 @@ public class presentationTestsSprint3 {
             s.append("\n\nThermal Resistance = ").append(controller.getResistivityByArea(external, median, internal, 0.07, 0.10, 0.06));
 
             writeOutput(s.toString(), "US3017_20");
+        }
+    }
+
+    @Test
+    public void US310() {
+        if(dataBase) {
+            GetOccupancyMapController controller = new GetOccupancyMapController();
+            String values = controller.getOccupancyMapToString(controller.getOccupancyMap(3, 12,2021));
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("Occupancy map for storage no. 3 on 12/2021\n\n");
+            sb.append(values);
+
+            writeOutput(sb.toString(), "US310");
         }
     }
 
