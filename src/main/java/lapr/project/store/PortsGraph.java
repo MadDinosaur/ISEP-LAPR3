@@ -195,14 +195,12 @@ public class PortsGraph {
      * @param size The number of vertices
      * @return returns a list with locations of all places with the less distance
      */
-    private List<String> minDistanceLocation(MatrixGraph<Location,Double> minDistGraph, int size){
+    private List<String> minDistanceLocation(MatrixGraph<Location,Double> minDistGraph,int size,int n){
+        List<String> result = new ArrayList<>();                    // The result list
+        List<Pair<Double,String>> temporary = new ArrayList<>();
 
-        List<String> result = new ArrayList<>();             // The result list
-        double min = Double.MAX_VALUE;                       // The current min distance
-
-        for(int i = 0; i < size;i++){                        // Each line...
-            double sum = 0;                                  // ... has its own sum
-
+        for(int i = 0; i < size;i++){                               // Each line...
+            double sum = 0;                                         // ... has its own sum
 
             for(int j = 0; j < size; j++){
 
@@ -212,17 +210,15 @@ public class PortsGraph {
             }
             double average = sum / size;                            // ... calculates the average of the line
 
-            if ( min >= average) {                                  // If the average is just equal, adds the index to the list
-
-                if (min > average) {                                // If the average is smaller...
-                    min = average;                                  // ... min gets updated...
-                    result.clear();                                 // ... and result cleared
-                }
-                result.add(minDistGraph.vertex(i).toString());
-
-            }
-
+            temporary.add(new Pair<>(average,minDistGraph.vertex(i).toString()));   // Introduces in a list a Pair with the average and the correspondent vertex
         }
+
+        temporary.sort(Comparator.comparing(Pair::get1st));                     // Orders in crescent order by the average
+
+        for(int k = 0; k < n; k++){
+            result.add(temporary.get(k).get2nd());
+        }
+
         return  result;                                              // The list of indexes is returned
     }
 
@@ -231,17 +227,17 @@ public class PortsGraph {
      * @param graphMap a map with every continent and its correspondent ports
      * @return returns a map for every continent and its correspondent closest places
      */
-    public HashMap<String, List<String>> minDistanceByContinent(HashMap<String, PortsGraph> graphMap){
-
+    public HashMap<String, List<String>> minDistanceByContinent(HashMap<String, PortsGraph> graphMap, int n){
         HashMap<String, List<String>> resultMap = new HashMap<>();                           // The result map to be returned
-       for(String key : graphMap.keySet()){                                                  // For each key AKA Continent
 
-           MatrixGraph g = graphMap.get(key).getMg();                                        // Gets the respective graph
+        for(String key : graphMap.keySet()){                                                  // For each key AKA Continent
 
-           MatrixGraph<Location,Double> minDistGraph = Algorithms.FloydWarshallAlgorithm(g,Double::compare,Double::sum);      // Gets the minDist graph using Floyd Warshall Algorithm
+            MatrixGraph<Location,Double> g = graphMap.get(key).getMg();                                        // Gets the respective graph
 
-           resultMap.put(key,minDistanceLocation(minDistGraph,g.numVertices()));
-       }
+            MatrixGraph<Location,Double> minDistGraph = Algorithms.FloydWarshallAlgorithm(g,Double::compare,Double::sum);      // Gets the minDist graph using Floyd Warshall Algorithm
+
+            resultMap.put(key,minDistanceLocation(minDistGraph,g.numVertices(),n));
+        }
         return  resultMap;
     }
 

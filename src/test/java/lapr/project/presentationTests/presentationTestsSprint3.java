@@ -1,18 +1,15 @@
 package lapr.project.presentationTests;
 
 import lapr.project.controller.*;
-import lapr.project.data.CountrySqlStore;
-import lapr.project.data.MainStorage;
+import lapr.project.data.*;
 import lapr.project.mappers.dto.UserDTO;
-import lapr.project.model.Country;
-import lapr.project.store.PortsGraph;
+import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class presentationTestsSprint3 {
 
@@ -55,13 +52,18 @@ public class presentationTestsSprint3 {
     public void US303(){
         if (dataBase){
             GetPlaceClosestToAllPlacesController controller = new GetPlaceClosestToAllPlacesController();
-            HashMap<String, List<String>> result = controller.getPlaceClosestToAllPlaces();
+            HashMap<String, List<String>> result = controller.getPlaceClosestToAllPlaces(5);
             StringBuilder sb = new StringBuilder();
 
             for (String s : result.keySet()){
+                sb.append("============================================================ ");
                 sb.append(s);
-                sb.append(": ");
-                sb.append(result.get(s));
+                sb.append(" ============================================================");
+                sb.append("\n");
+                for(String string : result.get(s)){
+                    sb.append(string);
+                    sb.append("\n");
+                }
                 sb.append("\n");
             }
             writeOutput(sb.toString(),"US303");
@@ -93,6 +95,25 @@ public class presentationTestsSprint3 {
             sb.append(values);
 
             writeOutput(sb.toString(), "US305");
+        }
+    }
+
+    @Test
+    public void US306(){
+        if(dataBase){
+            WarehouseOccupancyAndEstimateController controller = new WarehouseOccupancyAndEstimateController();
+            Pair<Integer, Double> pair1 = controller.getOccupancyRate(1);
+            Pair<Integer, Integer> pair2 = controller.getEstimateLeavingContainers30Days(2);
+            StringBuilder s = new StringBuilder();
+            s.append(String.format("Occupancy rate from storage: %d %n", pair1.get1st()));
+            s.append(String.format("Occupancy Rate: %f%n%n", pair1.get2nd()));
+            s.append(String.format("Estimate containers leaving warehouse no %d in 30 days %n", pair2.get1st()));
+            s.append(String.format("Number of Leaving Containers %d%n", pair2.get2nd()));
+            List<Integer> containerId = controller.getContainers30Days(2);
+            for (Integer integer : containerId) {
+                s.append(String.format("Container ID: %d%n", integer));
+            }
+            writeOutput(s.toString(), "US306");
         }
     }
 

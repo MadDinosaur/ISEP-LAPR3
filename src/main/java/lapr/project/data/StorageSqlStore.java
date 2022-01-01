@@ -218,12 +218,19 @@ public class StorageSqlStore implements Persistable {
         }
     }
 
+    /**
+     * gets the occupancy rate
+     * @param databaseConnection the connection to the database
+     * @param storageId the storage id
+     * @return the occupancy rate
+     * @throws SQLException in case something goes wrong during the Database connection
+     */
     public Pair<Integer, Double> getOccupancyRate(DatabaseConnection databaseConnection, int storageId) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "select storage.identification,func_occupancy_rate_storage(?)\n" +
-                "from storage, dual" +
+        sqlCommand = "select storage.identification,func_occupancy_rate_storage(storage.identification)\n" +
+                "from storage, dual\n" +
                 "where storage.identification = ?";
         try (PreparedStatement getManifestData = connection.prepareStatement(sqlCommand)) {
             getManifestData.setInt(1, storageId);
@@ -236,12 +243,19 @@ public class StorageSqlStore implements Persistable {
         }
     }
 
+    /**
+     * gets the number of leaving containers in 30 days
+     * @param databaseConnection the connection to the database
+     * @param storageId the storage id
+     * @return the number of leaving containers
+     * @throws SQLException in case something goes wrong during the Database connection
+     */
     public Pair<Integer, Integer> getEstimateLeavingContainers30Days(DatabaseConnection databaseConnection, int storageId) throws SQLException{
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
-        sqlCommand = "select storage.identification, func_estimate_number_leaving_containers(?)\n" +
-                "from storage, dual" +
+        sqlCommand = "select storage.identification, func_estimate_number_leaving_containers(storage.identification)\n" +
+                "from storage, dual\n" +
                 "where storage.identification = ?";
 
         try(PreparedStatement getEstimate = connection.prepareStatement(sqlCommand)){
@@ -253,6 +267,41 @@ public class StorageSqlStore implements Persistable {
                     return null;
                 }
             }
+        }
+    }
+
+    /**
+     * gets a list of all the leaving container id
+     * @param databaseConnection the connection to the database
+     * @param storageId the storage id
+     * @return list of leaving containers
+     * @throws SQLException in case something goes wrong during the Database connection
+     */
+    public List<Integer> getContainers30Days(DatabaseConnection databaseConnection, int storageId) throws SQLException{
+        Connection connection = databaseConnection.getConnection();
+        List<Integer> containerList = new ArrayList<>();
+
+        String sqlCommand = "select con.num\n" +
+                "    FROM STORAGE s, CARGOMANIFEST_PARTIAL cp, container_cargomanifest cc, container con\n" +
+                "    where s.identification = ?\n" +
+                "    and s.identification = cp.storage_identification\n" +
+                "    and cp.id = cc.partial_cargo_manifest_id\n" +
+                "    and status like 'pending' \n" +
+                "    and cp.finishing_date_time between current_timestamp and current_timestamp + 30";
+
+        try(PreparedStatement getStoragesPreparedStatement = connection.prepareStatement(sqlCommand)){
+            getStoragesPreparedStatement.setInt(1,storageId);
+            try (ResultSet storagesResultSet = getStoragesPreparedStatement.executeQuery()) {
+                while (storagesResultSet.next()) {
+                    int num = storagesResultSet.getInt(1);
+                    containerList.add(num);
+                }
+                return containerList;
+            }
+        }catch (SQLException exception) {
+            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+            databaseConnection.registerError(exception);
+            return null;
         }
     }
 }

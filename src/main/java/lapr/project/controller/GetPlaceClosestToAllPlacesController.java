@@ -32,11 +32,11 @@ public class GetPlaceClosestToAllPlacesController {
      * returns a hashmap with the places closest to all other places grouped by continent
      * @return a hashmap with the places closest to all other places grouped by continent
      */
-    public HashMap<String, List<String>> getPlaceClosestToAllPlaces(){
+    public HashMap<String, List<String>> getPlaceClosestToAllPlaces(int n){
         CountrySqlStore sqlStore = new CountrySqlStore();
         PortsGraph pg = new PortsGraph();
         HashMap<String, PortsGraph> graphMap = sqlStore.loadGraphMapByContinent(mainStorage.getDatabaseConnection(), 0);
 
-        return pg.minDistanceByContinent(graphMap);
+        return pg.minDistanceByContinent(graphMap,n);
     }
 }
