@@ -55,7 +55,6 @@ void callOccupiedSlots() {
         scanf("%hhd", &locations[i][2]);
     }
 
-	printf("Z: ");
     //calls the function and receives the amount of occupied slots from those selected
     ptrLocations = &locations[0][0];
     char occupied = occupiedSlots();
