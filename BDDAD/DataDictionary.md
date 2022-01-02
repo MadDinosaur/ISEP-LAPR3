@@ -56,6 +56,22 @@
 | -20014 | Ship capacity was exceeded. | 'Containers in cargo manifest exceed ship capacity. Please remove containers from manifest or issue an unloading order.' |
 | -20015 | Storage capacity was exceeded | 'Containers in cargo manifest exceed storage capacity. Please remove containers from manifest or issue a loading order.' |
 
+## Database Change Log
+### Sprint 2 -> Sprint 3
+
+- Added **Country** and **Border** tables.
+
+- Added *country* and *maximum volume* attributes to Storage.
+
+- Added **StoragePath** table to represent connections between storages.
+
+- Added *parting* and *arrival* dates to Shipment table. Added a *client* user code.
+
+- Separated table **CargoManifest** into **Full** and **Partial** tables. Replaced *cargo_manifest* attribute in **Container_CargoManifest** table with *partial_cargo_manifest* and *full_cargo_manifest*.
+
+- Added a *status* attribute to cargo manifests to allow for estimated dates to be inserted.
+
+- Added **Truck** table.
 
 ## Database Technology
 
