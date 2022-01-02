@@ -1,3 +1,4 @@
+-- Function create script --
 create or replace FUNCTION func_occupancy_rate_storage(id_storage storage.identification%type)
 RETURN NUMBER
 IS
@@ -22,3 +23,6 @@ BEGIN
     group by s.MAX_VOLUME;
     RETURN Container_Volume/Storage_Capacity;
 END;
+
+--call function to test it --
+select func_occupancy_rate_storage(1) from dual
