@@ -300,7 +300,7 @@ class ContainerSqlStoreTest {
             PreparedStatementTest preparedStatementTest = new PreparedStatementTest(sqlCommand, resultSet);
 
             when(connection.prepareStatement(sqlCommand)).thenReturn(preparedStatementTest);
-            when(resultSet.next()).thenReturn(true).thenReturn(false);
+            when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
             when(resultSet.getInt(1)).thenReturn(5);
 
             //Setup check statement and mock result
@@ -310,7 +310,6 @@ class ContainerSqlStoreTest {
             PreparedStatementTest preparedStatementTestCheck = new PreparedStatementTest(sqlCommandCheck, resultSet);
 
             when(connection.prepareStatement(sqlCommandCheck)).thenReturn(preparedStatementTestCheck);
-            when(resultSet.next()).thenReturn(true).thenReturn(false);
 
             //Method call
             int actual = containerSqlStore.getContainerShipment(databaseConnection, "11111", 1);
