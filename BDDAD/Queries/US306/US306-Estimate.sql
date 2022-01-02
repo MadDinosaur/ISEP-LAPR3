@@ -1,3 +1,4 @@
+-- Function create script --
 CREATE OR REPLACE FUNCTION func_estimate_number_leaving_containers(id_storage storage.identification%type)
 RETURN INTEGER
 IS
@@ -14,3 +15,6 @@ BEGIN
     and cp.finishing_date_time between current_timestamp and current_timestamp + 30;
     RETURN Leaving_Containers;
 END;
+
+--call function to test it --
+select func_estimate_number_leaving_containers(2) from dual
