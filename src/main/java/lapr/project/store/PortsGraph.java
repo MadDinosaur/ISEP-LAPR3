@@ -63,9 +63,10 @@ public class PortsGraph {
         }
 
         if (Storage1 != null && Storage2 != null) {
-            if (!Storage1.getCountry().equals(Storage2.getCountry()))
-                return mg.addEdge(Storage1, Storage2, dist);
-            else{
+            if (!Storage1.getCountry().equals(Storage2.getCountry())){
+                mg.addEdge(Storage1, Storage2, dist);
+                return true;
+            }else{
                 mg.addEdge(Storage1, Storage2, dist);
                 return false;
             }
