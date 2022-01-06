@@ -30,7 +30,7 @@ public class presentationTestsSprint3 {
     @Test
     public void US301(){
         if (dataBase) {
-            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(), 4);
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(), 10);
             StringBuilder sb = new StringBuilder();
             sb.append(MainStorage.getInstance().getPortsGraph().getMg());
             writeOutput(sb.toString(), "US301");
@@ -80,7 +80,7 @@ public class presentationTestsSprint3 {
     public void US304() {
         if(dataBase) {
             ContainerAuditController controller = new ContainerAuditController();
-            String values = controller.getContainerAuditToString(controller.getContainerAudit(1,1));
+            String values = controller.getContainerAuditToString(controller.getContainerAudit(2,1));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Audit log for container\n\n");
@@ -94,7 +94,7 @@ public class presentationTestsSprint3 {
     public void US305() {
         if (dataBase) {
             ContainerRouteController controller = new ContainerRouteController();
-            String values = controller.getContainerRouteToString(controller.getContainerRoute("AA123",3));
+            String values = controller.getContainerRouteToString(controller.getContainerRoute("6",3));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Route log for container\n\n");

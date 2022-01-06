@@ -44,9 +44,6 @@ class PortsGraphTest {
 
         assertEquals(portsGraph.getMg().numVertices(), 4);
         assertEquals(portsGraph.getMg().numEdges(), 8);
-
-        portsGraph.setUpGraph(0);
-        portsGraph.setUpGraph(2);
     }
 
     @Test

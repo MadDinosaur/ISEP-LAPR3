@@ -4,6 +4,7 @@ import lapr.project.model.Coordinate;
 import lapr.project.model.Country;
 import lapr.project.model.Location;
 import lapr.project.model.Storage;
+import lapr.project.model.graph.matrix.MatrixGraph;
 import lapr.project.store.PortsGraph;
 import oracle.ucp.util.Pair;
 
@@ -190,14 +191,14 @@ public class CountrySqlStore implements Persistable {
                         float latitude = countryResultSet.getFloat(7);
                         Country country = new Country(continent, ct, new Coordinate(longitude, latitude), alpha2, alpha3, population, capital);
                         portsGraph.insertLocation(country);
+                        portsGraph.insertPath(country, country, (double) 0);
                         loadPorts(databaseConnection, country, portsGraph);
                     }
                 }
             }
             
             loadBorders(databaseConnection, portsGraph);
-            loadPaths(databaseConnection, portsGraph);
-            portsGraph.setUpGraph(n);
+            loadPaths(databaseConnection, portsGraph, n);
 
             MainStorage.getInstance().setPortsGraph(portsGraph);
             return portsGraph;
@@ -237,23 +238,34 @@ public class CountrySqlStore implements Persistable {
      * loads the connections between countries
      * @param databaseConnection the app's connection to the database
      * @param portsGraph the graph whose paths are being added
+     * @param n
      */
-    private static void loadPaths(DatabaseConnection databaseConnection, PortsGraph portsGraph) {
+    private static void loadPaths(DatabaseConnection databaseConnection, PortsGraph portsGraph, int n) {
         Connection connection = databaseConnection.getConnection();
+        MatrixGraph<Location, Double> mg = portsGraph.getMg();
 
-        try {
-            String sqlCommand = "select * from storage_path";
+        for (Location location : mg.vertices()) {
+            if (location instanceof Storage) {
+                try {
+                    String sqlCommand = "select * from storage_path where STORAGE_ID1 = ? or STORAGE_ID2 = ? order by distance";
 
-            try(PreparedStatement getBorderPreparedStatement = connection.prepareStatement(sqlCommand)) {
-                try (ResultSet borderResultSet = getBorderPreparedStatement.executeQuery()) {
-                    while(borderResultSet.next())
-                        portsGraph.insertPortPath(borderResultSet.getInt(1), borderResultSet.getInt(2), borderResultSet.getDouble(3));
+                    try (PreparedStatement getBorderPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                        getBorderPreparedStatement.setInt(1, ((Storage) location).getIdentification());
+                        getBorderPreparedStatement.setInt(2, ((Storage) location).getIdentification());
+                        try (ResultSet borderResultSet = getBorderPreparedStatement.executeQuery()) {
+                            int i = 0;
+                            while (borderResultSet.next() && i < n) {
+                               if(portsGraph.insertPortPath(borderResultSet.getInt(1), borderResultSet.getInt(2), borderResultSet.getDouble(3)))
+                                   i++;
+                            }
+                        }
+                    }
+
+                } catch (SQLException exception) {
+                    Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
+                    databaseConnection.registerError(exception);
                 }
             }
-
-        } catch (SQLException exception) {
-            Logger.getLogger(StorageSqlStore.class.getName()).log(Level.SEVERE, null, exception);
-            databaseConnection.registerError(exception);
         }
     }
 
@@ -282,6 +294,7 @@ public class CountrySqlStore implements Persistable {
 
                         Storage storage = new Storage(identification, name, country.getContinent(), country.getCountry(), new Coordinate(longitude, latitude));
                         portsGraph.insertLocation(storage);
+                        portsGraph.insertPath(storage, storage, (double) 0);
 
                         double temp = country.distanceBetween(storage);
                         if (temp < distance.get1st())
