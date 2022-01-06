@@ -35,7 +35,7 @@ public class GetPlaceClosestToAllPlacesController {
     public HashMap<String, List<String>> getPlaceClosestToAllPlaces(int n){
         CountrySqlStore sqlStore = new CountrySqlStore();
         PortsGraph pg = new PortsGraph();
-        HashMap<String, PortsGraph> graphMap = sqlStore.loadGraphMapByContinent(mainStorage.getDatabaseConnection(), 0);
+        HashMap<String, PortsGraph> graphMap = sqlStore.loadGraphMapByContinent(mainStorage.getDatabaseConnection(), 10);
 
         return pg.minDistanceByContinent(graphMap,n);
     }

@@ -4,9 +4,11 @@ import lapr.project.model.Country;
 import lapr.project.model.Location;
 import lapr.project.model.Storage;
 import lapr.project.model.graph.Algorithms;
+import lapr.project.model.graph.Edge;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import oracle.ucp.util.Pair;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class PortsGraph {
@@ -47,23 +49,28 @@ public class PortsGraph {
      * @param to the identification of the finishing storage
      * @param dist the distance between the ports
      */
-    public void insertPortPath(int from, int to, double dist){
-        Location country1 = null, country2 = null;
+    public boolean insertPortPath(int from, int to, double dist){
+        Location Storage1 = null, Storage2 = null;
 
         for (Location location : mg.vertices()){
             if (location instanceof Storage) {
                 Storage storage = (Storage) location;
                 if (storage.getIdentification() == from)
-                    country1 = location;
+                    Storage1 = location;
                 if (storage.getIdentification() == to)
-                    country2 = location;
+                    Storage2 = location;
             }
         }
 
-        if (country1 != null && country2 != null) {
-            mg.addEdge(country1, country2, dist);
+        if (Storage1 != null && Storage2 != null) {
+            if (!Storage1.getCountry().equals(Storage2.getCountry()))
+                return mg.addEdge(Storage1, Storage2, dist);
+            else{
+                mg.addEdge(Storage1, Storage2, dist);
+                return false;
+            }
         }
-
+        return false;
     }
 
     /**
@@ -104,9 +111,19 @@ public class PortsGraph {
         boolean[] available = new boolean[vertices];
         Arrays.fill(available, true);
 
+        List<Pair<Location, Integer>> countryList = new ArrayList<>();
         for (int i = 0; i < vertices; i++)
         {
-            Location loc = mg.vertex(i);
+            Location location = mg.vertex(i);
+            countryList.add(new Pair<>(location, mg.adjVertices(location).size()));
+        }
+
+        countryList.sort(Collections.reverseOrder(Comparator.comparing(Pair::get2nd)));
+
+        for (int i = 0; i < vertices; i++)
+        {
+            Location loc = countryList.get(i).get1st();
+
             if (loc instanceof Country) {
                 for (Location location : mg.adjVertices(loc)) {
                     int j = mg.key(location);
@@ -120,10 +137,12 @@ public class PortsGraph {
                         break;
                 }
 
-                result[i] = color;
+                int key = mg.key(loc);
+
+                result[key] = color;
 
 
-                countryIntegerMap.put((Country) loc, result[i]);
+                countryIntegerMap.put((Country) loc, result[key]);
                 Arrays.fill(available, true);
             }
         }
@@ -151,43 +170,6 @@ public class PortsGraph {
         return sb.toString();
     }
 
-    /**
-     * set's up the graph by connecting each point to itself and every point to the closes port in another country
-     * @param n the number of closest port to add
-     */
-    public void setUpGraph(int n){
-            
-        List<Location> storages = new ArrayList<>();
-        
-        for (Location location : mg.vertices()){
-            if (location instanceof Storage) {
-                storages.add(location);
-            }
-            mg.addEdge(location, location, (double) 0);
-        }
-
-        for (Location location1 : storages){
-            List<Pair<Location, Double>> closest = new ArrayList<>();
-            for (Location location2 : storages){
-                if(location1.getCountry().equals(location2.getCountry())){
-                    mg.addEdge(location1, location2, location1.distanceBetween(location2));
-                } else{
-                    closest.add(new Pair<>(location2, location1.distanceBetween(location2)));
-                }
-            }
-
-            if (n != 0) {
-                closest.sort(Comparator.comparing(Pair::get2nd));
-
-                int numEdges = Math.min(n, closest.size());
-
-                for (int i = 0; i < numEdges; i++) {
-                    mg.addEdge(location1, closest.get(i).get1st(), closest.get(i).get2nd());
-                }
-            }
-        }
-    }
-
     /** Gets a list with locations of all places with the less distance
      * Overall Complexity: V*V
      *
@@ -201,21 +183,28 @@ public class PortsGraph {
 
         for(int i = 0; i < size;i++){                               // Each line...
             double sum = 0;                                         // ... has its own sum
+            int numberSize = 0;
 
             for(int j = 0; j < size; j++){
 
                 if(j != i){
-                    sum = sum + minDistGraph.edge(i,j).getWeight(); // After adding all the weights of the line...
+                    Edge<Location, Double> edge = minDistGraph.edge(i,j);
+                    if (edge != null) {
+                        sum = sum + edge.getWeight(); // After adding all the weights of the line...
+                        numberSize++;
+                    }
                 }
             }
-            double average = sum / size;                            // ... calculates the average of the line
+            double average = Double.MAX_VALUE;
+            if (numberSize != 0)
+                average = sum / numberSize;                            // ... calculates the average of the line
 
             temporary.add(new Pair<>(average,minDistGraph.vertex(i).toString()));   // Introduces in a list a Pair with the average and the correspondent vertex
         }
 
         temporary.sort(Comparator.comparing(Pair::get1st));                     // Orders in crescent order by the average
 
-        for(int k = 0; k < n; k++){
+        for(int k = 0; k < Math.min(n, size); k++){
             result.add(temporary.get(k).get2nd());
         }
 
