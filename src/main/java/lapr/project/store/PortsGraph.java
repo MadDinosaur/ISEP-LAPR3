@@ -195,7 +195,9 @@ public class PortsGraph {
                     }
                 }
             }
-            double average = sum / numberSize;                            // ... calculates the average of the line
+            double average = Double.MAX_VALUE;
+            if (numberSize != 0)
+                average = sum / numberSize;                            // ... calculates the average of the line
 
             temporary.add(new Pair<>(average,minDistGraph.vertex(i).toString()));   // Introduces in a list a Pair with the average and the correspondent vertex
         }
