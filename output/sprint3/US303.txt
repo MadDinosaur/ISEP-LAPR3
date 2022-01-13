@@ -1,0 +1,24 @@
+V TOP 10 CLOSEST PLACES V
+============================================================ Europe ============================================================
+>>    Continent - Europe; Country - Austria; Capital - Vienna; Longitude - 16,367; Latitude - 48,200
+>>    Continent - Europe; Country - Germany; Capital - Berlin; Longitude - 13,400; Latitude - 52,517
+>>    Storage 20072: Name - Rostock; Continent - Europe; Country - Germany; Longitude - 12,10; Latitude - 54,15
+>>    Continent - Europe; Country - Slovakia; Capital - Bratislava; Longitude - 17,117; Latitude - 48,150
+>>    Continent - Europe; Country - Czech Republic; Capital - Prague; Longitude - 14,467; Latitude - 50,083
+>>    Continent - Europe; Country - Hungary; Capital - Budapest; Longitude - 19,083; Latitude - 47,500
+>>    Continent - Europe; Country - Slovenia; Capital - Ljubljana; Longitude - 14,517; Latitude - 46,050
+>>    Storage 224858: Name - Hamburg; Continent - Europe; Country - Germany; Longitude - 9,98; Latitude - 53,55
+>>    Storage 10563: Name - Copenhagen; Continent - Europe; Country - Denmark; Longitude - 12,62; Latitude - 55,70
+>>    Continent - Europe; Country - Denmark; Capital - Copenhagen; Longitude - 12,583; Latitude - 55,667
+============================================================ America ============================================================
+>>    Storage 14226: Name - Esmeraldas; Continent - America; Country - Ecuador; Longitude - -79,63; Latitude - 1,00
+>>    Storage 216593: Name - Balboa; Continent - America; Country - Panama; Longitude - -79,57; Latitude - 8,97
+>>    Continent - America; Country - Panama; Capital - Panama City; Longitude - -79,533; Latitude - 8,967
+>>    Storage 28261: Name - Buenaventura; Continent - America; Country - Colombia; Longitude - -77,05; Latitude - 3,92
+>>    Storage 216592: Name - Cristobal; Continent - America; Country - Panama; Longitude - -79,92; Latitude - 9,35
+>>    Storage 29876: Name - Guayaquil; Continent - America; Country - Ecuador; Longitude - -79,90; Latitude - -2,27
+>>    Storage 28781: Name - Puerto Limon; Continent - America; Country - Costa Rica; Longitude - -83,02; Latitude - 10,00
+>>    Continent - America; Country - Ecuador; Capital - Quito; Longitude - -78,500; Latitude - -0,217
+>>    Storage 28313: Name - Cartagena; Continent - America; Country - Colombia; Longitude - -75,53; Latitude - 10,42
+>>    Continent - America; Country - Costa Rica; Capital - San Jose; Longitude - -84,083; Latitude - 9,933
+ ===============================================================================================================================

@@ -1,0 +1,514 @@
+Country : Colombia ----> Colour 2
+Bordering Countries :
+Border Country : Panama ----> Colour 0
+Border Country : Brazil ----> Colour 3
+Border Country : Peru ----> Colour 1
+Border Country : Ecuador ----> Colour 0
+Border Country : Venezuela ----> Colour 0
+
+
+Country : Russia ----> Colour 4
+Bordering Countries :
+Border Country : Georgia ----> Colour 2
+Border Country : Ukraine ----> Colour 2
+Border Country : Poland ----> Colour 3
+Border Country : Belarus ----> Colour 0
+Border Country : Lithuania ----> Colour 1
+Border Country : Latvia ----> Colour 2
+Border Country : Estonia ----> Colour 0
+Border Country : Norway ----> Colour 1
+Border Country : Finland ----> Colour 2
+
+
+Country : Finland ----> Colour 2
+Bordering Countries :
+Border Country : Russia ----> Colour 4
+Border Country : Sweden ----> Colour 0
+Border Country : Norway ----> Colour 1
+
+
+Country : Sweden ----> Colour 0
+Bordering Countries :
+Border Country : Norway ----> Colour 1
+Border Country : Finland ----> Colour 2
+
+
+Country : Brazil ----> Colour 3
+Bordering Countries :
+Border Country : Uruguay ----> Colour 0
+Border Country : Argentina ----> Colour 1
+Border Country : Paraguay ----> Colour 0
+Border Country : Bolivia ----> Colour 2
+Border Country : Peru ----> Colour 1
+Border Country : Colombia ----> Colour 2
+Border Country : Suriname ----> Colour 0
+Border Country : Guyana ----> Colour 1
+Border Country : Venezuela ----> Colour 0
+
+
+Country : Bulgaria ----> Colour 3
+Bordering Countries :
+Border Country : Greece ----> Colour 0
+Border Country : Turkey ----> Colour 1
+Border Country : Macedonia ----> Colour 2
+Border Country : Romania ----> Colour 0
+Border Country : Serbia ----> Colour 4
+
+
+Country : Serbia ----> Colour 4
+Bordering Countries :
+Border Country : Macedonia ----> Colour 2
+Border Country : Montenegro ----> Colour 0
+Border Country : Kosovo ----> Colour 3
+Border Country : Bulgaria ----> Colour 3
+Border Country : Bosnia ----> Colour 1
+Border Country : Romania ----> Colour 0
+Border Country : Croatia ----> Colour 2
+Border Country : Hungary ----> Colour 3
+
+
+Country : Poland ----> Colour 3
+Bordering Countries :
+Border Country : Slovakia ----> Colour 0
+Border Country : Czech Republic ----> Colour 1
+Border Country : Ukraine ----> Colour 2
+Border Country : Germany ----> Colour 4
+Border Country : Belarus ----> Colour 0
+Border Country : Lithuania ----> Colour 1
+Border Country : Russia ----> Colour 4
+
+
+Country : France ----> Colour 2
+Bordering Countries :
+Border Country : Spain ----> Colour 1
+Border Country : Italy ----> Colour 0
+Border Country : Monaco ----> Colour 0
+Border Country : Switzerland ----> Colour 1
+Border Country : Luxembourg ----> Colour 0
+Border Country : Belgium ----> Colour 1
+Border Country : Germany ----> Colour 4
+
+
+Country : Greece ----> Colour 0
+Bordering Countries :
+Border Country : Turkey ----> Colour 1
+Border Country : Albania ----> Colour 1
+Border Country : Macedonia ----> Colour 2
+Border Country : Bulgaria ----> Colour 3
+
+
+Country : Montenegro ----> Colour 0
+Bordering Countries :
+Border Country : Albania ----> Colour 1
+Border Country : Kosovo ----> Colour 3
+Border Country : Bosnia ----> Colour 1
+Border Country : Serbia ----> Colour 4
+Border Country : Croatia ----> Colour 2
+
+
+Country : Germany ----> Colour 4
+Bordering Countries :
+Border Country : Switzerland ----> Colour 1
+Border Country : Austria ----> Colour 2
+Border Country : France ----> Colour 2
+Border Country : Luxembourg ----> Colour 0
+Border Country : Czech Republic ----> Colour 1
+Border Country : Belgium ----> Colour 1
+Border Country : Poland ----> Colour 3
+Border Country : Netherlands ----> Colour 0
+Border Country : Denmark ----> Colour 0
+
+
+Country : Estonia ----> Colour 0
+Bordering Countries :
+Border Country : Russia ----> Colour 4
+Border Country : Latvia ----> Colour 2
+
+
+Country : Canada ----> Colour 0
+Bordering Countries :
+Border Country : United States ----> Colour 1
+
+
+Country : Lithuania ----> Colour 1
+Bordering Countries :
+Border Country : Poland ----> Colour 3
+Border Country : Belarus ----> Colour 0
+Border Country : Russia ----> Colour 4
+Border Country : Latvia ----> Colour 2
+
+
+Country : Malta ----> Colour 0
+Bordering Countries :
+
+
+Country : Mexico ----> Colour 0
+Bordering Countries :
+Border Country : United States ----> Colour 1
+Border Country : Guatemala ----> Colour 1
+Border Country : Belize ----> Colour 1
+
+
+Country : Monaco ----> Colour 0
+Bordering Countries :
+Border Country : France ----> Colour 2
+
+
+Country : Ukraine ----> Colour 2
+Bordering Countries :
+Border Country : Romania ----> Colour 0
+Border Country : Moldova ----> Colour 1
+Border Country : Hungary ----> Colour 3
+Border Country : Slovakia ----> Colour 0
+Border Country : Poland ----> Colour 3
+Border Country : Belarus ----> Colour 0
+Border Country : Russia ----> Colour 4
+
+
+Country : Belgium ----> Colour 1
+Bordering Countries :
+Border Country : France ----> Colour 2
+Border Country : Luxembourg ----> Colour 0
+Border Country : Netherlands ----> Colour 0
+Border Country : Germany ----> Colour 4
+
+
+Country : Macedonia ----> Colour 2
+Bordering Countries :
+Border Country : Greece ----> Colour 0
+Border Country : Albania ----> Colour 1
+Border Country : Kosovo ----> Colour 3
+Border Country : Bulgaria ----> Colour 3
+Border Country : Serbia ----> Colour 4
+
+
+Country : Austria ----> Colour 2
+Bordering Countries :
+Border Country : Italy ----> Colour 0
+Border Country : Slovenia ----> Colour 1
+Border Country : Switzerland ----> Colour 1
+Border Country : Liechtenstein ----> Colour 0
+Border Country : Hungary ----> Colour 3
+Border Country : Slovakia ----> Colour 0
+Border Country : Czech Republic ----> Colour 1
+Border Country : Germany ----> Colour 4
+
+
+Country : Costa Rica ----> Colour 1
+Bordering Countries :
+Border Country : Panama ----> Colour 0
+Border Country : Nicaragua ----> Colour 0
+
+
+Country : Chile ----> Colour 0
+Bordering Countries :
+Border Country : Argentina ----> Colour 1
+Border Country : Bolivia ----> Colour 2
+Border Country : Peru ----> Colour 1
+
+
+Country : Netherlands ----> Colour 0
+Bordering Countries :
+Border Country : Belgium ----> Colour 1
+Border Country : Germany ----> Colour 4
+
+
+Country : Belize ----> Colour 1
+Bordering Countries :
+Border Country : Mexico ----> Colour 0
+
+
+Country : Norway ----> Colour 1
+Bordering Countries :
+Border Country : Russia ----> Colour 4
+Border Country : Sweden ----> Colour 0
+Border Country : Finland ----> Colour 2
+
+
+Country : Cyprus ----> Colour 0
+Bordering Countries :
+
+
+Country : Georgia ----> Colour 2
+Bordering Countries :
+Border Country : Turkey ----> Colour 1
+Border Country : Armenia ----> Colour 0
+Border Country : Russia ----> Colour 4
+
+
+Country : Paraguay ----> Colour 0
+Bordering Countries :
+Border Country : Argentina ----> Colour 1
+Border Country : Bolivia ----> Colour 2
+Border Country : Brazil ----> Colour 3
+
+
+Country : Armenia ----> Colour 0
+Bordering Countries :
+Border Country : Turkey ----> Colour 1
+Border Country : Georgia ----> Colour 2
+
+
+Country : Liechtenstein ----> Colour 0
+Bordering Countries :
+Border Country : Switzerland ----> Colour 1
+Border Country : Austria ----> Colour 2
+
+
+Country : Luxembourg ----> Colour 0
+Bordering Countries :
+Border Country : France ----> Colour 2
+Border Country : Belgium ----> Colour 1
+Border Country : Germany ----> Colour 4
+
+
+Country : Peru ----> Colour 1
+Bordering Countries :
+Border Country : Chile ----> Colour 0
+Border Country : Bolivia ----> Colour 2
+Border Country : Brazil ----> Colour 3
+Border Country : Ecuador ----> Colour 0
+Border Country : Colombia ----> Colour 2
+
+
+Country : Ireland ----> Colour 1
+Bordering Countries :
+Border Country : United Kingdom ----> Colour 0
+
+
+Country : Switzerland ----> Colour 1
+Bordering Countries :
+Border Country : Italy ----> Colour 0
+Border Country : Liechtenstein ----> Colour 0
+Border Country : Austria ----> Colour 2
+Border Country : France ----> Colour 2
+Border Country : Germany ----> Colour 4
+
+
+Country : Suriname ----> Colour 0
+Bordering Countries :
+Border Country : Brazil ----> Colour 3
+Border Country : Guyana ----> Colour 1
+
+
+Country : Guyana ----> Colour 1
+Bordering Countries :
+Border Country : Brazil ----> Colour 3
+Border Country : Suriname ----> Colour 0
+Border Country : Venezuela ----> Colour 0
+
+
+Country : Albania ----> Colour 1
+Bordering Countries :
+Border Country : Greece ----> Colour 0
+Border Country : Macedonia ----> Colour 2
+Border Country : Montenegro ----> Colour 0
+Border Country : Kosovo ----> Colour 3
+
+
+Country : Denmark ----> Colour 0
+Bordering Countries :
+Border Country : Germany ----> Colour 4
+
+
+Country : Uruguay ----> Colour 0
+Bordering Countries :
+Border Country : Argentina ----> Colour 1
+Border Country : Brazil ----> Colour 3
+
+
+Country : Belarus ----> Colour 0
+Bordering Countries :
+Border Country : Ukraine ----> Colour 2
+Border Country : Poland ----> Colour 3
+Border Country : Lithuania ----> Colour 1
+Border Country : Russia ----> Colour 4
+Border Country : Latvia ----> Colour 2
+
+
+Country : El Salvador ----> Colour 0
+Bordering Countries :
+Border Country : Honduras ----> Colour 1
+Border Country : Guatemala ----> Colour 1
+
+
+Country : Croatia ----> Colour 2
+Bordering Countries :
+Border Country : Montenegro ----> Colour 0
+Border Country : Bosnia ----> Colour 1
+Border Country : Serbia ----> Colour 4
+Border Country : Slovenia ----> Colour 1
+Border Country : Hungary ----> Colour 3
+
+
+Country : Bosnia ----> Colour 1
+Bordering Countries :
+Border Country : Montenegro ----> Colour 0
+Border Country : Serbia ----> Colour 4
+Border Country : Croatia ----> Colour 2
+
+
+Country : Hungary ----> Colour 3
+Bordering Countries :
+Border Country : Romania ----> Colour 0
+Border Country : Serbia ----> Colour 4
+Border Country : Croatia ----> Colour 2
+Border Country : Slovenia ----> Colour 1
+Border Country : Slovakia ----> Colour 0
+Border Country : Austria ----> Colour 2
+Border Country : Ukraine ----> Colour 2
+
+
+Country : Honduras ----> Colour 1
+Bordering Countries :
+Border Country : Nicaragua ----> Colour 0
+Border Country : El Salvador ----> Colour 0
+
+
+Country : Slovakia ----> Colour 0
+Bordering Countries :
+Border Country : Hungary ----> Colour 3
+Border Country : Austria ----> Colour 2
+Border Country : Czech Republic ----> Colour 1
+Border Country : Ukraine ----> Colour 2
+Border Country : Poland ----> Colour 3
+
+
+Country : Moldova ----> Colour 1
+Bordering Countries :
+Border Country : Romania ----> Colour 0
+Border Country : Ukraine ----> Colour 2
+
+
+Country : Latvia ----> Colour 2
+Bordering Countries :
+Border Country : Belarus ----> Colour 0
+Border Country : Lithuania ----> Colour 1
+Border Country : Russia ----> Colour 4
+Border Country : Estonia ----> Colour 0
+
+
+Country : Panama ----> Colour 0
+Bordering Countries :
+Border Country : Costa Rica ----> Colour 1
+Border Country : Colombia ----> Colour 2
+
+
+Country : Spain ----> Colour 1
+Bordering Countries :
+Border Country : Portugal ----> Colour 0
+Border Country : France ----> Colour 2
+
+
+Country : Guatemala ----> Colour 1
+Bordering Countries :
+Border Country : Mexico ----> Colour 0
+Border Country : El Salvador ----> Colour 0
+
+
+Country : Czech Republic ----> Colour 1
+Bordering Countries :
+Border Country : Slovakia ----> Colour 0
+Border Country : Austria ----> Colour 2
+Border Country : Poland ----> Colour 3
+Border Country : Germany ----> Colour 4
+
+
+Country : Portugal ----> Colour 0
+Bordering Countries :
+Border Country : Spain ----> Colour 1
+
+
+Country : Slovenia ----> Colour 1
+Bordering Countries :
+Border Country : Italy ----> Colour 0
+Border Country : Croatia ----> Colour 2
+Border Country : Hungary ----> Colour 3
+Border Country : Austria ----> Colour 2
+
+
+Country : Venezuela ----> Colour 0
+Bordering Countries :
+Border Country : Brazil ----> Colour 3
+Border Country : Colombia ----> Colour 2
+Border Country : Guyana ----> Colour 1
+
+
+Country : Italy ----> Colour 0
+Bordering Countries :
+Border Country : Slovenia ----> Colour 1
+Border Country : Switzerland ----> Colour 1
+Border Country : Austria ----> Colour 2
+Border Country : France ----> Colour 2
+
+
+Country : Iceland ----> Colour 0
+Bordering Countries :
+
+
+Country : United States ----> Colour 1
+Bordering Countries :
+Border Country : Mexico ----> Colour 0
+Border Country : Canada ----> Colour 0
+
+
+Country : Turkey ----> Colour 1
+Bordering Countries :
+Border Country : Greece ----> Colour 0
+Border Country : Armenia ----> Colour 0
+Border Country : Georgia ----> Colour 2
+Border Country : Bulgaria ----> Colour 3
+
+
+Country : Nicaragua ----> Colour 0
+Bordering Countries :
+Border Country : Costa Rica ----> Colour 1
+Border Country : Honduras ----> Colour 1
+
+
+Country : Romania ----> Colour 0
+Bordering Countries :
+Border Country : Bulgaria ----> Colour 3
+Border Country : Serbia ----> Colour 4
+Border Country : Moldova ----> Colour 1
+Border Country : Hungary ----> Colour 3
+Border Country : Ukraine ----> Colour 2
+
+
+Country : Bolivia ----> Colour 2
+Bordering Countries :
+Border Country : Argentina ----> Colour 1
+Border Country : Chile ----> Colour 0
+Border Country : Paraguay ----> Colour 0
+Border Country : Brazil ----> Colour 3
+Border Country : Peru ----> Colour 1
+
+
+Country : Kosovo ----> Colour 3
+Bordering Countries :
+Border Country : Albania ----> Colour 1
+Border Country : Macedonia ----> Colour 2
+Border Country : Montenegro ----> Colour 0
+Border Country : Serbia ----> Colour 4
+
+
+Country : Argentina ----> Colour 1
+Bordering Countries :
+Border Country : Uruguay ----> Colour 0
+Border Country : Chile ----> Colour 0
+Border Country : Paraguay ----> Colour 0
+Border Country : Bolivia ----> Colour 2
+Border Country : Brazil ----> Colour 3
+
+
+Country : Ecuador ----> Colour 0
+Bordering Countries :
+Border Country : Peru ----> Colour 1
+Border Country : Colombia ----> Colour 2
+
+
+Country : United Kingdom ----> Colour 0
+Bordering Countries :
+Border Country : Ireland ----> Colour 1
+
+
