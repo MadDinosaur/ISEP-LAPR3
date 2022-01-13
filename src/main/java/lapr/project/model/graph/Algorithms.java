@@ -1,9 +1,6 @@
 package lapr.project.model.graph;
 
 
-import lapr.project.model.graph.CommonGraph;
-import lapr.project.model.graph.Edge;
-import lapr.project.model.graph.Graph;
 import lapr.project.model.graph.matrix.MatrixGraph;
 
 import java.util.ArrayList;
@@ -50,20 +47,39 @@ public class Algorithms {
         return new MatrixGraph<V,E>(false,g.vertices(),matrixEdges);
     }
 
-    public static <V, E> ArrayList<LinkedList<V>> allPaths(Graph<V, E> g, V vOrig) {
+
+    /**
+     * This Method runs a modified version of the allPaths algorithm where now it doesn't backtrack
+     * This way it makes all the cycles a simple depthFirstSearch can find in a first reading and adds them to a single list
+     * after which the method only returns the cycles that contain in them the provided vertex as these can be moved in a way where the vertex is at the start
+     * @param g initial graph
+     * @param vOrig the desired vertex
+     * @return returns an arraylist listing all the cycles where the vertex is present
+     */
+    public static <V, E> ArrayList<LinkedList<V>> vertCycles(Graph<V, E> g, V vOrig) {
         boolean[] visited = new boolean[g.numVertices()];
         ArrayList<LinkedList<V>> paths =  new ArrayList<>();
         for(V v: g.vertices()) {
             Arrays.fill(visited, false);
-            allPath(g, v, v, visited, new LinkedList<>(), paths);
+            allPathNoBacktracking(g, v, v, visited, new LinkedList<>(), paths);
         }
         paths.removeIf(path -> !path.contains(vOrig));
         return paths;
     }
 
-    private static <V, E> void allPath(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
-                                       LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
-
+    /**
+     * The initial allPath's algorithm has a complexity of O(V!) which is unusable for graphs as big as the one we are using
+     * Therefore this method does not backtrack but is made up for the fact that it is run for every
+     * vertex in the graph in order to obtain a better certainty.
+     * It is an heuristic that does not give 100% certain results but is pretty close and the complexity is a nice O(V)
+     * @param g initial graph
+     * @param vOrig the vertex which will loop on itself
+     * @param visited an array with l the visited node for the current search
+     * @param path a list with the current path being searched
+     * @param paths a list with all the cycles that have been found
+     */
+    private static <V, E> void allPathNoBacktracking(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
+                                                     LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
         path.push(vOrig);
         visited[g.key(vOrig)]=true;
         for (V vAdj : g.adjVertices(vOrig)){
@@ -78,7 +94,7 @@ public class Algorithms {
             }
             else
             if (!visited[g.key(vAdj)])
-                allPath(g,vAdj,vDest,visited,path,paths);
+                allPathNoBacktracking(g,vAdj,vDest,visited,path,paths);
         }
         path.pop();
     }

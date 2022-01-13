@@ -8,7 +8,6 @@ import lapr.project.model.graph.Edge;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import oracle.ucp.util.Pair;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class PortsGraph {
@@ -231,8 +230,14 @@ public class PortsGraph {
         return  resultMap;
     }
 
+    /**
+     * After getting a list with the cycles that employ the chosen vertex this method chooses
+     * the one that passes through most amount of vertex' and has the lowest travel distance
+     * @param vert the chosen vertex
+     * @return returns a linked
+     */
     public LinkedList<Location> getBiggestCircuit(Location vert){
-        ArrayList<LinkedList<Location>> paths = Algorithms.allPaths(mg, vert);
+        ArrayList<LinkedList<Location>> paths = Algorithms.vertCycles(mg, vert);
 
         if (paths.isEmpty())
             return new LinkedList<>();
@@ -254,10 +259,7 @@ public class PortsGraph {
         LinkedList<Location> finalPath = new LinkedList<>();
 
         for (LinkedList<Location> path: Biggest){
-            double distance = 0;
-            for (int i = 1; i < path.size(); i++){
-                distance += mg.edge(path.get(i - 1), path.get(i)).getWeight();
-            }
+            double distance = getPathDistance(path);
 
             if (distance < minDistance){
                 finalPath = path;
@@ -271,6 +273,14 @@ public class PortsGraph {
         }
 
         return finalPath;
+    }
+
+    public double getPathDistance(LinkedList<Location> path){
+        double distance = 0;
+        for (int i = 1; i < path.size(); i++){
+            distance += mg.edge(path.get(i - 1), path.get(i)).getWeight();
+        }
+        return distance;
     }
 
     /**
