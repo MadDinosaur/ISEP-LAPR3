@@ -231,6 +231,48 @@ public class PortsGraph {
         return  resultMap;
     }
 
+    public LinkedList<Location> getBiggestCircuit(Location vert){
+        ArrayList<LinkedList<Location>> paths = Algorithms.allPaths(mg, vert);
+
+        if (paths.isEmpty())
+            return new LinkedList<>();
+
+        ArrayList<LinkedList<Location>> Biggest = new ArrayList<>();
+        int maxEdges = 0;
+
+        for (LinkedList<Location> path: paths){
+            if (path.size() > maxEdges){
+                maxEdges = path.size();
+                Biggest.clear();
+                Biggest.add(path);
+            } else if (path.size() == maxEdges){
+                Biggest.add(path);
+            }
+        }
+
+        double minDistance = Double.MAX_VALUE;
+        LinkedList<Location> finalPath = new LinkedList<>();
+
+        for (LinkedList<Location> path: Biggest){
+            double distance = 0;
+            for (int i = 1; i < path.size(); i++){
+                distance += mg.edge(path.get(i - 1), path.get(i)).getWeight();
+            }
+
+            if (distance < minDistance){
+                finalPath = path;
+                minDistance = distance;
+            }
+        }
+
+        while(finalPath.get(0) != vert){
+            finalPath.pop();
+            finalPath.add(finalPath.get(0));
+        }
+
+        return finalPath;
+    }
+
     /**
      * returns the graph
      * @return returns a clone of graph

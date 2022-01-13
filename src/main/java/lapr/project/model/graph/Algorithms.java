@@ -6,7 +6,10 @@ import lapr.project.model.graph.Edge;
 import lapr.project.model.graph.Graph;
 import lapr.project.model.graph.matrix.MatrixGraph;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.function.BinaryOperator;
 
 
@@ -45,5 +48,38 @@ public class Algorithms {
             }
         }
         return new MatrixGraph<V,E>(false,g.vertices(),matrixEdges);
+    }
+
+    public static <V, E> ArrayList<LinkedList<V>> allPaths(Graph<V, E> g, V vOrig) {
+        boolean[] visited = new boolean[g.numVertices()];
+        ArrayList<LinkedList<V>> paths =  new ArrayList<>();
+        for(V v: g.vertices()) {
+            Arrays.fill(visited, false);
+            allPath(g, v, v, visited, new LinkedList<>(), paths);
+        }
+        paths.removeIf(path -> !path.contains(vOrig));
+        return paths;
+    }
+
+    private static <V, E> void allPath(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
+                                       LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
+
+        path.push(vOrig);
+        visited[g.key(vOrig)]=true;
+        for (V vAdj : g.adjVertices(vOrig)){
+            if (vAdj == vDest) {
+                path.push(vDest);
+                LinkedList<V> reversed = new LinkedList<V>();
+                for (V v : path) {
+                    reversed.push(v);
+                }
+                paths.add(reversed);
+                path.pop();
+            }
+            else
+            if (!visited[g.key(vAdj)])
+                allPath(g,vAdj,vDest,visited,path,paths);
+        }
+        path.pop();
     }
 }

@@ -285,6 +285,7 @@ public class CountrySqlStore implements Persistable {
 
                 try (ResultSet countryResultSet = getPortPreparedStatement.executeQuery()) {
                     Pair<Double, Location> distance = new Pair<>(Double.MAX_VALUE, null);
+                    List<Storage> list = new ArrayList<>();
 
                     while (countryResultSet.next()){
                         int identification = countryResultSet.getInt(1);
@@ -293,14 +294,21 @@ public class CountrySqlStore implements Persistable {
                         float latitude = countryResultSet.getFloat(6);
 
                         Storage storage = new Storage(identification, name, country.getContinent(), country.getCountry(), new Coordinate(longitude, latitude));
+
                         portsGraph.insertLocation(storage);
                         portsGraph.insertPath(storage, storage, (double) 0);
+
+
+                        for (Storage storage2 : list) {
+                            portsGraph.insertPortPath(storage.getIdentification(), storage2.getIdentification(), storage.distanceBetween(storage2));
+                        }
+
+                        list.add(storage);
 
                         double temp = country.distanceBetween(storage);
                         if (temp < distance.get1st())
                             distance = new Pair<>(temp, storage);
                     }
-
 
 
                     if (distance.get2nd() != null)
