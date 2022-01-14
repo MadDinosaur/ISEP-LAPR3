@@ -26,7 +26,7 @@ public class presentationTestsSprint4 {
 
             MatrixGraph<Location, Double> mg =  MainStorage.getInstance().getPortsGraph().getMg();
 
-            LinkedList<Location> cycle = controller.getLongestCycle(mg.vertex(8));
+            LinkedList<Location> cycle = controller.getLongestCycle(mg.vertex(16));
 
             sb.append("Total traveled Distance: ").append(String.format("%.0f", controller.getCycleDistance(cycle))).append("\n");
             sb.append("Number of movements: ").append(cycle.size() - 1).append("\n");

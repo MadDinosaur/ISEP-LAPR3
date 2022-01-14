@@ -56,12 +56,12 @@ public class Algorithms {
      * @param vOrig the desired vertex
      * @return returns an arraylist listing all the cycles where the vertex is present
      */
-    public static <V, E> ArrayList<LinkedList<V>> vertCycles(Graph<V, E> g, V vOrig) {
+    public static <V, E> ArrayList<LinkedList<V>> vertCycles(Graph<V, E> g, V vOrig, Comparator<E> ce) {
         boolean[] visited = new boolean[g.numVertices()];
         ArrayList<LinkedList<V>> paths =  new ArrayList<>();
-        for(V v: g.vertices()) {
+        for (V v: g.vertices()) {
             Arrays.fill(visited, false);
-            allPathNoBacktracking(g, v, v, visited, new LinkedList<>(), paths);
+            allPathNoBacktracking(g, v, v, visited, new LinkedList<>(), paths, ce);
         }
         paths.removeIf(path -> !path.contains(vOrig));
         return paths;
@@ -79,10 +79,18 @@ public class Algorithms {
      * @param paths a list with all the cycles that have been found
      */
     private static <V, E> void allPathNoBacktracking(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
-                                                     LinkedList<V> path, ArrayList<LinkedList<V>> paths) {
+                                                     LinkedList<V> path, ArrayList<LinkedList<V>> paths, Comparator<E> ce) {
         path.push(vOrig);
         visited[g.key(vOrig)]=true;
-        for (V vAdj : g.adjVertices(vOrig)){
+        ArrayList<V> adjVertices = (ArrayList<V>) g.adjVertices(vOrig);
+        adjVertices.sort(new Comparator<V>() {
+            @Override
+            public int compare(V v, V t1) {
+                return ce.compare(g.edge(vOrig, v).getWeight(), g.edge(vOrig, t1).getWeight());
+            }
+        });
+
+        for (V vAdj : adjVertices){
             if (vAdj == vDest) {
                 path.push(vDest);
                 LinkedList<V> reversed = new LinkedList<V>();
@@ -94,7 +102,7 @@ public class Algorithms {
             }
             else
             if (!visited[g.key(vAdj)])
-                allPathNoBacktracking(g,vAdj,vDest,visited,path,paths);
+                allPathNoBacktracking(g,vAdj,vDest,visited,path,paths, ce);
         }
         path.pop();
     }

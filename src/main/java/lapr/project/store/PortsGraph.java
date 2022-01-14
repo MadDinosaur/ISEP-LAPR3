@@ -237,7 +237,7 @@ public class PortsGraph {
      * @return returns a linked
      */
     public LinkedList<Location> getBiggestCircuit(Location vert){
-        ArrayList<LinkedList<Location>> paths = Algorithms.vertCycles(mg, vert);
+        ArrayList<LinkedList<Location>> paths = Algorithms.vertCycles(mg, vert, Double::compareTo);
 
         if (paths.isEmpty())
             return new LinkedList<>();

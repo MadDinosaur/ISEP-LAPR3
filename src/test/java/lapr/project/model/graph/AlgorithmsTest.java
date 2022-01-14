@@ -77,7 +77,7 @@ class AlgorithmsTest {
 
     @Test
     void cyclesAlgorythm() {
-        ArrayList<LinkedList<String>> list = Algorithms.vertCycles(completeMap, "Lisboa");
+        ArrayList<LinkedList<String>> list = Algorithms.vertCycles(completeMap, "Lisboa", Integer::compareTo);
 
         assertEquals(list.size(), 6);
 
