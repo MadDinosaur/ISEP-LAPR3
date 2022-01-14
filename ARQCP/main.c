@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "fill3DMatrix.h"
 #include "isContainerHere.h"
 #include "occupiedSlots.h"
 #include "freeSpaces.h"
+#include "structs.h"
+#include "fillDynamicArray.h"
 
 char *ptrLocations;
 char *ptrLoc;
@@ -72,6 +75,7 @@ int main(void) {
         printf("\t2) Know free and occupied spaces\n");
         printf("\t3) Know if a container is in the given location\n");
         printf("\t4) Know how many positions are occupied from given positions\n");
+        printf("\t5) Fill a dynamic array with the container's info\n");
         printf("\t0) Quit program\n");
 
         scanf("%hhd", &opt);
@@ -89,11 +93,17 @@ int main(void) {
             case 4:
                 callOccupiedSlots();
                 break;
+            case 5:
+                fillDynamicArray();
+                break;
             default:
                 if (opt != 0)
                     printf("invalid option! please choose another.\n");
         }
     }
+
+    if (ptrContainers != NULL)
+        free(ptrContainers);
 
     return 0;
 }
