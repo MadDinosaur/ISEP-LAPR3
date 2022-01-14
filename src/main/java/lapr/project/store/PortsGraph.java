@@ -275,6 +275,11 @@ public class PortsGraph {
         return finalPath;
     }
 
+    /**
+     * Calculates the total distance for any given path as long as it has a corresponding edge
+     * @param path the path to be calculated
+     * @return the total distance of the path
+     */
     public double getPathDistance(LinkedList<Location> path){
         double distance = 0;
         for (int i = 1; i < path.size(); i++){
