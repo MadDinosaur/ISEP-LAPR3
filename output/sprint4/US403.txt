@@ -1,6 +1,0 @@
-Total traveled Distance: 49
-Number of movements: 2
-Country: Iceland || Capital: Reykjavik  --->  Country: Iceland || Port: 11180
-Movement distance: 24
-Country: Iceland || Port: 11180  --->  Country: Iceland || Capital: Reykjavik
-Movement distance: 24
