@@ -5,5 +5,5 @@ void fillDynamicArray();
 
 /** Declare Pointer */
 extern container  *ptrContainers;
-
+extern int containerNum;
 #endif

@@ -6,7 +6,7 @@
 #define FILE_PATH "containersDynamic.txt"
 
 /** Number of containers to allocate */
-int n;
+int containerNum;
 
 container* fill_vec(container *vec,FILE *inFile);
 
@@ -23,17 +23,17 @@ void fillDynamicArray() {
     }
 
     /** Gets the number of containers */
-    fscanf(inFile, "%d", &n);
+    fscanf(inFile, "%d", &containerNum);
 
     /** Allocate n containers in the heap */
-    ptrContainers = (container *) calloc(n,sizeof(container));
+    ptrContainers = (container *) calloc(containerNum,sizeof(container));
 
     ptrContainers = fill_vec(ptrContainers, inFile);
 
     /** Print vector */
     int i;
-    for(i = 0;i < n; i++){
-        printf("ID: %d \n Refrigerated: %c \n X: %d\n Y: %d\n Z: %d\n Length: %.2fm\n Width: %.2fm\n Height: %.2fm\n Thermal Resistance of Material 1: %.2f\n Thickness of Material 1: %.2fm\n Thermal Resistance of Material 2: %.2f\n Thickness of Material 2: %.2fm\n Thermal Resistance of Material 3: %.2f\n Thickness of Material 3: %.2fm\n",
+    for(i = 0;i < containerNum; i++){
+        printf("ID: %d \n Refrigerated: %d \n X: %d\n Y: %d\n Z: %d\n Length: %.2fm\n Width: %.2fm\n Height: %.2fm\n Thermal Resistance of Material 1: %.2f\n Thickness of Material 1: %.2fm\n Thermal Resistance of Material 2: %.2f\n Thickness of Material 2: %.2fm\n Thermal Resistance of Material 3: %.2f\n Thickness of Material 3: %.2fm\n",
             (ptrContainers + i)->id,
             (ptrContainers + i)->refrigerated,
             (ptrContainers + i)->x,
@@ -60,13 +60,13 @@ container* fill_vec(container *vec,FILE *inFile){
     double v;
     int i, tempID;
     float tempThermalRes[3], tempThickness[3], tempLength, tempWidth, tempHeight;
-    char tempRefrigerated;
+    int tempRefrigerated;
     unsigned int tempX, tempY, tempZ;
 
     i = 0;
     /**  A cycle for every line of the file */
     do {
-        v = fscanf(inFile,"%d;%c;%d;%d;%d;%f;%f;%f;%f;%f;%f;%f;%f;%f",
+        v = fscanf(inFile,"%d;%d;%d;%d;%d;%f;%f;%f;%f;%f;%f;%f;%f;%f",
             &tempID, &tempRefrigerated, &tempX, &tempY, &tempZ, 
             &tempLength, &tempWidth, &tempHeight, 
              &tempThermalRes[0], &tempThickness[0],
