@@ -33,7 +33,7 @@ void fillDynamicArray() {
     /** Print vector */
     int i;
     for(i = 0;i < n; i++){
-        printf("ID: %d \n Refrigerated: %c \n X: %c\n Y: %c\n Z: %c\n Length: %.2fm\n Width: %.2fm\n Height: %.2fm\n Thermal Resistance of Material 1: %.2f\n Thickness of Material 1: %.2fm\n Thermal Resistance of Material 2: %.2f\n Thickness of Material 2: %.2fm\n Thermal Resistance of Material 3: %.2f\n Thickness of Material 3: %.2fm\n",
+        printf("ID: %d \n Refrigerated: %c \n X: %d\n Y: %d\n Z: %d\n Length: %.2fm\n Width: %.2fm\n Height: %.2fm\n Thermal Resistance of Material 1: %.2f\n Thickness of Material 1: %.2fm\n Thermal Resistance of Material 2: %.2f\n Thickness of Material 2: %.2fm\n Thermal Resistance of Material 3: %.2f\n Thickness of Material 3: %.2fm\n",
             (ptrContainers + i)->id,
             (ptrContainers + i)->refrigerated,
             (ptrContainers + i)->x,
@@ -61,12 +61,12 @@ container* fill_vec(container *vec,FILE *inFile){
     int i, tempID;
     float tempThermalRes[3], tempThickness[3], tempLength, tempWidth, tempHeight;
     char tempRefrigerated;
-    unsigned char tempX, tempY, tempZ;
+    unsigned int tempX, tempY, tempZ;
 
     i = 0;
     /**  A cycle for every line of the file */
     do {
-        v = fscanf(inFile,"%d;%c;%c;%c;%c;%f;%f;%f;%f;%f;%f;%f;%f;%f", 
+        v = fscanf(inFile,"%d;%c;%d;%d;%d;%f;%f;%f;%f;%f;%f;%f;%f;%f",
             &tempID, &tempRefrigerated, &tempX, &tempY, &tempZ, 
             &tempLength, &tempWidth, &tempHeight, 
              &tempThermalRes[0], &tempThickness[0],
