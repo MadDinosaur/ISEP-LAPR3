@@ -1,13 +1,11 @@
 package lapr.project.store;
 
-import lapr.project.model.Coordinate;
-import lapr.project.model.Country;
-import lapr.project.model.Storage;
-import lapr.project.model.Tree2D;
+import lapr.project.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -66,5 +64,13 @@ class PortsGraphTest {
         assertEquals(expected.replaceAll(",", "."), result.get("Europe").get(0).replaceAll(",", "."));
         assertEquals(1, result.size());
         assertEquals(2, result.get("Europe").size());
+    }
+
+    @Test
+    void getBiggestCircuitTest() {
+        LinkedList<Location> result = portsGraph.getBiggestCircuit(country2);
+        assertEquals(result.size(), 5);
+        assertEquals(result.get(0), result.get(4));
+        assertEquals(portsGraph.getPathDistance(result), 2401.07614042978);
     }
 }

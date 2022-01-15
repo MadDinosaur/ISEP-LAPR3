@@ -8,7 +8,6 @@ import lapr.project.model.graph.Edge;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import oracle.ucp.util.Pair;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class PortsGraph {
@@ -63,9 +62,10 @@ public class PortsGraph {
         }
 
         if (Storage1 != null && Storage2 != null) {
-            if (!Storage1.getCountry().equals(Storage2.getCountry()))
-                return mg.addEdge(Storage1, Storage2, dist);
-            else{
+            if (!Storage1.getCountry().equals(Storage2.getCountry())){
+                mg.addEdge(Storage1, Storage2, dist);
+                return true;
+            }else{
                 mg.addEdge(Storage1, Storage2, dist);
                 return false;
             }
@@ -228,6 +228,64 @@ public class PortsGraph {
             resultMap.put(key,minDistanceLocation(minDistGraph,g.numVertices(),n));
         }
         return  resultMap;
+    }
+
+    /**
+     * After getting a list with the cycles that employ the chosen vertex this method chooses
+     * the one that passes through most amount of vertex' and has the lowest travel distance
+     * @param vert the chosen vertex
+     * @return returns a linked
+     */
+    public LinkedList<Location> getBiggestCircuit(Location vert){
+        ArrayList<LinkedList<Location>> paths = Algorithms.vertCycles(mg, vert, Double::compareTo);
+
+        if (paths.isEmpty())
+            return new LinkedList<>();
+
+        ArrayList<LinkedList<Location>> Biggest = new ArrayList<>();
+        int maxEdges = 0;
+
+        for (LinkedList<Location> path: paths){
+            if (path.size() > maxEdges){
+                maxEdges = path.size();
+                Biggest.clear();
+                Biggest.add(path);
+            } else if (path.size() == maxEdges){
+                Biggest.add(path);
+            }
+        }
+
+        double minDistance = Double.MAX_VALUE;
+        LinkedList<Location> finalPath = new LinkedList<>();
+
+        for (LinkedList<Location> path: Biggest){
+            double distance = getPathDistance(path);
+
+            if (distance < minDistance){
+                finalPath = path;
+                minDistance = distance;
+            }
+        }
+
+        while(finalPath.get(0) != vert){
+            finalPath.pop();
+            finalPath.add(finalPath.get(0));
+        }
+
+        return finalPath;
+    }
+
+    /**
+     * Calculates the total distance for any given path as long as it has a corresponding edge
+     * @param path the path to be calculated
+     * @return the total distance of the path
+     */
+    public double getPathDistance(LinkedList<Location> path){
+        double distance = 0;
+        for (int i = 1; i < path.size(); i++){
+            distance += mg.edge(path.get(i - 1), path.get(i)).getWeight();
+        }
+        return distance;
     }
 
     /**

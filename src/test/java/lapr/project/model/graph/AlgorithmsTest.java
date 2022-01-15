@@ -1,8 +1,12 @@
 package lapr.project.model.graph;
 
+import lapr.project.model.Location;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,6 +72,17 @@ class AlgorithmsTest {
                 if (j != i)
                     assertEquals(ExpectedDistance[k++], minDist.edge(i,j).getWeight());
             }
+        }
+    }
+
+    @Test
+    void cyclesAlgorythm() {
+        ArrayList<LinkedList<String>> list = Algorithms.vertCycles(completeMap, "Lisboa", Integer::compareTo);
+
+        assertEquals(list.size(), 6);
+
+        for (LinkedList<String> path: list){
+            assertTrue(path.contains("Lisboa"));
         }
     }
 }

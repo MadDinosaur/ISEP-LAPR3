@@ -1,12 +1,12 @@
 package lapr.project.model.graph;
 
 
-import lapr.project.model.graph.CommonGraph;
-import lapr.project.model.graph.Edge;
-import lapr.project.model.graph.Graph;
 import lapr.project.model.graph.matrix.MatrixGraph;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.function.BinaryOperator;
 
 
@@ -45,5 +45,65 @@ public class Algorithms {
             }
         }
         return new MatrixGraph<V,E>(false,g.vertices(),matrixEdges);
+    }
+
+
+    /**
+     * This Method runs a modified version of the allPaths algorithm where now it doesn't backtrack
+     * This way it makes all the cycles a simple depthFirstSearch can find in a first reading and adds them to a single list
+     * after which the method only returns the cycles that contain in them the provided vertex as these can be moved in a way where the vertex is at the start
+     * @param g initial graph
+     * @param vOrig the desired vertex
+     * @return returns an arraylist listing all the cycles where the vertex is present
+     */
+    public static <V, E> ArrayList<LinkedList<V>> vertCycles(Graph<V, E> g, V vOrig, Comparator<E> ce) {
+        boolean[] visited = new boolean[g.numVertices()];
+        ArrayList<LinkedList<V>> paths =  new ArrayList<>();
+        for (V v: g.vertices()) {
+            Arrays.fill(visited, false);
+            allPathNoBacktracking(g, v, v, visited, new LinkedList<>(), paths, ce);
+        }
+        paths.removeIf(path -> !path.contains(vOrig));
+        return paths;
+    }
+
+    /**
+     * The initial allPath's algorithm has a complexity of O(V!) which is unusable for graphs as big as the one we are using
+     * Therefore this method does not backtrack but is made up for the fact that it is run for every
+     * vertex in the graph in order to obtain a better certainty.
+     * It is an heuristic that does not give 100% certain results but is pretty close and the complexity is a nice O(V)
+     * @param g initial graph
+     * @param vOrig the vertex which will loop on itself
+     * @param visited an array with l the visited node for the current search
+     * @param path a list with the current path being searched
+     * @param paths a list with all the cycles that have been found
+     */
+    private static <V, E> void allPathNoBacktracking(Graph<V, E> g, V vOrig, V vDest, boolean[] visited,
+                                                     LinkedList<V> path, ArrayList<LinkedList<V>> paths, Comparator<E> ce) {
+        path.push(vOrig);
+        visited[g.key(vOrig)]=true;
+        ArrayList<V> adjVertices = (ArrayList<V>) g.adjVertices(vOrig);
+        adjVertices.sort(new Comparator<V>() {
+            @Override
+            public int compare(V v, V t1) {
+                return ce.compare(g.edge(vOrig, v).getWeight(), g.edge(vOrig, t1).getWeight());
+            }
+        });
+
+        for (V vAdj : adjVertices){
+            if (vAdj == vDest) {
+                path.push(vDest);
+                LinkedList<V> reversed = new LinkedList<V>();
+                for (V v : path) {
+                    reversed.push(v);
+                }
+                paths.add(reversed);
+                path.pop();
+            }
+            else
+            if (!visited[g.key(vAdj)])
+                allPathNoBacktracking(g,vAdj,vDest,visited,path,paths, ce);
+        }
+        path.pop();
     }
 }

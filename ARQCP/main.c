@@ -1,8 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "fill3DMatrix.h"
 #include "isContainerHere.h"
 #include "occupiedSlots.h"
 #include "freeSpaces.h"
+#include "structs.h"
+#include "fillDynamicArray.h"
+#include "isRefrigerated.h"
+#include "calculateEnergy.h"
 
 char *ptrLocations;
 char *ptrLoc;
@@ -63,6 +68,40 @@ void callOccupiedSlots() {
 
 }
 
+void containerEnergy() {
+    unsigned char x, y, z;
+
+	//Get the coordinates
+    printf("Input the desired container's location:\nX: ");
+    scanf("%hhd", &x);
+    printf("Y: ");
+    scanf("%hhd", &y);
+    printf("Z: ");
+    scanf("%hhd", &z);
+    
+    //Used so after it is posible to calculate container energy
+    int pos = 0;
+    int *containerPosition = &pos;
+
+	char refrigerated = isRefrigerated(ptrContainers, containerNum, x, y, z, containerPosition);
+	
+	//prints container information if found or ends mathod if container not found
+    if (refrigerated == 0)
+	{
+		puts("\n\nThe container is not refrigerated");
+	} else if (refrigerated == 1){
+		puts("\n\nThe container is refrigerated");
+	} else{
+		puts("\n\nThe container does not exist");
+		return;
+	}
+	
+	//Print energy information
+	printf("\n\nAnd the energy cost for a 1h voyage for the chosen container is %ld J", calculateEnergy(ptrContainers, *containerPosition));
+
+	
+}
+
 int main(void) {
     char opt = -1;
 
@@ -72,6 +111,8 @@ int main(void) {
         printf("\t2) Know free and occupied spaces\n");
         printf("\t3) Know if a container is in the given location\n");
         printf("\t4) Know how many positions are occupied from given positions\n");
+        printf("\t5) Fill a dynamic array with the container's info\n");
+        printf("\t6) Find out if a container is refrigerated and it's energy cost\n");
         printf("\t0) Quit program\n");
 
         scanf("%hhd", &opt);
@@ -89,11 +130,20 @@ int main(void) {
             case 4:
                 callOccupiedSlots();
                 break;
+            case 5:
+                fillDynamicArray();
+                break;
+            case 6:
+				containerEnergy();
+				break;
             default:
                 if (opt != 0)
                     printf("invalid option! please choose another.\n");
         }
     }
+
+    if (ptrContainers != NULL)
+        free(ptrContainers);
 
     return 0;
 }
