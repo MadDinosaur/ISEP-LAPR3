@@ -480,6 +480,9 @@ CREATE OR REPLACE TRIGGER trgCheckFleetManager
         WHEN NO_DATA_FOUND THEN
             raise_application_error(-20004, 'Employee does not have fleet manager role.');
     END;
+/
+ALTER TRIGGER trgCheckFleetManager ENABLE;
+/
 
 CREATE OR REPLACE TRIGGER trgCheckShipCaptain
     BEFORE INSERT OR UPDATE OF system_user_code_captain ON Ship
@@ -496,6 +499,9 @@ CREATE OR REPLACE TRIGGER trgCheckShipCaptain
         WHEN NO_DATA_FOUND THEN
             raise_application_error(-20005, 'Employee does not have ship captain role.');
     END;
+/
+ALTER TRIGGER trgCheckShipCaptain ENABLE;
+/
 
 CREATE OR REPLACE TRIGGER trgCheckPortManager
     BEFORE INSERT OR UPDATE OF system_user_code_manager ON Storage
@@ -532,6 +538,9 @@ CREATE OR REPLACE TRIGGER trgCheckPortManager
             END;
         END IF;
     END;
+/
+ALTER TRIGGER trgCheckPortManager ENABLE;
+/
 
 CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
     BEFORE UPDATE ON CargoManifest_Partial

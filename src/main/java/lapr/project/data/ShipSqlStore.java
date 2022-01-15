@@ -153,11 +153,26 @@ public class ShipSqlStore implements Persistable {
                 existsVesselType.setString(1, ship.getMmsi() + "@captain.com");
                 try (ResultSet captainResultSet = existsVesselType.executeQuery()) {
                     if (!captainResultSet.next()) {
-                        sqlCommand = "INSERT INTO SystemUser(name, email, role_id) VALUES (?, ?, 2)";
+                        sqlCommand = "INSERT INTO SystemUser(name, email) VALUES (?, ?)";
                         try (PreparedStatement VesselType = connection.prepareStatement(sqlCommand)) {
                             VesselType.setString(1, ship.getMmsi());
                             VesselType.setString(2, ship.getMmsi() + "@captain.com");
                             VesselType.execute();
+                        }
+
+                        sqlCommand = "Select * from systemUser where email = ?";
+                        try (PreparedStatement setRole = connection.prepareStatement(sqlCommand)) {
+                            setRole.setString(1, ship.getMmsi() + "@captain.com");
+                            try (ResultSet newCaptain = setRole.executeQuery()) {
+                                newCaptain.next();
+                                code = newCaptain.getString(1);
+                                sqlCommand = "INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID) VALUES (?, 2)";
+                                try (PreparedStatement addCaptain = connection.prepareStatement(sqlCommand)) {
+                                    addCaptain.setString(1, code);
+                                    addCaptain.execute();
+
+                                }
+                            }
                         }
                     } else {
                         code = captainResultSet.getString(1);

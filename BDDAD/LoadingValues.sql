@@ -99,6 +99,8 @@ INSERT INTO SystemUser(name, email)
 VALUES ('ExampleWarehouseMngr', 'manager1@warehouse.com');
 INSERT INTO SystemUser(name, email)
 VALUES ('ExampleClient', 'example@client.com');
+INSERT INTO SystemUser(name, email)
+VALUES ('ExamplePortManager2', 'manager2@port.com');
 
 -- Employees --
 INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
@@ -121,6 +123,8 @@ INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
 VALUES ('9', 4);
 INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
 VALUES ('10', 5);
+INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
+VALUES ('12', 4);
 
 -- Client --
 INSERT INTO CLIENT (SYSTEM_USER_CODE_CLIENT)
