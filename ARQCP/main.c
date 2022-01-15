@@ -8,6 +8,7 @@
 #include "fillDynamicArray.h"
 #include "isRefrigerated.h"
 #include "calculateEnergy.h"
+#include "enoughEnergy.h"
 
 char *ptrLocations;
 char *ptrLoc;
@@ -78,13 +79,13 @@ void containerEnergy() {
     scanf("%hhd", &y);
     printf("Z: ");
     scanf("%hhd", &z);
-    
+
     //Used so after it is posible to calculate container energy
     int pos = 0;
     int *containerPosition = &pos;
 
 	char refrigerated = isRefrigerated(ptrContainers, containerNum, x, y, z, containerPosition);
-	
+
 	//prints container information if found or ends mathod if container not found
     if (refrigerated == 0)
 	{
@@ -95,11 +96,30 @@ void containerEnergy() {
 		puts("\n\nThe container does not exist");
 		return;
 	}
-	
+
 	//Print energy information
 	printf("\n\nAnd the energy cost for a 1h voyage for the chosen container is %ld J", calculateEnergy(ptrContainers, *containerPosition));
 
-	
+
+}
+
+void sendAlert() {
+	int numGen;
+
+	// Gets the total number of energy generators in a ship
+	printf("How many energy generators does the ship have?\n Number of Generators: ");
+	scanf("%d", &numGen);
+
+	// Calls enoughEnergy(), it will return either 1 or 0
+	char needsEnergy = enoughEnergy(ptrContainers, containerNum, numGen);
+
+	// If needsEnergy = 1 then the ship doesn't have enough energy, if =0 it can provide enough energy
+	if(needsEnergy == 1){
+		printf("\n The ship doesn't have enough energy for all the containers!\n");
+	}else{
+		printf("\n The ship can provide enough energy for all containers.\n");
+	}
+
 }
 
 int main(void) {
@@ -113,6 +133,7 @@ int main(void) {
         printf("\t4) Know how many positions are occupied from given positions\n");
         printf("\t5) Fill a dynamic array with the container's info\n");
         printf("\t6) Find out if a container is refrigerated and it's energy cost\n");
+        printf("\t7) Alert for current ship's energy\n");
         printf("\t0) Quit program\n");
 
         scanf("%hhd", &opt);
@@ -135,6 +156,9 @@ int main(void) {
                 break;
             case 6:
 				containerEnergy();
+				break;
+			case 7:
+				sendAlert();
 				break;
             default:
                 if (opt != 0)
