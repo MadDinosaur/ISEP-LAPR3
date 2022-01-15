@@ -20,6 +20,8 @@ DROP TABLE Storage_Path CASCADE CONSTRAINTS PURGE;
 DROP TABLE Role CASCADE CONSTRAINTS PURGE;
 DROP TABLE SystemUser CASCADE CONSTRAINTS PURGE;
 DROP TABLE Truck CASCADE CONSTRAINTS PURGE;
+DROP TABLE Employee CASCADE CONSTRAINTS PURGE;
+DROP TABLE Client CASCADE CONSTRAINTS PURGE;
 
 -- create tables
 CREATE TABLE Role
@@ -31,18 +33,30 @@ CREATE TABLE Role
         CONSTRAINT unRoleName UNIQUE
 );
 
+CREATE TABLE Employee
+(
+    system_user_code_employee VARCHAR(10)
+        CONSTRAINT pkEmployeeSystemUserCode PRIMARY KEY,
+    role_id INTEGER
+        CONSTRAINT nnEmployeeRoleId NOT NULL
+);
+
+CREATE TABLE Client
+(
+    system_user_code_client VARCHAR(10)
+        CONSTRAINT pkClientSystemUserCode PRIMARY KEY
+);
+
 CREATE TABLE SystemUser
 (
-    registration_code VARCHAR(10)
+    registration_code VARCHAR(10) DEFAULT 'N/A'
         CONSTRAINT pkSystemUserCode PRIMARY KEY,
     name VARCHAR(20)
         CONSTRAINT nnSystemUserName NOT NULL,
     email VARCHAR(40)
         CONSTRAINT nnSystemUserEmail NOT NULL
         CONSTRAINT unSystemUserEmail UNIQUE
-        CONSTRAINT ckSystemUserEmail CHECK (email LIKE '%_@__%.__%'),
-    role_id INTEGER
-        CONSTRAINT nnSystemUserRoleId NOT NULL
+        CONSTRAINT ckSystemUserEmail CHECK (email LIKE '%_@__%.__%')
 );
 
 CREATE TABLE StorageType
@@ -72,8 +86,9 @@ CREATE TABLE Storage
         CONSTRAINT ckStorageLatitude CHECK (latitude BETWEEN -90 AND 90 OR latitude = 91),
     longitude              NUMBER(8, 5)
         CONSTRAINT nnStorageLongitude NOT NULL,
-        CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181)
-
+        CONSTRAINT ckStorageLongitude CHECK (longitude BETWEEN -180 AND 180 or longitude = 181),
+    system_user_code_manager VARCHAR(10)
+        CONSTRAINT nnStorageManagerID NOT NULL
 );
 
 CREATE TABLE Container
@@ -242,7 +257,10 @@ CREATE TABLE Truck
 
 CREATE TABLE Fleet
 (
-    id INTEGER CONSTRAINT pkFleetId PRIMARY KEY
+    id INTEGER CONSTRAINT pkFleetId PRIMARY KEY,
+    system_user_code_manager VARCHAR(10)
+        CONSTRAINT nnFleetManagerID NOT NULL
+        CONSTRAINT unFleetManagerID UNIQUE
 );
 
 CREATE TABLE VesselType
@@ -379,12 +397,20 @@ CREATE TABLE Storage_Path
 );
 
 -- define foreign keys and combined primary keys
-ALTER TABLE SystemUser
-    ADD CONSTRAINT fkSystemUserRoleId FOREIGN KEY (role_id) REFERENCES Role (id);
+ALTER TABLE Employee
+    ADD CONSTRAINT fkEmployeeRoleId FOREIGN KEY (role_id) REFERENCES Role (id)
+    ADD CONSTRAINT fkEmployeeSystemUserId FOREIGN KEY (system_user_code_employee) REFERENCES SystemUser (registration_code);
+
+ALTER TABLE Client
+    ADD CONSTRAINT fkClientSystemUserId FOREIGN KEY (system_user_code_client) REFERENCES SystemUser (registration_code);
+
+ALTER TABLE Fleet
+    ADD CONSTRAINT fkFleetManagerSystemUserId FOREIGN KEY (system_user_code_manager) REFERENCES Fleet (system_user_code_manager);
 
 ALTER TABLE Storage
     ADD CONSTRAINT fkStorageTypeId FOREIGN KEY (storage_type_id) REFERENCES StorageType (id)
-    ADD CONSTRAINT fkCountryName FOREIGN KEY (country_name) REFERENCES Country (country);
+    ADD CONSTRAINT fkCountryName FOREIGN KEY (country_name) REFERENCES Country (country)
+    ADD CONSTRAINT fkStorageManagerSystemUserId FOREIGN KEY (system_user_code_manager) REFERENCES Employee (system_user_code_employee);
 
 ALTER TABLE Container
     ADD CONSTRAINT fkContainerCscPlateSerialNumber FOREIGN KEY (csc_plate_serial_number) REFERENCES CscPlate (serial_number);
@@ -398,7 +424,7 @@ ALTER TABLE Shipment
     ADD CONSTRAINT fkShipmentStorageIdentificationOrigin FOREIGN KEY (storage_identification_origin) REFERENCES Storage (identification)
     ADD CONSTRAINT fkShipmentStorageIdentificationDestination FOREIGN KEY (storage_identification_destination) REFERENCES Storage (identification)
     ADD CONSTRAINT fkShipmentContainerNum FOREIGN KEY (container_num) REFERENCES Container (num)
-    ADD CONSTRAINT fkShipmentSystemUser FOREIGN KEY (system_user_code_client) REFERENCES SystemUser (registration_code);
+    ADD CONSTRAINT fkShipmentSystemUser FOREIGN KEY (system_user_code_client) REFERENCES Client (system_user_code_client);
 
 ALTER TABLE CargoManifest_Partial
     ADD CONSTRAINT fkContainerStorageIdentification FOREIGN KEY (storage_identification) REFERENCES Storage(identification)
@@ -438,7 +464,75 @@ ALTER TABLE Storage_Path
     ADD CONSTRAINT fkPathStorage2 FOREIGN KEY (storage_id2) REFERENCES Storage (identification)
     ADD CONSTRAINT pkStoragePath PRIMARY KEY (storage_id1, storage_id2);
 
--- define database triggers
+-- define data validation triggers
+CREATE OR REPLACE TRIGGER trgCheckFleetManager
+    BEFORE INSERT OR UPDATE OF system_user_code_manager ON Fleet
+    FOR EACH ROW
+    DECLARE vFleetManager Employee.role_id%type;
+    BEGIN
+        SELECT role_id
+        INTO vFleetManager
+        FROM Employee e
+        INNER JOIN Role r ON e.role_id = r.id
+        WHERE e.system_user_code_employee = :new.system_user_code_manager
+        AND r.name LIKE 'Fleet Manager';
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            raise_application_error(-20004, 'Employee does not have fleet manager role.');
+    END;
+
+CREATE OR REPLACE TRIGGER trgCheckShipCaptain
+    BEFORE INSERT OR UPDATE OF system_user_code_captain ON Ship
+    FOR EACH ROW
+    DECLARE vShipCaptain Employee.role_id%type;
+    BEGIN
+        SELECT role_id
+        INTO vShipCaptain
+        FROM Employee e
+        INNER JOIN Role r ON e.role_id = r.id
+        WHERE e.system_user_code_employee = :new.system_user_code_captain
+        AND r.name LIKE 'Ship Captain';
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            raise_application_error(-20005, 'Employee does not have ship captain role.');
+    END;
+
+CREATE OR REPLACE TRIGGER trgCheckPortManager
+    BEFORE INSERT OR UPDATE OF system_user_code_manager ON Storage
+    FOR EACH ROW
+    DECLARE vStorageManager Employee.role_id%type; vStorageType StorageType.name%type;
+    BEGIN
+        -- check if storage is port or warehouse
+        SELECT name INTO vStorageType FROM StorageType WHERE id = :new.storage_type_id;
+
+        -- check manager role according to storage type
+        IF vStorageType = 'Port' THEN
+            BEGIN
+                SELECT role_id
+                INTO vStorageManager
+                FROM Employee e
+                INNER JOIN Role r ON e.role_id = r.id
+                WHERE e.system_user_code_employee = :new.system_user_code_manager
+                AND r.name LIKE 'Port Manager';
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    raise_application_error(-20006, 'Employee does not have port manager role.');
+            END;
+        ELSIF vStorageType = 'Warehouse' THEN
+            BEGIN
+                SELECT role_id
+                INTO vStorageManager
+                FROM Employee e
+                INNER JOIN Role r ON e.role_id = r.id
+                WHERE e.system_user_code_employee = :new.system_user_code_manager
+                AND r.name LIKE 'Warehouse Manager';
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    raise_application_error(-20007, 'Employee does not have warehouse manager role.');
+            END;
+        END IF;
+    END;
+
 CREATE OR REPLACE TRIGGER trgUpdateCargoManifest
     BEFORE UPDATE ON CargoManifest_Partial
     FOR EACH ROW

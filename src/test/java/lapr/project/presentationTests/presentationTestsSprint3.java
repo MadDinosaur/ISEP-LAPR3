@@ -94,7 +94,7 @@ public class presentationTestsSprint3 {
     public void US305() {
         if (dataBase) {
             ContainerRouteController controller = new ContainerRouteController();
-            String values = controller.getContainerRouteToString(controller.getContainerRoute("6",3));
+            String values = controller.getContainerRouteToString(controller.getContainerRoute("11",3));
             StringBuilder sb = new StringBuilder();
 
             sb.append("Route log for container\n\n");

@@ -53,6 +53,10 @@
 | -20001 | Invalid client identifier. | 'Invalid identifier. Client does not exist' |
 | -20002 | Invalid container identifier. | 'Error Code: 10 - Invalid identifier - Container no. X' |
 | -20003 | Container not leased to client. | 'Error Code: 11 - Invalid access - Container no. X' |
+| -20004 | Invalid employee role (Fleet Manager). | Employee does not have fleet manager role. |
+| -20005 | Invalid employee role (Ship Captain). | Employee does not have ship captain role. |
+| -20006 | Invalid employee role (Port Manager). | Employee does not have port manager role. |
+| -20007 | Invalid employee role (Warehouse Manager). | Employee does not have warehouse manager role. |
 | -20014 | Ship capacity was exceeded. | 'Containers in cargo manifest exceed ship capacity. Please remove containers from manifest or issue an unloading order.' |
 | -20015 | Storage capacity was exceeded | 'Containers in cargo manifest exceed storage capacity. Please remove containers from manifest or issue a loading order.' |
 
