@@ -6,7 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,5 +86,65 @@ class AlgorithmsTest {
         for (LinkedList<String> path: list){
             assertTrue(path.contains("Lisboa"));
         }
+    }
+
+    /**
+     * Test of shortestPath method, of class Algorithms.
+     */
+    @Test
+    public void testShortestPath() {
+        LinkedList<String> shortPath = new LinkedList<>();
+
+        Integer lenPath = Algorithms.shortestPath(completeMap, "Porto", "LX", Integer::compare, Integer::sum, 0, shortPath);
+        assertNull(lenPath, "Length path should be null if vertex does not exist");
+        assertEquals(0, shortPath.size(), "Shortest Path does not exist");
+
+        lenPath = Algorithms.shortestPath(incompleteMap, "Porto", "Faro", Integer::compare, Integer::sum, 0, shortPath);
+        assertNull(lenPath, "Length path should be null if vertex does not exist");
+        assertEquals(0, shortPath.size(), "Shortest Path does not exist");
+
+        lenPath = Algorithms.shortestPath(completeMap, "Porto", "Porto", Integer::compare, Integer::sum, 0, shortPath);
+        assertEquals(0, lenPath, "Length path should be 0 if vertices are the same");
+        assertEquals(Arrays.asList("Porto"), shortPath, "Shortest Path only contains Porto");
+
+        lenPath = Algorithms.shortestPath(incompleteMap, "Porto", "Lisboa", Integer::compare, Integer::sum, 0, shortPath);
+        assertEquals(335, lenPath, "Length path should be 0 if vertices are the same");
+        assertEquals(Arrays.asList("Porto", "Aveiro", "Coimbra", "Lisboa"), shortPath, "Shortest Path Porto - Lisboa");
+
+        lenPath = Algorithms.shortestPath(incompleteMap, "Braga", "Leiria", Integer::compare, Integer::sum, 0, shortPath);
+        assertEquals(255, lenPath, "Length path should be 0 if vertices are the same");
+        assertEquals(Arrays.asList("Braga", "Porto", "Aveiro", "Leiria"), shortPath, "Shortest Path Braga - Leiria");
+
+        lenPath = Algorithms.shortestPath(completeMap, "Porto", "Castelo Branco", Integer::compare, Integer::sum, 0, shortPath);
+        assertEquals(335, lenPath, "Length path should be 0 if vertices are the same");
+        assertEquals(Arrays.asList("Porto", "Aveiro", "Viseu", "Guarda", "Castelo Branco"), shortPath, "Shortest Path Porto - Castelo Branco");
+
+        //Changing Edge: Aveiro-Viseu with Edge: Leiria-C.Branco
+        //should change shortest path between Porto and Castelo Branco
+
+        completeMap.removeEdge("Aveiro", "Viseu");
+        completeMap.addEdge("Leiria", "Castelo Branco", 170);
+
+        lenPath = Algorithms.shortestPath(completeMap, "Porto", "Castelo Branco", Integer::compare, Integer::sum, 0, shortPath);
+        assertEquals(365, lenPath, "Length path should be 0 if vertices are the same");
+        assertEquals(Arrays.asList("Porto", "Aveiro", "Leiria", "Castelo Branco"), shortPath, "Shortest Path Porto - Castelo Branco");
+    }
+
+    @Test
+    public void testGeneratePerm(){
+        List<String> list = new ArrayList<>();
+        list.add("Porto");
+        list.add("Aveiro");
+        list.add("Leiria");
+
+        List<List<String>> result = Algorithms.generatePerm(list);
+
+        assertEquals(result.size(),6);
+        assertTrue(result.contains(Arrays.asList("Porto","Aveiro","Leiria")));
+        assertTrue(result.contains(Arrays.asList("Porto","Leiria","Aveiro")));
+        assertTrue(result.contains(Arrays.asList("Aveiro","Porto","Leiria")));
+        assertTrue(result.contains(Arrays.asList("Aveiro","Leiria","Porto")));
+        assertTrue(result.contains(Arrays.asList("Leiria","Porto","Aveiro")));
+        assertTrue(result.contains(Arrays.asList("Leiria","Aveiro","Porto")));
     }
 }

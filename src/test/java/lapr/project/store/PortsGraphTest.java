@@ -4,10 +4,7 @@ import lapr.project.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,5 +69,29 @@ class PortsGraphTest {
         assertEquals(result.size(), 5);
         assertEquals(result.get(0), result.get(4));
         assertEquals(portsGraph.getPathDistance(result), 2401.07614042978);
+    }
+
+    @Test
+    void shortestPathN(){
+        List<Location> locations = new ArrayList<>();
+        locations.add(country1);
+        Location start = storage1;
+        Location end = storage2;
+
+        LinkedList<Location> result = portsGraph.shortestPathN(locations,start,end);
+        assertEquals(result.size(),4);
+        assertEquals(result.get(0),start);
+        assertEquals(result.get(3),end);
+    }
+
+    @Test
+    void landOrSeaPath(){
+        Location start = storage1;
+        Location end = storage2;
+
+        LinkedList<Location> result = portsGraph.landOrSeaPath(start,end);
+        assertEquals(result.size(),2);
+        assertEquals(result.get(0),start);
+        assertEquals(result.get(1),end);
     }
 }
