@@ -322,4 +322,42 @@ public class ShipStore extends AVL<Ship>{
         }
         return closeShipRoutes;
     }
+
+    /**
+     * This method returns how much the vessel sunk, the total mass placed and the pressure exerted
+     * @param ship The ship to be used
+     * @param nContainers The number of containers in it
+     * @return Returns a map with 3 informations: How much the vessel sunk, the total mass placed and the pressure exerted
+     */
+    public HashMap<String, Double> vesselSink(Ship ship, int nContainers){
+        HashMap<String,Double> result = new HashMap<>();
+
+        final double waterDensity = 1000;                                          // KG/m^3
+        final double oneTon = 1000;                                                // KG
+        final double gravity = 9.81;                                               // m/s
+
+        double shipUnloadedWeight = 200000 * oneTon;                               // KG
+        double shipLoadedWeight = shipUnloadedWeight + (nContainers * (oneTon/2)); // KG
+        double length = ship.getLength();                                          // m
+        double width = ship.getWidth();                                            // m
+        double newImmersiveHeight;                                                 // m
+        double immersiveHeight;                                                    // m
+
+        double unloadedVolume = shipUnloadedWeight/waterDensity;                   // m^3
+        double loadedVolume = shipLoadedWeight/waterDensity;                       // m^3
+
+        immersiveHeight = unloadedVolume/(length*width);                           // m
+        newImmersiveHeight = loadedVolume/(length*width);                          // m
+
+        result.put("Height",newImmersiveHeight-immersiveHeight);
+        result.put("Container Weight",nContainers*(oneTon/2));
+
+        double force = (shipLoadedWeight*1000) * gravity;                          // N
+        double area = (width*length) + (2*(width*newImmersiveHeight)) + (2*(length*newImmersiveHeight));
+        double pressure = force/area;                                               // Pa
+
+        result.put("Pressure",pressure);
+
+        return result;
+    }
 }

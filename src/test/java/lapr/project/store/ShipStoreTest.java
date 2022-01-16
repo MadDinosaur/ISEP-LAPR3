@@ -268,4 +268,17 @@ class ShipStoreTest {
             assertEquals(expectedList.get(i), topList.get(i));
         }
     }
+
+    @Test
+    public void vesselSink(){
+        Ship test = s3;
+        s3.setLength(320.04f);
+        s3.setWidth(33.53f);
+        HashMap<String,Double> result = shipStore.vesselSink(test,300);
+
+        assertNotNull(result);
+        assertEquals(result.get("Height"),0.013978270746282107);
+        assertEquals(result.get("Container Weight"),150000);
+        assertEquals(result.get("Pressure"),8.20839504739878E7);
+    }
 }

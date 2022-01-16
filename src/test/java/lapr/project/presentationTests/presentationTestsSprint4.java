@@ -2,10 +2,12 @@ package lapr.project.presentationTests;
 
 import lapr.project.controller.LongestCycleController;
 import lapr.project.controller.ShortestPathController;
+import lapr.project.controller.VesselSinkController;
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
 import lapr.project.model.Country;
 import lapr.project.model.Location;
+import lapr.project.model.Ship;
 import lapr.project.model.Storage;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import lapr.project.store.PortsGraph;
@@ -14,8 +16,12 @@ import org.junit.jupiter.api.Test;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class presentationTestsSprint4 {
 
@@ -122,6 +128,26 @@ public class presentationTestsSprint4 {
                 sb.append("\n").append("Movement distance: ").append(String.format("%.0f", mg.edge(location1, location2).getWeight())).append("\n");
             }
             writeOutput(sb.toString(), "US403");
+        }
+    }
+
+    @Test
+    public void US420(){
+        if(dataBase){
+            Ship ship = new Ship("210950000","Example",9450648,"C4SQ2",0,320.04f,33.53f,0);
+            VesselSinkController controller = new VesselSinkController();
+            HashMap<String,Double> result = controller.vesselSink(ship,300);
+            StringBuilder sb = new StringBuilder();
+            sb.append("The vessel sunk a total of: ");
+            sb.append(result.get("Height"));
+            sb.append(" m \n");
+            sb.append("Total mass placed: ");
+            sb.append(result.get("Container Weight"));
+            sb.append(" KG\n");
+            sb.append("The pressure was: ");
+            sb.append(result.get("Pressure"));
+            sb.append(" Pa \n");
+            writeOutput(sb.toString(),"US420");
         }
     }
 
