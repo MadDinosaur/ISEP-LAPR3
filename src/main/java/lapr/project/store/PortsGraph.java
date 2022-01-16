@@ -276,6 +276,85 @@ public class PortsGraph {
     }
 
     /**
+     * This method first gets all the permutations possible for the locations given and gets the shortest dist
+     * to be used after by Dijkstra's Algorithm
+     * @param places The locations to pass through
+     * @param start The starting location
+     * @param end The ending location
+     * @return Returns the combination with less distance
+     */
+    private List<Location> lessDistancePath(List<Location> places, Location start, Location end){
+
+        List<List<Location>> paths = Algorithms.generatePerm(places); /** Permutações dos pontos médios */
+
+        MatrixGraph<Location, Double> g = getMg();
+        MatrixGraph<Location, Double> minDistMatrix = Algorithms.FloydWarshallAlgorithm(g,Double::compare,Double::sum); /** Distancia minima entre todos os locais */
+        List<Location> result = new ArrayList<>();
+        double minDist = Double.MAX_VALUE;
+
+        for(List<Location> list : paths){
+
+            list.add(0,start);              // Adiciona o start ao inicio da lista
+            list.add(end);                        // Adiciona o end ao final da lista
+            double dist = 0;
+
+            for( int i = 0; i < list.size()-1;i++){             // Percorre todos os valores da lista menos o último
+
+                if(minDistMatrix.edge(list.get(i),list.get(i+1)) == null) {     // Pega na edge e vê se é null, se for null a lista atual de localizações fica logo fora de questão
+                    dist = Double.MAX_VALUE;
+                    break;
+                }
+
+                dist += minDistMatrix.edge(list.get(i), list.get(i + 1)).getWeight();   // Se não for null, soma-se a distancia dessa edge ao valor total da distância
+
+            }
+
+            if(dist < minDist){         // Verifica-se a distancia é menor que a atual menor distância
+                minDist = dist;
+                result = list;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * This method gets the shortest path from start to end, passing by N places
+     * @param places The locals to pass by
+     * @param start The starting location
+     * @param end The ending location
+     * @return Returns the shortest path from start to end, passing by N places
+     */
+    public LinkedList<Location> shortestPathN(List<Location> places, Location start, Location end){
+
+        MatrixGraph<Location, Double> g = getMg();
+        LinkedList<Location> result = new LinkedList<>();
+        List<Location> path = lessDistancePath(places,start,end);
+
+
+        for(int i = 0; i < path.size()-1;i++){
+
+            LinkedList<Location> tempPath = new LinkedList<>();
+            Algorithms.shortestPath(g,path.get(i),path.get(i+1),Double::compare,Double::sum,0.0,tempPath);
+            result.addAll(tempPath);
+            if(i != path.size()-2) result.removeLast();
+
+        }
+        return result;
+    }
+
+    /**
+     * Gets the shortest path between two locals, using the Dijkstra's Algorithm
+     * @param start The starting location
+     * @param end The ending location
+     * @return Returns a list with the shortest path between two locals
+     */
+    public LinkedList<Location>  landOrSeaPath(Location start, Location end){
+        LinkedList<Location> path = new LinkedList<>();
+        Algorithms.shortestPath(getMg(),start,end,Double::compare,Double::sum,0.0,path);
+        return path;
+    }
+
+    /**
      * Calculates the total distance for any given path as long as it has a corresponding edge
      * @param path the path to be calculated
      * @return the total distance of the path
