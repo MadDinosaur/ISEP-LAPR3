@@ -1,0 +1,30 @@
+|MANDATORY| Storage 13012: Name - Leixoes; Continent - Europe; Country - Portugal; Longitude - -8,70; Latitude - 41,18
+	 	 	Storage 18476: Name - Ponta Delgada; Continent - Europe; Country - Portugal; Longitude - -25,67; Latitude - 37,73
+	 	 	Storage 22226: Name - Halifax; Continent - America; Country - Canada; Longitude - -63,57; Latitude - 44,65
+|MANDATORY| Storage 28313: Name - Cartagena; Continent - America; Country - Colombia; Longitude - -75,53; Latitude - 10,42
+	 	 	Storage 28781: Name - Puerto Limon; Continent - America; Country - Costa Rica; Longitude - -83,02; Latitude - 10,00
+	 	 	Continent - America; Country - Costa Rica; Capital - San Jose; Longitude - -84,083; Latitude - 9,933
+|MANDATORY| Continent - America; Country - Nicaragua; Capital - Managua; Longitude - -86,250; Latitude - 12,133
+	 	 	Continent - America; Country - Honduras; Capital - Tegucigalpa; Longitude - -87,217; Latitude - 14,100
+|MANDATORY| Continent - America; Country - El Salvador; Capital - San Salvador; Longitude - -89,200; Latitude - 13,700
+	 	 	Storage 15107: Name - Cutuco; Continent - America; Country - El Salvador; Longitude - -87,82; Latitude - 13,33
+|MANDATORY| Storage 28313: Name - Cartagena; Continent - America; Country - Colombia; Longitude - -75,53; Latitude - 10,42
+	 	 	Storage 22226: Name - Halifax; Continent - America; Country - Canada; Longitude - -63,57; Latitude - 44,65
+	 	 	Storage 18433: Name - Horta; Continent - Europe; Country - Portugal; Longitude - -28,62; Latitude - 38,53
+	 	 	Storage 18326: Name - Dunkirk; Continent - Europe; Country - France; Longitude - 2,37; Latitude - 51,05
+	 	 	Storage 224858: Name - Hamburg; Continent - Europe; Country - Germany; Longitude - 9,98; Latitude - 53,55
+	 	 	Storage 20072: Name - Rostock; Continent - Europe; Country - Germany; Longitude - 12,10; Latitude - 54,15
+	 	 	Storage 12543: Name - Gdansk; Continent - Europe; Country - Poland; Longitude - 18,68; Latitude - 54,35
+	 	 	Storage 16485: Name - Helsinki; Continent - Europe; Country - Finland; Longitude - 24,95; Latitude - 60,17
+|MANDATORY| Continent - Europe; Country - Finland; Capital - Helsinki; Longitude - 24,933; Latitude - 60,167
+	 	 	Storage 16485: Name - Helsinki; Continent - Europe; Country - Finland; Longitude - 24,95; Latitude - 60,17
+	 	 	Storage 12543: Name - Gdansk; Continent - Europe; Country - Poland; Longitude - 18,68; Latitude - 54,35
+	 	 	Continent - Europe; Country - Poland; Capital - Warsaw; Longitude - 21,000; Latitude - 52,250
+	 	 	Continent - Europe; Country - Slovakia; Capital - Bratislava; Longitude - 17,117; Latitude - 48,150
+	 	 	Continent - Europe; Country - Austria; Capital - Vienna; Longitude - 16,367; Latitude - 48,200
+	 	 	Continent - Europe; Country - Slovenia; Capital - Ljubljana; Longitude - 14,517; Latitude - 46,050
+	 	 	Storage 21381: Name - Koper; Continent - Europe; Country - Slovenia; Longitude - 13,73; Latitude - 45,55
+	 	 	Storage 18200: Name - Vlore; Continent - Europe; Country - Albania; Longitude - 19,48; Latitude - 40,48
+|MANDATORY| Storage 21863: Name - Aspropyrgos; Continent - Europe; Country - Greece; Longitude - 23,58; Latitude - 38,03
+|MANDATORY| Storage 10136: Name - Larnaca; Continent - Europe; Country - Cyprus; Longitude - 33,65; Latitude - 34,92
+Path Distance: 17654KM
