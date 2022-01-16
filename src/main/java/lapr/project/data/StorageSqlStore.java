@@ -111,7 +111,7 @@ public class StorageSqlStore implements Persistable {
      * @throws SQLException in case something goes wrong during the Database connection
      */
     private void insertStorageOnDatabase(DatabaseConnection databaseConnection, Storage storage) throws SQLException {
-        String sqlCommand = "insert into storage(storage_type_id, name, country_name, latitude, longitude, identification, max_volume) values (?, ?, ?, ?, ?, ?, 500)";
+        String sqlCommand = "insert into storage(storage_type_id, name, country_name, latitude, longitude, identification, max_volume, SYSTEM_USER_CODE_MANAGER) values (?, ?, ?, ?, ?, ?, 500, '12')";
 
         executeStorageStatementOnDatabase(databaseConnection, storage, sqlCommand);
     }
