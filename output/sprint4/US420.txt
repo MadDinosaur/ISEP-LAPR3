@@ -1,0 +1,3 @@
+The vessel sunk a total of: 0.013978270746282107 m 
+Total mass placed: 150000.0 KG
+The pressure was: 8.20839504739878E7 Pa 

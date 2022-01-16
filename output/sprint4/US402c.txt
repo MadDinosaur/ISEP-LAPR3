@@ -1,0 +1,5 @@
+Storage 13012: Name - Leixoes; Continent - Europe; Country - Portugal; Longitude - -8,70; Latitude - 41,18
+Storage 18476: Name - Ponta Delgada; Continent - Europe; Country - Portugal; Longitude - -25,67; Latitude - 37,73
+Storage 22226: Name - Halifax; Continent - America; Country - Canada; Longitude - -63,57; Latitude - 44,65
+Storage 28313: Name - Cartagena; Continent - America; Country - Colombia; Longitude - -75,53; Latitude - 10,42
+Path Distance: 5433KM
