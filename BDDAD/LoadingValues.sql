@@ -101,6 +101,8 @@ INSERT INTO SystemUser(name, email)
 VALUES ('ExampleClient', 'example@client.com');
 INSERT INTO SystemUser(name, email)
 VALUES ('ExamplePortManager2', 'manager2@port.com');
+INSERT INTO SystemUser(name, email)
+VALUES ('ExampleFleetManager4', 'manager4@fleet.com');
 
 -- Employees --
 INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
@@ -125,6 +127,8 @@ INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
 VALUES ('10', 5);
 INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
 VALUES ('12', 4);
+INSERT INTO EMPLOYEE (SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
+VALUES ('13', 1);
 
 -- Client --
 INSERT INTO CLIENT (SYSTEM_USER_CODE_CLIENT)
@@ -192,7 +196,7 @@ VALUES(2, 2, 4, 'COD2', 200, 4000, 500, 1, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
 VALUES(3, 3, 4, 'COD3', 200, 4000, 500, 32, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(4, 4, 4, 'COD4', 200, 4000, 500, 23, 1);
+VALUES(4, 4, 4, 'COD4', 200, 4000, 500, 25, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
 VALUES(5, 5, 4, 'COD5', 200, 4000, 500, 6, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
@@ -251,6 +255,9 @@ INSERT INTO CARGOMANIFEST_PARTIAL (TRUCK_ID, STORAGE_IDENTIFICATION, LOADING_FLA
 VALUES (1, 2, 1);
 INSERT INTO CARGOMANIFEST_PARTIAL (TRUCK_ID, STORAGE_IDENTIFICATION, LOADING_FLAG)
 VALUES (1, 3, 0);
+
+INSERT INTO CARGOMANIFEST_PARTIAL (SHIP_MMSI, STORAGE_IDENTIFICATION, LOADING_FLAG)
+VALUES (100000003, 1, 1);
 
 -- Container_CargoManifest --
 INSERT INTO Container_CargoManifest(container_num, partial_cargo_manifest_id, container_position_x, container_position_y, container_position_z)
@@ -317,6 +324,9 @@ VALUES (3, 12, 0,0,0);
 INSERT INTO CONTAINER_CARGOMANIFEST (CONTAINER_NUM, PARTIAL_CARGO_MANIFEST_ID, CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z)
 VALUES (3, 13, 0,0,0);
 
+INSERT INTO CONTAINER_CARGOMANIFEST (CONTAINER_NUM, PARTIAL_CARGO_MANIFEST_ID, CONTAINER_POSITION_X, CONTAINER_POSITION_Y, CONTAINER_POSITION_Z)
+VALUES (4, 14, 0,0,0);
+
 -- CargoManifestPartial (Conclusion) --
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 1;
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 2;
@@ -329,6 +339,7 @@ UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-01 
 UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-02 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 11;
 UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-03 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 12;
 UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-04 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 13;
+UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-3 23:23:51', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 14;
 
 -- ShipTrip --
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
@@ -342,7 +353,7 @@ VALUES(100000001, 1, 2, TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
 VALUES(100000002, 2, 1, TO_TIMESTAMP('2021-12-10 21:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-12 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'not started');
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
-VALUES(100000003, 1, 4, TO_TIMESTAMP('2021-12-3 23:23:51', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-5 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'in progress');
+VALUES(100000003, 1, 4, TO_TIMESTAMP('2021-12-3 23:23:51', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-5 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'finished');
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
 VALUES(100000004, 2, 3, TO_TIMESTAMP('2021-12-1 11:54:00', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2021-12-6 17:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'in progress');
 

@@ -1,8 +1,6 @@
 package lapr.project.presentationTests;
 
-import lapr.project.controller.LongestCycleController;
-import lapr.project.controller.ShortestPathController;
-import lapr.project.controller.VesselSinkController;
+import lapr.project.controller.*;
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
 import lapr.project.model.Country;
@@ -10,7 +8,6 @@ import lapr.project.model.Location;
 import lapr.project.model.Ship;
 import lapr.project.model.Storage;
 import lapr.project.model.graph.matrix.MatrixGraph;
-import lapr.project.store.PortsGraph;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
@@ -25,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class presentationTestsSprint4 {
 
-    boolean dataBase = true;
+    boolean dataBase = false;
 
     @Test
     public void US402d(){
@@ -128,6 +125,43 @@ public class presentationTestsSprint4 {
                 sb.append("\n").append("Movement distance: ").append(String.format("%.0f", mg.edge(location1, location2).getWeight())).append("\n");
             }
             writeOutput(sb.toString(), "US403");
+        }
+    }
+
+    @Test
+    public void US406(){
+        if (dataBase) {
+            GetShipTripsThresholdController controller = new GetShipTripsThresholdController();
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("For fleet manager id = 6\n\n");
+
+            List<String> result = controller.getTripsBeneathThreshold(6);
+
+            for (String string: result)
+                sb.append(string).append("\n");
+
+            sb.append("\nFor fleet manager id = 8\n\n");
+
+            result = controller.getTripsBeneathThreshold(8);
+
+            for (String string: result)
+                sb.append(string).append("\n");
+
+            writeOutput(sb.toString(), "US406");
+        }
+    }
+
+    @Test
+    public void US407() {
+        if (dataBase) {
+            GetLoadingUnloadingMapController controller = new GetLoadingUnloadingMapController();
+            String values = controller.getLoadingUnloadingMapToString(controller.getLoadingUnloadingMap("9", "2020-05-19 00:00:00"));
+            StringBuilder sb = new StringBuilder();
+            sb.append("Loading/Unloading Map for Port Manager no. 9\n");
+            sb.append("Week 19-05-2020 to 26-05-2020\n\n");
+            sb.append(values);
+            writeOutput(sb.toString(), "US407");
         }
     }
 

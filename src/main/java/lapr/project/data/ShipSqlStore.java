@@ -5,10 +5,7 @@ import lapr.project.model.Ship;
 import lapr.project.store.ShipStore;
 import oracle.ucp.util.Pair;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -186,7 +183,7 @@ public class ShipSqlStore implements Persistable {
 
         try(PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
             saveShipPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
-            saveShipPreparedStatement.setInt(2, 1);
+            saveShipPreparedStatement.setInt(2, 3);
             saveShipPreparedStatement.setString(3, code);
             saveShipPreparedStatement.setString(4, ship.getShipName());
             saveShipPreparedStatement.setInt(5, ship.getImo());
@@ -373,5 +370,54 @@ public class ShipSqlStore implements Persistable {
             databaseConnection.registerError(exception);
             return null;
         }
+    }
+
+    public List<String> getTripOccupancyRate(DatabaseConnection databaseConnection, int managerId){
+        List<String> tripOccupancyRate = new ArrayList<>();
+
+        Connection connection;
+        try {
+            connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) {
+            return tripOccupancyRate;
+        }
+
+        try (Statement s = connection.createStatement()) {
+            //Enable DBMS_OUTPUT
+            s.executeUpdate("begin dbms_output.enable(); end;");
+            //Call procedure
+            String sqlCommand = "begin trips_bellow_threshold(?); end;";
+            try (PreparedStatement occupancyMapPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                occupancyMapPreparedStatement.setInt(1, managerId);
+
+                occupancyMapPreparedStatement.executeUpdate();
+
+                // Fetch the SERVEROUTPUT explicitly, using DBMS_OUTPUT.GET_LINES
+                try (CallableStatement call = connection.prepareCall(
+                        "declare "
+                                + "  num integer := 1000;"
+                                + "begin "
+                                + "  dbms_output.get_lines(?, num);"
+                                + "end;"
+                )) {
+                    call.registerOutParameter(1, Types.ARRAY,
+                            "DBMSOUTPUT_LINESARRAY");
+                    call.execute();
+
+
+                    Array a = call.getArray(1);
+                    for (String occupancy: (String[]) a.getArray())
+                        if (occupancy != null)
+                            tripOccupancyRate.add(occupancy);
+                }
+            }
+            s.executeUpdate("begin dbms_output.disable(); end;");
+        } catch (SQLException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+            databaseConnection.registerError(exception);
+        } catch (NullPointerException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+        }
+        return tripOccupancyRate;
     }
 }

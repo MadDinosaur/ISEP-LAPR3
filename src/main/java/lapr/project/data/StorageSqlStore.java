@@ -289,7 +289,7 @@ public class StorageSqlStore implements Persistable {
 
 
                     Array a = call.getArray(1);
-                    for (String occupancy: (String[]) a.getArray())
+                    for (String occupancy : (String[]) a.getArray())
                         if (occupancy != null)
                             occupancyMap.add(occupancy);
                 }
@@ -304,6 +304,50 @@ public class StorageSqlStore implements Persistable {
         return occupancyMap;
     }
 
+    /**
+     * Gets the loading and unloading info of all manifests managed by the user during the week following a given date.
+     *
+     * @param databaseConnection the connection to the database
+     * @param portManagerId      the system user registration code
+     * @param date               the timestamp to lookup
+     * @return a list of String composed of manifests date and respective vehicle and container details
+     */
+    public List<String> getLoadingUnloadingMap(DatabaseConnection databaseConnection, String portManagerId, String date) {
+        List<String> loadingUnloadingMap = new ArrayList<>();
+
+        Connection connection;
+        try {
+            connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) {
+            return loadingUnloadingMap;
+        }
+
+
+        String sqlCommand = "SELECT funcLoadingUnloadingMap (?, TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS')) FROM DUAL";
+        try (PreparedStatement loadingUnloadingMapPreparedStatement = connection.prepareStatement(sqlCommand)) {
+            loadingUnloadingMapPreparedStatement.setString(1, portManagerId);
+            loadingUnloadingMapPreparedStatement.setString(2, date);
+
+            try (ResultSet loadingUnloadingMapResultSet = loadingUnloadingMapPreparedStatement.executeQuery()) {
+                ResultSet cursorResult = null;
+                if (loadingUnloadingMapResultSet.next()) cursorResult = (ResultSet) loadingUnloadingMapResultSet.getObject(1);
+
+                StringBuilder sb;
+                while (cursorResult != null && cursorResult.next()) {
+                    sb = new StringBuilder();
+                    for (int i = 1; i <= cursorResult.getMetaData().getColumnCount(); i++)
+                        sb.append(cursorResult.getString(i)).append("\t");
+                    loadingUnloadingMap.add(sb.toString());
+                }
+            }
+        } catch (SQLException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+            databaseConnection.registerError(exception);
+        } catch (NullPointerException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+        }
+        return loadingUnloadingMap;
+    }
 
     /**
      * gets the number of leaving containers in 30 days
