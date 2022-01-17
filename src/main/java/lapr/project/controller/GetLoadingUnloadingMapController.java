@@ -65,7 +65,7 @@ public class GetLoadingUnloadingMapController {
         if (list == null || list.isEmpty()) return "Unable to generate map.";
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Port ID | Operation Type | Load/Unload Date | Vehicle | ID | No. of Container to Load/Unload | Container No. | Container Position");
+        sb.append("Port ID | Operation Type | Load/Unload Date | Vehicle | ID | No. of Container to Load/Unload | Container No. | Container Position\n");
         for (String s : list)
             sb.append(s).append('\n');
         return sb.toString();
