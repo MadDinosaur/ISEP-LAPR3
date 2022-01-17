@@ -1,9 +1,6 @@
 package lapr.project.presentationTests;
 
-import lapr.project.controller.GetShipTripsThresholdController;
-import lapr.project.controller.LongestCycleController;
-import lapr.project.controller.ShortestPathController;
-import lapr.project.controller.VesselSinkController;
+import lapr.project.controller.*;
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
 import lapr.project.model.Country;
@@ -131,9 +128,8 @@ public class presentationTestsSprint4 {
         }
     }
 
-
     @Test
-    public void US407(){
+    public void US406(){
         if (dataBase) {
             GetShipTripsThresholdController controller = new GetShipTripsThresholdController();
             StringBuilder sb = new StringBuilder();
@@ -145,13 +141,26 @@ public class presentationTestsSprint4 {
             for (String string: result)
                 sb.append(string).append("\n");
 
-            sb.append("\nFor fleet manager id = 7\n\n");
+            sb.append("\nFor fleet manager id = 8\n\n");
 
-            result = controller.getTripsBeneathThreshold(7);
+            result = controller.getTripsBeneathThreshold(8);
 
             for (String string: result)
                 sb.append(string).append("\n");
 
+            writeOutput(sb.toString(), "US406");
+        }
+    }
+
+    @Test
+    public void US407() {
+        if (dataBase) {
+            GetLoadingUnloadingMapController controller = new GetLoadingUnloadingMapController();
+            String values = controller.getLoadingUnloadingMapToString(controller.getLoadingUnloadingMap("9", "2020-05-19 00:00:00"));
+            StringBuilder sb = new StringBuilder();
+            sb.append("Loading/Unloading Map for Port Manager no. 9\n");
+            sb.append("Week 19-05-2020 to 26-05-2020\n\n");
+            sb.append(values);
             writeOutput(sb.toString(), "US407");
         }
     }

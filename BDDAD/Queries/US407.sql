@@ -10,7 +10,12 @@ AS
     vNumContainers INTEGER;
     vContainerNum CONTAINER.NUM%type;
     vContainerPosition VARCHAR(20);
+    vPortManager STORAGE.SYSTEM_USER_CODE_MANAGER%type;
 BEGIN
+    -- check if port manager is valid
+    SELECT UNIQUE SYSTEM_USER_CODE_MANAGER INTO vPortManager FROM STORAGE WHERE SYSTEM_USER_CODE_MANAGER = pPortManagerId AND (SELECT NAME FROM STORAGETYPE WHERE ID = STORAGE.STORAGE_TYPE_ID) LIKE 'Port';
+
+    -- retrive manifest information into multiline cursor
     OPEN vManifests FOR SELECT  STORAGE_IDENTIFICATION AS "Port ID",
                                 (CASE WHEN LOADING_FLAG = 1 THEN 'Load' ELSE 'Unload' END) AS "Operation Type",
                                 FINISHING_DATE_TIME AS "Load/Unload Date",
@@ -25,16 +30,21 @@ BEGIN
                                                         WHERE SYSTEM_USER_CODE_MANAGER = pPortManagerId)
                         ORDER BY STORAGE_IDENTIFICATION, FINISHING_DATE_TIME;
 
-    DBMS_OUTPUT.PUT_LINE('Port ID | Operation Type | Load/Unload Date | Vehicle | ID | No. of Container to Load/Unload | Container No. | Container Position');
+    -- database output FOR TESTS ONLY
+    /*DBMS_OUTPUT.PUT_LINE('Port ID | Operation Type | Load/Unload Date | Vehicle | ID | No. of Container to Load/Unload | Container No. | Container Position');
 
     LOOP
         FETCH vManifests INTO vPortId, vOperation, vDate, vVehicle, vVehicleId, vNumContainers, vContainerNum, vContainerPosition;
         EXIT WHEN vManifests %NOTFOUND;
 
         DBMS_OUTPUT.PUT_LINE(vPortId || ' | ' || vOperation || ' | ' || vDate || ' | ' || vVehicle || ' | ' || vVehicleId || ' | ' || vNumContainers || ' | ' || vContainerNum || ' | ' || vContainerPosition);
-    END LOOP;
+    END LOOP;*/
 
     RETURN vManifests;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        raise_application_error(-20006, 'Invalid port manager.');
+        RETURN NULL;
 END;
 /
 
