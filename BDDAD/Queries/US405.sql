@@ -39,12 +39,18 @@ begin
         from dual;
 
         -- totalOccupancyRate += occupancyRate
-
         totalOccupancyRate := totalOccupancyRate + occupancyRate;
 
     End Loop;
 
     Close src;
 
-    RETURN totalOccupancyRate/number_manifests;
+    if Number_Manifests = 0 then
+        return 0;
+    else
+        return totalOccupancyRate/number_manifests;
+    end if;
+exception
+    when no_data_found then
+        return 0;
 end;
