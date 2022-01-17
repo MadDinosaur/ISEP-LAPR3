@@ -37,5 +37,6 @@ BEGIN
     RETURN vManifests;
 END;
 /
+
 -- function test
 SELECT funcLoadingUnloadingMap (9, TO_TIMESTAMP('2020-05-19 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) FROM DUAL;
