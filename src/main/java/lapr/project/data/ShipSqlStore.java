@@ -18,7 +18,7 @@ public class ShipSqlStore implements Persistable {
      * Save an objet to the database.
      *
      * @param databaseConnection the database's conection
-     * @param object the object to be added
+     * @param object             the object to be added
      * @return Operation success.
      */
     @Override
@@ -47,11 +47,12 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * When deleting a ship this method deleted every single Dynamic data that is tied to it
+     *
      * @param databaseConnection the app's connection to the database
-     * @param ship the ship from which the data will be deleted
+     * @param ship               the ship from which the data will be deleted
      * @throws SQLException throws an exception if the command cannot be completed
      */
-    private void deleteShipDynamicData(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
+    private void deleteShipDynamicData(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand;
 
@@ -90,11 +91,12 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * Adds the ships dynamic data directly to the database
+     *
      * @param databaseConnection the app's connection to the database
-     * @param ship the ship from which the data will be added
+     * @param ship               the ship from which the data will be added
      * @throws SQLException throws an exception if the command is invalid
      */
-    private void addShipDynamicData(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
+    private void addShipDynamicData(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
 
         DynamicDataSqlStore dynamicDataSqlStore = new DynamicDataSqlStore();
 
@@ -108,11 +110,12 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * checks id the ship already on the database and if so updates it otherwise saves it
+     *
      * @param databaseConnection the app's connection to the database
-     * @param ship the ship to be added to the database
+     * @param ship               the ship to be added to the database
      * @throws SQLException throws an exception if one of the provided commands is invalid
      */
-    private void saveShipToDatabase(DatabaseConnection databaseConnection, Ship ship)throws SQLException {
+    private void saveShipToDatabase(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
         if (isShipOnDatabase(databaseConnection, ship)) {
             updateShipOnDatabase(databaseConnection, ship);
         } else {
@@ -122,20 +125,21 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * Inserts the desired ship into the database along with it's dynamic data
+     *
      * @param databaseConnection the app's connection to the database
-     * @param ship teh ship to be inserted into the database
+     * @param ship               teh ship to be inserted into the database
      * @throws SQLException throws this exception if the command is invalid
      */
     private void insertShipOnDatabase(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
         String sqlCommand = "Select id from vesselType where id = ?";
-        try(PreparedStatement existsVesselType = connection.prepareStatement(sqlCommand)) {
+        try (PreparedStatement existsVesselType = connection.prepareStatement(sqlCommand)) {
             existsVesselType.setInt(1, ship.getVesselType());
             try (ResultSet vesselTypeResultSet = existsVesselType.executeQuery()) {
-                if (!vesselTypeResultSet.next()){
+                if (!vesselTypeResultSet.next()) {
                     sqlCommand = "insert into vesselType(id) values(?)";
-                    try(PreparedStatement VesselType = connection.prepareStatement(sqlCommand)) {
+                    try (PreparedStatement VesselType = connection.prepareStatement(sqlCommand)) {
                         VesselType.setInt(1, ship.getVesselType());
                         VesselType.execute();
                     }
@@ -144,7 +148,7 @@ public class ShipSqlStore implements Persistable {
         }
 
         String code = null;
-        while (code == null){
+        while (code == null) {
             sqlCommand = "Select * from systemUser where email = ?";
             try (PreparedStatement existsVesselType = connection.prepareStatement(sqlCommand)) {
                 existsVesselType.setString(1, ship.getMmsi() + "@captain.com");
@@ -181,7 +185,7 @@ public class ShipSqlStore implements Persistable {
         sqlCommand = "insert into ship(mmsi, fleet_id, system_user_code_captain, name, imo, num_generator, gen_power, callsign, vessel_type_id, ship_length, ship_width, capacity, draft) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
-        try(PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
+        try (PreparedStatement saveShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
             saveShipPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
             saveShipPreparedStatement.setInt(2, 3);
             saveShipPreparedStatement.setString(3, code);
@@ -206,15 +210,16 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * if the ship is on the database this method updates it
+     *
      * @param databaseConnection the app's connection to the database
-     * @param ship the ship to be updated
+     * @param ship               the ship to be updated
      * @throws SQLException throws an exception if the command is not valid
      */
-    private void updateShipOnDatabase(DatabaseConnection databaseConnection, Ship ship)  throws SQLException {
+    private void updateShipOnDatabase(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand = "update ship set name = ?, ship_length = ?, ship_width = ?, draft = ? where mmsi = ?";
 
-        try(PreparedStatement updateShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
+        try (PreparedStatement updateShipPreparedStatement = connection.prepareStatement(sqlCommand)) {
             updateShipPreparedStatement.setString(1, ship.getShipName());
             updateShipPreparedStatement.setFloat(2, ship.getLength());
             updateShipPreparedStatement.setFloat(3, ship.getWidth());
@@ -226,16 +231,17 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * checks if the ship is already on the database
+     *
      * @param databaseConnection the app's connection to the database
-     * @param ship the ship to be added to the database
+     * @param ship               the ship to be added to the database
      * @return true if the ship is already on the database
      * @throws SQLException throws an exception if the commande is not valid
      */
-    private boolean isShipOnDatabase(DatabaseConnection databaseConnection, Ship ship)throws SQLException {
+    private boolean isShipOnDatabase(DatabaseConnection databaseConnection, Ship ship) throws SQLException {
         Connection connection = databaseConnection.getConnection();
 
         String sqlCommand = "select * from ship where mmsi = ?";
-        try(PreparedStatement getShipsPreparedStatement = connection.prepareStatement(sqlCommand)) {
+        try (PreparedStatement getShipsPreparedStatement = connection.prepareStatement(sqlCommand)) {
             getShipsPreparedStatement.setInt(1, Integer.parseInt(ship.getMmsi()));
 
             try (ResultSet ShipsResultSet = getShipsPreparedStatement.executeQuery()) {
@@ -248,7 +254,7 @@ public class ShipSqlStore implements Persistable {
      * Delete an object from the database.
      *
      * @param databaseConnection the database's conection
-     * @param object the object to be deleted
+     * @param object             the object to be deleted
      * @return Operation success.
      */
     @Override
@@ -286,19 +292,20 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * Loads all ships from the database into the shipStore class.
+     *
      * @param databaseConnection the database's connection
-     * @param shipStore the ship store to insert ships into
+     * @param shipStore          the ship store to insert ships into
      */
-    public void loadShips(DatabaseConnection databaseConnection, ShipStore shipStore){
+    public void loadShips(DatabaseConnection databaseConnection, ShipStore shipStore) {
         Connection connection = databaseConnection.getConnection();
         String sqlCommand = "Select * from ship";
         try (PreparedStatement getShipData = connection.prepareStatement(sqlCommand)) {
             try (ResultSet shipData = getShipData.executeQuery()) {
                 DynamicDataSqlStore dynamicDataSqlStore = new DynamicDataSqlStore();
-                while(shipData.next()){
-                    Ship ship = new Ship(shipData.getString("mmsi"), shipData.getString("name"),shipData.getInt("imo") ,
-                            shipData.getString("callsign") , shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
-                            shipData.getFloat("ship_width"),  shipData.getFloat("draft"));
+                while (shipData.next()) {
+                    Ship ship = new Ship(shipData.getString("mmsi"), shipData.getString("name"), shipData.getInt("imo"),
+                            shipData.getString("callsign"), shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
+                            shipData.getFloat("ship_width"), shipData.getFloat("draft"));
                     ship.setPositioningDataList(dynamicDataSqlStore.loadDynamicData(databaseConnection, shipData.getString("mmsi")));
                     shipStore.addShip(ship);
                 }
@@ -311,8 +318,9 @@ public class ShipSqlStore implements Persistable {
 
     /**
      * Returns a ship object given a determined ship captain id.
+     *
      * @param databaseConnection the database's connection
-     * @param captainId the ship captain in charge of the wanted ship
+     * @param captainId          the ship captain in charge of the wanted ship
      * @return the ship of the given captain, or null if an error occurs
      */
     public Ship getShipByCaptainId(DatabaseConnection databaseConnection, String captainId) {
@@ -321,10 +329,10 @@ public class ShipSqlStore implements Persistable {
         try (PreparedStatement getShipByCaptainId = connection.prepareStatement(sqlCommand)) {
             getShipByCaptainId.setString(1, captainId);
             try (ResultSet shipData = getShipByCaptainId.executeQuery()) {
-                if(shipData.next())
-                    return new Ship(shipData.getString("mmsi"), shipData.getString("name"),shipData.getInt("imo") ,
-                            shipData.getString("callsign") , shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
-                            shipData.getFloat("ship_width"),  shipData.getFloat("draft"));
+                if (shipData.next())
+                    return new Ship(shipData.getString("mmsi"), shipData.getString("name"), shipData.getInt("imo"),
+                            shipData.getString("callsign"), shipData.getInt("vessel_type_id"), shipData.getFloat("ship_length"),
+                            shipData.getFloat("ship_width"), shipData.getFloat("draft"));
             }
         } catch (SQLException exception) {
             Logger.getLogger(ShipStore.class.getName()).log(Level.SEVERE, null, exception);
@@ -355,7 +363,7 @@ public class ShipSqlStore implements Persistable {
                     "WHERE st2.arrival_date IS NULL \n" +
                     "    AND NEXT_DAY(CURRENT_DATE, 'SEGUNDA') > st1.arrival_date";
 
-            try (PreparedStatement getAvailableShipsPreparedStatement = connection.prepareStatement(sqlCommand)){
+            try (PreparedStatement getAvailableShipsPreparedStatement = connection.prepareStatement(sqlCommand)) {
                 try (ResultSet availableShipsResultSet = getAvailableShipsPreparedStatement.executeQuery()) {
                     while (availableShipsResultSet.next()) {
                         Pair<Integer, Integer> availableShipAndLocation = new Pair<>(availableShipsResultSet.getInt(1), availableShipsResultSet.getInt(2));
@@ -372,7 +380,7 @@ public class ShipSqlStore implements Persistable {
         }
     }
 
-    public List<String> getTripOccupancyRate(DatabaseConnection databaseConnection, int managerId){
+    public List<String> getTripOccupancyRate(DatabaseConnection databaseConnection, int managerId) {
         List<String> tripOccupancyRate = new ArrayList<>();
 
         Connection connection;
@@ -406,7 +414,7 @@ public class ShipSqlStore implements Persistable {
 
 
                     Array a = call.getArray(1);
-                    for (String occupancy: (String[]) a.getArray())
+                    for (String occupancy : (String[]) a.getArray())
                         if (occupancy != null)
                             tripOccupancyRate.add(occupancy);
                 }
@@ -420,4 +428,57 @@ public class ShipSqlStore implements Persistable {
         }
         return tripOccupancyRate;
     }
+
+    public List<String> idleDaysFleet(DatabaseConnection databaseConnection, int fleetManagerID) {
+        List<String> idleDaysResult = new ArrayList<>();
+
+        Connection connection;
+        try {
+            connection = databaseConnection.getConnection();
+        } catch (NullPointerException e) {
+            return idleDaysResult;
+        }
+
+        try (Statement s = connection.createStatement()) {
+            //Enable DBMS_OUTPUT
+            s.executeUpdate("begin dbms_output.enable(); end;");
+            //Call procedure
+            String sqlCommand = "begin proc_iddle_days_fleet(?); end;";
+            try (PreparedStatement idleDaysPreparedStatement = connection.prepareStatement(sqlCommand)) {
+                idleDaysPreparedStatement.setInt(1, fleetManagerID);
+
+                idleDaysPreparedStatement.executeUpdate();
+
+                // Fetch the SERVEROUTPUT explicitly, using DBMS_OUTPUT.GET_LINES
+                try (CallableStatement call = connection.prepareCall(
+                        "declare "
+                                + "  num integer := 1000;"
+                                + "begin "
+                                + "  dbms_output.get_lines(?, num);"
+                                + "end;"
+                )) {
+                    call.registerOutParameter(1, Types.ARRAY,
+                            "DBMSOUTPUT_LINESARRAY");
+                    call.execute();
+
+
+                    Array a = call.getArray(1);
+                    for (String occupancy : (String[]) a.getArray())
+                        if (occupancy != null)
+                            idleDaysResult.add(occupancy);
+                }
+            }
+            s.executeUpdate("begin dbms_output.disable(); end;");
+        } catch (SQLException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+            databaseConnection.registerError(exception);
+        } catch (NullPointerException exception) {
+            Logger.getLogger(ContainerSqlStore.class.getName()).log(Level.SEVERE, exception.getMessage());
+        }
+        return idleDaysResult;
+    }
+
 }
+
+
+
