@@ -129,6 +129,21 @@ public class presentationTestsSprint4 {
     }
 
     @Test
+    public void US404(){
+        if(dataBase){
+            GetIdleDaysFleetController controller = new GetIdleDaysFleetController();
+            List<String> result = controller.getIdleDays(7);
+            StringBuilder sb = new StringBuilder();
+
+            for(String res : result){
+                sb.append(res);
+                sb.append("\n");
+            }
+            writeOutput(sb.toString(), "US404");
+        }
+    }
+
+    @Test
     public void US406(){
         if (dataBase) {
             GetShipTripsThresholdController controller = new GetShipTripsThresholdController();
