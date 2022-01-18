@@ -215,6 +215,49 @@ public class Algorithms {
         return shortPath.isEmpty() ? null : dist[g.key(vDest)];
     }
 
+    /** Shortest-path between a vertex and all other vertices
+     *
+     * @param g graph
+     * @param vOrig start vertex
+     * @param ce comparator between elements of type E
+     * @param sum sum two elements of type E
+     * @param zero neutral element of the sum in elements of type E
+     * @param paths returns all the minimum paths
+     * @param dists returns the corresponding minimum distances
+     * @return if vOrig exists in the graph true, false otherwise
+     */
+    public static <V, E> boolean shortestPaths(Graph<V, E> g, V vOrig,
+                                               Comparator<E> ce, BinaryOperator<E> sum, E zero,
+                                               ArrayList<LinkedList<V>> paths, ArrayList<E> dists) {
+
+        if (!g.validVertex(vOrig))
+            return false;
+
+        int nVerts = g.numVertices();
+
+        boolean[] visited = new boolean[nVerts]; //default value: false
+        V[] pathKeys = (V[]) new Object[nVerts];
+        E[] dist = (E[]) new Object[nVerts];
+
+        shortestPathDijkstra(g, vOrig,  ce, sum, zero, visited, pathKeys, dist);
+
+        dists.clear();
+        paths.clear();
+        for (int i = 0; i < nVerts; i++) {
+            paths.add(null);
+            dists.add(null);
+        }
+
+        for (int i = 0; i < nVerts; i++) {
+            LinkedList<V> shortPath = new LinkedList<>();
+            if (dist[i] != null)
+                getPath(g, vOrig, g.vertex(i), pathKeys, shortPath);
+            paths.set(i, shortPath);
+            dists.set(i, dist[i]);
+        }
+        return true;
+    }
+
     /**
      * Extracts from pathKeys the minimum path between voInf and vdInf
      * The path is constructed from the end to the beginning

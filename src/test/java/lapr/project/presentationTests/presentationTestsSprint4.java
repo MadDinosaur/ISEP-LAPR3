@@ -142,7 +142,7 @@ public class presentationTestsSprint4 {
             writeOutput(sb.toString(), "US404");
         }
     }
-    
+
     @Test
     public void US405(){
         if(dataBase){
