@@ -71,6 +71,37 @@ public class CargoManifestSqlStore {
     }
 
     /**
+     * gets average occupancy rate of a given ship
+     * @param databaseConnection the current database connection
+     * @param fleetId the fleet manager id
+     * @param shipMmsi the ship's mmsi code
+     * @param startDate starting date of the requested period
+     * @param endDate ending date of the requested period
+     * @return returns average occupancy rate of the selected ship
+     * @throws SQLException throws an exception if any of the commands is invalid
+     */
+    public double getAverageOccupancyRate(DatabaseConnection databaseConnection, int fleetId, int shipMmsi, String startDate, String endDate) throws SQLException{
+        Connection connection = databaseConnection.getConnection();
+        String sqlCommand;
+
+        sqlCommand = "SELECT func_average_occupancy_rate_period(?,?,TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS'),TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS')) FROM DUAL";
+
+        try(PreparedStatement getAverageData = connection.prepareStatement(sqlCommand)){
+            getAverageData.setInt(1, fleetId);
+            getAverageData.setInt(2, shipMmsi);
+            getAverageData.setString(3, startDate);
+            getAverageData.setString(4, endDate);
+            try(ResultSet averageOccupancyRate = getAverageData.executeQuery()){
+                if(averageOccupancyRate.next()){
+                    return averageOccupancyRate.getDouble(1);
+                }else{
+                    return 0;
+                }
+            }
+        }
+    }
+
+    /**
      * Searches the database for a desired ship to know the occupancy rate at a given moment and its data
      * @param databaseConnection the current database connection
      * @param mmsi the ship's mmsi

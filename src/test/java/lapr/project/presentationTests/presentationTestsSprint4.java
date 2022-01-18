@@ -129,6 +129,26 @@ public class presentationTestsSprint4 {
     }
 
     @Test
+    public void US405(){
+        if(dataBase){
+            AverageOccupancyRateController controller = new AverageOccupancyRateController();
+            StringBuilder s = new StringBuilder();
+
+            s.append("Fleet Manager id = 6\n");
+            s.append("Ship Mmsi = 100000001\n");
+            s.append("And a Period of Time Between 2019-05-20 and 2022-05-20\n");
+
+            s.append("The selected ship had an average occupancy rate of ");
+
+            s.append(controller.getAverageOccupancyRate(6,100000001,"2019-05-20 7:59:23", "2022-05-20 7:59:23"));
+
+            s.append(" between the selected date");
+
+            writeOutput(s.toString(), "US405");
+        }
+    }
+
+    @Test
     public void US406(){
         if (dataBase) {
             GetShipTripsThresholdController controller = new GetShipTripsThresholdController();
