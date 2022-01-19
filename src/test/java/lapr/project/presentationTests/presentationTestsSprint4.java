@@ -8,6 +8,7 @@ import lapr.project.model.Location;
 import lapr.project.model.Ship;
 import lapr.project.model.Storage;
 import lapr.project.model.graph.matrix.MatrixGraph;
+import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
@@ -23,6 +24,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class presentationTestsSprint4 {
 
     boolean dataBase = false;
+
+    @Test
+    public void US401(){
+        if(dataBase){
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(), 0);
+            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
+            CentralityOnPortsController controller = new CentralityOnPortsController();
+            StringBuilder s = new StringBuilder();
+
+            List<Pair<Storage,Integer>> list = new ArrayList<>();
+            list = controller.getCentrality(100);
+
+            for(int i=0; i< list.size(); i++){
+                s.append(String.format("Storage: %s --> Centrality: %d\n", list.get(i).get1st().getName(), list.get(i).get2nd()));
+            }
+            writeOutput(s.toString(), "US401");
+        }
+    }
 
     @Test
     public void US402d(){

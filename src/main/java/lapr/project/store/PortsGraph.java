@@ -343,6 +343,56 @@ public class PortsGraph {
     }
 
     /**
+     * obtains the ports with highest critical point
+     * @param n number of ports the user wants to see
+     * @return returns list of pairs where each pair contains a storage and the number of shortest paths that pass through it, in decreasing order
+     */
+    public List<Pair<Storage, Integer>> getCriticalPorts(int n){
+
+        HashMap<Storage, Integer> result = new HashMap<>();
+        ArrayList<LinkedList<Location>> paths = new ArrayList<>();
+
+        for(Location place : mg.vertices()){
+            ArrayList<LinkedList<Location>> path = new ArrayList<>();
+
+            Algorithms.shortestPaths(mg,place,Double::compare, Double::sum, 0.0, path, new ArrayList<Double>());
+
+            paths.addAll(path);
+            if(place instanceof Storage){
+                result.put((Storage) place,0);
+            }
+        }
+
+        for(LinkedList<Location> list : paths){
+            for(Location place : list){
+                if(place instanceof Storage){
+                    Integer integer = result.get(place);
+                    result.put((Storage) place, integer  + 1);
+                }
+            }
+        }
+
+
+        List<Storage> keys = new ArrayList<Storage>(result.keySet());   //list with all keys
+        List<Integer> values = new ArrayList<Integer>(result.values()); //list with all values
+        List<Pair<Storage,Integer>> returnResult = new ArrayList<>();   //list of all pairs
+
+        for(int i=0; i<keys.size(); i++){
+            returnResult.add(new Pair<Storage, Integer>(keys.get(i),result.get(keys.get(i))));
+        }
+
+        returnResult.sort(Collections.reverseOrder(Comparator.comparing(Pair::get2nd)));                     // Orders in decreasing order by the average
+
+        List<Pair<Storage, Integer>> centrality = new ArrayList<>();
+
+        for(int i=0; i<Integer.min(n, returnResult.size()); i++){
+            centrality.add(new Pair<Storage, Integer>(returnResult.get(i).get1st(), returnResult.get(i).get2nd()));
+        }
+
+        return centrality;
+    }
+
+    /**
      * Gets the shortest path between two locals, using the Dijkstra's Algorithm
      * @param start The starting location
      * @param end The ending location

@@ -226,6 +226,7 @@ public class Algorithms {
      * @param dists returns the corresponding minimum distances
      * @return if vOrig exists in the graph true, false otherwise
      */
+    @SuppressWarnings("unchecked")
     public static <V, E> boolean shortestPaths(Graph<V, E> g, V vOrig,
                                                Comparator<E> ce, BinaryOperator<E> sum, E zero,
                                                ArrayList<LinkedList<V>> paths, ArrayList<E> dists) {

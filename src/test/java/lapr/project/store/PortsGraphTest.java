@@ -1,6 +1,7 @@
 package lapr.project.store;
 
 import lapr.project.model.*;
+import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -82,6 +83,18 @@ class PortsGraphTest {
         assertEquals(result.size(),4);
         assertEquals(result.get(0),start);
         assertEquals(result.get(3),end);
+    }
+
+    @Test
+    void criticalPoints(){
+        int n=5;
+
+        List<Pair<Storage, Integer>> result = portsGraph.getCriticalPorts(n);
+        assertEquals(result.size(), 2);
+        assertEquals(result.get(0).get1st().getName(), "Liverpool");
+        assertEquals(result.get(1).get1st().getName(), "Lisboa");
+        assertEquals(result.get(0).get2nd(), 11);
+        assertEquals(result.get(1).get2nd(), 11);
     }
 
     @Test
