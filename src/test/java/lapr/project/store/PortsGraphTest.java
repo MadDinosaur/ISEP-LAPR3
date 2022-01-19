@@ -91,7 +91,7 @@ class PortsGraphTest {
 
         List<Pair<Storage, Integer>> result = portsGraph.getCriticalPorts(n);
         assertEquals(result.size(), 2);
-        assertEquals(result.get(0).get1st().getName(), "Liverpool");
+
         assertEquals(result.get(1).get1st().getName(), "Lisboa");
         assertEquals(result.get(0).get2nd(), 11);
         assertEquals(result.get(1).get2nd(), 11);
