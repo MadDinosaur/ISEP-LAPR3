@@ -67,4 +67,39 @@ public class ContainerMaterialStore {
     public double getResistivity(String external, String median, String internal, double externalWidth, double medianWidth, double internalWidth, double area){
         return getResistivityByArea(external, median, internal, externalWidth, medianWidth, internalWidth)/area;
     }
+
+    /**
+     * receives the information of the container, it's resistivity and the voyage it is on and outputs it's energy consumption for that voyage
+     * @param refrigerated if the container is refrigerated or not
+     * @param baseTemp the voyage's information, on the first integer is the section's time and on the second is it's temperature
+     * @param resistivity the container's resistivity
+     * @return returns the energy for one type of container
+     */
+    private double calculateEnergy(boolean refrigerated, List<Pair<Integer, Integer>> baseTemp, double resistivity){
+        if (resistivity == 0)
+            return 0;
+
+        double voyage = 0;
+
+        for (Pair<Integer, Integer> pair : baseTemp)
+            voyage += pair.get1st() *  (pair.get2nd() - (refrigerated ? -5 : 7));
+
+        return voyage * 60 / resistivity;
+    }
+
+    /**
+     * Calculates the energy needed for the whole trip
+     * @param numRef number of refrigerated containers
+     * @param numNonRef number of non-refrigerated containers
+     * @param baseTemp the voyage's information, on the first integer is the section's time and on the second is it's temperature
+     * @param refRes the resistivity of refrigerated containers
+     * @param nonRefRes the resistivity of non-refrigerated containers
+     * @return the voyages energy needed to keep the containers in temperature
+     */
+    public double tripEnergy(int numRef, int numNonRef, List<Pair<Integer, Integer>> baseTemp, double refRes, double nonRefRes){
+        double refEnergy = calculateEnergy(true, baseTemp, refRes) * numRef;
+        double nonRefEnergy = calculateEnergy(false, baseTemp, nonRefRes) * numNonRef;
+        return  Math.round(refEnergy + nonRefEnergy);
+    }
+
 }

@@ -1,7 +1,12 @@
 package lapr.project.store;
 
+import lapr.project.controller.CalculateContainerResistivityController;
 import lapr.project.model.Container;
+import oracle.ucp.util.Pair;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -42,4 +47,29 @@ class ContainerMaterialStoreTest {
         assertEquals(0.6544798172740687, containerMaterialStore.getResistivity("Fiber-glass", "Steel", "Aluminium", 0.03, 0.1, 0.02, 1));
     }
 
+    @Test
+    public void testEnergy(){
+        ContainerMaterialStore controller = new ContainerMaterialStore();
+
+        String external = "Zinc";
+        String median = "Steel";
+        String internal = "Fiber-glass";
+
+        double nonRefRes = controller.getResistivity(external, median, internal, 0.03, 0.10, 0.02, 105);
+
+        external = "Stone Wool";
+        median = "Steel";
+        internal = "Iron";
+
+        double refRes = controller.getResistivity(external, median, internal, 0.07, 0.10, 0.06, 105);
+
+        List<Pair<Integer, Integer>> baseTemp = new ArrayList<>();
+        baseTemp.add(new Pair<>(30, 23));
+        baseTemp.add(new Pair<>(20, 17));
+        baseTemp.add(new Pair<>(50, 29));
+
+        assertEquals(1017330274, controller.tripEnergy(100, 0, baseTemp, refRes, nonRefRes));
+        assertEquals( 2.564503892 * Math.pow(10, 9), controller.tripEnergy(0, 100, baseTemp, refRes, nonRefRes));
+
+    }
 }

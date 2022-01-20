@@ -220,6 +220,39 @@ public class presentationTestsSprint4 {
     }
 
     @Test
+    public void US412_16() {
+        if (dataBase) {
+            StringBuilder s = new StringBuilder();
+            CalculateContainerResistivityController controller = new CalculateContainerResistivityController();
+
+            String external = "Zinc";
+            String median = "Steel";
+            String internal = "Fiber-glass";
+
+            double nonRefRes = controller.getResistivity(external, median, internal, 0.03, 0.10, 0.02, 105);
+
+            external = "Stone Wool";
+            median = "Steel";
+            internal = "Iron";
+
+            double refRes = controller.getResistivity(external, median, internal, 0.07, 0.10, 0.06, 105);
+
+            List<Pair<Integer, Integer>> baseTemp = new ArrayList<>();
+            baseTemp.add(new Pair<>(30, 23));
+            baseTemp.add(new Pair<>(20, 17));
+            baseTemp.add(new Pair<>(50, 29));
+
+            CalculateTripEnergyController controller1 = new CalculateTripEnergyController();
+
+            s.append("Area = 105 m^2").append("\n\nNon Refrigerated Resistivity: ").append(String.format("%.5f", nonRefRes)).append("\n\nRefrigerated Resistivity: ").append(String.format("%.5f", refRes));
+
+            s.append("\n\nFor 50 container refrigerated and 50 container not refrigerated the energy need for a 100 min trip is : ").append(controller1.getEnergy(100, 0, baseTemp, refRes, nonRefRes));
+
+            writeOutput(s.toString(), "US412_16");
+        }
+    }
+
+    @Test
     public void US420(){
         if(dataBase){
             Ship ship = new Ship("210950000","Example",9450648,"C4SQ2",0,320.04f,33.53f,0);
