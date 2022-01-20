@@ -128,6 +128,11 @@ class AlgorithmsTest {
         lenPath = Algorithms.shortestPath(completeMap, "Porto", "Castelo Branco", Integer::compare, Integer::sum, 0, shortPath);
         assertEquals(365, lenPath, "Length path should be 0 if vertices are the same");
         assertEquals(Arrays.asList("Porto", "Aveiro", "Leiria", "Castelo Branco"), shortPath, "Shortest Path Porto - Castelo Branco");
+
+        ArrayList<LinkedList<String>> paths =  new ArrayList<>();
+        Algorithms.shortestPaths(completeMap, "Porto", Integer::compare, Integer::sum, 0, paths, new ArrayList<>());
+
+        assertEquals(paths.size(), 11);
     }
 
     @Test
