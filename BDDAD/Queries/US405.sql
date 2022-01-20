@@ -11,13 +11,15 @@ is
     ship_identification ship.mmsi%type;
     checks integer;
 
-cursor src is (select cf.id
-                from cargomanifest_full cf, ship s
-                where (select f.id
-                        from fleet f
-                        where f.system_user_code_manager = id_fleet_manager) = s.fleet_id
-                and cf.ship_mmsi = id_ship
-                and cf.finishing_date_time between start_date and end_date);
+    cursor src is (select cf.id from cargomanifest_full cf
+                            where cf.ship_mmsi = id_ship
+                            and (cf.finishing_date_time between start_date and end_date
+                                    or cf.finishing_date_time in
+                                            -- Since the boat could have load from before the begining date this is here to make sure the previous load is accounted for
+                                            (select MAX(cf1.finishing_date_time) from cargomanifest_full cf1
+                                                    where cf1.ship_mmsi = cf.ship_mmsi
+                                                    and cf1.finishing_date_time <= start_date)));
+
 begin
 
     -- checks if user is valid
@@ -58,14 +60,13 @@ begin
     -- function
     begin
         -- gets number of manifests with same ship mmsi
-        select count(cf.id)
-        into Number_Manifests
-        from cargomanifest_full cf, ship s
-        where (select f.id
-                from fleet f
-                where f.system_user_code_manager = id_fleet_manager) = s.fleet_id
-        and cf.ship_mmsi = id_ship
-        and cf.finishing_date_time between start_date and end_date;
+        select count(cf.id)into Number_Manifests from cargomanifest_full cf
+                    where cf.ship_mmsi = id_ship
+                    and (cf.finishing_date_time between start_date and end_date
+                            or cf.finishing_date_time in
+                                    (select MAX(cf1.finishing_date_time) from cargomanifest_full cf1
+                                            where cf1.ship_mmsi = cf.ship_mmsi
+                                            and cf1.finishing_date_time <= start_date));
 
         totalOccupancyRate := 0;
 
@@ -102,13 +103,13 @@ end;
 
 
 -- Call function to test it
-select func_average_occupancy_rate_period(6, 100000001, TO_TIMESTAMP('2019-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual
+select func_average_occupancy_rate_period(6, 100000001, TO_TIMESTAMP('2019-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual;
 
 -- Call function to see if it raises error in case of invalid Fleet Manager
-select func_average_occupancy_rate_period(102, 100000001, TO_TIMESTAMP('2019-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual
+select func_average_occupancy_rate_period(102, 100000001, TO_TIMESTAMP('2019-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual;
 
 -- Call function to see if it raises error in case of ship is invalid for current user
-select func_average_occupancy_rate_period(6, 100000002, TO_TIMESTAMP('2019-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual
+select func_average_occupancy_rate_period(6, 100000002, TO_TIMESTAMP('2019-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual;
 
 -- Call function to see if it raises error in case of starting date is greater than end date
-select func_average_occupancy_rate_period(6, 100000001, TO_TIMESTAMP('2100-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual
+select func_average_occupancy_rate_period(6, 100000001, TO_TIMESTAMP('2100-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP('2022-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS')) from dual;

@@ -41,6 +41,7 @@ BEGIN
                 DBMS_OUTPUT.PUT_LINE('Ship  |  Place of origin  |  Parting date  |  Place of destination  |  Parting date  |  Occupancy Rate');
                 FOR trip IN(SELECT * FROM shiptrip WHERE status LIKE 'finished' AND ship_mmsi IN (SELECT mmsi FROM ship WHERE fleet_id = valid_fleet_id) ORDER BY parting_date)
                 LOOP
+                    -- Calls US405 and uses it's function to search for the latest full cargo manifest to get the ship occupancy rate for this trip
                     SELECT ROUND(func_average_occupancy_rate_period(fleet_manager_id, trip.ship_mmsi, trip.parting_date, trip.arrival_date)* 100, 2)
                     INTO occupancy_rate FROM dual;
 
@@ -66,4 +67,4 @@ call trips_bellow_threshold(20);
 call trips_bellow_threshold(6);
 
 -- Example of working fleet manager except theres no trips completed for this one
-call trips_bellow_threshold(7);
+call trips_bellow_threshold(8);
