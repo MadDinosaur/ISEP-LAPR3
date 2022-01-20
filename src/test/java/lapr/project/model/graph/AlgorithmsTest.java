@@ -133,6 +133,9 @@ class AlgorithmsTest {
         Algorithms.shortestPaths(completeMap, "Porto", Integer::compare, Integer::sum, 0, paths, new ArrayList<>());
 
         assertEquals(paths.size(), 11);
+
+        completeMap.addVertex("asd");
+        assertFalse(Algorithms.shortestPaths(completeMap, "123", Integer::compare, Integer::sum, 0, paths, new ArrayList<>()));
     }
 
     @Test
