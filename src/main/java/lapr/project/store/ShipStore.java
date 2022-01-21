@@ -324,8 +324,30 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
+     * gets the coordinates of the center of mass of a ship, taking in consideration the ship only has a control bridge
+     * @param massShip The ship's mass
+     * @param length The ship's length
+     * @param width The ship's width
+     * @param tower The control bridge coordinate
+     * @return coordinates of the center of mass
+     */
+    public Pair<Double, Double> getCenterOfMass(Double massShip, Double length,Double width, Double massTower, Pair<Double,Double> tower){
+        double xShip = massShip * (length/2);
+        double xControlBridge = massTower * tower.get1st();
+        double xCm = (xShip + xControlBridge) / (massShip + massTower);
+
+        double yShip = massShip * (width/2);
+        double yControlBridge = massTower * tower.get2nd();
+        double yCm = (yShip + yControlBridge) / (massShip + massTower);
+
+        return new Pair<>(xCm,yCm);
+    }
+
+    /**
      * This method returns how much the vessel sunk, the total mass placed and the pressure exerted
-     * @param ship The ship to be used
+     * @param mass The ship's mass
+     * @param length The ship's length
+     * @param width The ship's width
      * @param nContainers The number of containers in it
      * @return Returns a map with 3 informations: How much the vessel sunk, the total mass placed and the pressure exerted
      */
@@ -336,7 +358,7 @@ public class ShipStore extends AVL<Ship>{
         final double oneTon = 1000;                                                // KG
         final double gravity = 9.81;// m/s
 
-        double shipUnloadedWeight = mass * oneTon;                               // KG
+        double shipUnloadedWeight = mass * oneTon;                                 // KG
         double shipLoadedWeight = shipUnloadedWeight + (nContainers * (oneTon/2)); // KG
         double newImmersiveHeight;                                                 // m
         double immersiveHeight;                                                    // m

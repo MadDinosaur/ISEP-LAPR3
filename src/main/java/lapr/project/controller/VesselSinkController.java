@@ -31,7 +31,9 @@ public class VesselSinkController {
 
     /**
      * This method returns how much the vessel sunk, the total mass placed and the pressure exerted
-     * @param ship The ship to be used
+     * @param mass The ship's mass
+     * @param length The ship's length
+     * @param width The ship's width
      * @param nContainers The number of containers in it
      * @return Returns a map with 3 informations: How much the vessel sunk, the total mass placed and the pressure exerted
      */
