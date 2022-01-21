@@ -35,8 +35,8 @@ public class VesselSinkController {
      * @param nContainers The number of containers in it
      * @return Returns a map with 3 informations: How much the vessel sunk, the total mass placed and the pressure exerted
      */
-    public HashMap<String, Double> vesselSink(Ship ship, int nContainers){
-        return shipStore.vesselSink(ship,nContainers);
+    public HashMap<String, Double> vesselSink(Double mass,Double length,Double width, int nContainers){
+        return shipStore.vesselSink(mass,length,width,nContainers);
     }
 }
 

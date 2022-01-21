@@ -25,12 +25,12 @@ class VesselSinkControllerTest {
         ship.setLength(320.04f);
         ship.setWidth(33.53f);
         VesselSinkController  controller = new VesselSinkController();
-        HashMap<String,Double> result = controller.vesselSink(ship,300);
+        HashMap<String,Double> result = controller.vesselSink(11.450,260.0,32.25,300);
 
         assertNotNull(result);
-        assertEquals(result.get("Height"),0.013978270746282107);
+        assertEquals(result.get("Height"),0.017889087656529516);
         assertEquals(result.get("Container Weight"),150000);
-        assertEquals(result.get("Pressure"),8.20839504739878E7);
+        assertEquals(result.get("Pressure"),188634.6504609775);
     }
 
 }

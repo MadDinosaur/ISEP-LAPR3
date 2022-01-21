@@ -255,9 +255,8 @@ public class presentationTestsSprint4 {
     @Test
     public void US420(){
         if(dataBase){
-            Ship ship = new Ship("210950000","Example",9450648,"C4SQ2",0,320.04f,33.53f,0);
             VesselSinkController controller = new VesselSinkController();
-            HashMap<String,Double> result = controller.vesselSink(ship,300);
+            HashMap<String,Double> result = controller.vesselSink(11.450,260.0,32.25,300);
             StringBuilder sb = new StringBuilder();
             sb.append("The vessel sunk a total of: ");
             sb.append(result.get("Height"));
