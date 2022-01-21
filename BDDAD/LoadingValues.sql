@@ -194,7 +194,7 @@ VALUES(1, 1, 4, 'COD1', 200, 4000, 500, 5, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
 VALUES(2, 2, 4, 'COD2', 200, 4000, 500, 1, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
-VALUES(3, 3, 4, 'COD3', 200, 4000, 500, 32, 1);
+VALUES(3, 3, 4, 'COD3', 200, 4000, 500, 26, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
 VALUES(4, 4, 4, 'COD4', 200, 4000, 500, 25, 1);
 INSERT INTO Container(num, csc_plate_serial_number, check_digit, iso_code, gross_weight, tare_weight, payload, max_volume, refrigerated_flag)
@@ -329,11 +329,11 @@ VALUES (4, 14, 0,0,0);
 
 -- CargoManifestPartial (Conclusion) --
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-20 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 1;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-21 17:48:36', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 2;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-05-21 17:48:39', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 2;
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 5:54:27', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 3;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 21:26:32', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 4;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-07-29 21:26:39', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 4;
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-8 15:45:21', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 5;
-UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-9 6:19:45', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 6;
+UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2020-09-9 6:19:49', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 6;
 UPDATE CargoManifest_Partial SET finishing_date_time = TO_TIMESTAMP('2021-11-26 20:45:24', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE id = 7;
 UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-01 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 10;
 UPDATE CARGOMANIFEST_PARTIAL SET FINISHING_DATE_TIME = TO_TIMESTAMP('2021-12-02 7:59:23', 'YYYY-MM-DD HH24:MI:SS'), status = 'finished' WHERE ID = 11;
