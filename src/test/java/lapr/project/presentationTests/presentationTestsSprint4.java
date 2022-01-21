@@ -256,8 +256,10 @@ public class presentationTestsSprint4 {
     public void US420(){
         if(dataBase){
             VesselSinkController controller = new VesselSinkController();
-            HashMap<String,Double> result = controller.vesselSink(11.450,260.0,32.25,300);
+            int nContainers = 300;
+            HashMap<String,Double> result = controller.vesselSink(11450.0,260.0,32.25,nContainers);
             StringBuilder sb = new StringBuilder();
+            sb.append("For ANL Tongala: \n");
             sb.append("The vessel sunk a total of: ");
             sb.append(result.get("Height"));
             sb.append(" m \n");
@@ -266,7 +268,29 @@ public class presentationTestsSprint4 {
             sb.append(" KG\n");
             sb.append("The pressure was: ");
             sb.append(result.get("Pressure"));
-            sb.append(" Pa \n");
+            sb.append(" Pa \n\n");
+            result = controller.vesselSink(2700.0,134.65,21.50,nContainers);
+            sb.append("For MV Enforcer: \n");
+            sb.append("The vessel sunk a total of: ");
+            sb.append(result.get("Height"));
+            sb.append(" m \n");
+            sb.append("Total mass placed: ");
+            sb.append(result.get("Container Weight"));
+            sb.append(" KG\n");
+            sb.append("The pressure was: ");
+            sb.append(result.get("Pressure"));
+            sb.append(" Pa \n \n");
+            result = controller.vesselSink(55000.0,399.2,58.6,nContainers);
+            sb.append("For Maersk MC Kinney Moller: \n");
+            sb.append("The vessel sunk a total of: ");
+            sb.append(result.get("Height"));
+            sb.append(" m \n");
+            sb.append("Total mass placed: ");
+            sb.append(result.get("Container Weight"));
+            sb.append(" KG\n");
+            sb.append("The pressure was: ");
+            sb.append(result.get("Pressure"));
+            sb.append(" Pa \n \n");
             writeOutput(sb.toString(),"US420");
         }
     }
