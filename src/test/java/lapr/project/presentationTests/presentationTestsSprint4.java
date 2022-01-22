@@ -324,22 +324,34 @@ public class presentationTestsSprint4 {
             CenterOfMassShipController controller = new CenterOfMassShipController();
             StringBuilder s = new StringBuilder();
 
-            Pair<Double, Double> ship1Coordinates = controller.getCenterOfMass(55000000.0, 399.2, 58.5, 100000.0,
-                    new Pair<>(216.6, 29.3));
+            List<Double> massTower = new ArrayList<>();
+            massTower.add(100000.0);
+            massTower.add(100000.0);
+            List<Pair<Double, Double>> tower = new ArrayList<>();
+            tower.add(new Pair<>(216.6, 29.3));
+            tower.add(new Pair<>(84.4,29.3));
+            Pair<Double, Double> ship1Coordinates = controller.getCenterOfMass(55000000.0, 399.2, 58.5, massTower,
+                    tower);
             s.append("ULCV - Maersk MC Kinney Moller\n");
             s.append("Center of Gravity (Coordinates):\n");
             s.append(String.format("    Xcm: %.2f\n", ship1Coordinates.get1st()));
             s.append(String.format("    Ycm: %.2f\n\n", ship1Coordinates.get2nd()));
 
-            Pair<Double, Double> ship2Coordinates = controller.getCenterOfMass(114500000.0, 260.0, 32.0, 100000.0,
-                    new Pair<>(65.0, 16.0));
+            massTower.add(100000.0);
+            tower.clear();
+            tower.add(new Pair<>(216.6, 29.3));
+            Pair<Double, Double> ship2Coordinates = controller.getCenterOfMass(114500000.0, 260.0, 32.0, massTower,
+                    tower);
             s.append("Panamax - ANL Tongala\n");
             s.append("Center of Gravity (Coordinates):\n");
             s.append(String.format("    Xcm: %.2f\n", ship2Coordinates.get1st()));
             s.append(String.format("    Ycm: %.2f\n\n", ship2Coordinates.get2nd()));
 
-            Pair<Double, Double> ship3Coordinates = controller.getCenterOfMass(2700000.0, 134.65, 21.50, 100000.0,
-                    new Pair<>(9.62, 10.8));
+            massTower.add(100000.0);
+            tower.clear();
+            tower.add(new Pair<>(9.62, 10.8));
+            Pair<Double, Double> ship3Coordinates = controller.getCenterOfMass(2700000.0, 134.65, 21.50, massTower,
+                    tower);
             s.append("Feeder - MV Enforcer\n");
             s.append("Center of Gravity (Coordinates):\n");
             s.append(String.format("    Xcm: %.2f\n", ship3Coordinates.get1st()));
