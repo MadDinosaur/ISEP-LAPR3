@@ -5,7 +5,6 @@ import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
 import lapr.project.model.Country;
 import lapr.project.model.Location;
-import lapr.project.model.Ship;
 import lapr.project.model.Storage;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import oracle.ucp.util.Pair;
@@ -17,9 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class presentationTestsSprint4 {
 
@@ -33,8 +29,7 @@ public class presentationTestsSprint4 {
             CentralityOnPortsController controller = new CentralityOnPortsController();
             StringBuilder s = new StringBuilder();
 
-            List<Pair<Storage,Integer>> list = new ArrayList<>();
-            list = controller.getCentrality(100);
+            List<Pair<Storage,Integer>> list = controller.getCentrality(100);
 
             for (Pair<Storage, Integer> storageIntegerPair : list)
                 s.append(String.format("Storage: %s --> Centrality: %d\n", storageIntegerPair.get1st().getName(), storageIntegerPair.get2nd()));
