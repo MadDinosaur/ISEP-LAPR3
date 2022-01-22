@@ -405,38 +405,11 @@ public class PortsGraph {
     }
 
     public LinkedList<Location> shortestLandPath(Location start, Location end) {
-        MatrixGraph<Location, Double> mg = getMg();
-        boolean validLocationsFlag = false;
-
-        if (start instanceof Storage) {
-            for (Location vAdj : mg.adjVertices(start))
-                if (vAdj instanceof Country) {
-                    validLocationsFlag = true;
-                    break;
-                }
-
-            if (!validLocationsFlag)
-                return null;
-
-            validLocationsFlag = false;
-        }
-
-        if (end instanceof Storage) {
-            for (Location vAdj : mg.adjVertices(end))
-                if (vAdj instanceof Country) {
-                    validLocationsFlag = true;
-                    break;
-                }
-
-            if (!validLocationsFlag)
-                return null;
-        }
-
         return Algorithms.dijkstraLandMaritimePath(getMg(), start, end, false);
     }
 
     public LinkedList<Location> shortestMaritimePath(Storage start, Storage end) {
-        return Algorithms.dijkstraLandMaritimePath(getMg(), start, end, false);
+        return Algorithms.dijkstraLandMaritimePath(getMg(), start, end, true);
     }
 
     /**
