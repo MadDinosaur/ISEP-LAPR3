@@ -436,7 +436,7 @@ public class PortsGraph {
     }
 
     public LinkedList<Location> shortestMaritimePath(Storage start, Storage end) {
-        return Algorithms.dijkstraLandMaritimePath(getMg(), start, end, false);
+        return Algorithms.dijkstraLandMaritimePath(getMg(), start, end, true);
     }
 
     /**
