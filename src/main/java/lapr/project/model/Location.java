@@ -2,7 +2,6 @@ package lapr.project.model;
 
 import lapr.project.exception.IllegalLocationException;
 
-import java.util.Objects;
 
 public abstract class Location {
 
