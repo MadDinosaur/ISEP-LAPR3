@@ -331,15 +331,30 @@ public class ShipStore extends AVL<Ship>{
      * @param tower The control bridge coordinate
      * @return coordinates of the center of mass
      */
-    public Pair<Double, Double> getCenterOfMass(Double massShip, Double length,Double width, Double massTower, Pair<Double,Double> tower){
+    public Pair<Double, Double> getCenterOfMass(Double massShip, Double length,Double width, List<Double> massTower, List<Pair<Double,Double>> tower){
+        double xTotal = 0;
+        double xMass = 0;
         double xShip = massShip * (length/2);
-        double xControlBridge = massTower * tower.get1st();
-        double xCm = (xShip + xControlBridge) / (massShip + massTower);
+        xTotal += xShip;
+        xMass += massShip;
+        for(int i=0; i<tower.size(); i++){
+            double xControl = massTower.get(i) * tower.get(i).get1st();
+            xTotal += xControl;
+            xMass += massTower.get(i);
+        }
+        double xCm = xTotal / xMass;
 
+        double yTotal = 0;
+        double yMass = 0;
         double yShip = massShip * (width/2);
-        double yControlBridge = massTower * tower.get2nd();
-        double yCm = (yShip + yControlBridge) / (massShip + massTower);
-
+        yTotal += yShip;
+        yMass += massShip;
+        for(int i=0; i<tower.size(); i++){
+            double yControl = massTower.get(i) * tower.get(i).get2nd();
+            yTotal += yControl;
+            yMass += massTower.get(i);
+        }
+        double yCm = yTotal / yMass;
         return new Pair<>(xCm,yCm);
     }
 

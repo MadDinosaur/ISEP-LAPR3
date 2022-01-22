@@ -4,6 +4,8 @@ import lapr.project.data.MainStorage;
 import lapr.project.store.ShipStore;
 import oracle.ucp.util.Pair;
 
+import java.util.List;
+
 public class CenterOfMassShipController {
 
     /**
@@ -26,7 +28,7 @@ public class CenterOfMassShipController {
         this.shipStore = storage.getShipStore();
     }
 
-    public Pair<Double, Double> getCenterOfMass(Double mass, Double length,Double width, Double massTower, Pair<Double,Double> tower){
-        return shipStore.getCenterOfMass(mass, length, width, massTower, tower);
+    public Pair<Double, Double> getCenterOfMass(Double massShip, Double length, Double width, List<Double> massTower, List<Pair<Double,Double>> tower){
+        return shipStore.getCenterOfMass(massShip, length, width, massTower, tower);
     }
 }
