@@ -1,6 +1,9 @@
 package lapr.project.model.graph;
 
 
+import lapr.project.model.Country;
+import lapr.project.model.Location;
+import lapr.project.model.Storage;
 import lapr.project.model.graph.matrix.MatrixGraph;
 
 import java.util.*;
@@ -272,11 +275,72 @@ public class Algorithms {
     private static <V, E> void getPath(Graph<V, E> g, V vOrig, V vDest,
                                        V [] pathKeys, LinkedList<V> path) {
 
-        path.addFirst(vDest);
-        int vKey = g.key(pathKeys[g.key(vDest)]);
-        if (vKey != -1) {
-            vDest = g.vertex(vKey);
+        if (vOrig.equals(vDest)) {
+            path.push(vOrig);
+        } else {
+            path.push(vDest);
+            int vKey = g.key(vDest);
+            vDest = pathKeys[vKey];
             getPath(g, vOrig, vDest, pathKeys, path);
         }
+    }
+
+    public static LinkedList<Location> dijkstraLandMaritimePath(MatrixGraph<Location, Double> mg, Location vOrig, Location vDest, boolean maritimeFlag) {
+        LinkedList<Location> path = new LinkedList<>();
+        Location tmpVOrig = vOrig;
+
+        if (!mg.validVertex(vOrig) || !mg.validVertex(vDest))
+            return null;
+
+        int nVerts = mg.numVertices();
+
+        boolean[] visited = new boolean[nVerts];
+        Location[] pathKeys = new Location[nVerts];
+        Double[] dist = new Double[nVerts];
+
+        for (int i = 0; i < nVerts; i++) {
+            pathKeys[i] = null;
+            dist[i] = Double.MAX_VALUE;
+        }
+
+        dist[mg.key(vOrig)] = 0.0;
+
+        while (tmpVOrig != null) {
+            int vOrigKey = mg.key(tmpVOrig);
+            visited[vOrigKey] = true;
+
+            for (Location vAdj : mg.adjVertices(tmpVOrig)) {
+                Edge<Location, Double> edge = mg.edge(tmpVOrig, vAdj);
+                int vAdjKey = mg.key(vAdj);
+
+                if (vAdj instanceof Storage && maritimeFlag || vAdj instanceof Country && !maritimeFlag || vAdj == vDest) {
+                    if (!visited[vAdjKey] && (dist[vAdjKey] > dist[vOrigKey] + edge.getWeight())) {
+                        dist[vAdjKey] = dist[vOrigKey] + edge.getWeight();
+                        pathKeys[vAdjKey] = tmpVOrig;
+                    }
+                } else {
+                    visited[vAdjKey] = true;
+                }
+            }
+
+            tmpVOrig = null;
+
+            Double minDistance = Double.MAX_VALUE;
+
+            for (Location vert : mg.vertices()) {
+                int vVertKey = mg.key(vert);
+
+                if (!visited[vVertKey] && dist[vVertKey] < minDistance) {
+                    tmpVOrig = vert;
+                    minDistance = dist[vVertKey];
+                }
+            }
+        }
+
+        if (dist[mg.key(vDest)] != null) {
+            getPath(mg, vOrig, vDest, pathKeys, path);
+        }
+
+        return path;
     }
 }
