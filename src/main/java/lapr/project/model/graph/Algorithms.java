@@ -318,8 +318,9 @@ public class Algorithms {
                         dist[vAdjKey] = dist[vOrigKey] + edge.getWeight();
                         pathKeys[vAdjKey] = tmpVOrig;
                     }
-                } else
+                } else {
                     visited[vAdjKey] = true;
+                }
             }
 
             tmpVOrig = null;
@@ -336,10 +337,9 @@ public class Algorithms {
             }
         }
 
-        if (dist[mg.key(vDest)] != Double.MAX_VALUE)
+        if (dist[mg.key(vDest)] != null) {
             getPath(mg, vOrig, vDest, pathKeys, path);
-        else
-            return null;
+        }
 
         return path;
     }

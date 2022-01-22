@@ -52,14 +52,12 @@ public class presentationTestsSprint4 {
             ShortestPathController controller = new ShortestPathController();
             StringBuilder sb = new StringBuilder();
 
-            Location start = mg.vertex(17);     // Storage 13390: Name - Setubal
-            Location end = mg.vertex(90);       // Storage 18454: Name - St Petersburg
+            Location start = mg.vertex(15); // Storage 13012: Name - Leixoes
+            Location end = mg.vertex(62);    // Storage 10136: Name - Larnaca
 
             LinkedList<Location> result = controller.shortestLandPath(start,end);
 
             if (result != null) {
-                sb.append("-= Land path Example =-\n");
-
                 for (Location loc : result) {
                     sb.append(loc.toString());
                     sb.append("\n");
@@ -73,64 +71,6 @@ public class presentationTestsSprint4 {
                 sb.append("There is no land path from ").append(start.toString()).append(" to ").append(end.toString()).append("\n");
 
             writeOutput(sb.toString(), "US402a");
-        }
-    }
-
-    @Test
-    public void US402b(){
-
-        if (dataBase) {
-            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(),5);
-            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
-            ShortestPathController controller = new ShortestPathController();
-            StringBuilder sb = new StringBuilder();
-
-            Storage start = (Storage) mg.vertex(16);    // Storage 13012: Name - Leixoes
-            Storage end = (Storage) mg.vertex(145);     // Storage 29876: Name - Guayaquil
-
-            LinkedList<Location> result = controller.shortestMaritimePath(start,end);
-
-            if (result != null) {
-                sb.append("-= Land maritime Example =-\n");
-
-                for (Location loc : result) {
-                    sb.append(loc.toString());
-                    sb.append("\n");
-                }
-
-                sb.append("Path Distance: ");
-                sb.append(Math.round(controller.getPathDistance(result)));
-                sb.append("KM");
-
-            } else
-                sb.append("There is no maritime path from ").append(start.toString()).append(" to ").append(end.toString()).append("\n");
-
-            writeOutput(sb.toString(), "US402b");
-        }
-    }
-
-    @Test
-    public void US402c(){
-
-        if (dataBase) {
-            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(),5);
-            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
-            ShortestPathController controller = new ShortestPathController();
-            StringBuilder sb = new StringBuilder();
-
-            Location start = mg.vertex(16); // Storage 13012: Name - Leixoes
-            Location end = mg.vertex(148);    // Storage 10136: Name - Larnaca
-
-            LinkedList<Location> result = controller.landOrSeaPath(start,end);
-            for (Location loc : result){
-                sb.append(loc.toString());
-                sb.append("\n");
-            }
-
-            sb.append("Path Distance: ");
-            sb.append(Math.round(controller.getPathDistance(result)));
-            sb.append("KM");
-            writeOutput(sb.toString(), "US402c");
         }
     }
 
@@ -175,6 +115,31 @@ public class presentationTestsSprint4 {
             sb.append("KM");
             writeOutput(sb.toString(), "US402d");
       }
+    }
+
+    @Test
+    public void US402c(){
+
+        if (dataBase) {
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(),5);
+            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
+            ShortestPathController controller = new ShortestPathController();
+            StringBuilder sb = new StringBuilder();
+
+            Location start = mg.vertex(16); // Storage 13012: Name - Leixoes
+            Location end = mg.vertex(148);    // Storage 10136: Name - Larnaca
+
+            LinkedList<Location> result = controller.landOrSeaPath(start,end);
+            for (Location loc : result){
+                sb.append(loc.toString());
+                sb.append("\n");
+            }
+
+            sb.append("Path Distance: ");
+            sb.append(Math.round(controller.getPathDistance(result)));
+            sb.append("KM");
+            writeOutput(sb.toString(), "US402c");
+        }
     }
 
     @Test
