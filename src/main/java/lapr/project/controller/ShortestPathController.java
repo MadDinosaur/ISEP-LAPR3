@@ -2,6 +2,7 @@ package lapr.project.controller;
 
 import lapr.project.data.MainStorage;
 import lapr.project.model.Location;
+import lapr.project.model.Storage;
 import lapr.project.store.PortsGraph;
 
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import java.util.List;
 public class ShortestPathController {
 
     /**
-     * The current porth graph
+     * The current port graph
      */
     private final PortsGraph portsGraph;
 
@@ -36,8 +37,16 @@ public class ShortestPathController {
         return portsGraph.shortestPathN(places,start,end);
     }
 
-    public LinkedList<Location>  landOrSeaPath(Location start, Location end){
+    public LinkedList<Location> landOrSeaPath(Location start, Location end){
         return portsGraph.landOrSeaPath(start,end);
+    }
+
+    public LinkedList<Location> shortestMaritimePath(Storage start, Storage end) {
+        return portsGraph.shortestMaritimePath(start, end);
+    }
+
+    public LinkedList<Location> shortestLandPath(Location start, Location end) {
+        return portsGraph.shortestLandPath(start, end);
     }
 
     /**

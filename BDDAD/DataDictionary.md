@@ -59,6 +59,8 @@
 | -20007 | Invalid employee role (Warehouse Manager). | Employee does not have warehouse manager role. |
 | -20014 | Ship capacity was exceeded. | 'Containers in cargo manifest exceed ship capacity. Please remove containers from manifest or issue an unloading order.' |
 | -20015 | Storage capacity was exceeded | 'Containers in cargo manifest exceed storage capacity. Please remove containers from manifest or issue a loading order.' |
+| -20049 | Ship has no Ship Trips | 'Could not find any Shiptrips for this ship' |
+| -20050 | Fleet Manager has no Ships | 'No ships found for that fleet manager ID' |
 
 ## Database Change Log
 ### Sprint 2 -> Sprint 3

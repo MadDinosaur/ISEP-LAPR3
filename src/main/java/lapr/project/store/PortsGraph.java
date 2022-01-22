@@ -373,12 +373,11 @@ public class PortsGraph {
         }
 
 
-        List<Storage> keys = new ArrayList<Storage>(result.keySet());   //list with all keys
-        List<Integer> values = new ArrayList<Integer>(result.values()); //list with all values
+        List<Storage> keys = new ArrayList<>(result.keySet());   //list with all keys
         List<Pair<Storage,Integer>> returnResult = new ArrayList<>();   //list of all pairs
 
-        for(int i=0; i<keys.size(); i++){
-            returnResult.add(new Pair<Storage, Integer>(keys.get(i),result.get(keys.get(i))));
+        for (Storage key : keys) {
+            returnResult.add(new Pair<>(key, result.get(key)));
         }
 
         returnResult.sort(Collections.reverseOrder(Comparator.comparing(Pair::get2nd)));                     // Orders in decreasing order by the average
@@ -386,7 +385,7 @@ public class PortsGraph {
         List<Pair<Storage, Integer>> centrality = new ArrayList<>();
 
         for(int i=0; i<Integer.min(n, returnResult.size()); i++){
-            centrality.add(new Pair<Storage, Integer>(returnResult.get(i).get1st(), returnResult.get(i).get2nd()));
+            centrality.add(new Pair<>(returnResult.get(i).get1st(), returnResult.get(i).get2nd()));
         }
 
         return centrality;
@@ -402,6 +401,14 @@ public class PortsGraph {
         LinkedList<Location> path = new LinkedList<>();
         Algorithms.shortestPath(getMg(),start,end,Double::compare,Double::sum,0.0,path);
         return path;
+    }
+
+    public LinkedList<Location> shortestLandPath(Location start, Location end) {
+        return Algorithms.dijkstraLandMaritimePath(getMg(), start, end, false);
+    }
+
+    public LinkedList<Location> shortestMaritimePath(Storage start, Storage end) {
+        return Algorithms.dijkstraLandMaritimePath(getMg(), start, end, true);
     }
 
     /**

@@ -324,8 +324,45 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
+     * gets the coordinates of the center of mass of a ship, taking in consideration the ship only has a control bridge
+     * @param massShip The ship's mass
+     * @param length The ship's length
+     * @param width The ship's width
+     * @param tower The control bridge coordinate
+     * @return coordinates of the center of mass
+     */
+    public Pair<Double, Double> getCenterOfMass(Double massShip, Double length,Double width, List<Double> massTower, List<Pair<Double,Double>> tower){
+        double xTotal = 0;
+        double xMass = 0;
+        double xShip = massShip * (length/2);
+        xTotal += xShip;
+        xMass += massShip;
+        for(int i=0; i<tower.size(); i++){
+            double xControl = massTower.get(i) * tower.get(i).get1st();
+            xTotal += xControl;
+            xMass += massTower.get(i);
+        }
+        double xCm = xTotal / xMass;
+
+        double yTotal = 0;
+        double yMass = 0;
+        double yShip = massShip * (width/2);
+        yTotal += yShip;
+        yMass += massShip;
+        for(int i=0; i<tower.size(); i++){
+            double yControl = massTower.get(i) * tower.get(i).get2nd();
+            yTotal += yControl;
+            yMass += massTower.get(i);
+        }
+        double yCm = yTotal / yMass;
+        return new Pair<>(xCm,yCm);
+    }
+
+    /**
      * This method returns how much the vessel sunk, the total mass placed and the pressure exerted
-     * @param ship The ship to be used
+     * @param mass The ship's mass
+     * @param length The ship's length
+     * @param width The ship's width
      * @param nContainers The number of containers in it
      * @return Returns a map with 3 informations: How much the vessel sunk, the total mass placed and the pressure exerted
      */
@@ -336,7 +373,7 @@ public class ShipStore extends AVL<Ship>{
         final double oneTon = 1000;                                                // KG
         final double gravity = 9.81;// m/s
 
-        double shipUnloadedWeight = mass * oneTon;                               // KG
+        double shipUnloadedWeight = mass * oneTon;                                 // KG
         double shipLoadedWeight = shipUnloadedWeight + (nContainers * (oneTon/2)); // KG
         double newImmersiveHeight;                                                 // m
         double immersiveHeight;                                                    // m

@@ -36,10 +36,101 @@ public class presentationTestsSprint4 {
             List<Pair<Storage,Integer>> list = new ArrayList<>();
             list = controller.getCentrality(100);
 
-            for(int i=0; i< list.size(); i++){
-                s.append(String.format("Storage: %s --> Centrality: %d\n", list.get(i).get1st().getName(), list.get(i).get2nd()));
-            }
+            for (Pair<Storage, Integer> storageIntegerPair : list)
+                s.append(String.format("Storage: %s --> Centrality: %d\n", storageIntegerPair.get1st().getName(), storageIntegerPair.get2nd()));
+
             writeOutput(s.toString(), "US401");
+        }
+    }
+
+    @Test
+    public void US402a(){
+
+        if (dataBase) {
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(),5);
+            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
+            ShortestPathController controller = new ShortestPathController();
+            StringBuilder sb = new StringBuilder();
+
+            Location start = mg.vertex(17);     // Storage 13390: Name - Setubal
+            Location end = mg.vertex(90);       // Storage 18454: Name - St Petersburg
+
+            LinkedList<Location> result = controller.shortestLandPath(start,end);
+
+            if (result != null) {
+                sb.append("-= Land path Example =-\n");
+
+                for (Location loc : result) {
+                    sb.append(loc.toString());
+                    sb.append("\n");
+                }
+
+                sb.append("Path Distance: ");
+                sb.append(Math.round(controller.getPathDistance(result)));
+                sb.append("KM");
+
+            } else
+                sb.append("There is no land path from ").append(start.toString()).append(" to ").append(end.toString()).append("\n");
+
+            writeOutput(sb.toString(), "US402a");
+        }
+    }
+
+    @Test
+    public void US402b(){
+
+        if (dataBase) {
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(),5);
+            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
+            ShortestPathController controller = new ShortestPathController();
+            StringBuilder sb = new StringBuilder();
+
+            Storage start = (Storage) mg.vertex(16);    // Storage 13012: Name - Leixoes
+            Storage end = (Storage) mg.vertex(145);     // Storage 29876: Name - Guayaquil
+
+            LinkedList<Location> result = controller.shortestMaritimePath(start,end);
+
+            if (result != null) {
+                sb.append("-= Land maritime Example =-\n");
+
+                for (Location loc : result) {
+                    sb.append(loc.toString());
+                    sb.append("\n");
+                }
+
+                sb.append("Path Distance: ");
+                sb.append(Math.round(controller.getPathDistance(result)));
+                sb.append("KM");
+
+            } else
+                sb.append("There is no maritime path from ").append(start.toString()).append(" to ").append(end.toString()).append("\n");
+
+            writeOutput(sb.toString(), "US402b");
+        }
+    }
+
+    @Test
+    public void US402c(){
+
+        if (dataBase) {
+            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(),5);
+            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
+            ShortestPathController controller = new ShortestPathController();
+            StringBuilder sb = new StringBuilder();
+
+            Location start = mg.vertex(16); // Storage 13012: Name - Leixoes
+            Location end = mg.vertex(148);    // Storage 10136: Name - Larnaca
+
+            LinkedList<Location> result = controller.landOrSeaPath(start,end);
+            for (Location loc : result){
+                sb.append(loc.toString());
+                sb.append("\n");
+            }
+
+            sb.append("Path Distance: ");
+            sb.append(Math.round(controller.getPathDistance(result)));
+            sb.append("KM");
+            writeOutput(sb.toString(), "US402c");
         }
     }
 
@@ -84,31 +175,6 @@ public class presentationTestsSprint4 {
             sb.append("KM");
             writeOutput(sb.toString(), "US402d");
       }
-    }
-
-    @Test
-    public void US402c(){
-
-        if (dataBase) {
-            CountrySqlStore.loadGraph(MainStorage.getInstance().getDatabaseConnection(),5);
-            MatrixGraph<Location, Double> mg = MainStorage.getInstance().getPortsGraph().getMg();
-            ShortestPathController controller = new ShortestPathController();
-            StringBuilder sb = new StringBuilder();
-
-            Location start = mg.vertex(16); // Storage 13012: Name - Leixoes
-            Location end = mg.vertex(148);    // Storage 10136: Name - Larnaca
-
-            LinkedList<Location> result = controller.landOrSeaPath(start,end);
-            for (Location loc : result){
-                sb.append(loc.toString());
-                sb.append("\n");
-            }
-
-            sb.append("Path Distance: ");
-            sb.append(Math.round(controller.getPathDistance(result)));
-            sb.append("KM");
-            writeOutput(sb.toString(), "US402c");
-        }
     }
 
     @Test
@@ -249,6 +315,49 @@ public class presentationTestsSprint4 {
             s.append("\n\nFor 50 container refrigerated and 50 container not refrigerated the energy need for a 100 min trip is : ").append(controller1.getEnergy(100, 0, baseTemp, refRes, nonRefRes));
 
             writeOutput(s.toString(), "US412_16");
+        }
+    }
+
+    @Test
+    public void US418(){
+        if(dataBase) {
+            CenterOfMassShipController controller = new CenterOfMassShipController();
+            StringBuilder s = new StringBuilder();
+
+            List<Double> massTower = new ArrayList<>();
+            massTower.add(100000.0);
+            massTower.add(100000.0);
+            List<Pair<Double, Double>> tower = new ArrayList<>();
+            tower.add(new Pair<>(216.6, 29.3));
+            tower.add(new Pair<>(84.4,29.3));
+            Pair<Double, Double> ship1Coordinates = controller.getCenterOfMass(55000000.0, 399.2, 58.5, massTower,
+                    tower);
+            s.append("ULCV - Maersk MC Kinney Moller\n");
+            s.append("Center of Gravity (Coordinates):\n");
+            s.append(String.format("    Xcm: %.2f\n", ship1Coordinates.get1st()));
+            s.append(String.format("    Ycm: %.2f\n\n", ship1Coordinates.get2nd()));
+
+            massTower.add(100000.0);
+            tower.clear();
+            tower.add(new Pair<>(216.6, 29.3));
+            Pair<Double, Double> ship2Coordinates = controller.getCenterOfMass(114500000.0, 260.0, 32.0, massTower,
+                    tower);
+            s.append("Panamax - ANL Tongala\n");
+            s.append("Center of Gravity (Coordinates):\n");
+            s.append(String.format("    Xcm: %.2f\n", ship2Coordinates.get1st()));
+            s.append(String.format("    Ycm: %.2f\n\n", ship2Coordinates.get2nd()));
+
+            massTower.add(100000.0);
+            tower.clear();
+            tower.add(new Pair<>(9.62, 10.8));
+            Pair<Double, Double> ship3Coordinates = controller.getCenterOfMass(2700000.0, 134.65, 21.50, massTower,
+                    tower);
+            s.append("Feeder - MV Enforcer\n");
+            s.append("Center of Gravity (Coordinates):\n");
+            s.append(String.format("    Xcm: %.2f\n", ship3Coordinates.get1st()));
+            s.append(String.format("    Ycm: %.2f\n\n", ship3Coordinates.get2nd()));
+
+            writeOutput(s.toString(), "US418");
         }
     }
 
