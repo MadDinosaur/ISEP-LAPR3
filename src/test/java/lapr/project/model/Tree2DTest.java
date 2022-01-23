@@ -50,9 +50,10 @@ class Tree2DTest {
         assertEquals(20, instance.findNearestNeighbour(9, 34));
         assertEquals(20, instance.findNearestNeighbour(11, 36));
         assertEquals(20, instance.findNearestNeighbour(9, 36));
-        assertEquals(20, instance.findNearestNeighbour(10, 35));
-        assertEquals(20, instance.findNearestNeighbour(10, 35));
         assertEquals(50, instance.findNearestNeighbour(71, 25));
+        for (int i = 0; i < arrX.length; i++)
+            assertEquals(arr[i], instance.findNearestNeighbour(arrX[i]+1, arrY[i]-1));
+
         instance = new Tree2D<>();
         assertNull(instance.findNearestNeighbour(9, 34));
     }

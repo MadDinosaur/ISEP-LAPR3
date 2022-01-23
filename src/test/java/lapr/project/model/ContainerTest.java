@@ -30,6 +30,9 @@ class ContainerTest {
 
         Container c2 = new Container(containerNum,0,isoCode, 0, 0, 0,0,true);
         assertNotNull(c2);
+
+        Container c3 = new Container(containerNum,0,isoCode, 0, 0, 0,0,false);
+        assertNotNull(c3);
     }
 
     @Test
