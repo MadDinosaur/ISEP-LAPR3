@@ -24,7 +24,13 @@ public class ShortestPathController {
      * Creates an instance of the controller with the current storage instance
      * @param storage The storage instance used to store all information
      */
-    public ShortestPathController(MainStorage storage){this.portsGraph = storage.getPortsGraph();}
+    public ShortestPathController(MainStorage storage){this(storage.getPortsGraph());}
+
+    /**
+     * Creates an instance of the controller with the given portsGraph
+     * @param portsGraph The portsGraph that has the information that will be used
+     */
+    public ShortestPathController(PortsGraph portsGraph) {this.portsGraph = portsGraph;}
 
     /**
      * This method gets the shortest path from start to end, passing by N places
@@ -37,14 +43,39 @@ public class ShortestPathController {
         return portsGraph.shortestPathN(places,start,end);
     }
 
+    /**
+     * This method gets the shortest path from start to end.
+     *
+     * @param start The starting location
+     * @param end   The ending location
+     * @return      Returns the shortest path from start to end
+     */
     public LinkedList<Location> landOrSeaPath(Location start, Location end){
         return portsGraph.landOrSeaPath(start,end);
     }
 
+    /**
+     * This method gets the shortest maritime path from a starting point to an end point.
+     * The path will only contain Storages(Ports).
+     *
+     * @param start The starting location
+     * @param end   The ending location
+     * @return      Returns the shortest maritime path from start to end
+     */
     public LinkedList<Location> shortestMaritimePath(Storage start, Storage end) {
         return portsGraph.shortestMaritimePath(start, end);
     }
 
+    /**
+     * This method gets the shortest land path from a starting point to an end point.
+     * The path can start/end in a Storage(Port) but will only go through Countries after that,
+     * so if the starting/ending point is a Storage it must have a connection to a Country
+     * Location or the path will be null.
+     *
+     * @param start The starting location
+     * @param end   The ending location
+     * @return      Returns the shortest land path from start to end
+     */
     public LinkedList<Location> shortestLandPath(Location start, Location end) {
         return portsGraph.shortestLandPath(start, end);
     }
@@ -57,11 +88,4 @@ public class ShortestPathController {
     public double getPathDistance(LinkedList<Location> path){
         return portsGraph.getPathDistance(path);
     }
-
-
-
-
-
-
-
 }

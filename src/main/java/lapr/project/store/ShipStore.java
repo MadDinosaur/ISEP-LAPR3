@@ -4,15 +4,14 @@ package lapr.project.store;
 import lapr.project.mappers.ShipMapper;
 import lapr.project.mappers.dto.PositioningDataDTO;
 import lapr.project.mappers.dto.ShipDTO;
-import lapr.project.model.AVL;
-import lapr.project.model.Coordinate;
-import lapr.project.model.Ship;
+import lapr.project.model.*;
 import lapr.project.store.list.PositioningDataTree;
 import lapr.project.utils.SorterTraveledDistByDiff;
 import oracle.ucp.util.Pair;
 
 import java.util.*;
 
+import static java.lang.Math.round;
 import static lapr.project.utils.SorterMapByValue.sortByValueDesc;
 
 
@@ -359,6 +358,28 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
+     * Gets the coordinates of the center of mass of a ship, with a given load.
+     * @param massShip The ship's mass
+     * @param lengthShip The ship's length
+     * @param widthShip The ship's width
+     * @param tower The control bridge(s) coordinate(s)
+     * @param massTower The control bridge's mass
+     * @param centerMassLoadList The load's center of mass coordinates
+     * @param massLoad The load's mass
+     * @return coordinates of the center of mass
+     */
+    public Pair<Double, Double> getCenterOfMass(Double massShip, Double lengthShip, Double widthShip, List<Double> massTower, List<Pair<Double,Double>> tower, Double massLoad, List<CartesianCoordinate<Double>> centerMassLoadList) {
+        Pair<Double, Double> centerMassShip = getCenterOfMass(massShip, lengthShip, widthShip, massTower, tower);
+        for (CartesianCoordinate<Double> centerMassLoad : centerMassLoadList) {
+            double xCm = (massShip * centerMassShip.get1st() + massLoad * centerMassLoad.getX()) / (massShip + massLoad);
+            double yCm = (massShip * centerMassShip.get2nd() + massLoad * centerMassLoad.getY()) / (massShip + massLoad);
+
+            centerMassShip = new Pair<>(xCm, yCm);
+        }
+        return centerMassShip;
+    }
+
+    /**
      * This method returns how much the vessel sunk, the total mass placed and the pressure exerted
      * @param mass The ship's mass
      * @param length The ship's length
@@ -394,5 +415,126 @@ public class ShipStore extends AVL<Ship>{
         result.put("Pressure",pressure);
 
         return result;
+    }
+
+    /**
+     * Determines the coordinates to position a given number of containers in a given area of the ship.
+     * @param xMax maximum no. of containers widthwise
+     * @param yMax maximum no. of containers lengthwise
+     * @param zMax maximum no. of containers heightwise
+     * @param centerMass the coordinates of the ship's center of mass (in container units)
+     * @param nContainers number of containers to position
+     * @param coordinates list of coordinates (in container units) to store all the container positions
+     */
+    public void positionContainers(int xMax, int yMax, int zMax, CartesianCoordinate<Integer> centerMass, int nContainers, List<CartesianCoordinate<Integer>> coordinates) {
+        int x, y, z = 0;
+
+        int layer = 0, xDiff, yDiff;
+        while (nContainers > 0) {
+            for (int i = 0; i <= layer * 2; i++) {
+                xDiff = (i % 2 == 0) ? -i / 2 : round(i / 2f);
+                for (int j = 0; j <= layer * 2; j++) {
+                    yDiff = (j % 2 == 0) ? -j / 2 : round(j / 2f);
+
+                    x = centerMass.getX() + xDiff;
+                    if (x > xMax - 1 || x < 0) continue;
+                    y = centerMass.getY() + yDiff;
+                    if (y > yMax - 1 || y < 0) continue;
+                    z = centerMass.getZ();
+                    while (coordinates.contains(new CartesianCoordinate<>(x, y, z)))
+                        z++;
+                    if (z > zMax - 1) continue;
+
+                    coordinates.add(new CartesianCoordinate<>(x, y, z));
+                    nContainers--;
+
+                    if (nContainers == 0) return;
+                }
+            }
+            layer++;
+        }
+    }
+
+    /**
+     * Determines the number of containers that can be placed in a single row - widthwise, lengthwise and heightwise
+     * @param shipLength a list of the sections of the ship according to whether it can support containers and its respective length
+     * @param width the width of the ship
+     * @param height the height of the ship
+     * @return a coordinate (x, y, z) with the maximum number of container of each axis
+     */
+    public CartesianCoordinate<Integer> getShipContainerCapacity(List<Pair<Double, Boolean>> shipLength, double width, double height) {
+        int yCapacity = 0;
+        int xCapacity = (int) (width / (Container.getWidth()));
+        int zCapacity = (int) (height / Container.getHeight());
+
+        for(Pair<Double, Boolean> area : shipLength) {
+            boolean availableSpace = area.get2nd();
+            double availableLength = area.get1st();
+
+            if (availableSpace) yCapacity += (int) (availableLength / Container.getLength());
+        }
+
+        return new CartesianCoordinate<>(xCapacity, yCapacity, zCapacity);
+    }
+
+    /**
+     * Converts a set of (xx, yy) physical coordinates, in meters, into (x, y, z) coordinates, in container units.
+     * If the physical coordinate is in a space not destined for containers, the coordinate will be the closest to a container space
+     * @param shipLength a list of the sections of the ship according to whether it can support containers and its respective length
+     * @param coordinate the physical coordinate to be converted
+     * @return the coordinate or null if not possible to convert
+     */
+    public CartesianCoordinate<Integer> convertCoordinatePhysicalToContainers(List<Pair<Double, Boolean>> shipLength, Pair<Double, Double> coordinate) {
+        double widthCoord = coordinate.get1st() - (Container.getWidth() / 2);
+        double lengthCoord = coordinate.get2nd() - (Container.getLength() / 2);
+
+        double availableLength = 0;
+        double unavailableLength = 0;
+        double totalLength = 0;
+
+        for(Pair<Double, Boolean> area : shipLength) {
+            boolean availableSpace = area.get2nd();
+            if (availableSpace) availableLength += area.get1st();
+                    else unavailableLength += area.get1st();
+            totalLength += area.get1st();
+
+            if(availableSpace && totalLength >= lengthCoord) {
+                int x = (int) (widthCoord / Container.getWidth());
+                int y = (int) ((lengthCoord - unavailableLength) / Container.getLength());
+
+                return new CartesianCoordinate<>(x, y, 0);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Converts a set of (x, y, z) coordinates, in container units into (xx, yy, zz) physical coordinates, in meters.
+     * The physical coordinate represents the geometric center of the container.
+     * @param shipLength a list of the sections of the ship according to whether it can support containers and its respective length
+     * @param coordinate the coordinate to be converted
+     * @return the coordinate or null if not possible to convert
+     */
+    public CartesianCoordinate<Double> convertCoordinateContainersToPhysical(List<Pair<Double, Boolean>> shipLength, CartesianCoordinate<Integer> coordinate) {
+        int availableContainers = 0;
+        int totalAvailableContainers = 0;
+        double totalLength = 0;
+
+        for(Pair<Double, Boolean> area : shipLength) {
+            boolean availableSpace = area.get2nd();
+            if (availableSpace) availableContainers = (int) (area.get1st() / Container.getLength());
+            else availableContainers = 0;
+
+            if(availableSpace && totalAvailableContainers + availableContainers >= coordinate.getY() + 1) {
+                double x = coordinate.getX() * Container.getWidth() + (Container.getWidth() / 2);
+                double y = (coordinate.getY() - totalAvailableContainers) * Container.getLength() + totalLength + (Container.getLength() / 2);
+                double z = coordinate.getZ() * Container.getHeight() + (Container.getHeight() / 2);
+                return new CartesianCoordinate<>(round(x*100)/100.0, round(y*100)/100.0, round(z*100)/100.0);
+            }
+
+            totalLength += area.get1st();
+            totalAvailableContainers += availableContainers;
+        }
+        return null;
     }
 }

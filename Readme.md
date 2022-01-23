@@ -33,6 +33,9 @@ world.
 ### Sprint 3
 ![BurndownChart](docs/BurndownChart_Sprint3.png)
 
+### Sprint 4
+![BurndownChart](docs/BurndownChart_Sprint4.png)
+
 ### User Stories
 
 Below are user story descriptions and links for analysis and design (DM, CD, SD, SSD) diagrams for each one.
@@ -81,6 +84,25 @@ Below are user story descriptions and links for analysis and design (DM, CD, SD,
 [US320](FSIAP/US320)|As Ship Chief Electrical Engineer I intend to present in a summary document, the choice of materials considered for the two types of containers considered, and their thermal resistances.
 [US321](docs/UserStories/US321)|As a Human Resources Manager, I want to be able to register users in the system.
 [US322](BDDAD/Queries/US322.sql)|As Project Manager, I want the team to automate updates to the ship's cargo manifest at the database level.
+[US401](docs/UserStories/US401)|As a Traffic manager I wish to know which ports are more critical (have greater centrality) in this freight network.
+[US402](docs/UserStories/US402)|As a Traffic manager I wish to know the shortest path between two locals (city and/or port).
+[US403](docs/UserStories/US403)|As a Traffic manager I wish to know the most efficient circuit that starts from a source location and visits the greatest number of other locations once, returning to the starting location and with the shortest total distance.
+[US404](docs/UserStories/US404)|As Fleet Manager, I want to know the number of days each ship has been idle since the beginning of the current year.
+[US405](docs/UserStories/US405)|As Fleet Manager, I want to know the average occupancy rate per manifest of a given ship during a given period.
+[US406](docs/UserStories/US406)|As Fleet Manager, I want to know which ship voyages – place and date of origin and destination – had an occupancy rate below a certain threshold.
+[US407](docs/UserStories/US407)|As Port manager, I intend to generate, a week in advance, the loading and unloading map based on ships and trucks load manifests and corresponding travel plans.
+[US409](ARQCP/fillDynamicArray.c)|As a Port staff given a Cargo Manifest, I wish to fill a dynamically reserved array in memory with all the container's information in its respective place.
+[US410](ARQCP/calculateEnergy.c)|As a Ship Chief Electrical Engineer, given the position of a container, I want to know the amount of needed energy to keep the container at its required temperature.
+[US411](ARQCP/enoughEnergy.c)|As a Ship Chief Electrical Engineer, I want to receive an alert when the current energy generation units are not enough to provide energy to all refrigerated containers at once.
+[US412](FSIAP/US412)|As Ship Chief Electrical Engineer, we intend to know how much energy to supply, for each container, in a determined trip, with an exterior temperature of 20 ºC, and a travel time of 2h30.
+[US413](docs/UserStories/US413)|As Ship Chief Electrical Engineer, the objective is to know the total energy to be supplied to the set of containers in a certain established trip, assuming that all the containers have the same behaviour.
+[US414](FSIAP/US412)|As Ship Chief Electrical Engineer, you want to know how much energy to supply to the container cargo, in a voyage (or route), depending on the position of the containers on the ship.
+[US415](FSIAP/US412)|As the ship's captain I need to know how many auxiliary power equipment are needed for the voyage, knowing that each one supplies a maximum of 75 KW.
+[US416](FSIAP/US412)|As ship's master I intend to submit a summary document, with the following items.
+[US417](docs/UserStories/US417)|As the Ship Captain I want the technical team to search for at least three types of ship/vessels that are better suited to the task (e.g., depending on the type of cargo).
+[US418](docs/UserStories/US418)|As the Ship Captain I want the determine the unladen center of mass for each vessel (if different) according to its characteristics.
+[US419](docs/UserStories/US419)|As the Ship Captain I want to know where to position containers on the vessel, such that the center of mass remains at xx and yy, determined in the previous point.
+[US420](docs/UserStories/US420)|As the Ship Captain I want to know for a specific vessel, how much did the vessel sink, assuming that each container has half a ton of mass.
 
 ### Physics
   

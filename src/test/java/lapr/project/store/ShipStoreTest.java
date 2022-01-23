@@ -278,4 +278,79 @@ class ShipStoreTest {
         assertEquals(result.get("Container Weight"),150000);
         assertEquals(result.get("Pressure"),188634.6504609775);
     }
+
+    @Test
+    public void positionContainers() {
+        int xMax = 2;
+        int yMax = 8;
+        int zMax = 3;
+        int nContainers = 5;
+        CartesianCoordinate<Integer> centerMass = new CartesianCoordinate<>(1, 4, 0);
+        List<CartesianCoordinate<Integer>> result = new ArrayList<>();
+
+        shipStore.positionContainers(xMax,yMax, zMax, centerMass, nContainers, result);
+
+        List<CartesianCoordinate<Integer>> expected = new ArrayList<>();
+        expected.add(new CartesianCoordinate<>(1,4,0));
+        expected.add(new CartesianCoordinate<>(1,4,1));
+        expected.add(new CartesianCoordinate<>(1,5,0));
+        expected.add(new CartesianCoordinate<>(1,3,0));
+        expected.add(new CartesianCoordinate<>(0,4,0));
+
+        assertEquals(expected.size(), result.size());
+        for (int i = 0; i < result.size(); i++)
+            assertEquals(expected.get(i), result.get(i));
+    }
+
+    @Test
+    public void convertCoordinateContainersToPhysical() {
+        List<Pair<Double, Boolean>> shipLength = new ArrayList<>();
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+
+        CartesianCoordinate<Integer> coordinate = new CartesianCoordinate<>(1, 4, 0);
+
+        CartesianCoordinate<Double> result = shipStore.convertCoordinateContainersToPhysical(shipLength, coordinate);
+
+        CartesianCoordinate<Double> expected = new CartesianCoordinate<>(3.66,84.85, 1.45);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void convertCoordinatePhysicalToContainers() {
+        List<Pair<Double, Boolean>> shipLength = new ArrayList<>();
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+
+        Pair<Double, Double> coordinate = new Pair<>(3.66,84.855);
+
+        CartesianCoordinate<Integer> result = shipStore.convertCoordinatePhysicalToContainers(shipLength, coordinate);
+
+        CartesianCoordinate<Integer> expected = new CartesianCoordinate<>(1, 4, 0);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void getShipContainerCapacity() {
+        List<Pair<Double, Boolean>> shipLength = new ArrayList<>();
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+
+        double width = 2 * Container.getWidth() + 2.0;
+        double height = 3 * Container.getHeight() * 1.0;
+
+        CartesianCoordinate<Integer> result = shipStore.getShipContainerCapacity(shipLength, width, height);
+
+        CartesianCoordinate<Integer> expected = new CartesianCoordinate<>(2, 8, 3);
+
+        assertEquals(expected, result);
+    }
 }

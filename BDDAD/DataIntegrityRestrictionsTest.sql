@@ -2,18 +2,22 @@
 -- Tests if the foreign key refers to a primary key value of some table in the database.
 
 -- CONSTRAINT FKSYSTEMUSERROLEID -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
-INSERT INTO SYSTEMUSER (REGISTRATION_CODE, NAME, EMAIL, ROLE_ID)
-VALUES ('1', 'TestUser', 'test@email.com', 1);
+INSERT INTO SYSTEMUSER (REGISTRATION_CODE, NAME, EMAIL)
+VALUES ('1', 'TestUser', 'test@email.com');
+INSERT INTO ROLE(ID, NAME)
+VALUES (4, 'Port Manager');
+INSERT INTO EMPLOYEE(SYSTEM_USER_CODE_EMPLOYEE, ROLE_ID)
+VALUES ('1', 4);
 
 -- CONSTRAINT fkCountryName -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
-INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume)
-VALUES (1,1,'TestStorage','TestCountry',91.0,181.0,500.0);
+INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume,SYSTEM_USER_CODE_MANAGER)
+VALUES (1,1,'TestStorage','TestCountry',91.0,181.0,500.0,1);
 
 -- CONSTRAINT fkStorageTypeId -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO COUNTRY (COUNTRY, CONTINENT, CAPITAL, ALPHA2, ALPHA3, POPULATION, LATITUDE, LONGITUDE)
 VALUES ('TestCountry', 'TestContinent', 'TestCapital', '00', '00', 100.0, 10.1, 180.1);
-INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume)
-VALUES (1,1,'TestStorage','TestCountry',91.0,181.0,500.0);
+INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume, SYSTEM_USER_CODE_MANAGER)
+VALUES (1,1,'TestStorage','TestCountry',91.0,181.0,500.0,1);
 
 -- CONSTRAINT fkContainerCscPlateSerialNumber -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
@@ -51,9 +55,9 @@ INSERT INTO Container_CargoManifest(container_num,partial_cargo_manifest_id,cont
 INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination,SYSTEM_USER_CODE_CLIENT) VALUES (2,1,2,'1');
 
 -- CONSTRAINT fkShipmentStorageIdentificationDestination -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
-INSERT INTO ROLE (NAME) VALUES ('TestRole');
-INSERT INTO SYSTEMUSER (REGISTRATION_CODE, NAME, EMAIL, ROLE_ID) VALUES ('1', 'TestUser', 'test@email.com', 1);
-INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination,SYSTEM_USER_CODE_CLIENT) VALUES (1,2,1,(select registration_code from SYSTEMUSER));
+INSERT INTO SYSTEMUSER (REGISTRATION_CODE, NAME, EMAIL) VALUES ('2', 'TestUser2', 'test2@email.com');
+INSERT INTO CLIENT(SYSTEM_USER_CODE_CLIENT) VALUES (2);
+INSERT INTO Shipment(container_num,storage_identification_origin,storage_identification_destination,SYSTEM_USER_CODE_CLIENT) VALUES (1,2,1,(select SYSTEM_USER_CODE_CLIENT from CLIENT));
 
 -- CONSTRAINT FKSTORAGEDESTINATION -- expected result FAIL (restri��o de integridade violada - chave pai n�o encontrada)
 INSERT INTO ShipTrip(ship_mmsi, storage_identification_origin, storage_identification_destination, parting_date, arrival_date, status)
@@ -68,26 +72,26 @@ INSERT INTO StorageType(name)
 VALUES (null);
 
 -- CONSTRAINT nnStorageTypeId -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume)
-VALUES (3,NULL,'TestStorageNULL','TestContinent',0.0,0.0,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume, SYSTEM_USER_CODE_MANAGER)
+VALUES (3,NULL,'TestStorageNULL','TestContinent',0.0,0.0,0.0,1);
 -- CONSTRAINT nnStorageName -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume)
-VALUES (3,1,NULL,'TestContinent',0.0,0.0,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume,SYSTEM_USER_CODE_MANAGER)
+VALUES (3,1,NULL,'TestContinent',0.0,0.0,0.0,1);
 -- CONSTRAINT nnCountry -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume)
-VALUES (3,1,'TestStorageNULL',NULL,0.0,0.0,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume,SYSTEM_USER_CODE_MANAGER)
+VALUES (3,1,'TestStorageNULL',NULL,0.0,0.0,0.0,1);
 -- CONSTRAINT nnStorageLatitude -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume)
-VALUES (3,1,'TestStorageNULL','TestContinent',NULL,0.0,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,country_name,latitude,longitude,max_volume,SYSTEM_USER_CODE_MANAGER)
+VALUES (3,1,'TestStorageNULL','TestContinent',NULL,0.0,0.0,1);
 -- CONSTRAINT ckStorageLatitude -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,  country_name,latitude,longitude,max_volume)
-VALUES (3,1,'TestStorageNULL','TestCountry',92.0,0.0,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,  country_name,latitude,longitude,max_volume,SYSTEM_USER_CODE_MANAGER)
+VALUES (3,1,'TestStorageNULL','TestCountry',92.0,0.0,0.0,1);
 -- CONSTRAINT nnStorageLongitude -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,  country_name,latitude,longitude,max_volume)
-VALUES (3,1,'TestStorageNULL','TestCountry',0.0,NULL,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,  country_name,latitude,longitude,max_volume,SYSTEM_USER_CODE_MANAGER)
+VALUES (3,1,'TestStorageNULL','TestCountry',0.0,NULL,0.0,1);
 -- CONSTRAINT ckStorageLongitude -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,  country_name,latitude,longitude,max_volume)
-VALUES (3,1,'TestStorageNULL','TestCountry',0.0,182.0,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,  country_name,latitude,longitude,max_volume,SYSTEM_USER_CODE_MANAGER)
+VALUES (3,1,'TestStorageNULL','TestCountry',0.0,182.0,0.0,1);
 
 -- CONSTRAINT nnContainerCscPlateSerialNumber -- expected result FAIL
 INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_weight,tare_weight,payload,max_volume,refrigerated_flag)
@@ -185,8 +189,8 @@ INSERT INTO Container(num,csc_plate_serial_number,check_digit,iso_code,gross_wei
 VALUES (1,1,0,'TST1',9999999,9999999,999999,999.9,1);
 
 -- CONSTRAINT pkStorageIdentification -- expected result FAIL
-INSERT INTO Storage(identification,storage_type_id,name,  country_name,latitude,longitude)
-VALUES (NULL,1,'TestStorageNULL','TestCountry',0.0,0.0);
+INSERT INTO Storage(identification,storage_type_id,name,country_name,MAX_VOLUME,latitude,longitude,SYSTEM_USER_CODE_MANAGER)
+VALUES (NULL,1,'TestStorageNULL','TestCountry',10.0,0.0,0.0,1);
 
 -- CONSTRAINT pkCscPlateSerialNumber -- expected result FAIL
 INSERT INTO CscPlate(serial_number,rules,model,manufacturer_name,owner_name,owner_address,furnigation,approval_number,acep_number,date_manufactured,max_gross_mass,stacking_weight,racking_test)

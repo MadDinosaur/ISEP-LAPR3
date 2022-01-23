@@ -49,5 +49,9 @@ class AvailableShipsOnMondayControllerTest {
 
         assertNotNull(result);
         assertEquals(expected, result);
+
+
+        resultList = null;
+        assertEquals("There are no available ships next monday.", controller.AvailableShipsOnMondayToString(resultList));
     }
 }

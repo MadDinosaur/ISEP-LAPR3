@@ -3,9 +3,9 @@ package lapr.project.presentationTests;
 import lapr.project.controller.*;
 import lapr.project.data.CountrySqlStore;
 import lapr.project.data.MainStorage;
+import lapr.project.model.CartesianCoordinate;
 import lapr.project.model.Country;
 import lapr.project.model.Location;
-import lapr.project.model.Ship;
 import lapr.project.model.Storage;
 import lapr.project.model.graph.matrix.MatrixGraph;
 import oracle.ucp.util.Pair;
@@ -17,9 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class presentationTestsSprint4 {
 
@@ -33,8 +30,7 @@ public class presentationTestsSprint4 {
             CentralityOnPortsController controller = new CentralityOnPortsController();
             StringBuilder s = new StringBuilder();
 
-            List<Pair<Storage,Integer>> list = new ArrayList<>();
-            list = controller.getCentrality(100);
+            List<Pair<Storage,Integer>> list = controller.getCentrality(100);
 
             for (Pair<Storage, Integer> storageIntegerPair : list)
                 s.append(String.format("Storage: %s --> Centrality: %d\n", storageIntegerPair.get1st().getName(), storageIntegerPair.get2nd()));
@@ -57,7 +53,7 @@ public class presentationTestsSprint4 {
 
             LinkedList<Location> result = controller.shortestLandPath(start,end);
 
-            if (result != null) {
+            if (!result.isEmpty()) {
                 sb.append("-= Land path Example =-\n");
 
                 for (Location loc : result) {
@@ -90,7 +86,7 @@ public class presentationTestsSprint4 {
 
             LinkedList<Location> result = controller.shortestMaritimePath(start,end);
 
-            if (result != null) {
+            if (!result.isEmpty()) {
                 sb.append("-= Land maritime Example =-\n");
 
                 for (Location loc : result) {
@@ -359,6 +355,89 @@ public class presentationTestsSprint4 {
 
             writeOutput(s.toString(), "US418");
         }
+    }
+
+    @Test
+    public void US419() {
+        int nContainers = 100;
+        PositionContainersController controller = new PositionContainersController();
+        CenterOfMassShipController controller2 = new CenterOfMassShipController();
+        StringBuilder s = new StringBuilder();
+
+        s.append("ULCV - Maersk MC Kinney Moller\n");
+        List<Double> massTower = new ArrayList<>();
+        massTower.add(100000.0);
+        massTower.add(100000.0);
+        List<Pair<Double, Double>> tower = new ArrayList<>();
+        tower.add(new Pair<>(0.0, 84.39));
+        tower.add(new Pair<>(0.0, 241.795));
+        List<Pair<Double, Boolean>> shipLength = new ArrayList<>();
+        shipLength.add(new Pair<>(84.39, true));
+        shipLength.add(new Pair<>(14.515, false));
+        shipLength.add(new Pair<>(126.37, true));
+        shipLength.add(new Pair<>(14.515, false));
+        shipLength.add(new Pair<>(126.37, true));
+        shipLength.add(new Pair<>(33.04, false));
+        s.append("Container Positions:\n");
+        List<CartesianCoordinate<Integer>> containerPositions = controller.getContainerPositions(shipLength, 58.6, 49.49, 55000000.0, massTower, tower, nContainers);
+        for (CartesianCoordinate<Integer> containerPosition : containerPositions)
+            s.append(containerPosition).append("\t");
+        s.append("\nCenter of Gravity Before Loading (Coordinates):\n");
+        Pair<Double, Double> centerMassBefore = controller2.getCenterOfMass(55000000.0, 399.2, 58.5, massTower,tower);
+        s.append(String.format("(%.2fm, %.2fm)\n", centerMassBefore.get1st(), centerMassBefore.get2nd()));
+        s.append("Center of Gravity After Loading (Coordinates):\n");
+        Pair<Double, Double> centerMassAfter = controller.getLoadedCenterOfMass(55000000.0, shipLength, 58.5, massTower,tower,500*nContainers, containerPositions);
+        s.append(String.format("(%.2fm, %.2fm)\n", centerMassAfter.get1st(), centerMassAfter.get2nd()));
+
+        massTower.clear();
+        tower.clear();
+        shipLength.clear();
+
+        s.append("\nPanamax - ANL Tongala\n");
+        massTower = new ArrayList<>();
+        massTower.add(1000000.0);
+        tower = new ArrayList<>();
+        tower.add(new Pair<>(0.0, 54.13));
+        shipLength = new ArrayList<>();
+        shipLength.add(new Pair<>(54.13, true));
+        shipLength.add(new Pair<>(24.4, false));
+        shipLength.add(new Pair<>(181.47, true));
+        s.append("Container Positions:\n");
+        containerPositions = controller.getContainerPositions(shipLength, 32.25, 23.59, 11450000.0, massTower, tower, nContainers);
+        for (CartesianCoordinate<Integer> containerPosition : containerPositions)
+            s.append(containerPosition).append("\t");
+        s.append("\nCenter of Gravity Before Loading (Coordinates):\n");
+        centerMassBefore = controller2.getCenterOfMass(11450000.0, 260.0, 32.25, massTower,tower);
+        s.append(String.format("(%.2fm, %.2fm)\n", centerMassBefore.get1st(), centerMassBefore.get2nd()));
+        s.append("Center of Gravity After Loading (Coordinates):\n");
+        centerMassAfter = controller.getLoadedCenterOfMass(11450000.0, shipLength, 32.25, massTower,tower,500*nContainers, containerPositions);
+        s.append(String.format("(%.2fm, %.2fm)\n", centerMassAfter.get1st(), centerMassAfter.get2nd()));
+
+        massTower.clear();
+        tower.clear();
+        shipLength.clear();
+
+        s.append("\nFeeder - MV Enforcer\n");
+        massTower = new ArrayList<>();
+        massTower.add(100000.0);
+        tower = new ArrayList<>();
+        tower.add(new Pair<>(0.0, 0.0));
+        shipLength = new ArrayList<>();
+        shipLength.add(new Pair<>(15.32, false));
+        shipLength.add(new Pair<>(104.31, true));
+        shipLength.add(new Pair<>(15.02, false));
+        s.append("Container Positions:\n");
+        containerPositions = controller.getContainerPositions(shipLength, 21.50, 18.65, 2700000.0, massTower, tower, nContainers);
+        for (CartesianCoordinate<Integer> containerPosition : containerPositions)
+            s.append(containerPosition).append("\t");
+        s.append("\nCenter of Gravity Before Loading (Coordinates):\n");
+        centerMassBefore = controller2.getCenterOfMass(2700000.0, 134.65, 21.50, massTower,tower);
+        s.append(String.format("(%.2fm, %.2fm)\n", centerMassBefore.get1st(), centerMassBefore.get2nd()));
+        s.append("Center of Gravity After Loading (Coordinates):\n");
+        centerMassAfter = controller.getLoadedCenterOfMass(2700000.0, shipLength, 21.50, massTower,tower,500*nContainers, containerPositions);
+        s.append(String.format("(%.2fm, %.2fm)\n", centerMassAfter.get1st(), centerMassAfter.get2nd()));
+
+        writeOutput(s.toString(),"US419");
     }
 
     @Test
