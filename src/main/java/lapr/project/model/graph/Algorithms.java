@@ -368,22 +368,22 @@ public class Algorithms {
     private static boolean verifyOrigDest(MatrixGraph<Location, Double> mg, Location vOrig, Location vDest) {
         boolean validOrigin = false, validDest = false;
 
-        if (vOrig instanceof Storage)
+        if (vOrig instanceof Storage){
             for (Location vAdj : mg.adjVertices(vOrig))
                 if (vAdj instanceof Country) {
                     validOrigin = true;
                     break;
                 }
-        else
+        } else
             validOrigin = true;
 
-        if (vDest instanceof Storage)
+        if (vDest instanceof Storage) {
             for (Location vAdj : mg.adjVertices(vDest))
                 if (vAdj instanceof Country) {
                     validDest = true;
                     break;
                 }
-        else
+        } else
             validDest = true;
 
         return validOrigin && validDest;
