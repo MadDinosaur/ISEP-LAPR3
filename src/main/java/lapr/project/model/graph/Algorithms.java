@@ -301,7 +301,7 @@ public class Algorithms {
 
 
         if (!mg.validVertex(vOrig) || !mg.validVertex(vDest) || !maritimeFlag && !verifyOrigDest(mg, vOrig, vDest))
-            return null;
+            return path;
 
         int nVerts = mg.numVertices();
 
@@ -349,8 +349,6 @@ public class Algorithms {
 
         if (dist[mg.key(vDest)] != Double.MAX_VALUE)
             getPath(mg, vOrig, vDest, pathKeys, path);
-        else
-            return null;
 
         return path;
     }
@@ -366,7 +364,8 @@ public class Algorithms {
      * @return      True if vertex are valid and False if they aren't valid
      */
     private static boolean verifyOrigDest(MatrixGraph<Location, Double> mg, Location vOrig, Location vDest) {
-        boolean validOrigin = false, validDest = false;
+        boolean validOrigin = false;
+        boolean validDest = false;
 
         if (vOrig instanceof Storage){
             for (Location vAdj : mg.adjVertices(vOrig))

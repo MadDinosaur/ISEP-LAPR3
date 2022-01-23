@@ -52,7 +52,7 @@ public class presentationTestsSprint4 {
 
             LinkedList<Location> result = controller.shortestLandPath(start,end);
 
-            if (result != null) {
+            if (!result.isEmpty()) {
                 sb.append("-= Land path Example =-\n");
 
                 for (Location loc : result) {
@@ -85,7 +85,7 @@ public class presentationTestsSprint4 {
 
             LinkedList<Location> result = controller.shortestMaritimePath(start,end);
 
-            if (result != null) {
+            if (!result.isEmpty()) {
                 sb.append("-= Land maritime Example =-\n");
 
                 for (Location loc : result) {
