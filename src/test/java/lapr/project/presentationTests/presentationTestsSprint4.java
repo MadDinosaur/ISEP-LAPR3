@@ -20,7 +20,7 @@ import java.util.List;
 
 public class presentationTestsSprint4 {
 
-    boolean dataBase = false;
+    boolean dataBase = true;
 
     @Test
     public void US401(){
@@ -330,8 +330,8 @@ public class presentationTestsSprint4 {
                     tower);
             s.append("ULCV - Maersk MC Kinney Moller\n");
             s.append("Center of Gravity (Coordinates):\n");
-            s.append(String.format("    Xcm: %.2f\n", ship1Coordinates.get1st()));
-            s.append(String.format("    Ycm: %.2f\n\n", ship1Coordinates.get2nd()));
+            s.append(String.format("    Ycm: %.2f\n", ship1Coordinates.get1st()));
+            s.append(String.format("    Xcm: %.2f\n\n", ship1Coordinates.get2nd()));
 
             massTower.add(100000.0);
             tower.clear();
@@ -340,8 +340,8 @@ public class presentationTestsSprint4 {
                     tower);
             s.append("Panamax - ANL Tongala\n");
             s.append("Center of Gravity (Coordinates):\n");
-            s.append(String.format("    Xcm: %.2f\n", ship2Coordinates.get1st()));
-            s.append(String.format("    Ycm: %.2f\n\n", ship2Coordinates.get2nd()));
+            s.append(String.format("    Ycm: %.2f\n", ship2Coordinates.get1st()));
+            s.append(String.format("    Xcm: %.2f\n\n", ship2Coordinates.get2nd()));
 
             massTower.add(100000.0);
             tower.clear();
@@ -350,8 +350,8 @@ public class presentationTestsSprint4 {
                     tower);
             s.append("Feeder - MV Enforcer\n");
             s.append("Center of Gravity (Coordinates):\n");
-            s.append(String.format("    Xcm: %.2f\n", ship3Coordinates.get1st()));
-            s.append(String.format("    Ycm: %.2f\n\n", ship3Coordinates.get2nd()));
+            s.append(String.format("    Ycm: %.2f\n", ship3Coordinates.get1st()));
+            s.append(String.format("    Xcm: %.2f\n\n", ship3Coordinates.get2nd()));
 
             writeOutput(s.toString(), "US418");
         }
