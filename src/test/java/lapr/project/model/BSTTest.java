@@ -45,6 +45,7 @@ class BSTTest {
         assertEquals(instance.find(instance.root(), 20).getElement(), 20);
         assertNotEquals(instance.find(instance.root(), 15).getElement(), 40);
         assertNotEquals(instance.find(instance.root(), 20).getElement(), null);
+        assertNotNull(instance.toString());
     }
 
     /**
