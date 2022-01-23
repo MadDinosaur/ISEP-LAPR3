@@ -35,6 +35,18 @@ public class Container {
      * The container refrigeration capability
      */
     private boolean refrigerated;
+    /**
+     * The container standard length (m)
+     */
+    private static double length = 12.19;
+    /**
+     * The container standard width (m)
+     */
+    private static double width = 2.44;
+    /**
+     * The container standard height (m)
+     */
+    private static double height = 2.9;
 
     /**
      * Creates the Container object
@@ -237,11 +249,37 @@ public class Container {
         this.maxVolume = maxVolume;
     }
 
+    /**
+     * @return true if container is refrigerated, false if its not
+     */
     public boolean isRefrigerated() {
         return refrigerated;
     }
 
+    /**
+     * Sets the container refrigeration
+     * @param refrigerated true if container is refrigerated, false if its not
+     */
     private void setRefrigerated(boolean refrigerated) {
         this.refrigerated = refrigerated;
+    }
+
+    /**
+     * @return the container standardized length
+     */
+    public static double getLength() {
+        return length;
+    }
+    /**
+     * @return the container standardized width
+     */
+    public static double getWidth() {
+        return width;
+    }
+    /**
+     * @return the container standardized height
+     */
+    public static double getHeight() {
+        return height;
     }
 }
