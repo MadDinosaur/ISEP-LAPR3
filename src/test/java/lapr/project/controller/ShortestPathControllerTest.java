@@ -199,13 +199,13 @@ class ShortestPathControllerTest {
             assertEquals(expected.get(i), result.get(i));
 
         result = ctrl.shortestLandPath(storageLeixoes, storageRostock);
-        assertNull(result);
+        assertTrue(result.isEmpty());
 
         result = ctrl.shortestLandPath(storageSetubal, storageHamburg);
-        assertNull(result);
+        assertTrue(result.isEmpty());
 
         result = ctrl.shortestLandPath(storageLeixoes, storageHamburg);
-        assertNull(result);
+        assertTrue(result.isEmpty());
     }
 
     @Test

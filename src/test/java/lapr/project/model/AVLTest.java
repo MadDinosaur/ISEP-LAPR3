@@ -138,8 +138,21 @@ class AVLTest {
         instance2.remove(8);
         System.out.println(instance2);
         assertNotEquals(instance2, instance);
+        instance2.insert(9);
         AVL<Integer> avl = new AVL<>();
         assertNotEquals(instance.root(), null);
         assertNotEquals(null, instance.root());
+        avl.remove(4);
+        avl.insert(3);
+        avl.insert(2);
+        avl.remove(2);
+
+        instance2.equals(null);
+        instance2.equals(3);
+
+        instance2.equals(null, new BST.Node<>(3, null, null));
+        instance2.equals(new BST.Node<>(3, null, null), null);
     }
+
+
 }

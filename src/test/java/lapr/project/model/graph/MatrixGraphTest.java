@@ -259,6 +259,50 @@ public class MatrixGraphTest {
         instance.removeEdge("E", "D");
 
         assertEquals(0, instance.edges().size(), "edges should be empty");
+
+        instance =  new MatrixGraph<>(false);
+
+        assertEquals(0, instance.edges().size(), "edges should be empty");
+
+        for (int i = 0; i < co.size(); i++)
+            instance.addEdge(co.get(i), cd.get(i), cw.get(i));
+
+        ced = instance.edges();
+        assertEquals(15, ced.size(), "Must have 8 edges");
+        for (int i = 0; i < co.size(); i++) {
+            int finalI = i;
+            ced.removeIf(e -> e.getVOrig().equals(co.get(finalI)) && e.getVDest().equals(cd.get(finalI)) && e.getWeight().equals(cw.get(finalI)));
+        }
+        assertEquals(7, ced.size(), "Edges should be as inserted");
+
+        instance.removeEdge("A", "B");
+        ced = instance.edges();
+        assertEquals(13, ced.size(), "Must have 7 edges");
+        for (int i = 1; i < co.size(); i++) {
+            int finalI = i;
+            ced.removeIf(e -> e.getVOrig().equals(co.get(finalI)) && e.getVDest().equals(cd.get(finalI)) && e.getWeight().equals(cw.get(finalI)));
+        }
+        assertEquals(6, ced.size(), "Edges should be as inserted");
+
+        instance.removeEdge("E", "E");
+        ced = instance.edges();
+        assertEquals(12, ced.size(), "Must have 6 edges");
+        for (int i = 1; i < co.size() - 1; i++) {
+            int finalI = i;
+            ced.removeIf(e -> e.getVOrig().equals(co.get(finalI)) && e.getVDest().equals(cd.get(finalI)) && e.getWeight().equals(cw.get(finalI)));
+        }
+        assertEquals(6, ced.size(), "Edges should be as inserted");
+
+        instance.removeEdge("A", "C");
+        instance.removeEdge("B", "D");
+        instance.removeEdge("C", "D");
+        instance.removeEdge("C", "E");
+        instance.removeEdge("D", "A");
+        instance.removeEdge("E", "D");
+
+        assertEquals(0, instance.edges().size(), "edges should be empty");
+
+
     }
 
     /**
@@ -623,5 +667,18 @@ public class MatrixGraphTest {
         String actualMessage3 = exception3.getMessage();
 
         assertTrue(actualMessage3.contains(expectedMessage3));
+    }
+
+    @Test
+    public void MutationTests(){
+        assertEquals(instance.numEdges(), 0);
+        assertEquals(instance.numVertices(), 0);
+        for (int i = 0; i < co.size(); i++)
+            instance.addEdge(co.get(i), cd.get(i), cw.get(i));
+        assertNull(instance.edge(6,2));
+        assertNull(instance.edge(2,6));
+        assertNull(instance.edge(6,6));
+
+
     }
 }
