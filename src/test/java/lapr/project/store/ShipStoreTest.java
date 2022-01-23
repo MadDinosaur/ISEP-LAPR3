@@ -306,9 +306,9 @@ class ShipStoreTest {
     public void convertCoordinateContainersToPhysical() {
         List<Pair<Double, Boolean>> shipLength = new ArrayList<>();
         shipLength.add(new Pair(10.0, false));
-        shipLength.add(new Pair(4 * 12.19 + 10.0,true));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
         shipLength.add(new Pair(10.0, false));
-        shipLength.add(new Pair(4 * 12.19 + 10.0,true));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
 
         CartesianCoordinate<Integer> coordinate = new CartesianCoordinate<>(1, 4, 0);
 
@@ -323,15 +323,33 @@ class ShipStoreTest {
     public void convertCoordinatePhysicalToContainers() {
         List<Pair<Double, Boolean>> shipLength = new ArrayList<>();
         shipLength.add(new Pair(10.0, false));
-        shipLength.add(new Pair(4 * 12.19 + 10.0,true));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
         shipLength.add(new Pair(10.0, false));
-        shipLength.add(new Pair(4 * 12.19 + 10.0,true));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
 
         Pair<Double, Double> coordinate = new Pair<>(3.66,84.855);
 
         CartesianCoordinate<Integer> result = shipStore.convertCoordinatePhysicalToContainers(shipLength, coordinate);
 
         CartesianCoordinate<Integer> expected = new CartesianCoordinate<>(1, 4, 0);
+
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void getShipContainerCapacity() {
+        List<Pair<Double, Boolean>> shipLength = new ArrayList<>();
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+        shipLength.add(new Pair(10.0, false));
+        shipLength.add(new Pair(4 * Container.getLength() + 10.0,true));
+
+        double width = 2 * Container.getWidth() + 2.0;
+        double height = 3 * Container.getHeight() * 1.0;
+
+        CartesianCoordinate<Integer> result = shipStore.getShipContainerCapacity(shipLength, width, height);
+
+        CartesianCoordinate<Integer> expected = new CartesianCoordinate<>(2, 8, 3);
 
         assertEquals(expected, result);
     }

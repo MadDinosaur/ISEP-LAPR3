@@ -358,6 +358,28 @@ public class ShipStore extends AVL<Ship>{
     }
 
     /**
+     * Gets the coordinates of the center of mass of a ship, with a given load.
+     * @param massShip The ship's mass
+     * @param lengthShip The ship's length
+     * @param widthShip The ship's width
+     * @param tower The control bridge(s) coordinate(s)
+     * @param massTower The control bridge's mass
+     * @param centerMassLoadList The load's center of mass coordinates
+     * @param massLoad The load's mass
+     * @return coordinates of the center of mass
+     */
+    public Pair<Double, Double> getCenterOfMass(Double massShip, Double lengthShip, Double widthShip, List<Double> massTower, List<Pair<Double,Double>> tower, Double massLoad, List<CartesianCoordinate<Double>> centerMassLoadList) {
+        Pair<Double, Double> centerMassShip = getCenterOfMass(massShip, lengthShip, widthShip, massTower, tower);
+        for (CartesianCoordinate<Double> centerMassLoad : centerMassLoadList) {
+            double xCm = (massShip * centerMassShip.get1st() + massLoad * centerMassLoad.getX()) / (massShip + massLoad);
+            double yCm = (massShip * centerMassShip.get2nd() + massLoad * centerMassLoad.getY()) / (massShip + massLoad);
+
+            centerMassShip = new Pair<>(xCm, yCm);
+        }
+        return centerMassShip;
+    }
+
+    /**
      * This method returns how much the vessel sunk, the total mass placed and the pressure exerted
      * @param mass The ship's mass
      * @param length The ship's length
@@ -431,6 +453,28 @@ public class ShipStore extends AVL<Ship>{
             }
             layer++;
         }
+    }
+
+    /**
+     * Determines the number of containers that can be placed in a single row - widthwise, lengthwise and heightwise
+     * @param shipLength a list of the sections of the ship according to whether it can support containers and its respective length
+     * @param width the width of the ship
+     * @param height the height of the ship
+     * @return a coordinate (x, y, z) with the maximum number of container of each axis
+     */
+    public CartesianCoordinate<Integer> getShipContainerCapacity(List<Pair<Double, Boolean>> shipLength, double width, double height) {
+        int yCapacity = 0;
+        int xCapacity = (int) (width / (Container.getWidth()));
+        int zCapacity = (int) (height / Container.getHeight());
+
+        for(Pair<Double, Boolean> area : shipLength) {
+            boolean availableSpace = area.get2nd();
+            double availableLength = area.get1st();
+
+            if (availableSpace) yCapacity += (int) (availableLength / Container.getLength());
+        }
+
+        return new CartesianCoordinate<>(xCapacity, yCapacity, zCapacity);
     }
 
     /**
