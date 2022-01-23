@@ -24,7 +24,13 @@ public class ShortestPathController {
      * Creates an instance of the controller with the current storage instance
      * @param storage The storage instance used to store all information
      */
-    public ShortestPathController(MainStorage storage){this.portsGraph = storage.getPortsGraph();}
+    public ShortestPathController(MainStorage storage){this(storage.getPortsGraph());}
+
+    /**
+     * Creates an instance of the controller with the given portsGraph
+     * @param portsGraph The portsGraph that has the information that will be used
+     */
+    public ShortestPathController(PortsGraph portsGraph) {this.portsGraph = portsGraph;}
 
     /**
      * This method gets the shortest path from start to end, passing by N places
